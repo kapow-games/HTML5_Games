@@ -1,4 +1,5 @@
 'use strict';
+
 var boot = function() {
   console.log("%cStarting my awesome game", "color:white; background:red");
 };
