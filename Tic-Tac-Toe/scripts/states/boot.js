@@ -8,7 +8,7 @@ boot.prototype = {
     this.game.load.image("loading","assets/loading.png");
   },
   create  : function() {
-    // this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		// this.scale.pageAlignHorizontally = true;
 		// this.scale.setScreenSize();
     this.game.input.maxPointers = 1;

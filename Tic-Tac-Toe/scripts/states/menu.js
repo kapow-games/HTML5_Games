@@ -9,19 +9,19 @@ menu.prototype = {
     var style = { font: '65px Arial', fill: 'black', align: 'center'};
 
     var bg = this.add.sprite(0, 0, 'arena');
-    bg.anchor.set(0.5);
-    bg.scale.setTo(3,3);
+    bg.height = this.game.height;
+    bg.width = this.game.width;
 
-    this.titleText = this.game.add.text(this.game.world.centerX, 80, 'Tic-Tac-Toe', style);
-    this.titleText.anchor.setTo(0.5, 1);
+    this.titleText = this.game.add.text(this.game.world.centerX, this.game.height/5 , 'Tic-Tac-Toe', style);
+    this.titleText.anchor.setTo(0.5, 0);
 
-    this.gameModeButton = this.game.add.button(this.game.world.centerX, 120, 'easy_bot', this.easyModeChoose, this, 1, 0, 2);
+    this.gameModeButton = this.game.add.button(this.game.world.centerX, (this.game.height*2)/5, 'easy_bot', this.easyModeChoose, this, 1, 0, 2);
     this.gameModeButton.anchor.set(0.5);
 
-    this.gameModeButton = this.game.add.button(this.game.world.centerX, 160, 'medium_bot', this.mediumModeChoose, this, 1, 0, 2);
+    this.gameModeButton = this.game.add.button(this.game.world.centerX, (this.game.height*3)/5, 'medium_bot', this.mediumModeChoose, this, 1, 0, 2);
     this.gameModeButton.anchor.set(0.5);
 
-    this.gameModeButton = this.game.add.button(this.game.world.centerX, 200, 'hard_bot', this.hardModeChoose, this, 1, 0, 2);
+    this.gameModeButton = this.game.add.button(this.game.world.centerX, (this.game.height*4)/5, 'hard_bot', this.hardModeChoose, this, 1, 0, 2);
     this.gameModeButton.anchor.set(0.5);
 
     // this.instructionsText = this.game.add.text(this.game.world.centerX, 180, '1 Player', { font: '16px Arial', fill: 'black', align: 'center'});

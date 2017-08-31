@@ -12,7 +12,7 @@ preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
 		this.load.image('kapow', 'assets/Kapow_Logo.png');
-    this.load.image('arena', 'assets/Background_Arena.jpg');
+    this.load.image('arena', 'assets/Background_Arena.png');
     this.load.image('x_mark', 'assets/o.png');
     this.load.image('y_mark', 'assets/x.png');
     this.load.spritesheet('cell', 'assets/cell.png', 107, 107);

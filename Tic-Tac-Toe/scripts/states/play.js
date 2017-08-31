@@ -280,8 +280,10 @@ play.prototype = {
     CELL_COLS = CELL_ROWS = 3;
     limit  = (CELL_ROWS*CELL_COLS) -1 ;
     var bg = this.add.sprite(0, 0, 'arena');
-    bg.anchor.set(0.5);
-    bg.scale.setTo(3,3);
+    // bg.anchor.set(0.5);
+    // bg.scale.setTo(3,3);
+    bg.height = this.game.height;
+    bg.width = this.game.width;
     var count = 0 ;
     win = 0 ;
     this.cells = this.game.add.group();
