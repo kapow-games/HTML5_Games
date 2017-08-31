@@ -1,23 +1,6 @@
-/*body {
-  /*background-color: #333;*/
-  width: 360px;
-  height: 592px;
-  background-image: linear-gradient(181deg, #3e81ff, #7b34e6);
-}*/
 
-#tic-tac-toe {
-  border: 2px solid white;
-  margin-left: auto;
-  margin-right: auto;
+html, body, div, canvas {
+  margin: 0;
+  padding: 0;
   cursor: pointer;
-  width: 360px;
-  height: 592px;
-  background-image: linear-gradient(181deg, #3e81ff, #7b34e6);
-
-}
-
-.bg-gradient {
-  width: 360px;
-  height: 592px;
-  background-image: linear-gradient(181deg, #3e81ff, #7b34e6);
 }

@@ -6,13 +6,19 @@ var preload = function() {
 
 preload.prototype = {
   preload : function() {
-    this.asset = this.add.sprite(160,240,"loading");
+    this.asset = this.add.sprite(this.game.world.centerX,this.game.world.centerY,"loading");
     // this.asset = this.add.sprite(this.width/2,this.height/2, 'loading');
     this.asset.anchor.setTo(0.5,0.5);
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-		this.load.image('kapow', 'assets/Kapow_Logo.png');
-    this.load.image('arena', 'assets/Background_Arena.png');
+		this.load.image('logo', 'assets/logo.svg');
+    this.load.image('onGoing', 'assets/onGoing.svg');
+    this.load.image('arena', 'assets/backGround.svg');
+    this.load.image('back', 'assets/back.svg');
+    this.load.image('newGame', 'assets/newGame.svg');
+    this.load.image('music', 'assets/volume.svg');
+    this.load.image('leaderBoard', 'assets/leaderboard.svg');
+    this.load.image('stats', 'assets/stats.svg');
     this.load.image('x_mark', 'assets/o.png');
     this.load.image('y_mark', 'assets/x.png');
     this.load.spritesheet('cell', 'assets/cell.png', 107, 107);

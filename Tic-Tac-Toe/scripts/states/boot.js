@@ -8,9 +8,14 @@ boot.prototype = {
     this.game.load.image("loading","assets/loading.png");
   },
   create  : function() {
-    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-		// this.scale.pageAlignHorizontally = true;
-		// this.scale.setScreenSize();
+    // this.stage.disableVisibilityChange = true;
+
+    this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
+		this.scale.pageAlignHorizontally = true;
+    this.scale.pageAlignVertically = true;
+    // this.scale.isPortrait = false;
+    this.scale.forceOrientation(true, false);
+    // this.scale.setScreenSize();
     this.game.input.maxPointers = 1;
     this.game.state.start('preload');
   }

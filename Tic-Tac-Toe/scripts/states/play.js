@@ -321,6 +321,7 @@ play.prototype = {
     var cell = this.cells.children;
     if(sprite.frame === 0) {
       // console.log("Hi");
+      sprite.frame = 1;
       var next = new gameState(myGame.currentState);
       next.board[sprite.frameIndex]=1;
       sprite.frame = 1;

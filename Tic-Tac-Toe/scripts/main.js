@@ -1,5 +1,5 @@
 'use strict';
-var game = new Phaser.Game(window.innerWidth,window.innerHeight, 321, Phaser.AUTO, 'tic-tac-toe');
+var game = new Phaser.Game(360, 592, Phaser.AUTO, 'tic-tac-toe');
 
 game.state.add('boot', boot);
 game.state.add('gameover', gameover);
