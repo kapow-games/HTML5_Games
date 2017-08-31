@@ -79,10 +79,10 @@ var bot = function(difficultyLevel) {
     else {
       var stateScore;
       if(state.turn === 1) {
-        state.Score = -1000 ;
+        stateScore = -1000 ;
       }
       else {
-        state.Score = 1000 ;
+        stateScore = 1000 ;
       }
       var availablePositions = state.emptyCells() ;
       var availableNextStates = availablePositions.map(function(pos) {
@@ -90,6 +90,7 @@ var bot = function(difficultyLevel) {
         var nextState = action.applyTo(state);
         return nextState;
       });
+      // console.log(availableNextStates);
       availableNextStates.forEach(function(nextState) {
         var nextScore = miniMaxValue(nextState);
         if(state.turn === 1) {
@@ -116,10 +117,51 @@ var bot = function(difficultyLevel) {
     game.moveTo(next);
   };
   function mediumBotMove(turn) {
-
+    var available = game.currentState.emptyCells();
+    var availableActions = available.map(function(pos) {
+      var action = new botBehaviour(pos);
+      var next = action.applyTo(game.currentState);
+      action.miniMaxValue = miniMaxValue(next);
+      return action;
+    });
+    if(turn === 2) {
+      availableActions.sort(botBehaviour.ASCENDING);
+    }
+    else {
+      availableActions.sort(botBehaviour.DESCENDING);
+    }
+    var chosenAction;
+    if(Math.random()*100 <= 80) {
+      chosenAction = availableActions[0];
+    }
+    else {
+      if(availableActions.length >= 2) {
+        chosenAction = availableActions[1];
+      }
+      else {
+        chosenAction = availableActions[0];
+      }
+    }
+    var next = chosenAction.applyTo(game.currentState);
+    game.moveTo(next);
   };
   function hardBotMove(turn) {
-
+    var available = game.currentState.emptyCells();
+    var availableActions = available.map(function(pos) {
+      var action = new botBehaviour(pos);
+      var next = action.applyTo(game.currentState);
+      action.miniMaxValue = miniMaxValue(next);
+      return action
+    });
+    if(turn == 2) {
+      availableActions.sort(botBehaviour.ASCENDING);
+    }
+    else {
+      availableActions.sort(botBehaviour.DESCENDING);
+    }
+    var chosenAction = availableActions[0];
+    var next = chosenAction.applyTo(game.currentState);
+    game.moveTo(next);
   };
   this.plays = function(_game) {
     game = _game ;
@@ -147,7 +189,7 @@ var botBehaviour = function(pos) {
   }
 };
 
-botBehaviour.ASCENDING = function(firtMove, secondMove) {
+botBehaviour.ASCENDING = function(firstAction, secondAction) {
   if(firstAction.miniMaxValue < secondAction.miniMaxValue) {
     return -1;
   }
@@ -159,7 +201,7 @@ botBehaviour.ASCENDING = function(firtMove, secondMove) {
   }
 }
 
-botBehaviour.DESCENDING = function(firtMove, secondMove) {
+botBehaviour.DESCENDING = function(firstAction, secondAction) {
   if(firstAction.miniMaxValue > secondAction.miniMaxValue) {
     return -1;
   }
@@ -184,7 +226,7 @@ var Game = function(bot) {
     this.currentState = _state ;
     if(_state.isTerminal()) {
       this.gameStatus = 3 // Indicating game Over
-      console.log(_state);
+      // console.log(_state);
       if(_state.boardResult === 1) {
         win = 1 ;
       }
@@ -194,7 +236,6 @@ var Game = function(bot) {
       else {
         win = 0 ;
       }
-      console.log(win);
       game.state.start('gameover');
     }
     else {
@@ -214,7 +255,7 @@ var Game = function(bot) {
   };
 };
 
-Game.score = function(_State) {
+Game.score = function(_state) {
   if(_state.result !== 0) {
     if(_state.boardResult === 1) {
       //X won
@@ -258,11 +299,12 @@ play.prototype = {
         this.game.physics.arcade.enable(cell);
       }
     }
-    myBot = new bot(0);
+    console.log(botLevel);
+    myBot = new bot(botLevel);
     myGame = new Game(myBot);
     myBot.plays(myGame);
     myGame.start();
-    console.log(this.cells);
+    // console.log(this.cells);
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
   },
@@ -276,17 +318,17 @@ play.prototype = {
   clickHandler: function(sprite, pointer) {
     var cell = this.cells.children;
     if(sprite.frame === 0) {
-      console.log("Hi");
+      // console.log("Hi");
       var next = new gameState(myGame.currentState);
       next.board[sprite.frameIndex]=1;
       sprite.frame = 1;
-      console.log(myGame);
+      // console.log(myGame);
       next.nextTurn();
       myGame.moveTo(next);
       for(let i = 0 ; i < CELL_COLS * CELL_ROWS ;i++) {
         cell[i].frame = myGame.currentState.board[i];
       }
-      console.log(myGame.currentState.board);
+      // console.log(myGame.currentState.board);
     }
   },
 
@@ -304,11 +346,11 @@ play.prototype = {
       }
       this.cellFilled++;
       let cellNo = Math.floor(Math.random() * (limit+1)) ;
-      console.log(limit,cellNo,cell);
+      // console.log(limit,cellNo,cell);
       if(this.cellFilled < CELL_ROWS*CELL_COLS ) {
         while(cell[cellNo].frame !== 0) {
           cellNo = Math.floor(Math.random() * (limit+1)) ;
-          console.log(limit,cellNo,cell);
+          // console.log(limit,cellNo,cell);
         }
         this.cellFilled++;
         cell[cellNo].frame = this.player;
@@ -320,7 +362,7 @@ play.prototype = {
       this.player = this.player === 1 ? 2 : 1;
     }
     //Checking Rows
-    console.log(this.cells.children[0]);
+    // console.log(this.cells.children[0]);
   },
   checkMaze : function() {
     let cell = this.cells.children;

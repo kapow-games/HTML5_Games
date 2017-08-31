@@ -16,8 +16,9 @@ preload.prototype = {
     this.load.image('x_mark', 'assets/o.png');
     this.load.image('y_mark', 'assets/x.png');
     this.load.spritesheet('cell', 'assets/cell.png', 107, 107);
-    this.load.spritesheet('single_player', 'assets/button.png', 120, 40);
-    this.load.spritesheet('double_player', 'assets/button.png', 120, 40);
+    this.load.spritesheet('easy_bot', 'assets/button.png', 120, 40);
+    this.load.spritesheet('medium_bot', 'assets/button.png', 120, 40);
+    this.load.spritesheet('hard_bot', 'assets/button.png', 120, 40);
   },
   create: function() {
     this.asset.cropEnabled = false;
