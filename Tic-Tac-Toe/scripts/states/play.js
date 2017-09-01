@@ -275,11 +275,42 @@ Game.score = function(_state) {
 var play = function() {};
 play.prototype = {
   create: function() {
-    var CELL_WIDTH, CELL_HEIGHT;
-    CELL_WIDTH = CELL_HEIGHT = 107;
+    var CELL_WIDTH, CELL_HEIGHT, CELL_WIDTH_PAD, CELL_HEIGHT_PAD, CELL_RELATIVE_TOP, CELL_RELATIVE_LEFT;
+    CELL_WIDTH = CELL_HEIGHT = 88;
     CELL_COLS = CELL_ROWS = 3;
+    CELL_WIDTH_PAD = CELL_HEIGHT_PAD = 18;
+    CELL_RELATIVE_TOP = 167;
+    CELL_RELATIVE_LEFT = 30;
     limit  = (CELL_ROWS*CELL_COLS) -1 ;
     var bg = this.add.sprite(0, 0, 'arena');
+    var gameBoard = this.add.sprite(19, 159, 'board');
+    var referee = this.add.sprite(105, 80, 'referee');
+    // var refereeStyle = { fontStyle: 'Nunito', fontSize: "12px", fill: "#fefefe",alpha: 0.6, align: "center", backgroundColor: "#5684fb",  width: "74px", height: "16px" };
+    var roundText = game.add.text(144, 88, 'ROUND 1 / 1');
+    roundText.fontStyle = 'normal';
+    roundText.fontSize = "12px";
+    // roundText.width = 74;
+    // roundText.height = 16;
+    roundText.fill = "#fefefe";
+    roundText.align = "center";
+    roundText.backgroundColor = "#5684fb";
+    roundText.wordWrapWidth = 74;
+    roundText.alpha = 0.6;
+
+    var turnText = game.add.text(120, 108, "BOT'S TURN");
+    turnText.fontStyle = 'normal';
+    turnText.fontSize = "20px";
+    turnText.fontWeight = 800;
+    // turnText.wordWrap = true ;
+    turnText.wordWrapWidth = 119;
+    turnText.fill = "#fefefe";
+    turnText.align = "center";
+    turnText.backgroundColor = "#5684fb";
+    // turnText.alpha = 0.6;
+
+
+
+
     // bg.anchor.set(0.5);
     // bg.scale.setTo(3,3);
     bg.height = this.game.height;
@@ -292,7 +323,7 @@ play.prototype = {
     this.cells.physicsBodyType = Phaser.Physics.ARCADE;
     for (var i = 0; i < CELL_COLS; i++) {
       for (var j = 0; j < CELL_ROWS; j++) {
-        var cell = this.cells.create(i * CELL_WIDTH, j * CELL_HEIGHT, 'cell');
+        var cell = this.cells.create(i * (CELL_WIDTH+CELL_WIDTH_PAD) + CELL_RELATIVE_LEFT, j * (CELL_HEIGHT+CELL_HEIGHT_PAD) + CELL_RELATIVE_TOP, 'cell');
         cell.frame = 0;
         cell.inputEnabled = true;
         cell.frameIndex = count++ ;

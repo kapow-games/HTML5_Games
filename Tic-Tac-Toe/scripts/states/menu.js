@@ -19,7 +19,7 @@ menu.prototype = {
     this.titleText = this.game.add.button(16, 256, 'onGoing');
     this.titleText.anchor.setTo(0, 0);
 
-    this.titleText = this.game.add.button(16, 332, 'newGame',this.easyModeChoose,this);
+    this.titleText = this.game.add.button(16, 332, 'newGame',this.hardModeChoose,this);
     this.titleText.anchor.setTo(0, 0);
 
     this.titleText = this.game.add.button(16, 394, 'stats');
