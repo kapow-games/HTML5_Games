@@ -7,50 +7,51 @@ menu.prototype = {
   },
   create: function() {
 
-    var bg = this.add.sprite(0, 0, 'arena');
-    bg.height = this.game.height;
-    bg.width = this.game.width;
-    // game.stage.backgroundColor = "#0000ff";
+    this.bg = this.add.image(0, 0, 'arena');
+    // this.bg.height = this.height;
+    // this.bg.width = this.width;
 
-    // this.titleText = this.game.add.text(this.game.world.centerX, this.game.height/5 , 'Tic-Tac-Toe', style);
-    this.titleText = this.game.add.image(55, 95, 'logo');
+    // stage.backgroundColor = "#0000ff";
+
+    // this.titleText = this.add.text(this.world.centerX, this.height/5 , 'Tic-Tac-Toe', style);
+    this.titleText = this.add.image(55, 95, 'logo');
     this.titleText.anchor.setTo(0, 0);
 
-    this.titleText = this.game.add.button(16, 256, 'onGoing');
+    this.titleText = this.add.button(16, 256, 'onGoing');
     this.titleText.anchor.setTo(0, 0);
 
-    this.titleText = this.game.add.button(16, 332, 'newGame',this.hardModeChoose,this);
+    this.titleText = this.add.button(16, 332, 'newGame',this.hardModeChoose,this);
     this.titleText.anchor.setTo(0, 0);
 
-    this.titleText = this.game.add.button(16, 394, 'stats');
+    this.titleText = this.add.button(16, 394, 'stats');
     this.titleText.anchor.setTo(0, 0);
 
-    this.titleText = this.game.add.button(16, 456, 'leaderBoard');
+    this.titleText = this.add.button(16, 456, 'leaderBoard');
     this.titleText.anchor.setTo(0, 0);
 
-    this.titleText = this.game.add.button(16, 32, 'back');
+    this.titleText = this.add.button(16, 32, 'back');
     this.titleText.anchor.setTo(0, 0);
 
-    this.titleText = this.game.add.button(320, 32, 'music');
+    this.titleText = this.add.button(320, 32, 'music');
     this.titleText.anchor.setTo(0, 0);
 
 
 
-    // this.gameModeButton = this.game.add.button(this.game.world.centerX, (this.game.height*2)/5, 'easy_bot', this.easyModeChoose, this, 1, 0, 2);
+    // this.gameModeButton = this.add.button(this.world.centerX, (this.height*2)/5, 'easy_bot', this.easyModeChoose, this, 1, 0, 2);
     // this.gameModeButton.anchor.set(0.5);
     //
-    // this.gameModeButton = this.game.add.button(this.game.world.centerX, (this.game.height*3)/5, 'medium_bot', this.mediumModeChoose, this, 1, 0, 2);
+    // this.gameModeButton = this.add.button(this.world.centerX, (this.height*3)/5, 'medium_bot', this.mediumModeChoose, this, 1, 0, 2);
     // this.gameModeButton.anchor.set(0.5);
     //
-    // this.gameModeButton = this.game.add.button(this.game.world.centerX, (this.game.height*4)/5, 'hard_bot', this.hardModeChoose, this, 1, 0, 2);
+    // this.gameModeButton = this.add.button(this.world.centerX, (this.height*4)/5, 'hard_bot', this.hardModeChoose, this, 1, 0, 2);
     // this.gameModeButton.anchor.set(0.5);
 
-    // console.log(this.game.input.currentPointers);
+    // console.log(this.input.currentPointers);
   },
   update: function() {
     if(this.gameDifficulty !== -1) {
       botLevel = this.gameDifficulty ;
-      this.game.state.start('select');
+      this.state.start('select');
     }
   },
   easyModeChoose: function() {

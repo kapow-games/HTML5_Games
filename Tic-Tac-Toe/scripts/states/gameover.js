@@ -7,23 +7,23 @@ gameover.prototype = {
   create: function () {
     var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
     // var style = { font: '65px Arial', align: center, fill: linear-gradient(181deg, #3e81ff, #7b34e6)};
-    this.titleText = this.game.add.text(this.game.world.centerX,100, 'Game Over!', style);
+    this.titleText = this.add.text(this.world.centerX,100, 'Game Over!', style);
     this.titleText.anchor.setTo(0.5, 0.5);
     if(win !== 0) {
-      this.congratsText = this.game.add.text(this.game.world.centerX, 200, 'Payer'+win+' Won!', { font: '32px Arial', fill: '#ffffff', align: 'center'});
+      this.congratsText = this.add.text(this.world.centerX, 200, 'Payer'+win+' Won!', { font: '32px Arial', fill: '#ffffff', align: 'center'});
       this.congratsText.anchor.setTo(0.5, 0.5);
     }
     else {
-      this.congratsText = this.game.add.text(this.game.world.centerX, 200, 'Game Draw', { font: '32px Arial', fill: '#ffffff', align: 'center'});
+      this.congratsText = this.add.text(this.world.centerX, 200, 'Game Draw', { font: '32px Arial', fill: '#ffffff', align: 'center'});
       this.congratsText.anchor.setTo(0.5, 0.5);
     }
 
-    this.instructionText = this.game.add.text(this.game.world.centerX, 300, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
+    this.instructionText = this.add.text(this.world.centerX, 300, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
     this.instructionText.anchor.setTo(0.5, 0.5);
   },
   update: function () {
-    if(this.game.input.activePointer.justPressed()) {
-      this.game.state.start('menu');
+    if(this.input.activePointer.justPressed()) {
+      this.state.start('menu');
     }
   }
 };

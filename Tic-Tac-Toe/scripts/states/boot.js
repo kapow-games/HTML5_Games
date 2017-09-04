@@ -5,7 +5,7 @@ var boot = function() {
 };
 boot.prototype = {
   preload : function() {
-    this.game.load.image("loading","assets/loading.png");
+    this.load.image("loading","assets/loading.png");
   },
   create  : function() {
     // this.stage.disableVisibilityChange = true;
@@ -16,7 +16,7 @@ boot.prototype = {
     // this.scale.isPortrait = false;
     this.scale.forceOrientation(true, false);
     // this.scale.setScreenSize();
-    this.game.input.maxPointers = 1;
-    this.game.state.start('preload');
+    this.input.maxPointers = 1;
+    this.state.start('preload');
   }
 };

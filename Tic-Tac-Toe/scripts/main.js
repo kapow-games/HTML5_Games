@@ -5,14 +5,14 @@
 //   }
 // };
 
-var game = new Phaser.Game(360, 592, Phaser.AUTO, 'tic-tac-toe');
+var phaserGame = new Phaser.Game(360, 592, Phaser.AUTO, 'tic-tac-toe');
 
-game.state.add('boot', boot);
-game.state.add('gameover', gameover);
-game.state.add('menu', menu);
-game.state.add('play', play);
-game.state.add('preload', preload);
-game.state.add('select', select);
+phaserGame.state.add('boot', boot);
+phaserGame.state.add('gameover', gameover);
+phaserGame.state.add('menu', menu);
+phaserGame.state.add('play', play);
+phaserGame.state.add('preload', preload);
+phaserGame.state.add('select', select);
 
 
-game.state.start('boot');
+phaserGame.state.start('boot');

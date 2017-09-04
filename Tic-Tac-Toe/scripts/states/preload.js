@@ -6,7 +6,7 @@ var preload = function() {
 
 preload.prototype = {
   preload : function() {
-    this.asset = this.add.sprite(this.game.world.centerX,this.game.world.centerY,"loading");
+    this.asset = this.add.sprite(this.world.centerX,this.world.centerY,"loading");
     // this.asset = this.add.sprite(this.width/2,this.height/2, 'loading');
     this.asset.anchor.setTo(0.5,0.5);
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
@@ -38,14 +38,14 @@ preload.prototype = {
     this.load.spritesheet('easy_bot', 'assets/button.png', 120, 40);
     this.load.spritesheet('medium_bot', 'assets/button.png', 120, 40);
     this.load.spritesheet('hard_bot', 'assets/button.png', 120, 40);
-    // this.game.load.script('font.r','//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+    // this.load.script('font.r','//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
   },
   create: function() {
     this.asset.cropEnabled = false;
   },
   update: function() {
     if(!!this.ready) {
-      this.game.state.start('menu');
+      this.state.start('menu');
     }
   },
   onLoadComplete: function() {

@@ -245,7 +245,7 @@ var Game = function(bot) {
       else {
         win = 0 ;
       }
-      game.state.start('gameover');
+      phaserGame.state.start('gameover');
     }
     else {
       if(this.currentState.turn == 1) {
@@ -297,7 +297,7 @@ play.prototype = {
     var referee = this.add.sprite(105, 80, 'referee');
     this.resign = this.game.add.button(130, 528, 'resign', this.resignEvent, this);
 
-    var roundText = game.add.text(144, 88, 'ROUND 1 / 1');
+    var roundText = phaserGame.add.text(144, 88, 'ROUND 1 / 1');
     roundText.fontStyle = 'normal';
     roundText.fontSize = "12px";
     roundText.fill = "#fefefe";
@@ -306,7 +306,7 @@ play.prototype = {
     roundText.wordWrapWidth = 74;
     roundText.alpha = 0.6;
 
-    turnText = game.add.text(120, 108, "YOUR TURN");
+    turnText = phaserGame.add.text(120, 108, "YOUR TURN");
     turnText.fontStyle = 'normal';
     turnText.fontSize = "20px";
     turnText.fontWeight = 800;
@@ -360,9 +360,9 @@ play.prototype = {
   update: function() {
 
   },
-  clickListener: function() {
-    this.game.state.start('gameover');
-  },
+  // clickListener: function() {
+  //   phaserGame.state.start('gameover');
+  // },
 
   clickHandler: function(sprite, pointer) {
     var cell = this.cells.children;
@@ -412,7 +412,7 @@ play.prototype = {
         cell[cellNo].frame = (this.player === 1 ? playerMark : ((playerMark === 1) ? 2 : 1));
       }
       else {
-        game.state.start('gameover');
+        phaserGame.state.start('gameover');
       }
       this.checkMaze();
       this.player = this.player === 1 ? 2 : 1;
@@ -442,7 +442,7 @@ play.prototype = {
       win = cell[4].frame ;
     }
     if(win!==0) {
-      game.state.start('gameover');
+      phaserGame.state.start('gameover');
     }
   },
   resignEvent : function() {
