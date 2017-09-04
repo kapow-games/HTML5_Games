@@ -307,6 +307,12 @@ play.prototype = {
     turnText.align = "center";
     turnText.backgroundColor = "#5684fb";
 
+    this.backButton = this.game.add.button(16, 32, 'back');
+    this.backButton.anchor.setTo(0, 0);
+
+    this.musicButton = this.game.add.button(320, 32, 'music');
+    this.musicButton.anchor.setTo(0, 0);
+
     bg.height = this.game.height;
     bg.width = this.game.width;
     var count = 0 ;
