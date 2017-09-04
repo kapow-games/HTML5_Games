@@ -3,6 +3,7 @@ var win = 0 ;
 var CELL_COLS, CELL_ROWS;
 CELL_COLS = 9 ;
 CELL_ROWS = 9;
+var initialMark;
 var limit ;
 var myBot;
 var myGame;
@@ -181,7 +182,7 @@ var botBehaviour = function(pos) {
   this.miniMaxValue = 0 ;
   this.applyTo = function(currentGameState) {
     var nextGameState = new gameState(currentGameState);
-    nextGameState.board[this.movePosition] = currentGameState.turn;
+    nextGameState.board[this.movePosition] = (currentGameState.turn === 1 ? playerMark : ((playerMark === 1) ? 2 : 1));
     if(currentGameState.turn == 2) {
       nextGameState.oMovesCount++;
     }
@@ -221,7 +222,14 @@ var Game = function(bot) {
   for(let i = 0 ; i < CELL_COLS*CELL_ROWS ; i++) {
     this.currentState.board.push(0);
   }
-  this.currentState.turn = 1 ;
+  this.currentState.turn = 1 ;//playerMark === 1 ? 2 : 1 ;
+
+  if(playerMark === 2) {
+    var randomCell = Math.floor(Math.random() * CELL_ROWS*CELL_COLS);
+    this.currentState.board[randomCell] = 1 ;
+    initialMark = randomCell ;
+  }
+
   this.gameStatus = -1 ;// To indicate game begining
   this.moveTo = function(_state) {
     this.currentState = _state ;
@@ -332,13 +340,21 @@ play.prototype = {
         this.game.physics.arcade.enable(cell);
       }
     }
-    console.log(botLevel);
+    // if(playerMark === 2) {
+    //   initialBoard[randomCell] = 1 ;
+    //   var randomCell = Math.floor(Math.random() * CELL_ROWS*CELL_COLS);
+    //   this.cells.children[randomCell] =
+    // }
     myBot = new bot(botLevel);
     myGame = new Game(myBot);
+    if(playerMark === 2) {
+      this.cells.children[initialMark].frame = 1;
+      this.cells.children[initialMark].inputEnabled = false ;
+    }
     myBot.plays(myGame);
     myGame.start();
-    // console.log(this.cells);
 
+    // console.log(this.cells);
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
   },
   update: function() {
@@ -352,7 +368,7 @@ play.prototype = {
     var cell = this.cells.children;
     if(sprite.frame === 0) {
       // console.log("Hi");
-      sprite.frame = 1;
+      sprite.frame = playerMark;
       turnText.text = "BOT'S TURN";
 
       this.nextMove(sprite, pointer, cell);
@@ -362,8 +378,8 @@ play.prototype = {
 
   nextMove: function(sprite, pointer, cell) {
     var next = new gameState(myGame.currentState);
-    next.board[sprite.frameIndex]=1;
-    sprite.frame = 1;
+    next.board[sprite.frameIndex]=playerMark;
+    sprite.frame = playerMark;
     // console.log(myGame);
     next.nextTurn();
     myGame.moveTo(next);
@@ -378,7 +394,7 @@ play.prototype = {
   addPlayerMarker: function(sprite, pointer) {
     let cell = this.cells.children;
     if(sprite.frame === 0) {
-      sprite.frame = this.player;
+      sprite.frame = (this.player === 1 ? playerMark : ((playerMark === 1) ? 2 : 1)) ;
       this.player = this.player === 1 ? 2 : 1;
       this.checkMaze(cell);
       if(win !== 0) {
@@ -393,7 +409,7 @@ play.prototype = {
           // console.log(limit,cellNo,cell);
         }
         this.cellFilled++;
-        cell[cellNo].frame = this.player;
+        cell[cellNo].frame = (this.player === 1 ? playerMark : ((playerMark === 1) ? 2 : 1));
       }
       else {
         game.state.start('gameover');
