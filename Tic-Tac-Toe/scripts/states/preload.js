@@ -23,13 +23,21 @@ preload.prototype = {
     this.load.image('y_mark', 'assets/x.png');
     this.load.image('referee', 'assets/turnBoard.svg');
     this.load.image('board', 'assets/board.svg'); //Final Arena
+    this.load.image('difficulty_bg', 'assets/difficulty-bg.svg');
+    this.load.image('mark_selected', 'assets/mark-selected.svg');
+    this.load.image('difficulty_selected', 'assets/difficulty-selected.svg');
+    this.load.image('startbutton_disabled', 'assets/startbutton-disabled.svg');
+    this.load.image('startbutton_enabled', 'assets/startbutton-enabled.svg');
+    this.load.image('resign', 'assets/resign.svg');
+
+    this.load.spritesheet('choose_bg_mark','assets/mark_choose.svg');
+    this.load.spritesheet('difficulty', 'assets/difficulty-levels.png',70,40);
     // this.load.audiosprite("audio-backgroundMusic", "assets/audio/audiosprite.mp3");
     this.load.spritesheet('cell', 'assets/xo-sprite.png', 88, 88);
     // this.load.spritesheet('cell', 'assets/cell.png', 107, 107);
     this.load.spritesheet('easy_bot', 'assets/button.png', 120, 40);
     this.load.spritesheet('medium_bot', 'assets/button.png', 120, 40);
     this.load.spritesheet('hard_bot', 'assets/button.png', 120, 40);
-
     // this.game.load.script('font.r','//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
   },
   create: function() {

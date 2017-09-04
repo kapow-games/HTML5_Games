@@ -6,6 +6,7 @@ CELL_ROWS = 9;
 var limit ;
 var myBot;
 var myGame;
+var turnText;
 var gameState = function(oldGameState) {
   this.turn = 0 ; // 0 : No One's Move // 1 : Player 1(x)'s Move // 2 : Player 2(o)'s Move'
   this.oMovesCount = 0 ;
@@ -281,38 +282,31 @@ play.prototype = {
     CELL_WIDTH_PAD = CELL_HEIGHT_PAD = 18;
     CELL_RELATIVE_TOP = 167;
     CELL_RELATIVE_LEFT = 30;
+
     limit  = (CELL_ROWS*CELL_COLS) -1 ;
     var bg = this.add.sprite(0, 0, 'arena');
     var gameBoard = this.add.sprite(19, 159, 'board');
     var referee = this.add.sprite(105, 80, 'referee');
-    // var refereeStyle = { fontStyle: 'Nunito', fontSize: "12px", fill: "#fefefe",alpha: 0.6, align: "center", backgroundColor: "#5684fb",  width: "74px", height: "16px" };
+    this.resign = this.game.add.button(130, 528, 'resign', this.resignEvent, this);
+
     var roundText = game.add.text(144, 88, 'ROUND 1 / 1');
     roundText.fontStyle = 'normal';
     roundText.fontSize = "12px";
-    // roundText.width = 74;
-    // roundText.height = 16;
     roundText.fill = "#fefefe";
     roundText.align = "center";
     roundText.backgroundColor = "#5684fb";
     roundText.wordWrapWidth = 74;
     roundText.alpha = 0.6;
 
-    var turnText = game.add.text(120, 108, "BOT'S TURN");
+    turnText = game.add.text(120, 108, "YOUR TURN");
     turnText.fontStyle = 'normal';
     turnText.fontSize = "20px";
     turnText.fontWeight = 800;
-    // turnText.wordWrap = true ;
     turnText.wordWrapWidth = 119;
     turnText.fill = "#fefefe";
     turnText.align = "center";
     turnText.backgroundColor = "#5684fb";
-    // turnText.alpha = 0.6;
 
-
-
-
-    // bg.anchor.set(0.5);
-    // bg.scale.setTo(3,3);
     bg.height = this.game.height;
     bg.width = this.game.width;
     var count = 0 ;
@@ -353,19 +347,25 @@ play.prototype = {
     if(sprite.frame === 0) {
       // console.log("Hi");
       sprite.frame = 1;
-      var next = new gameState(myGame.currentState);
-      next.board[sprite.frameIndex]=1;
-      sprite.frame = 1;
-      // console.log(myGame);
-      next.nextTurn();
-      myGame.moveTo(next);
-      for(let i = 0 ; i < CELL_COLS * CELL_ROWS ;i++) {
-        cell[i].frame = myGame.currentState.board[i];
-      }
+      turnText.text = "BOT'S TURN";
+
+      this.nextMove(sprite, pointer, cell);
       // console.log(myGame.currentState.board);
     }
   },
 
+  nextMove: function(sprite, pointer, cell) {
+    var next = new gameState(myGame.currentState);
+    next.board[sprite.frameIndex]=1;
+    sprite.frame = 1;
+    // console.log(myGame);
+    next.nextTurn();
+    myGame.moveTo(next);
+    for(let i = 0 ; i < CELL_COLS * CELL_ROWS ;i++) {
+      cell[i].frame = myGame.currentState.board[i];
+    }
+    turnText.text = "YOUR TURN";
+  },
   // Try to implement a list of cells which are not filled and take randoms cell nos.
   //Will rediuce no. of calls.
   //TODO on Wed
@@ -422,5 +422,8 @@ play.prototype = {
     if(win!==0) {
       game.state.start('gameover');
     }
+  },
+  resignEvent : function() {
+    alert('Do you want to quit ?');
   }
 };

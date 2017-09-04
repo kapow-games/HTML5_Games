@@ -50,7 +50,7 @@ menu.prototype = {
   update: function() {
     if(this.gameDifficulty !== -1) {
       botLevel = this.gameDifficulty ;
-      this.game.state.start('play');
+      this.game.state.start('select');
     }
   },
   easyModeChoose: function() {
