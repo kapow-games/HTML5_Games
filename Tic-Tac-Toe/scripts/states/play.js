@@ -460,7 +460,7 @@ play.prototype = {
   },
   resignEvent : function() {
     kapow.endSoloGame(function() {
-      boardStatus = {cell:new Array(9)};
+      boardStatus = {cells:new Array(9)};
       botLevel = -1 ;
       win = 0 ;
       playerMark = 0;
