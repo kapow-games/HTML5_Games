@@ -95,7 +95,12 @@ select.prototype = {
     }
   },
   startGame : function() {
-    this.game.state.start('play');
+    kapow.startSoloGame(function(roomDetail) {
+      room = roomDetail;
+      phaserGame.state.start('play');
+    }, function(error) {
+      console.log("startSoloGame Failed : ",error);
+    });
   },
   easyModeChoose: function() {
     this.gameDifficulty = 0 ;

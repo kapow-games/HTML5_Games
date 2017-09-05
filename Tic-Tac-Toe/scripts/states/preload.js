@@ -29,6 +29,7 @@ preload.prototype = {
     this.load.image('startbutton_disabled', 'assets/startbutton-disabled.svg');
     this.load.image('startbutton_enabled', 'assets/startbutton-enabled.svg');
     this.load.image('resign', 'assets/resign.svg');
+    this.load.image('match', 'assets/match.svg');
 
     this.load.spritesheet('choose_bg_mark','assets/mark_choose.svg');
     this.load.spritesheet('difficulty', 'assets/difficulty-levels.png',70,40);

@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 var win = 0 ;
 var CELL_COLS, CELL_ROWS;
 CELL_COLS = 9 ;
@@ -73,7 +73,7 @@ var gameState = function(oldGameState) {
 
 var bot = function(difficultyLevel) {
   var botLevel = difficultyLevel ; //0 : easy //1 : Medium //2: Hard
-  var game = {} ;
+  var gameDetail = {} ;
   function miniMaxValue(state) {
     if(state.isTerminal()) {
       return Game.score(state);
@@ -110,19 +110,19 @@ var bot = function(difficultyLevel) {
     }
   };
   function easyBotMove(turn) {
-    var available = game.currentState.emptyCells();
+    var available = gameDetail.currentState.emptyCells();
     var randomCell = available[Math.floor(Math.random() * available.length)];
     // cell[randomCell].frame = turn;
     var action = new botBehaviour(randomCell);
-    var next = action.applyTo(game.currentState);
+    var next = action.applyTo(gameDetail.currentState);
     //Reflect in UI
-    game.moveTo(next);
+    gameDetail.moveTo(next);
   };
   function mediumBotMove(turn) {
-    var available = game.currentState.emptyCells();
+    var available = gameDetail.currentState.emptyCells();
     var availableActions = available.map(function(pos) {
       var action = new botBehaviour(pos);
-      var next = action.applyTo(game.currentState);
+      var next = action.applyTo(gameDetail.currentState);
       action.miniMaxValue = miniMaxValue(next);
       return action;
     });
@@ -144,14 +144,14 @@ var bot = function(difficultyLevel) {
         chosenAction = availableActions[0];
       }
     }
-    var next = chosenAction.applyTo(game.currentState);
-    game.moveTo(next);
+    var next = chosenAction.applyTo(gameDetail.currentState);
+    gameDetail.moveTo(next);
   };
   function hardBotMove(turn) {
-    var available = game.currentState.emptyCells();
+    var available = gameDetail.currentState.emptyCells();
     var availableActions = available.map(function(pos) {
       var action = new botBehaviour(pos);
-      var next = action.applyTo(game.currentState);
+      var next = action.applyTo(gameDetail.currentState);
       action.miniMaxValue = miniMaxValue(next);
       return action
     });
@@ -162,11 +162,11 @@ var bot = function(difficultyLevel) {
       availableActions.sort(botBehaviour.DESCENDING);
     }
     var chosenAction = availableActions[0];
-    var next = chosenAction.applyTo(game.currentState);
-    game.moveTo(next);
+    var next = chosenAction.applyTo(gameDetail.currentState);
+    gameDetail.moveTo(next);
   };
-  this.plays = function(_game) {
-    game = _game ;
+  this.plays = function(_gameDetail) {
+    gameDetail = _gameDetail ;
   };
   this.notifyTurn = function(turn) {
     switch(botLevel) {
@@ -284,6 +284,7 @@ Game.score = function(_state) {
 var play = function() {};
 play.prototype = {
   create: function() {
+    console.log("Hi");
     var CELL_WIDTH, CELL_HEIGHT, CELL_WIDTH_PAD, CELL_HEIGHT_PAD, CELL_RELATIVE_TOP, CELL_RELATIVE_LEFT;
     CELL_WIDTH = CELL_HEIGHT = 88;
     CELL_COLS = CELL_ROWS = 3;
@@ -295,7 +296,7 @@ play.prototype = {
     var bg = this.add.sprite(0, 0, 'arena');
     var gameBoard = this.add.sprite(19, 159, 'board');
     var referee = this.add.sprite(105, 80, 'referee');
-    this.resign = this.game.add.button(130, 528, 'resign', this.resignEvent, this);
+    this.resign = this.add.button(130, 528, 'resign', this.resignEvent, this);
 
     var roundText = phaserGame.add.text(144, 88, 'ROUND 1 / 1');
     roundText.fontStyle = 'normal';
@@ -315,17 +316,17 @@ play.prototype = {
     turnText.align = "center";
     turnText.backgroundColor = "#5684fb";
 
-    this.backButton = this.game.add.button(16, 32, 'back');
+    this.backButton = this.add.button(16, 32, 'back');
     this.backButton.anchor.setTo(0, 0);
 
-    this.musicButton = this.game.add.button(320, 32, 'music');
+    this.musicButton = this.add.button(320, 32, 'music');
     this.musicButton.anchor.setTo(0, 0);
 
-    bg.height = this.game.height;
-    bg.width = this.game.width;
+    // bg.height = this.height;
+    // bg.width = this.width;
     var count = 0 ;
     win = 0 ;
-    this.cells = this.game.add.group();
+    this.cells = this.add.group();
     this.player = 1;
     this.cellFilled = 0 ;
     this.cells.physicsBodyType = Phaser.Physics.ARCADE;
@@ -337,7 +338,7 @@ play.prototype = {
         cell.frameIndex = count++ ;
         // cell.events.onInputDown.add(this.addPlayerMarker, this);
         cell.events.onInputDown.add(this.clickHandler, this);
-        this.game.physics.arcade.enable(cell);
+        this.physics.arcade.enable(cell);
       }
     }
     // if(playerMark === 2) {
@@ -355,7 +356,7 @@ play.prototype = {
     myGame.start();
 
     // console.log(this.cells);
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    this.physics.startSystem(Phaser.Physics.ARCADE);
   },
   update: function() {
 
@@ -446,6 +447,11 @@ play.prototype = {
     }
   },
   resignEvent : function() {
-    alert('Do you want to quit ?');
+    kapow.endSoloGame(function() {
+      console.log("Game Succesfully Closed.");
+      phaserGame.state.start('gameover');
+    }, function(error) {
+      console.log("endSoloGame Failed : ",error);
+    });
   }
 };
