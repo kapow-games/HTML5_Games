@@ -45,8 +45,13 @@ preload.prototype = {
     this.asset.cropEnabled = false;
   },
   update: function() {
-    if(!!this.ready) {
-      this.state.start('menu');
+    if(this.ready) {
+      if(gameResume === true) {
+        this.state.start('play');
+      }
+      else {
+        this.state.start('menu');
+      }
     }
   },
   onLoadComplete: function() {

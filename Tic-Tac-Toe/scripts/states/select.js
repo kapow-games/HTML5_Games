@@ -1,6 +1,4 @@
 'use strict'
-var botLevel = -1 ;
-var playerMark = 0 ;
 var select = function() {};
 select.prototype = {
   preload : function() {

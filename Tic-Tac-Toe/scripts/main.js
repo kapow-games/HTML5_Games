@@ -12,6 +12,4 @@ phaserGame.state.add('menu', menu);
 phaserGame.state.add('play', play);
 phaserGame.state.add('preload', preload);
 phaserGame.state.add('select', select);
-
-
 phaserGame.state.start('boot');

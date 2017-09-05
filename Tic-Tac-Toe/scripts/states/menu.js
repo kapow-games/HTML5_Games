@@ -1,5 +1,4 @@
 'use strict';
-var botLevel = -1 ;
 var menu = function() {};
 menu.prototype = {
   preload: function() {

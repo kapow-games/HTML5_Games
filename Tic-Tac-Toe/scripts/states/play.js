@@ -1,5 +1,4 @@
 // 'use strict';
-var win = 0 ;
 var CELL_COLS, CELL_ROWS;
 CELL_COLS = 9 ;
 CELL_ROWS = 9;
@@ -333,11 +332,24 @@ play.prototype = {
     for (var i = 0; i < CELL_COLS; i++) {
       for (var j = 0; j < CELL_ROWS; j++) {
         var cell = this.cells.create(i * (CELL_WIDTH+CELL_WIDTH_PAD) + CELL_RELATIVE_LEFT, j * (CELL_HEIGHT+CELL_HEIGHT_PAD) + CELL_RELATIVE_TOP, 'cell');
-        cell.frame = 0;
-        cell.inputEnabled = true;
-        cell.frameIndex = count++ ;
-        // cell.events.onInputDown.add(this.addPlayerMarker, this);
-        cell.events.onInputDown.add(this.clickHandler, this);
+        if(gameResume === true){
+          cell.frame = boardStatus.cells[count] ;
+          if(boardStatus.cells[count] === 0 ) {
+            cell.frame = 0;
+            cell.inputEnabled = true;
+            cell.events.onInputDown.add(this.clickHandler, this);
+          }
+          else {
+            cell.frame = boardStatus.cells[count] ;
+          }
+          // cell.events.onInputDown.add(this.addPlayerMarker, this);
+        }
+        else {
+          cell.frame = 0;
+          cell.inputEnabled = true;
+          cell.events.onInputDown.add(this.clickHandler, this);
+        }
+        cell.frameIndex = count++;
         this.physics.arcade.enable(cell);
       }
     }
@@ -448,6 +460,11 @@ play.prototype = {
   },
   resignEvent : function() {
     kapow.endSoloGame(function() {
+      boardStatus = {cell:new Array(9)};
+      botLevel = -1 ;
+      win = 0 ;
+      playerMark = 0;
+      gameResume = false ;
       console.log("Game Succesfully Closed.");
       phaserGame.state.start('gameover');
     }, function(error) {
