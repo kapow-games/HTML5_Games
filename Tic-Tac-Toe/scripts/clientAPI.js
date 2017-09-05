@@ -84,9 +84,9 @@ var game = {
           gameResume = true ;
           kapow.roomStore.get('game_data',function(value) {
             // console.log("roomStore.get : ",value);
-            let valueJSON = JSON.parse(value);
-            console.log(valueJSON);
             if(value) {
+              let valueJSON = JSON.parse(value);
+              console.log(valueJSON);
               //Set Up a layout Redirecct game;
               playerMark = valueJSON.colorPlayer;
               botLevel  = valueJSON.difficulty;

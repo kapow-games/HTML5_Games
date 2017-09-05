@@ -462,6 +462,7 @@ play.prototype = {
     kapow.endSoloGame(function() {
       boardStatus = {cells:new Array(9)};
       botLevel = -1 ;
+      room = null;
       win = 0 ;
       playerMark = 0;
       gameResume = false ;
