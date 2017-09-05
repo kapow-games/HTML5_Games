@@ -217,9 +217,10 @@ botBehaviour.DESCENDING = function(firstAction, secondAction) {
 var Game = function(bot) {
   this.bot = bot ;
   this.currentState = new gameState();
-  this.currentState.board = [];
+  this.currentState.board = new Array(9);
   for(let i = 0 ; i < CELL_COLS*CELL_ROWS ; i++) {
-    this.currentState.board.push(0);
+    // this.currentState.board.push(0);
+    this.currentState.board[i] = boardStatus.cells[i]!==undefined ? boardStatus.cells[i] :0;
   }
   this.currentState.turn = 1 ;//playerMark === 1 ? 2 : 1 ;
 
@@ -244,7 +245,17 @@ var Game = function(bot) {
       else {
         win = 0 ;
       }
-      phaserGame.state.start('gameover');
+      kapow.endSoloGame(function() {
+        boardStatus = {cells:new Array(9)};
+        botLevel = -1 ;
+        room = null;
+        playerMark = 0;
+        gameResume = false ;
+        console.log("Game Succesfully Closed.");
+        phaserGame.state.start('gameover');
+      }, function(error) {
+        console.log("endSoloGame Failed : ",error);
+      });
     }
     else {
       if(this.currentState.turn == 1) {
@@ -425,7 +436,17 @@ play.prototype = {
         cell[cellNo].frame = (this.player === 1 ? playerMark : ((playerMark === 1) ? 2 : 1));
       }
       else {
-        phaserGame.state.start('gameover');
+        kapow.endSoloGame(function() {
+          boardStatus = {cells:new Array(9)};
+          botLevel = -1 ;
+          room = null;
+          playerMark = 0;
+          gameResume = false ;
+          console.log("Game Succesfully Closed.");
+          phaserGame.state.start('gameover');
+        }, function(error) {
+          console.log("endSoloGame Failed : ",error);
+        });
       }
       this.checkMaze();
       this.player = this.player === 1 ? 2 : 1;
@@ -455,7 +476,17 @@ play.prototype = {
       win = cell[4].frame ;
     }
     if(win!==0) {
-      phaserGame.state.start('gameover');
+      kapow.endSoloGame(function() {
+        boardStatus = {cells:new Array(9)};
+        botLevel = -1 ;
+        room = null;
+        playerMark = 0;
+        gameResume = false ;
+        console.log("Game Succesfully Closed.");
+        phaserGame.state.start('gameover');
+      }, function(error) {
+        console.log("endSoloGame Failed : ",error);
+      });
     }
   },
   resignEvent : function() {
@@ -463,7 +494,6 @@ play.prototype = {
       boardStatus = {cells:new Array(9)};
       botLevel = -1 ;
       room = null;
-      win = 0 ;
       playerMark = 0;
       gameResume = false ;
       console.log("Game Succesfully Closed.");

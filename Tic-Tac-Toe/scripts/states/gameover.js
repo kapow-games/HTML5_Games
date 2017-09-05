@@ -20,6 +20,7 @@ gameover.prototype = {
 
     this.instructionText = this.add.text(this.world.centerX, 300, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
     this.instructionText.anchor.setTo(0.5, 0.5);
+    win = 0 ;
   },
   update: function () {
     if(this.input.activePointer.justPressed()) {
