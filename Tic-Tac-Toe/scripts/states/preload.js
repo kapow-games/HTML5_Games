@@ -12,13 +12,18 @@ preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
 		this.load.image('logo', 'assets/logo.svg');
-    this.load.image('onGoing', 'assets/onGoing.svg');
+    this.load.spritesheet('onGoing', 'assets/onGoing.png', 328, 60);
+    // this.load.image('onGoing', 'assets/onGoing.svg');
     this.load.image('arena', 'assets/backGround.svg');
     this.load.image('back', 'assets/back.svg');
-    this.load.image('newGame', 'assets/newGame.svg');
-    this.load.image('music', 'assets/volume.svg');
-    this.load.image('leaderBoard', 'assets/leaderboard.svg');
-    this.load.image('stats', 'assets/stats.svg');
+    this.load.spritesheet('newGame', 'assets/newGame.png', 328, 46);
+    // this.load.image('newGame', 'assets/newGame.svg');
+    this.load.spritesheet('music', 'assets/volume.png', 24, 24);
+    // this.load.image('music', 'assets/volume.svg');
+    this.load.spritesheet('leaderBoard', 'assets/leaderboard.png', 328, 46);
+    // this.load.image('leaderBoard', 'assets/leaderboard.svg');
+    this.load.spritesheet('stats', 'assets/stats.png', 328, 46);
+    // this.load.image('stats', 'assets/stats.svg');
     this.load.image('referee', 'assets/turnBoard.svg');
     this.load.image('board', 'assets/board.svg'); //Final Arena
     this.load.image('difficulty_bg', 'assets/difficulty-bg.svg');

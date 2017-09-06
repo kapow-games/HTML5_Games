@@ -13,26 +13,26 @@ menu.prototype = {
     // stage.backgroundColor = "#0000ff";
 
     // this.titleText = this.add.text(this.world.centerX, this.height/5 , 'Tic-Tac-Toe', style);
-    this.titleText = this.add.image(55, 95, 'logo');
-    this.titleText.anchor.setTo(0, 0);
+    this.logo = this.add.image(55, 95, 'logo');
+    this.logo.anchor.setTo(0, 0);
 
-    this.titleText = this.add.button(16, 256, 'onGoing');
-    this.titleText.anchor.setTo(0, 0);
+    this.activeGames = this.add.button(16, 256, 'onGoing', this.showActiveGames, this, 0, 0, 1, 0);
+    this.activeGames.anchor.setTo(0, 0);
 
-    this.titleText = this.add.button(16, 332, 'newGame',this.hardModeChoose,this);
-    this.titleText.anchor.setTo(0, 0);
+    this.startNewGame = this.add.button(16, 332, 'newGame', this.hardModeChoose, this, 0, 0, 1, 0);
+    this.startNewGame.anchor.setTo(0, 0);
 
-    this.titleText = this.add.button(16, 394, 'stats');
-    this.titleText.anchor.setTo(0, 0);
+    this.stats = this.add.button(16, 394, 'stats', this.statHandler, this, 0, 0, 1, 0);
+    this.stats.anchor.setTo(0, 0);
 
-    this.titleText = this.add.button(16, 456, 'leaderBoard');
-    this.titleText.anchor.setTo(0, 0);
+    this.leaderboard = this.add.button(16, 456, 'leaderBoard', this.leaderboardHandler, this, 0, 0, 1, 0);
+    this.leaderboard.anchor.setTo(0, 0);
 
-    this.titleText = this.add.button(16, 32, 'back');
-    this.titleText.anchor.setTo(0, 0);
+    this.backButton = this.add.button(16, 32, 'back', this.backButtonHandler, this);
+    this.backButton.anchor.setTo(0, 0);
 
-    this.titleText = this.add.button(320, 32, 'music');
-    this.titleText.anchor.setTo(0, 0);
+    this.soundToggle = this.add.button(320, 32, 'music', this.musicToggle, this);
+    this.soundToggle.anchor.setTo(0, 0);
 
 
 
@@ -52,6 +52,21 @@ menu.prototype = {
       botLevel = this.gameDifficulty ;
       this.state.start('select');
     }
+  },
+  backButtonHandler : function() {
+    kapow.close();
+  },
+  musicToggle : function() {
+    this.soundToggle.frame = (1+this.soundToggle.frame)%2 ;
+  },
+  statHandler : function() {
+    console.log('Stat handler funtion not implemented');
+  },
+  leaderboardHandler : function() {
+    console.log('Leaderboard handler funtion not implemented');
+  },
+  showActiveGames : function() {
+    console.log('Active game funtion not implemented');
   },
   easyModeChoose: function() {
     this.gameDifficulty = 0 ;

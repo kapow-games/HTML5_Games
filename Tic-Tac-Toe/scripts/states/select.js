@@ -76,11 +76,11 @@ select.prototype = {
     // this.gameModeButton = this.game.add.button(this.game.world.centerX, (this.game.height*4)/5, 'hard_bot', this.hardModeChoose, this, 1, 0, 2);
     // this.gameModeButton.anchor.set(0.5);
 
-    this.titleText = this.game.add.button(16, 32, 'back');
-    this.titleText.anchor.setTo(0, 0);
+    this.backButton = this.game.add.button(16, 32, 'back', this.backButtonHandler, this);
+    this.backButton.anchor.setTo(0, 0);
 
-    this.titleText = this.game.add.button(320, 32, 'music');
-    this.titleText.anchor.setTo(0, 0);
+    this.musicButton = this.game.add.button(320, 32, 'music', this.musicToggle, this);
+    this.musicButton.anchor.setTo(0, 0);
   },
   update: function() {
     if(this.gameDifficulty !== -1 && this.mark !== 0) {
@@ -129,5 +129,13 @@ select.prototype = {
     this.markSelectedO.alpha = 1;
     this.markSelectedX.alpha = 0;
     this.mark = 2 ;
+  },
+  backButtonHandler : function() {
+    console.log('back Button Pressed.');
+    phaserGame.state.start('menu');
+  },
+  musicToggle : function() {
+    console.log('music Toggled');
+    this.musicButton.frame = (this.musicButton.frame+1)%2;
   }
 };
