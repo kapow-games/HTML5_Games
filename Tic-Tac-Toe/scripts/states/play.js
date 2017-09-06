@@ -224,7 +224,7 @@ var Game = function(bot) {
   }
   this.currentState.turn = 1 ;//playerMark === 1 ? 2 : 1 ;
 
-  if(playerMark === 2) {
+  if(playerMark === 2 && gameResume === false) {
     var randomCell = Math.floor(Math.random() * CELL_ROWS*CELL_COLS);
     this.currentState.board[randomCell] = 1 ;
     initialMark = randomCell ;
@@ -371,7 +371,7 @@ play.prototype = {
     // }
     myBot = new bot(botLevel);
     myGame = new Game(myBot);
-    if(playerMark === 2) {
+    if(playerMark === 2 && gameResume === false) {
       this.cells.children[initialMark].frame = 1;
       this.cells.children[initialMark].inputEnabled = false ;
     }
