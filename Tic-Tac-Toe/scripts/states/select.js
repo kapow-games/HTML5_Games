@@ -4,6 +4,7 @@ select.prototype = {
   preload : function() {
     this.gameDifficulty = -1 ;
     this.mark = 0 ;
+    this.startButtonFlag = true ;
   },
   create  : function() {
     var bg = this.add.sprite(0, 0, 'arena');
@@ -57,11 +58,11 @@ select.prototype = {
     this.hardLevel.anchor.setTo(0, 0);
 
 
-    this.startButton = this.game.add.button(75, 397, 'startbutton_enabled',this.startGame);
+    this.startButton = this.game.add.button(75, 397, 'startbutton_enabled',this.startGame, this);
     this.startButton.anchor.setTo(0, 0);
     this.startButton.inputEnabled = false ;
 
-    this.startButtonDisabled = this.game.add.image(75, 397, 'startbutton_disabled');
+    this.startButtonDisabled = this.game.add.image(75, 397, 'startbutton_disabled', this);
     this.startButtonDisabled.anchor.setTo(0, 0);
 
 
@@ -86,13 +87,18 @@ select.prototype = {
     if(this.gameDifficulty !== -1 && this.mark !== 0) {
       // console.log(this.startButton);
       this.startButtonDisabled.destroy();
-      this.startButton.key = 'startbutton_enabled';
-      this.startButton.inputEnabled = true ;
+      // this.startButton.key = 'startbutton_enabled';
+      if(this.startButtonFlag === true) {
+        this.startButton.inputEnabled = true ;
+        this.startButtonFlag = false ;
+      }
       botLevel = this.gameDifficulty ;
       playerMark = this.mark ;
     }
   },
   startGame : function() {
+    this.startButton.inputEnabled = false ;
+    // this.inputEnabled = false ;
     kapow.startSoloGame(function(roomDetail) {
       room = roomDetail;
       phaserGame.state.start('play');

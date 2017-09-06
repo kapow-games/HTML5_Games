@@ -152,7 +152,7 @@ var bot = function(difficultyLevel) {
       var action = new botBehaviour(pos);
       var next = action.applyTo(gameDetail.currentState);
       action.miniMaxValue = miniMaxValue(next);
-      return action
+      return action;
     });
     if(turn == 2) {
       availableActions.sort(botBehaviour.ASCENDING);
@@ -258,7 +258,7 @@ var Game = function(bot) {
       });
     }
     else {
-      if(this.currentState.turn == 1) {
+      if(this.currentState.turn === 1) {
         //Player's Turn
       }
       else {
@@ -294,7 +294,7 @@ Game.score = function(_state) {
 var play = function() {};
 play.prototype = {
   create: function() {
-    console.log("Hi");
+    console.log("Loading Game Layout.");
     var CELL_WIDTH, CELL_HEIGHT, CELL_WIDTH_PAD, CELL_HEIGHT_PAD, CELL_RELATIVE_TOP, CELL_RELATIVE_LEFT;
     CELL_WIDTH = CELL_HEIGHT = 88;
     CELL_COLS = CELL_ROWS = 3;
@@ -326,10 +326,10 @@ play.prototype = {
     turnText.align = "center";
     turnText.backgroundColor = "#5684fb";
 
-    this.backButton = this.add.button(16, 32, 'back');
+    this.backButton = this.add.button(16, 32, 'back', this.backButtonHandler, this);
     this.backButton.anchor.setTo(0, 0);
 
-    this.musicButton = this.add.button(320, 32, 'music');
+    this.musicButton = this.add.button(320, 32, 'music', this.musicButtonHandler, this);
     this.musicButton.anchor.setTo(0, 0);
 
     // bg.height = this.height;
@@ -396,6 +396,8 @@ play.prototype = {
       turnText.text = "BOT'S TURN";
 
       this.nextMove(sprite, pointer, cell);
+      // saveRoomData();
+
       // console.log(myGame.currentState.board);
     }
   },
@@ -493,6 +495,7 @@ play.prototype = {
     kapow.endSoloGame(function() {
       boardStatus = {cells:new Array(9)};
       botLevel = -1 ;
+      win = playerMark===1 ? 2 : 1 ;
       room = null;
       playerMark = 0;
       gameResume = false ;
@@ -501,5 +504,18 @@ play.prototype = {
     }, function(error) {
       console.log("endSoloGame Failed : ",error);
     });
+  },
+  musicButtonHandler  : function() {
+    this.musicButton = (this.musicButton.frame + 1)%2;
+  },
+  backButtonHandler :function() {
+    // saveGameData();
+    // boardStatus = {cells:new Array(9)};
+    // botLevel = -1 ;
+    // win = 0;
+    // room = null;
+    // playerMark = 0;
+    // gameResume = false ;
+    // phaserGame.state.start('menu');
   }
 };
