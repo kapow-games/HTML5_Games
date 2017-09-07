@@ -2,7 +2,7 @@ var gameover = function() {};
 
 gameover.prototype = {
   preload: function () {
-
+    screenState=0;
   },
   create: function () {
     var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
@@ -21,10 +21,10 @@ gameover.prototype = {
     this.instructionText = this.add.text(this.world.centerX, 300, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
     this.instructionText.anchor.setTo(0.5, 0.5);
     win = 0 ;
+    phaserGame.input.onDown.add(function() {
+      phaserGame.state.start('menu');
+    });
   },
   update: function () {
-    if(this.input.activePointer.justPressed()) {
-      this.state.start('menu');
-    }
   }
 };

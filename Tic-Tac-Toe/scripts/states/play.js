@@ -6,7 +6,9 @@ var initialMark;
 var limit ;
 var myBot;
 var myGame;
+var matchBar = 0 ;
 var turnText;
+var resign;
 var gameState = function(oldGameState) {
   this.turn = 0 ; // 0 : No One's Move // 1 : Player 1(x)'s Move // 2 : Player 2(o)'s Move'
   this.oMovesCount = 0 ;
@@ -39,6 +41,7 @@ var gameState = function(oldGameState) {
     let cell = this.board;
     for (let i = 0, j = CELL_ROWS; i < CELL_COLS; i++) {
       if(cell[i] !== 0 && cell[i] === cell[i+j] && cell[i+j] === cell[i+(2*j)]) {
+        matchBar = i;
         this.boardResult = cell[i] ;
         return true ;
       }
@@ -46,17 +49,20 @@ var gameState = function(oldGameState) {
     //Checking Columns
     for (let i = 0, j = 1; i < CELL_ROWS*CELL_COLS; i+=CELL_COLS) {
       if(cell[i] !== 0 && cell[i] === cell[i+j] && cell[i+j] === cell[i+(2*j)]) {
+        matchBar = (i/CELL_COLS)+3;
         this.boardResult = cell[i] ;
         return true;
       }
     }
     //Checking Leading Diagonals '\'
     if(cell[0] !== 0 && cell[0] === cell[4] && cell[4] === cell[8]) {
+      matchBar = 6;
       this.boardResult = cell[4] ;
       return true;
     }
     //Checing other Diagonal '/'
     if(cell[2] !== 0 && cell[2] === cell[4] && cell[4] === cell[6]) {
+      matchBar = 7;
       this.boardResult = cell[4] ;
       return true;
     }
@@ -234,6 +240,8 @@ var Game = function(bot) {
   this.moveTo = function(_state) {
     this.currentState = _state ;
     if(_state.isTerminal()) {
+      resign.destroy();
+
       this.gameStatus = 3 // Indicating game Over
       // console.log(_state);
       if(_state.boardResult === 1) {
@@ -245,17 +253,44 @@ var Game = function(bot) {
       else {
         win = 0 ;
       }
-      kapow.endSoloGame(function() {
-        boardStatus = {cells:new Array(9)};
-        botLevel = -1 ;
-        room = null;
-        playerMark = 0;
-        gameResume = false ;
-        console.log("Game Succesfully Closed.");
-        phaserGame.state.start('gameover');
-      }, function(error) {
-        console.log("endSoloGame Failed : ",error);
-      });
+      if(win !== 0) {
+        if(win === playerMark) {
+          turnText.text = "  YOU WIN!";
+        }
+        else {
+          turnText.text = "  YOU LOSE!";
+        }
+        tempCells = phaserGame.state.states.play.cells.children;
+        for(let i = 0 ; i < 9 ; i++) {
+          tempCells[i].inputEnabled = false;
+        }
+      }
+      else {
+        turnText.text = "GAME DRAW!";
+      }
+      if(win !== 0) {
+        switch(matchBar) {
+          case 0 : this.matchPosition = phaserGame.add.sprite(184, 211, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
+          case 1 : this.matchPosition = phaserGame.add.sprite(184, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
+          case 2 : this.matchPosition = phaserGame.add.sprite(184, 421, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
+          case 3 : this.matchPosition = phaserGame.add.sprite(74, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);break;
+          case 4 : this.matchPosition = phaserGame.add.sprite(184, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);break;
+          case 5 : this.matchPosition = phaserGame.add.sprite(294, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);break;
+          case 6 : this.matchPosition = phaserGame.add.sprite(184, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=-45;break;
+          case 7 : this.matchPosition = phaserGame.add.sprite(184, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=45;break;
+        }
+      }
+      // kapow.endSoloGame(function() {
+      //   boardStatus = {cells:new Array(9)};
+      //   botLevel = -1 ;
+      //   room = null;
+      //   playerMark = 0;
+      //   gameResume = false ;
+      //   console.log("Game Succesfully Closed.");
+      //   // phaserGame.state.start('gameover');
+      // }, function(error) {
+      //   console.log("endSoloGame Failed : ",error);
+      // });
     }
     else {
       if(this.currentState.turn === 1) {
@@ -293,7 +328,12 @@ Game.score = function(_state) {
 
 var play = function() {};
 play.prototype = {
+  preload:  function() {
+    screenState = 1;
+    this.clickBlocked = false;
+  },
   create: function() {
+    screenState = 1 ;
     console.log("Loading Game Layout.");
     var CELL_WIDTH, CELL_HEIGHT, CELL_WIDTH_PAD, CELL_HEIGHT_PAD, CELL_RELATIVE_TOP, CELL_RELATIVE_LEFT;
     CELL_WIDTH = CELL_HEIGHT = 88;
@@ -306,18 +346,13 @@ play.prototype = {
     var bg = this.add.sprite(0, 0, 'arena');
     var gameBoard = this.add.sprite(19, 159, 'board');
     var referee = this.add.sprite(105, 80, 'referee');
-    this.resign = this.add.button(130, 528, 'resign', this.resignEvent, this);
+    resign = this.add.button(130, 528, 'resign', this.resignEvent, this, 0, 0, 1, 0);
+    this.help = this.add.button(247, 528, 'help', this.helpButtonHandler, this, 0, 0, 1, 0);
 
-    var roundText = phaserGame.add.text(144, 88, 'ROUND 1 / 1');
-    roundText.fontStyle = 'normal';
-    roundText.fontSize = "12px";
-    roundText.fill = "#fefefe";
-    roundText.align = "center";
-    roundText.backgroundColor = "#5684fb";
-    roundText.wordWrapWidth = 74;
-    roundText.alpha = 0.6;
+    this.playerProfilePic = phaserGame.add.image(122,24,'profilePic');
+    this.playerProfilePic.scale.set(36/this.playerProfilePic.width,36/this.playerProfilePic.height);
 
-    turnText = phaserGame.add.text(120, 108, "YOUR TURN");
+    turnText = phaserGame.add.text(122, 92, "YOUR TURN");
     turnText.fontStyle = 'normal';
     turnText.fontSize = "20px";
     turnText.fontWeight = 800;
@@ -325,6 +360,15 @@ play.prototype = {
     turnText.fill = "#fefefe";
     turnText.align = "center";
     turnText.backgroundColor = "#5684fb";
+
+    this.vs = phaserGame.add.text(170, 35, "VS");
+    this.vs.fontStyle = 'normal';
+    this.vs.fontSize = "14px";
+    this.vs.fontWeight = 800;
+    this.vs.wordWrapWidth = 119;
+    this.vs.fill = "#fefefe";
+    this.vs.align = "center";
+    this.vs.backgroundColor = "#5684fb";
 
     this.backButton = this.add.button(16, 32, 'back', this.backButtonHandler, this);
     this.backButton.anchor.setTo(0, 0);
@@ -369,7 +413,7 @@ play.prototype = {
     //   var randomCell = Math.floor(Math.random() * CELL_ROWS*CELL_COLS);
     //   this.cells.children[randomCell] =
     // }
-    myBot = new bot(botLevel);
+    myBot = new bot(1);
     myGame = new Game(myBot);
     if(playerMark === 2 && gameResume === false) {
       this.cells.children[initialMark].frame = 1;
@@ -384,21 +428,27 @@ play.prototype = {
   update: function() {
 
   },
-  // clickListener: function() {
-  //   phaserGame.state.start('gameover');
-  // },
 
   clickHandler: function(sprite, pointer) {
-    var cell = this.cells.children;
-    if(sprite.frame === 0) {
-      // console.log("Hi");
-      sprite.frame = playerMark;
-      turnText.text = "BOT'S TURN";
+    console.log(this.clickBlocked);
+    if(this.clickBlocked === false) {
+      this.clickBlocked = true ;
+      console.log(this.clickBlocked);
+      var cell = this.cells.children;
+      if(sprite.frame === 0) {
+        // console.log("Hi");
+        sprite.frame = playerMark;
+        turnText.text = "BOT'S TURN";
 
-      this.nextMove(sprite, pointer, cell);
-      // saveRoomData();
+        this.nextMove(sprite, pointer, cell);
+        // saveRoomData();
 
-      // console.log(myGame.currentState.board);
+        // console.log(myGame.currentState.board);
+      }
+      this.clickBlocked = false;
+    }
+    else {
+      console.log('Click Cancelled');
     }
   },
 
@@ -412,95 +462,24 @@ play.prototype = {
     for(let i = 0 ; i < CELL_COLS * CELL_ROWS ;i++) {
       cell[i].frame = myGame.currentState.board[i];
     }
-    turnText.text = "YOUR TURN";
-  },
-  // Try to implement a list of cells which are not filled and take randoms cell nos.
-  //Will rediuce no. of calls.
-  //TODO on Wed
-  addPlayerMarker: function(sprite, pointer) {
-    let cell = this.cells.children;
-    if(sprite.frame === 0) {
-      sprite.frame = (this.player === 1 ? playerMark : ((playerMark === 1) ? 2 : 1)) ;
-      this.player = this.player === 1 ? 2 : 1;
-      this.checkMaze(cell);
-      if(win !== 0) {
-        return;
-      }
-      this.cellFilled++;
-      let cellNo = Math.floor(Math.random() * (limit+1)) ;
-      // console.log(limit,cellNo,cell);
-      if(this.cellFilled < CELL_ROWS*CELL_COLS ) {
-        while(cell[cellNo].frame !== 0) {
-          cellNo = Math.floor(Math.random() * (limit+1)) ;
-          // console.log(limit,cellNo,cell);
-        }
-        this.cellFilled++;
-        cell[cellNo].frame = (this.player === 1 ? playerMark : ((playerMark === 1) ? 2 : 1));
-      }
-      else {
-        kapow.endSoloGame(function() {
-          boardStatus = {cells:new Array(9)};
-          botLevel = -1 ;
-          room = null;
-          playerMark = 0;
-          gameResume = false ;
-          console.log("Game Succesfully Closed.");
-          phaserGame.state.start('gameover');
-        }, function(error) {
-          console.log("endSoloGame Failed : ",error);
-        });
-      }
-      this.checkMaze();
-      this.player = this.player === 1 ? 2 : 1;
-    }
-    //Checking Rows
-    // console.log(this.cells.children[0]);
-  },
-  checkMaze : function() {
-    let cell = this.cells.children;
-    for (let i = 0, j = CELL_ROWS; i < CELL_COLS; i++) {
-      if(cell[i].frame !== 0 && cell[i].frame === cell[i+j].frame && cell[i+j].frame === cell[i+(2*j)].frame) {
-        win = cell[i].frame ;
-      }
-    }
-    //Checking Columns
-    for (let i = 0, j = 1; i < CELL_ROWS*CELL_COLS; i+=CELL_COLS) {
-      if(cell[i].frame !== 0 && cell[i].frame === cell[i+j].frame && cell[i+j].frame === cell[i+(2*j)].frame) {
-        win = cell[i].frame ;
-      }
-    }
-    //Checking Leading Diagonals '\'
-    if(cell[0].frame !== 0 && cell[0].frame === cell[4].frame && cell[4].frame === cell[8].frame) {
-      win = cell[4].frame ;
-    }
-    //Checing other Diagonal '/'
-    if(cell[2].frame !== 0 && cell[2].frame === cell[4].frame && cell[4].frame === cell[6].frame) {
-      win = cell[4].frame ;
-    }
-    if(win!==0) {
-      kapow.endSoloGame(function() {
-        boardStatus = {cells:new Array(9)};
-        botLevel = -1 ;
-        room = null;
-        playerMark = 0;
-        gameResume = false ;
-        console.log("Game Succesfully Closed.");
-        phaserGame.state.start('gameover');
-      }, function(error) {
-        console.log("endSoloGame Failed : ",error);
-      });
+    if(win === 0) {
+      turnText.text = "YOUR TURN";
     }
   },
   resignEvent : function() {
+    turnText.text = " YOU LOSE!";
+    setTimeout(this.quitGame,2000);
+  },
+  quitGame  : function() {
     kapow.endSoloGame(function() {
       boardStatus = {cells:new Array(9)};
       botLevel = -1 ;
-      win = playerMark===1 ? 2 : 1 ;
+      win = 0 ;
       room = null;
       playerMark = 0;
       gameResume = false ;
       console.log("Game Succesfully Closed.");
-      phaserGame.state.start('gameover');
+      phaserGame.state.start('menu');
     }, function(error) {
       console.log("endSoloGame Failed : ",error);
     });
@@ -509,13 +488,10 @@ play.prototype = {
     this.musicButton = (this.musicButton.frame + 1)%2;
   },
   backButtonHandler :function() {
-    // saveGameData();
-    // boardStatus = {cells:new Array(9)};
-    // botLevel = -1 ;
-    // win = 0;
-    // room = null;
-    // playerMark = 0;
-    // gameResume = false ;
-    // phaserGame.state.start('menu');
+    console.log(myGame.gameStatus);
+    if(myGame.gameStatus !== 3) {
+      saveGameData();
+    }
+    this.quitGame();
   }
 };

@@ -80,8 +80,8 @@ GameManager.prototype = {
         // }
   }
 }
-
 var room = null;
+var screenState = 0 ;
 var playerData ;
 var boardStatus = {cells: new Array(9)};
 var gameResume = false ;
@@ -97,44 +97,50 @@ var game = {
                 console.log("Client getUserInfoSuccess - User: " + JSON.stringify(userObj));
                 user = userObj.player;
                 playerData = userObj;
+                if(room !== null) {
+                  gameResume = true ;
+                  kapow.roomStore.get('game_data',function(value) {
+                    // console.log("roomStore.get : ",value);
+                    if(value) {
+                      let valueJSON = JSON.parse(value);
+                      console.log(valueJSON);
+                      //Set Up a layout Redirecct game;
+                      playerMark = valueJSON.colorPlayer;
+                      botLevel  = valueJSON.difficulty;
+                      boardStatus =  valueJSON.board;
+                      playerData  = valueJSON.playerData;
+                      boardStatus = valueJSON.board;
+                    }
+                    else {
+                      console.log('Game Variables Not set');
+                    }
+                  }, function(error) {
+                    console.log("Nothing Found : ",error);
+                  });
+                }
+                else {
+                  gameResume = false ;
+                  //New Game;
+                }
+                console.log("room : ",room);
+                phaserGame.state.start('boot');
                 // parseRoomAnxdRedirectToGame();
             }, function () {
             console.log("Client getUserInfo failure");
         });
-        if(room !== null) {
-          gameResume = true ;
-          kapow.roomStore.get('game_data',function(value) {
-            // console.log("roomStore.get : ",value);
-            if(value) {
-              let valueJSON = JSON.parse(value);
-              console.log(valueJSON);
-              //Set Up a layout Redirecct game;
-              playerMark = valueJSON.colorPlayer;
-              botLevel  = valueJSON.difficulty;
-              boardStatus =  valueJSON.board;
-              playerData  = valueJSON.playerData;
-              boardStatus = valueJSON.board;
-            }
-            else {
-              console.log('Game Variables Not set');
-            }
-          }, function(error) {
-            console.log("Nothing Found : ",error);
-          });
-        }
-        else {
-          //New Game;
-        }
-        console.log("room : ",room);
+
     },
     onPause: function() {
+      console.log('On Pause Triggered');
+      if(screenState === 1) { //2 goes for play screen and 0 for any other
         saveGameData();
+      }
     },
     onResume:function() {
 
     },
     onBackButtonPressed:  function() {
-      console.log("Hi");
+      console.log("Back Button Pressed.");
       return false;
     }
   }

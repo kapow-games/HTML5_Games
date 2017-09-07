@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="101" height="40" viewBox="0 0 101 40">
-    <g fill="none" fill-rule="evenodd">
-        <rect width="101" height="40" fill="#000" opacity=".2" rx="4"/>
-        <text fill="#FEFEFE" font-family="Nunito-Black, Nunito" font-size="14" font-weight="700">
-            <tspan x="24.103" y="25">RESIGN</tspan>
-        </text>
-    </g>
-</svg>
