@@ -25,6 +25,7 @@ preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
     this.load.image('profilePic',playerData.player.profileImage);
+    this.load.image('botPic','assets/botPic.png');
 		this.load.image('logo', 'assets/logo.svg');
     this.load.spritesheet('onGoing', 'assets/onGoing.png', 328, 60);
     this.load.image('arena', 'assets/backGround.svg');
@@ -34,15 +35,26 @@ preload.prototype = {
     this.load.spritesheet('leaderBoard', 'assets/leaderboard.png', 328, 46);
     this.load.spritesheet('stats', 'assets/stats.png', 328, 46);
     this.load.image('referee', 'assets/turnBoard.svg');
+    this.load.image('circle', 'assets/circle.png');
     this.load.image('board', 'assets/board.svg'); //Final Arena
     this.load.image('difficulty_bg', 'assets/difficulty-bg.svg');
     this.load.image('mark_selected', 'assets/mark-selected.svg');
     this.load.image('difficulty_selected', 'assets/difficulty-selected.svg');
     this.load.image('startbutton_disabled', 'assets/startbutton-disabled.svg');
-    // this.load.image('startbutton_enabled', 'assets/startbutton-enabled.svg');
+    this.load.image('resignModal', 'assets/resign-modal.svg');
+    this.load.image('yesResign', 'assets/yes-resign.svg');
+    this.load.image('cancel', 'assets/cancel.svg');
+    this.load.image('shareBackground', 'assets/share-bg.png');
+    this.load.image('fbShare', 'assets/fb.png');
+    this.load.image('winBackground', 'assets/win-bg.png');
+    this.load.image('confetti', 'assets/confetti.png');
+    this.load.image('twitterShare', 'assets/twitter.png');
+    this.load.image('otherShare', 'assets/other.png');
+    this.load.image('darkOverlay', 'assets/dark-overlay.png');
     this.load.spritesheet('startbutton', 'assets/startbutton.png', 210, 46);
     this.load.image('rectangle', 'assets/rectangle.png');
-    this.load.spritesheet('help', 'assets/help.png',40,40);
+    this.load.spritesheet('helpEnd', 'assets/help.png',40,40);
+    this.load.spritesheet('help', 'assets/help.svg',40,40);
     this.load.spritesheet('resign', 'assets/resign.png', 101, 40);
     this.load.image('choose_bg_mark','assets/mark_choose.svg');
     this.load.spritesheet('difficulty', 'assets/difficulty-levels.png',70,40);

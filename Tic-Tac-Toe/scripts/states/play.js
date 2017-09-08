@@ -9,6 +9,30 @@ var myGame;
 var matchBar = 0 ;
 var turnText;
 var resign;
+var bg;
+var backButton;
+var fbButton;
+var twitterButton;
+var shareButton;
+var referee;
+var help;
+var gameEndHandler = function(value) {
+  bg.inputEnabled = true;
+  bg.input.priorityID = 1;
+  backButton.input.priorityID = 2;
+  referee.destroy();
+  resign.destroy();
+  help.destroy();
+  shareText = (value===1)?"Lost":(value===2 ? "Won" : "Draw");
+  var shareBackground = phaserGame.add.sprite(24, 528, 'shareBackground');
+  var shareFbButton = phaserGame.add.button(98, 538, 'fbShare', function() {console.log("Fb share clicked");kapow.social.share(shareText, 'facebook', function(){console.log("Fb share Successfull")},function() { console.log("Fb Share Failed") });});
+  shareFbButton.input.priorityID = 2 ;
+  var shareTwitterButton = phaserGame.add.button(136, 538, 'twitterShare',  function() {console.log("Twitter share clicked");kapow.social.share(shareText, 'twitter',function(){console.log("Twitter share Successfull")},function() { console.log("Twitter Share Failed") });});
+  shareTwitterButton.input.priorityID = 2 ;
+  var shareOtherButton = phaserGame.add.button(174, 538, 'otherShare', function() {console.log("Other share clicked");kapow.social.share(shareText, null, function(){console.log("Other share Successfull")},function() { console.log("Other Share Failed") });});
+  shareOtherButton.input.priorityID = 2 ;
+  // social.share(text, medium ('facebook'/'twitter'/null), successCb, failureCb)
+};
 var gameState = function(oldGameState) {
   this.turn = 0 ; // 0 : No One's Move // 1 : Player 1(x)'s Move // 2 : Player 2(o)'s Move'
   this.oMovesCount = 0 ;
@@ -240,7 +264,6 @@ var Game = function(bot) {
   this.moveTo = function(_state) {
     this.currentState = _state ;
     if(_state.isTerminal()) {
-      resign.destroy();
 
       this.gameStatus = 3 // Indicating game Over
       // console.log(_state);
@@ -256,17 +279,21 @@ var Game = function(bot) {
       if(win !== 0) {
         if(win === playerMark) {
           turnText.text = "  YOU WIN!";
+          gameEndHandler(2);
         }
         else {
           turnText.text = "  YOU LOSE!";
+          gameEndHandler(1);
         }
-        tempCells = phaserGame.state.states.play.cells.children;
-        for(let i = 0 ; i < 9 ; i++) {
-          tempCells[i].inputEnabled = false;
-        }
+        // tempCells = phaserGame.state.states.play.cells.children;
+        // for(let i = 0 ; i < 9 ; i++) {
+        //   tempCells[i].inputEnabled = false;
+        // }
       }
       else {
         turnText.text = "GAME DRAW!";
+        gameEndHandler(0);
+        // gameInputHandler(0)
       }
       if(win !== 0) {
         switch(matchBar) {
@@ -343,14 +370,54 @@ play.prototype = {
     CELL_RELATIVE_LEFT = 30;
 
     limit  = (CELL_ROWS*CELL_COLS) -1 ;
-    var bg = this.add.sprite(0, 0, 'arena');
-    var gameBoard = this.add.sprite(19, 159, 'board');
-    var referee = this.add.sprite(105, 80, 'referee');
-    resign = this.add.button(130, 528, 'resign', this.resignEvent, this, 0, 0, 1, 0);
-    this.help = this.add.button(247, 528, 'help', this.helpButtonHandler, this, 0, 0, 1, 0);
+    bg = phaserGame.add.sprite(0, 0, 'arena');
+    // bg.inputEnabled = false;
 
-    this.playerProfilePic = phaserGame.add.image(122,24,'profilePic');
+    var gameBoard = this.add.sprite(19, 159, 'board');
+    var resultBoard = phaserGame.add.sprite(105, 80, 'winBackground');
+    referee = this.add.sprite(105, 80, 'referee');
+    resign = this.add.button(130, 528, 'resign', this.resignEvent, this, 0, 0, 1, 0);
+    help = this.add.button(247, 528, 'helpEnd', this.helpButtonHandler, this, 0, 0, 1, 0);
+
+    this.playerProfilePicBackground = this.add.image(122,24,'circle');
+    this.playerProfilePicBackground.scale.set(40/this.playerProfilePicBackground.width,40/this.playerProfilePicBackground.height);
+
+
+    this.playerProfilePic = this.add.image(124,26,'profilePic');
     this.playerProfilePic.scale.set(36/this.playerProfilePic.width,36/this.playerProfilePic.height);
+
+    mask = phaserGame.add.graphics(0, 0);
+    mask.beginFill(0xffffff);
+    mask.drawCircle(142,44,36);
+    this.playerProfilePic.mask = mask;
+
+    this.playerProfilePicMarkBackground = this.add.image(146,48,'circle');
+    this.playerProfilePicMarkBackground.scale.set(16/this.playerProfilePicMarkBackground.width,16/this.playerProfilePicMarkBackground.height);
+
+    this.playerProfilePicMark = this.add.sprite(150,52,'cell');
+    this.playerProfilePicMark.frame = playerMark ;
+    this.playerProfilePicMark.scale.set(8/this.playerProfilePicMark.width,8/this.playerProfilePicMark.height);
+
+
+    this.botProfilePicBackground = this.add.image(198,24,'circle');
+    this.botProfilePicBackground.scale.set(40/this.botProfilePicBackground.width,40/this.botProfilePicBackground.height);
+
+    this.botProfilePic = this.add.image(200,26,'botPic');
+    this.botProfilePic.scale.set(36/this.botProfilePic.width,36/this.botProfilePic.height);
+
+    mask = phaserGame.add.graphics(0, 0);
+    mask.beginFill(0xffffff);
+    mask.drawCircle(218,44,36);
+    this.botProfilePic.mask = mask;
+
+    this.botProfilePicMarkBackground = this.add.image(198,48,'circle');
+    this.botProfilePicMarkBackground.scale.set(16/this.botProfilePicMarkBackground.width,16/this.botProfilePicMarkBackground.height);
+
+    this.botProfilePicMark = this.add.sprite(202,52,'cell');
+    this.botProfilePicMark.frame = ( (playerMark === 2) ? 1 : 2) ;
+    this.botProfilePicMark.scale.set(8/this.botProfilePicMark.width,8/this.botProfilePicMark.height);
+
+
 
     turnText = phaserGame.add.text(122, 92, "YOUR TURN");
     turnText.fontStyle = 'normal';
@@ -370,8 +437,8 @@ play.prototype = {
     this.vs.align = "center";
     this.vs.backgroundColor = "#5684fb";
 
-    this.backButton = this.add.button(16, 32, 'back', this.backButtonHandler, this);
-    this.backButton.anchor.setTo(0, 0);
+    backButton = this.add.button(16, 32, 'back', this.backButtonHandler, this);
+    backButton.anchor.setTo(0, 0);
 
     this.musicButton = this.add.button(320, 32, 'music', this.musicButtonHandler, this);
     this.musicButton.anchor.setTo(0, 0);
@@ -462,27 +529,48 @@ play.prototype = {
     for(let i = 0 ; i < CELL_COLS * CELL_ROWS ;i++) {
       cell[i].frame = myGame.currentState.board[i];
     }
-    if(win === 0) {
+    if(win === 0 && myGame.gameStatus !== 3) {
       turnText.text = "YOUR TURN";
     }
   },
   resignEvent : function() {
-    turnText.text = " YOU LOSE!";
-    setTimeout(this.quitGame,2000);
+    this.darkOverlay = phaserGame.add.button(0, 0, 'darkOverlay', this.cancelResign, this);
+    this.darkOverlay.inputEnabled = true ;
+    this.darkOverlay.input.priorityID = 1 ;
+
+    this.resignModal = phaserGame.add.sprite(24, 180, 'resignModal');
+    this.resignModal.inputEnabled = true ;
+    this.resignModal.input.priorityID = 2 ;
+
+    this.cancelButton = phaserGame.add.button(97, 397, 'cancel', this.cancelResign, this);
+    this.cancelButton.inputEnabled = true ;
+    this.cancelButton.input.priorityID = 3 ;
+
+    this.yesResignButton = phaserGame.add.button(174, 397, 'yesResign', this.quitGame, this);
+    this.yesResignButton.inputEnabled = true ;
+    this.yesResignButton.input.priorityID = 3 ;
+
+
+    // turnText.text = " YOU LOSE!";
+    // bg.input.priorityID = 1 ;
+    // setTimeout(this.quitGame,4000);
+  },
+  cancelResign  : function() {
+    this.yesResignButton.destroy();
+    this.cancelButton.destroy();
+    this.resignModal.destroy();
+    this.darkOverlay.destroy();
   },
   quitGame  : function() {
-    kapow.endSoloGame(function() {
-      boardStatus = {cells:new Array(9)};
-      botLevel = -1 ;
-      win = 0 ;
-      room = null;
-      playerMark = 0;
-      gameResume = false ;
-      console.log("Game Succesfully Closed.");
-      phaserGame.state.start('menu');
-    }, function(error) {
-      console.log("endSoloGame Failed : ",error);
-    });
+    bg.inputEnabled = true;
+    bg.input.priorityID = 1 ;
+    this.yesResignButton.destroy();
+    this.cancelButton.destroy();
+    this.resignModal.destroy();
+    this.darkOverlay.destroy();
+    tempCells = phaserGame.state.states.play.cells.children;
+    turnText.text = " YOU LOSE!";
+    gameEndHandler(1);
   },
   musicButtonHandler  : function() {
     this.musicButton = (this.musicButton.frame + 1)%2;
@@ -492,6 +580,19 @@ play.prototype = {
     if(myGame.gameStatus !== 3) {
       saveGameData();
     }
-    this.quitGame();
+    else {
+      kapow.endSoloGame(function() {
+        boardStatus = {cells:new Array(9)};
+        botLevel = -1 ;
+        win = 0 ;
+        room = null;
+        playerMark = 0;
+        gameResume = false ;
+        console.log("Game Succesfully Closed.");
+      }, function(error) {
+        console.log("endSoloGame Failed : ",error);
+      });
+    }
+    phaserGame.state.start('menu');
   }
 };

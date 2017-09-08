@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="122" height="13" viewBox="0 0 122 13">
+    <g fill="none" fill-rule="evenodd">
+        <path d="M-8-13h138v40H-8z"/>
+        <text fill="#F45842" font-family="Nunito-ExtraBold, Nunito" font-size="13" font-weight="600" transform="translate(-8 -13)">
+            <tspan x="8.801" y="24">YES, RESIGN GAME</tspan>
+        </text>
+    </g>
+</svg>

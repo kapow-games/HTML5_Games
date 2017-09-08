@@ -19,7 +19,7 @@ var saveGameData = function() {
   console.log("Board Status recorded on pause : ",boardStatus);
   let roomData = {
     colorPlayer  : playerMark,
-    difficulty  : botLevel,
+    difficulty  : 2,
     board :  boardStatus,
     playerData  : playerData
     // lastMessageID: lastMessageID,
@@ -80,6 +80,7 @@ GameManager.prototype = {
         // }
   }
 }
+var shareType = null;
 var room = null;
 var screenState = 0 ;
 var playerData ;

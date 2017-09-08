@@ -26,8 +26,12 @@ menu.prototype = {
     this.soundToggle = this.add.button(320, 32, 'music', this.musicToggle, this);
     this.soundToggle.anchor.setTo(0, 0);
 
+    this.helpButton = this.add.button(280, 32, 'help', this.helpButtonHandler, this);
+    this.helpButton.anchor.setTo(0, 0);
+
   },
   update: function() {
+    screenState = 0;
   },
   backButtonHandler : function() {
     kapow.close();
@@ -47,5 +51,8 @@ menu.prototype = {
   newGameButtonHandler: function() {
     console.log('New Game Button Clicked');
     this.state.start('select');
+  },
+  helpButtonHandler : function() {
+    console.log('Helpp Button Clicked');
   }
 };
