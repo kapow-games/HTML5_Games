@@ -413,9 +413,9 @@ play.prototype = {
     this.playerProfilePicMarkBackground = this.add.image(146,48,'circle');
     this.playerProfilePicMarkBackground.scale.set(16/this.playerProfilePicMarkBackground.width,16/this.playerProfilePicMarkBackground.height);
 
-    this.playerProfilePicMark = this.add.sprite(150,52,'cell');
+    this.playerProfilePicMark = this.add.sprite(146,48,'cell');
     this.playerProfilePicMark.frame = playerMark ;
-    this.playerProfilePicMark.scale.set(8/this.playerProfilePicMark.width,8/this.playerProfilePicMark.height);
+    this.playerProfilePicMark.scale.set(16/this.playerProfilePicMark.width,16/this.playerProfilePicMark.height);
 
 
     this.botProfilePicBackground = this.add.image(198,24,'circle');
@@ -432,9 +432,9 @@ play.prototype = {
     this.botProfilePicMarkBackground = this.add.image(198,48,'circle');
     this.botProfilePicMarkBackground.scale.set(16/this.botProfilePicMarkBackground.width,16/this.botProfilePicMarkBackground.height);
 
-    this.botProfilePicMark = this.add.sprite(202,52,'cell');
+    this.botProfilePicMark = this.add.sprite(198,48,'cell');
     this.botProfilePicMark.frame = ( (playerMark === 2) ? 1 : 2) ;
-    this.botProfilePicMark.scale.set(8/this.botProfilePicMark.width,8/this.botProfilePicMark.height);
+    this.botProfilePicMark.scale.set(16/this.botProfilePicMark.width,16/this.botProfilePicMark.height);
 
 
 
