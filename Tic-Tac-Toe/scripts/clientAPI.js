@@ -141,7 +141,11 @@ var game = {
 
     },
     onBackButtonPressed:  function() {
+      if(screenState === 1) { //2 goes for play screen and 0 for any other
+        saveGameData();
+      }
+      phaserGame.state.start();
       console.log("Back Button Pressed.");
-      return false;
+      return true;
     }
   }

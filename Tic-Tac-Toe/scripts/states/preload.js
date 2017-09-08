@@ -52,6 +52,7 @@ preload.prototype = {
     this.load.image('otherShare', 'assets/other.png');
     this.load.image('darkOverlay', 'assets/dark-overlay.png');
     this.load.spritesheet('startbutton', 'assets/startbutton.png', 210, 46);
+    this.load.spritesheet('rematch', 'assets/rematchbutton.png', 117, 40);
     this.load.image('rectangle', 'assets/rectangle.png');
     this.load.spritesheet('helpEnd', 'assets/help.png',40,40);
     this.load.spritesheet('help', 'assets/help.svg',40,40);

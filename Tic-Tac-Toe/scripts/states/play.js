@@ -31,7 +31,26 @@ var gameEndHandler = function(value) {
   shareTwitterButton.input.priorityID = 2 ;
   var shareOtherButton = phaserGame.add.button(174, 538, 'otherShare', function() {console.log("Other share clicked");kapow.social.share(shareText, null, function(){console.log("Other share Successfull")},function() { console.log("Other Share Failed") });});
   shareOtherButton.input.priorityID = 2 ;
+  var rematchButton = phaserGame.add.button(219, 528, 'rematch',rematchButtonHandler, 0, 0, 1, 0);
+  rematchButton.input.priorityID = 2 ;
+
   // social.share(text, medium ('facebook'/'twitter'/null), successCb, failureCb)
+};
+var rematchButtonHandler  = function() {
+  console.log('rematchButtonHandler Clicked');
+  console.log(myGame.gameStatus);
+  kapow.endSoloGame(function() {
+    boardStatus = {cells:new Array(9)};
+    botLevel = -1 ;
+    win = 0 ;
+    room = null;
+    playerMark = 0;
+    gameResume = false ;
+    console.log("Game Succesfully Closed.");
+  }, function(error) {
+    console.log("endSoloGame Failed : ",error);
+  });
+  phaserGame.state.start('select');
 };
 var gameState = function(oldGameState) {
   this.turn = 0 ; // 0 : No One's Move // 1 : Player 1(x)'s Move // 2 : Player 2(o)'s Move'
@@ -571,6 +590,20 @@ play.prototype = {
     tempCells = phaserGame.state.states.play.cells.children;
     turnText.text = " YOU LOSE!";
     gameEndHandler(1);
+    setTimeout(function() {
+      kapow.endSoloGame(function() {
+        boardStatus = {cells:new Array(9)};
+        botLevel = -1 ;
+        win = 0 ;
+        room = null;
+        playerMark = 0;
+        gameResume = false ;
+        console.log("Game Succesfully Closed.");
+        phaserGame.state.start('menu');
+      }, function(error) {
+        console.log("endSoloGame Failed : ",error);
+      });
+    },2000);
   },
   musicButtonHandler  : function() {
     this.musicButton = (this.musicButton.frame + 1)%2;
