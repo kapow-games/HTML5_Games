@@ -34,7 +34,7 @@ preload.prototype = {
     this.load.spritesheet('music', 'assets/volume.png', 24, 24);
     this.load.spritesheet('leaderBoard', 'assets/leaderboard.png', 328, 46);
     this.load.spritesheet('stats', 'assets/stats.png', 328, 46);
-    this.load.image('referee', 'assets/turnBoard.svg');
+    this.load.image('turnTextBackground', 'assets/turnBoard.svg');
     this.load.image('circle', 'assets/circle.png');
     this.load.image('board', 'assets/board.svg'); //Final Arena
     this.load.image('difficulty_bg', 'assets/difficulty-bg.svg');

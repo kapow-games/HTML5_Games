@@ -1,15 +1,16 @@
-
+//TODO : An object that stores all gameVariables necessary to recreate game layout and game status.
 var gameVariables = {
   room : null,
-  player : null,
-  playermark : null,
-  difficulty : null,
-  board : null,
-  gameinProgress : false ,
-  gameResult : null,
-  winner  : null
+  screenState : 0,
+  playerData : null,
+  boardStatus : {cells  : new Array(9)},
+  gameResume  : false,
+  botLevel  : 1,
+  win : 0,
+  playerMark : 0
 };
-var saveGameData = function() {
+
+var saveGameData = function(value) {
   let currentGameState = phaserGame.state.states.play.cells.children;
   let len = currentGameState.length;
   for(let i = 0 ; i < len ; i++) {
@@ -21,8 +22,9 @@ var saveGameData = function() {
     colorPlayer  : playerMark,
     difficulty  : 2,
     board :  boardStatus,
-    playerData  : playerData
-    // lastMessageID: lastMessageID,
+    playerData  : playerData,
+    gameOver  : value,
+    winner : win
   };
   kapow.roomStore.set("game_data", JSON.stringify(roomData), function () {
     console.log("Storing room data was successful.",roomData);
@@ -30,57 +32,8 @@ var saveGameData = function() {
     console.log("Storing room data Failed : ",error);
   });
 };
-var GameManager = function() {};
-GameManager.prototype = {
-  init : function(game) {
-    GameManager.game = game;
-    this.resetVariables();
-    // this.readGameStorage();
-    if (gameVariables.room) {
-        this.loadRoomData();
-    }
-    else {
-        //Load The Menu
-    }
-  },
-  resetVariables : function() {
-    gameVariables.room = null;
-    gameVariables.player = null;
-    gameVariables.playermark = null;
-    gameVariables.difficulty = null;
-    gameVariables.board = null;
-    gameVariables.gameinProgress = false;
-    gameVariables.gameResult = null;
-    gameVariables.winner = null;
-  },
-  loadRoomData : function() {
-    kapow.getRoomInfo(function (room) {
-      gameVariables.room = room;
-      kapow.roomStore.get("game_data", onRoomDataRetrieved(), function (error) {
-          console.log("failed retrieving room data", error);
-      });
-    }, function (error) {
-      GameManager.log("failed retrieving room data", error);
-    });
-  },
-  onRoomDataRetrieved : function (value) {
-    console.log(value);
-        // if (value) {
-        //     gameVariables.roomData = JSON.parse(value);
-        // }
-        // else {
-        //     gameVariables.roomData = null;
-        // }
-        // if (gameVariables.roomData !== null) {
-        //     gameVariables.player = gameVariables.roomData.player;
-        //
-        // }
-        // else {
-        //
-        // }
-  }
-}
-var shareType = null;
+
+// var shareType = null;
 var room = null;
 var screenState = 0 ;
 var playerData ;
@@ -89,6 +42,7 @@ var gameResume = false ;
 var botLevel = -1 ;
 var win = 0 ;
 var playerMark = 0 ;
+var gameOver = false ;
 var game = {
     onLoad: function(roomObj) {
         console.log("Client onLoad - " + JSON.stringify(roomObj));
@@ -110,7 +64,8 @@ var game = {
                       botLevel  = valueJSON.difficulty;
                       boardStatus =  valueJSON.board;
                       playerData  = valueJSON.playerData;
-                      boardStatus = valueJSON.board;
+                      gameOver = valueJSON.gameOver;
+                      win = valueJSON.winner;
                     }
                     else {
                       console.log('Game Variables Not set');
@@ -134,7 +89,7 @@ var game = {
     onPause: function() {
       console.log('On Pause Triggered');
       if(screenState === 1) { //2 goes for play screen and 0 for any other
-        saveGameData();
+        saveGameData(false);
       }
     },
     onResume:function() {
@@ -142,7 +97,7 @@ var game = {
     },
     onBackButtonPressed:  function() {
       if(screenState === 1) { //2 goes for play screen and 0 for any other
-        saveGameData();
+        saveGameData(false);
       }
       phaserGame.state.start();
       console.log("Back Button Pressed.");

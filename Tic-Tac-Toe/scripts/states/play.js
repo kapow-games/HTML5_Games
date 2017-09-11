@@ -2,27 +2,43 @@
 var CELL_COLS, CELL_ROWS;
 CELL_COLS = 9 ;
 CELL_ROWS = 9;
+var gameLayoutVariables = {
+  initialMark : null,
+  myGame  : null,
+  winningMarkLine : null,
+  turnText  : null,
+  resign  : null,
+  backgroundImage : null,
+  backButton  : null,
+  fbButton  : null,
+  twitterButton : null,
+  shareButton : null,
+  turnTextBackground : null,
+  help  : null
+};
 var initialMark;
-var limit ;
+// var limit ;
 var myBot;
 var myGame;
-var matchBar = 0 ;
+var winningMarkLine = 0 ;
 var turnText;
 var resign;
-var bg;
+var backgroundImage;
 var backButton;
 var fbButton;
 var twitterButton;
 var shareButton;
-var referee;
+var turnTextBackground;
 var help;
+var clickBlocked;
 var gameEndHandler = function(value) {
-  bg.inputEnabled = true;
-  bg.input.priorityID = 1;
+  backgroundImage.inputEnabled = true;
+  backgroundImage.input.priorityID = 1;
   backButton.input.priorityID = 2;
-  referee.destroy();
+  turnTextBackground.destroy();
   resign.destroy();
   help.destroy();
+  // gameOver = true;
   shareText = (value===1)?"Lost":(value===2 ? "Won" : "Draw");
   var shareBackground = phaserGame.add.sprite(24, 528, 'shareBackground');
   var shareFbButton = phaserGame.add.button(98, 538, 'fbShare', function() {console.log("Fb share clicked");kapow.social.share(shareText, 'facebook', function(){console.log("Fb share Successfull")},function() { console.log("Fb Share Failed") });});
@@ -33,16 +49,12 @@ var gameEndHandler = function(value) {
   shareOtherButton.input.priorityID = 2 ;
   var rematchButton = phaserGame.add.button(219, 528, 'rematch',rematchButtonHandler, 0, 0, 1, 0);
   rematchButton.input.priorityID = 2 ;
-
-  // social.share(text, medium ('facebook'/'twitter'/null), successCb, failureCb)
-};
-var rematchButtonHandler  = function() {
-  console.log('rematchButtonHandler Clicked');
-  console.log(myGame.gameStatus);
+  // saveGameData(true);
   kapow.endSoloGame(function() {
     boardStatus = {cells:new Array(9)};
     botLevel = -1 ;
     win = 0 ;
+    gameOver = false ;
     room = null;
     playerMark = 0;
     gameResume = false ;
@@ -50,6 +62,24 @@ var rematchButtonHandler  = function() {
   }, function(error) {
     console.log("endSoloGame Failed : ",error);
   });
+};
+var rematchButtonHandler  = function() {
+  console.log('rematchButtonHandler Clicked');
+  console.log(myGame.gameStatus);
+  // gameOver  = true ;
+  // saveGameData();
+  // kapow.endSoloGame(function() {
+  //   boardStatus = {cells:new Array(9)};
+  //   botLevel = -1 ;
+  //   win = 0 ;
+  //   gameOver = false ;
+  //   room = null;
+  //   playerMark = 0;
+  //   gameResume = false ;
+  //   console.log("Game Succesfully Closed.");
+  // }, function(error) {
+  //   console.log("endSoloGame Failed : ",error);
+  // });
   phaserGame.state.start('select');
 };
 var gameState = function(oldGameState) {
@@ -84,7 +114,7 @@ var gameState = function(oldGameState) {
     let cell = this.board;
     for (let i = 0, j = CELL_ROWS; i < CELL_COLS; i++) {
       if(cell[i] !== 0 && cell[i] === cell[i+j] && cell[i+j] === cell[i+(2*j)]) {
-        matchBar = i;
+        winningMarkLine = i;
         this.boardResult = cell[i] ;
         return true ;
       }
@@ -92,20 +122,20 @@ var gameState = function(oldGameState) {
     //Checking Columns
     for (let i = 0, j = 1; i < CELL_ROWS*CELL_COLS; i+=CELL_COLS) {
       if(cell[i] !== 0 && cell[i] === cell[i+j] && cell[i+j] === cell[i+(2*j)]) {
-        matchBar = (i/CELL_COLS)+3;
+        winningMarkLine = (i/CELL_COLS)+3;
         this.boardResult = cell[i] ;
         return true;
       }
     }
     //Checking Leading Diagonals '\'
     if(cell[0] !== 0 && cell[0] === cell[4] && cell[4] === cell[8]) {
-      matchBar = 6;
+      winningMarkLine = 6;
       this.boardResult = cell[4] ;
       return true;
     }
     //Checing other Diagonal '/'
     if(cell[2] !== 0 && cell[2] === cell[4] && cell[4] === cell[6]) {
-      matchBar = 7;
+      winningMarkLine = 7;
       this.boardResult = cell[4] ;
       return true;
     }
@@ -315,7 +345,7 @@ var Game = function(bot) {
         // gameInputHandler(0)
       }
       if(win !== 0) {
-        switch(matchBar) {
+        switch(winningMarkLine) {
           case 0 : this.matchPosition = phaserGame.add.sprite(184, 211, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
           case 1 : this.matchPosition = phaserGame.add.sprite(184, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
           case 2 : this.matchPosition = phaserGame.add.sprite(184, 421, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
@@ -376,7 +406,7 @@ var play = function() {};
 play.prototype = {
   preload:  function() {
     screenState = 1;
-    this.clickBlocked = false;
+    clickBlocked = false;
   },
   create: function() {
     screenState = 1 ;
@@ -388,13 +418,12 @@ play.prototype = {
     CELL_RELATIVE_TOP = 167;
     CELL_RELATIVE_LEFT = 30;
 
-    limit  = (CELL_ROWS*CELL_COLS) -1 ;
-    bg = phaserGame.add.sprite(0, 0, 'arena');
-    // bg.inputEnabled = false;
+    backgroundImage = phaserGame.add.sprite(0, 0, 'arena');
+    // backgroundImage.inputEnabled = false;
 
     var gameBoard = this.add.sprite(19, 159, 'board');
     var resultBoard = phaserGame.add.sprite(105, 80, 'winBackground');
-    referee = this.add.sprite(105, 80, 'referee');
+    turnTextBackground = this.add.sprite(105, 80, 'turnTextBackground');
     resign = this.add.button(130, 528, 'resign', this.resignEvent, this, 0, 0, 1, 0);
     help = this.add.button(247, 528, 'helpEnd', this.helpButtonHandler, this, 0, 0, 1, 0);
 
@@ -438,7 +467,7 @@ play.prototype = {
 
 
 
-    turnText = phaserGame.add.text(122, 92, "YOUR TURN");
+    turnText = phaserGame.add.text(122, 92, "");
     turnText.fontStyle = 'normal';
     turnText.fontSize = "20px";
     turnText.fontWeight = 800;
@@ -446,6 +475,7 @@ play.prototype = {
     turnText.fill = "#fefefe";
     turnText.align = "center";
     turnText.backgroundColor = "#5684fb";
+    turnText.text = (gameOver === true) ? win === playerMark ? "  YOU WIN!" : "  YOU LOSE!" : "YOUR TURN";
 
     this.vs = phaserGame.add.text(170, 35, "VS");
     this.vs.fontStyle = 'normal';
@@ -462,8 +492,8 @@ play.prototype = {
     this.musicButton = this.add.button(320, 32, 'music', this.musicButtonHandler, this);
     this.musicButton.anchor.setTo(0, 0);
 
-    // bg.height = this.height;
-    // bg.width = this.width;
+    // backgroundImage.height = this.height;
+    // backgroundImage.width = this.width;
     var count = 0 ;
     win = 0 ;
     this.cells = this.add.group();
@@ -477,11 +507,12 @@ play.prototype = {
           cell.frame = boardStatus.cells[count] ;
           if(boardStatus.cells[count] === 0 ) {
             cell.frame = 0;
-            cell.inputEnabled = true;
+            cell.inputEnabled = gameOver === true ? false : true;
             cell.events.onInputDown.add(this.clickHandler, this);
           }
           else {
             cell.frame = boardStatus.cells[count] ;
+            cell.inputEnabled = false;
           }
           // cell.events.onInputDown.add(this.addPlayerMarker, this);
         }
@@ -507,8 +538,9 @@ play.prototype = {
     }
     myBot.plays(myGame);
     myGame.start();
-
-    // console.log(this.cells);
+    if(gameOver === true && win === 0) {
+      gameEndHandler(1);
+    }
     this.physics.startSystem(Phaser.Physics.ARCADE);
   },
   update: function() {
@@ -516,22 +548,19 @@ play.prototype = {
   },
 
   clickHandler: function(sprite, pointer) {
-    console.log(this.clickBlocked);
-    if(this.clickBlocked === false) {
-      this.clickBlocked = true ;
-      console.log(this.clickBlocked);
+    console.log(clickBlocked);
+    if(clickBlocked === false) {
+      clickBlocked = true ;
+      console.log(clickBlocked);
       var cell = this.cells.children;
       if(sprite.frame === 0) {
-        // console.log("Hi");
         sprite.frame = playerMark;
+        console.log("Player's Sprite Set");
         turnText.text = "BOT'S TURN";
 
         this.nextMove(sprite, pointer, cell);
-        // saveRoomData();
-
-        // console.log(myGame.currentState.board);
       }
-      this.clickBlocked = false;
+      clickBlocked = false;
     }
     else {
       console.log('Click Cancelled');
@@ -540,6 +569,7 @@ play.prototype = {
 
   nextMove: function(sprite, pointer, cell) {
     var next = new gameState(myGame.currentState);
+    console.log("Click Acknowledged");
     next.board[sprite.frameIndex]=playerMark;
     sprite.frame = playerMark;
     // console.log(myGame);
@@ -549,7 +579,11 @@ play.prototype = {
       cell[i].frame = myGame.currentState.board[i];
     }
     if(win === 0 && myGame.gameStatus !== 3) {
+      saveGameData(false);
       turnText.text = "YOUR TURN";
+    }
+    else {
+      saveGameData(true);
     }
   },
   resignEvent : function() {
@@ -571,7 +605,7 @@ play.prototype = {
 
 
     // turnText.text = " YOU LOSE!";
-    // bg.input.priorityID = 1 ;
+    // backgroundImage.input.priorityID = 1 ;
     // setTimeout(this.quitGame,4000);
   },
   cancelResign  : function() {
@@ -581,8 +615,10 @@ play.prototype = {
     this.darkOverlay.destroy();
   },
   quitGame  : function() {
-    bg.inputEnabled = true;
-    bg.input.priorityID = 1 ;
+    win = playerMark === 1 ? 2 : 1 ;
+    saveGameData(true);
+    backgroundImage.inputEnabled = true;
+    backgroundImage.input.priorityID = 1 ;
     this.yesResignButton.destroy();
     this.cancelButton.destroy();
     this.resignModal.destroy();
@@ -590,20 +626,20 @@ play.prototype = {
     tempCells = phaserGame.state.states.play.cells.children;
     turnText.text = " YOU LOSE!";
     gameEndHandler(1);
-    setTimeout(function() {
-      kapow.endSoloGame(function() {
-        boardStatus = {cells:new Array(9)};
-        botLevel = -1 ;
-        win = 0 ;
-        room = null;
-        playerMark = 0;
-        gameResume = false ;
-        console.log("Game Succesfully Closed.");
-        phaserGame.state.start('menu');
-      }, function(error) {
-        console.log("endSoloGame Failed : ",error);
-      });
-    },2000);
+    // setTimeout(function() {
+    //   kapow.endSoloGame(function() {
+    //     boardStatus = {cells:new Array(9)};
+    //     botLevel = -1 ;
+    //     win = 0 ;
+    //     room = null;
+    //     playerMark = 0;
+    //     gameResume = false ;
+    //     console.log("Game Succesfully Closed.");
+    //     phaserGame.state.start('menu');
+    //   }, function(error) {
+    //     console.log("endSoloGame Failed : ",error);
+    //   });
+    // },2000);
   },
   musicButtonHandler  : function() {
     this.musicButton = (this.musicButton.frame + 1)%2;
@@ -611,20 +647,20 @@ play.prototype = {
   backButtonHandler :function() {
     console.log(myGame.gameStatus);
     if(myGame.gameStatus !== 3) {
-      saveGameData();
+      // saveGameData(false);
     }
     else {
-      kapow.endSoloGame(function() {
-        boardStatus = {cells:new Array(9)};
-        botLevel = -1 ;
-        win = 0 ;
-        room = null;
-        playerMark = 0;
-        gameResume = false ;
-        console.log("Game Succesfully Closed.");
-      }, function(error) {
-        console.log("endSoloGame Failed : ",error);
-      });
+      // kapow.endSoloGame(function() {
+      //   boardStatus = {cells:new Array(9)};
+      //   botLevel = -1 ;
+      //   win = 0 ;
+      //   room = null;
+      //   playerMark = 0;
+      //   gameResume = false ;
+      //   console.log("Game Succesfully Closed.");
+      // }, function(error) {
+      //   console.log("endSoloGame Failed : ",error);
+      // });
     }
     phaserGame.state.start('menu');
   }
