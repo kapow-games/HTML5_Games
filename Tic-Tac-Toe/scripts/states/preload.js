@@ -52,6 +52,7 @@ preload.prototype = {
     this.load.image('twitterShare', 'assets/twitter.png');
     this.load.image('otherShare', 'assets/other.png');
     this.load.image('darkOverlay', 'assets/dark-overlay.png');
+    this.load.image('arrowRight', 'assets/arrowRight.png');
     this.load.spritesheet('startbutton', 'assets/startbutton.png', 210, 46);
     this.load.spritesheet('gameModes', 'assets/game-modes.png', 109, 28);
     this.load.spritesheet('gameModesPatch', 'assets/gamemode-patch.svg');

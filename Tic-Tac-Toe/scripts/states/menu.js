@@ -43,6 +43,9 @@ menu.prototype = {
     this.startNewGameTop.onInputUp.add(this.startNewGameTopInputUp, this) ;
     this.startNewGameTop.onInputOut.add(this.startNewGameTopInputUp, this) ;
 
+    this.arrowRight = this.add.sprite(324, 354, 'arrowRight');
+    this.arrowRight.anchor.setTo(0.5,0.5);
+
     this.stats = this.add.button(16, 394, 'stats', this.statHandler, this, 0, 0, 1, 0);
     this.stats.anchor.setTo(0, 0);
 
@@ -74,6 +77,8 @@ menu.prototype = {
     this.slideGameModeRandomUp = this.add.tween(this.gameModeRandom).to( { y: 340 }, 300, "Quart.easeOut");
     this.slideGameModeSoloDown = this.add.tween(this.gameModeSolo).to( { y: 368 }, 300, "Quart.easeOut");
     this.slideGameModeSoloUp = this.add.tween(this.gameModeSolo).to( { y: 340 }, 300, "Quart.easeOut");
+    this.arrowRotateRightToDown = this.add.tween(this.arrowRight).to( { angle: 90 }, 200, Phaser.Easing.Linear.None);
+    this.arrowRotateDownToRight = this.add.tween(this.arrowRight).to( { angle: 0 }, 200, Phaser.Easing.Linear.None);
   },
   update: function() {
     screenState = 0;
@@ -102,6 +107,7 @@ menu.prototype = {
   newGameButtonHandler: function() {
     console.log('New Game Button Clicked');
     if(this.slideDirection === 0) {
+      this.arrowRotateRightToDown.start();
       this.slideNewGameBottomDown.start();
       this.slideGameModeSoloDown.start();
       this.slideGameModeRandomDown.start();
@@ -113,6 +119,7 @@ menu.prototype = {
       this.gameModeRandom.inputEnabled = true;
     }
     else {
+      this.arrowRotateDownToRight.start();
       this.slideGameModeFriendUp.start();
       this.slideGameModeRandomUp.start();
       this.slideGameModeSoloUp.start();
