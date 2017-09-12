@@ -28,7 +28,7 @@ preload.prototype = {
     this.load.image('botPic','assets/botPic.png');
 		this.load.image('logo', 'assets/logo.svg');
     this.load.spritesheet('onGoing', 'assets/onGoing.png', 328, 60);
-    this.load.image('arena', 'assets/backGround.svg');
+    this.load.image('arena', 'assets/backGround.png');
     this.load.image('back', 'assets/back.svg');
     this.load.spritesheet('newGame', 'assets/newGame.png', 328, 46);
     this.load.spritesheet('music', 'assets/volume.png', 24, 24);
@@ -37,9 +37,7 @@ preload.prototype = {
     this.load.image('turnTextBackground', 'assets/turnBoard.svg');
     this.load.image('circle', 'assets/circle.png');
     this.load.image('board', 'assets/board.svg'); //Final Arena
-    this.load.image('difficulty_bg', 'assets/difficulty-bg.svg');
     this.load.image('mark_selected', 'assets/mark-selected.svg');
-    this.load.image('difficulty_selected', 'assets/difficulty-selected.svg');
     this.load.image('startbutton_disabled', 'assets/startbutton-disabled.svg');
     this.load.image('resignModal', 'assets/resign-modal.svg');
     this.load.image('yesResign', 'assets/yes-resign.svg');
@@ -58,7 +56,6 @@ preload.prototype = {
     this.load.spritesheet('help', 'assets/help.svg',40,40);
     this.load.spritesheet('resign', 'assets/resign.png', 101, 40);
     this.load.image('choose_bg_mark','assets/mark_choose.svg');
-    this.load.spritesheet('difficulty', 'assets/difficulty-levels.png',70,40);
     // this.load.audiosprite("audio-backgroundMusic", "assets/audio/audiosprite.mp3");
     this.load.spritesheet('cell', 'assets/xo-sprite.png', 88, 88);
     // this.load.script('font.r','//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');

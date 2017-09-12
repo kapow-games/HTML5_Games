@@ -16,6 +16,7 @@ boot.prototype = {
     // this.scale.isPortrait = false;
     this.scale.forceOrientation(true, false);
     // this.scale.setScreenSize();
+    phaserGame.add.text(0, 0, "hack", {font:"1px nunito", fill:"#000000"});
     this.input.maxPointers = 1;
     this.state.start('preload');
   }

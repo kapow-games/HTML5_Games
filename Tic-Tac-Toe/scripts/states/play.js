@@ -10,34 +10,28 @@ var gameLayoutVariables = {
   resign  : null,
   backgroundImage : null,
   backButton  : null,
-  fbButton  : null,
-  twitterButton : null,
-  shareButton : null,
   turnTextBackground : null,
-  help  : null
+  help  : null,
+  clickBlocked  : null
 };
-var initialMark;
-// var limit ;
-var myBot;
-var myGame;
-var winningMarkLine = 0 ;
-var turnText;
-var resign;
-var backgroundImage;
-var backButton;
-var fbButton;
-var twitterButton;
-var shareButton;
-var turnTextBackground;
-var help;
-var clickBlocked;
+// var initialMark;//Game, play
+// var myBot;//play
+// var myGame;
+// var winningMarkLine = 0 ;
+// var turnText;
+// var resign;
+// var backgroundImage;
+// var backButton;
+// var turnTextBackground;
+// var help;
+// var clickBlocked;
 var gameEndHandler = function(value) {
-  backgroundImage.inputEnabled = true;
-  backgroundImage.input.priorityID = 1;
-  backButton.input.priorityID = 2;
-  turnTextBackground.destroy();
-  resign.destroy();
-  help.destroy();
+  gameLayoutVariables.backgroundImage.inputEnabled = true;
+  gameLayoutVariables.backgroundImage.input.priorityID = 1;
+  gameLayoutVariables.backButton.input.priorityID = 2;
+  gameLayoutVariables.turnTextBackground.destroy();
+  gameLayoutVariables.resign.destroy();
+  gameLayoutVariables.help.destroy();
   // gameOver = true;
   shareText = (value===1)?"Lost":(value===2 ? "Won" : "Draw");
   var shareBackground = phaserGame.add.sprite(24, 528, 'shareBackground');
@@ -65,7 +59,7 @@ var gameEndHandler = function(value) {
 };
 var rematchButtonHandler  = function() {
   console.log('rematchButtonHandler Clicked');
-  console.log(myGame.gameStatus);
+  console.log(gameLayoutVariables.myGame.gameStatus);
   // gameOver  = true ;
   // saveGameData();
   // kapow.endSoloGame(function() {
@@ -99,6 +93,7 @@ var gameState = function(oldGameState) {
   }
   this.nextTurn = function() {
     this.turn = ( this.turn === 1 )? 2 : 1 ;
+    // gameLayoutVariables.clickBlocked = false;
   };
   this.emptyCells = function() {
     var indices = [] ;
@@ -114,7 +109,7 @@ var gameState = function(oldGameState) {
     let cell = this.board;
     for (let i = 0, j = CELL_ROWS; i < CELL_COLS; i++) {
       if(cell[i] !== 0 && cell[i] === cell[i+j] && cell[i+j] === cell[i+(2*j)]) {
-        winningMarkLine = i;
+        gameLayoutVariables.winningMarkLine = i;
         this.boardResult = cell[i] ;
         return true ;
       }
@@ -122,20 +117,20 @@ var gameState = function(oldGameState) {
     //Checking Columns
     for (let i = 0, j = 1; i < CELL_ROWS*CELL_COLS; i+=CELL_COLS) {
       if(cell[i] !== 0 && cell[i] === cell[i+j] && cell[i+j] === cell[i+(2*j)]) {
-        winningMarkLine = (i/CELL_COLS)+3;
+        gameLayoutVariables.winningMarkLine = (i/CELL_COLS)+3;
         this.boardResult = cell[i] ;
         return true;
       }
     }
     //Checking Leading Diagonals '\'
     if(cell[0] !== 0 && cell[0] === cell[4] && cell[4] === cell[8]) {
-      winningMarkLine = 6;
+      gameLayoutVariables.winningMarkLine = 6;
       this.boardResult = cell[4] ;
       return true;
     }
     //Checing other Diagonal '/'
     if(cell[2] !== 0 && cell[2] === cell[4] && cell[4] === cell[6]) {
-      winningMarkLine = 7;
+      gameLayoutVariables.winningMarkLine = 7;
       this.boardResult = cell[4] ;
       return true;
     }
@@ -306,7 +301,7 @@ var Game = function(bot) {
   if(playerMark === 2 && gameResume === false) {
     var randomCell = Math.floor(Math.random() * CELL_ROWS*CELL_COLS);
     this.currentState.board[randomCell] = 1 ;
-    initialMark = randomCell ;
+    gameLayoutVariables.initialMark = randomCell ;
   }
 
   this.gameStatus = -1 ;// To indicate game begining
@@ -327,11 +322,11 @@ var Game = function(bot) {
       }
       if(win !== 0) {
         if(win === playerMark) {
-          turnText.text = "  YOU WIN!";
+          gameLayoutVariables.turnText.text = "  YOU WIN!";
           gameEndHandler(2);
         }
         else {
-          turnText.text = "  YOU LOSE!";
+          gameLayoutVariables.turnText.text = "  YOU LOSE!";
           gameEndHandler(1);
         }
         // tempCells = phaserGame.state.states.play.cells.children;
@@ -340,12 +335,12 @@ var Game = function(bot) {
         // }
       }
       else {
-        turnText.text = "GAME DRAW!";
+        gameLayoutVariables.turnText.text = "GAME DRAW!";
         gameEndHandler(0);
         // gameInputHandler(0)
       }
       if(win !== 0) {
-        switch(winningMarkLine) {
+        switch(gameLayoutVariables.winningMarkLine) {
           case 0 : this.matchPosition = phaserGame.add.sprite(184, 211, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
           case 1 : this.matchPosition = phaserGame.add.sprite(184, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
           case 2 : this.matchPosition = phaserGame.add.sprite(184, 421, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
@@ -406,7 +401,7 @@ var play = function() {};
 play.prototype = {
   preload:  function() {
     screenState = 1;
-    clickBlocked = false;
+    gameLayoutVariables.clickBlocked = false;
   },
   create: function() {
     screenState = 1 ;
@@ -418,14 +413,14 @@ play.prototype = {
     CELL_RELATIVE_TOP = 167;
     CELL_RELATIVE_LEFT = 30;
 
-    backgroundImage = phaserGame.add.sprite(0, 0, 'arena');
-    // backgroundImage.inputEnabled = false;
+    gameLayoutVariables.backgroundImage = phaserGame.add.sprite(0, 0, 'arena');
+    // gameLayoutVariables.backgroundImage.inputEnabled = false;
 
     var gameBoard = this.add.sprite(19, 159, 'board');
     var resultBoard = phaserGame.add.sprite(105, 80, 'winBackground');
-    turnTextBackground = this.add.sprite(105, 80, 'turnTextBackground');
-    resign = this.add.button(130, 528, 'resign', this.resignEvent, this, 0, 0, 1, 0);
-    help = this.add.button(247, 528, 'helpEnd', this.helpButtonHandler, this, 0, 0, 1, 0);
+    gameLayoutVariables.turnTextBackground = this.add.sprite(105, 80, 'turnTextBackground');
+    gameLayoutVariables.resign = this.add.button(130, 528, 'resign', this.resignEvent, this, 0, 0, 1, 0);
+    gameLayoutVariables.help = this.add.button(247, 528, 'helpEnd', this.helpButtonHandler, this, 0, 0, 1, 0);
 
     this.playerProfilePicBackground = this.add.image(122,24,'circle');
     this.playerProfilePicBackground.scale.set(40/this.playerProfilePicBackground.width,40/this.playerProfilePicBackground.height);
@@ -467,15 +462,15 @@ play.prototype = {
 
 
 
-    turnText = phaserGame.add.text(122, 92, "");
-    turnText.fontStyle = 'normal';
-    turnText.fontSize = "20px";
-    turnText.fontWeight = 800;
-    turnText.wordWrapWidth = 119;
-    turnText.fill = "#fefefe";
-    turnText.align = "center";
-    turnText.backgroundColor = "#5684fb";
-    turnText.text = (gameOver === true) ? win === playerMark ? "  YOU WIN!" : "  YOU LOSE!" : "YOUR TURN";
+    gameLayoutVariables.turnText = phaserGame.add.text(122, 92, "");
+    gameLayoutVariables.turnText.fontStyle = 'normal';
+    gameLayoutVariables.turnText.fontSize = "20px";
+    gameLayoutVariables.turnText.fontWeight = 800;
+    gameLayoutVariables.turnText.wordWrapWidth = 119;
+    gameLayoutVariables.turnText.fill = "#fefefe";
+    gameLayoutVariables.turnText.align = "center";
+    gameLayoutVariables.turnText.backgroundColor = "#5684fb";
+    gameLayoutVariables.turnText.text = (gameOver === true) ? win === playerMark ? "  YOU WIN!" : "  YOU LOSE!" : "YOUR TURN";
 
     this.vs = phaserGame.add.text(170, 35, "VS");
     this.vs.fontStyle = 'normal';
@@ -486,14 +481,14 @@ play.prototype = {
     this.vs.align = "center";
     this.vs.backgroundColor = "#5684fb";
 
-    backButton = this.add.button(16, 32, 'back', this.backButtonHandler, this);
-    backButton.anchor.setTo(0, 0);
+    gameLayoutVariables.backButton = this.add.button(16, 32, 'back', this.backButtonHandler, this);
+    gameLayoutVariables.backButton.anchor.setTo(0, 0);
 
     this.musicButton = this.add.button(320, 32, 'music', this.musicButtonHandler, this);
     this.musicButton.anchor.setTo(0, 0);
 
-    // backgroundImage.height = this.height;
-    // backgroundImage.width = this.width;
+    // gameLayoutVariables.backgroundImage.height = this.height;
+    // gameLayoutVariables.backgroundImage.width = this.width;
     var count = 0 ;
     win = 0 ;
     this.cells = this.add.group();
@@ -531,13 +526,13 @@ play.prototype = {
     //   this.cells.children[randomCell] =
     // }
     myBot = new bot(1);
-    myGame = new Game(myBot);
+    gameLayoutVariables.myGame = new Game(myBot);
     if(playerMark === 2 && gameResume === false) {
-      this.cells.children[initialMark].frame = 1;
-      this.cells.children[initialMark].inputEnabled = false ;
+      this.cells.children[gameLayoutVariables.initialMark].frame = 1;
+      this.cells.children[gameLayoutVariables.initialMark].inputEnabled = false ;
     }
-    myBot.plays(myGame);
-    myGame.start();
+    myBot.plays(gameLayoutVariables.myGame);
+    gameLayoutVariables.myGame.start();
     if(gameOver === true && win === 0) {
       gameEndHandler(1);
     }
@@ -548,19 +543,19 @@ play.prototype = {
   },
 
   clickHandler: function(sprite, pointer) {
-    console.log(clickBlocked);
-    if(clickBlocked === false) {
-      clickBlocked = true ;
-      console.log(clickBlocked);
+    console.log(gameLayoutVariables.clickBlocked);
+    if(gameLayoutVariables.clickBlocked === false) {
+      gameLayoutVariables.clickBlocked = true ;
+      console.log(gameLayoutVariables.clickBlocked);
       var cell = this.cells.children;
       if(sprite.frame === 0) {
         sprite.frame = playerMark;
         console.log("Player's Sprite Set");
-        turnText.text = "BOT'S TURN";
+        gameLayoutVariables.turnText.text = "BOT'S TURN";
 
         this.nextMove(sprite, pointer, cell);
       }
-      clickBlocked = false;
+      gameLayoutVariables.clickBlocked = false;
     }
     else {
       console.log('Click Cancelled');
@@ -568,19 +563,19 @@ play.prototype = {
   },
 
   nextMove: function(sprite, pointer, cell) {
-    var next = new gameState(myGame.currentState);
+    var next = new gameState(gameLayoutVariables.myGame.currentState);
     console.log("Click Acknowledged");
     next.board[sprite.frameIndex]=playerMark;
     sprite.frame = playerMark;
     console.log("Player's move logged");
     next.nextTurn();
-    myGame.moveTo(next);
+    gameLayoutVariables.myGame.moveTo(next);
     for(let i = 0 ; i < CELL_COLS * CELL_ROWS ;i++) {
-      cell[i].frame = myGame.currentState.board[i];
+      cell[i].frame = gameLayoutVariables.myGame.currentState.board[i];
     }
-    if(win === 0 && myGame.gameStatus !== 3) {
+    if(win === 0 && gameLayoutVariables.myGame.gameStatus !== 3) {
       saveGameData(false);
-      turnText.text = "YOUR TURN";
+      gameLayoutVariables.turnText.text = "YOUR TURN";
     }
     else {
       saveGameData(true);
@@ -604,8 +599,8 @@ play.prototype = {
     this.yesResignButton.input.priorityID = 3 ;
 
 
-    // turnText.text = " YOU LOSE!";
-    // backgroundImage.input.priorityID = 1 ;
+    // gameLayoutVariables.turnText.text = " YOU LOSE!";
+    // gameLayoutVariables.backgroundImage.input.priorityID = 1 ;
     // setTimeout(this.quitGame,4000);
   },
   cancelResign  : function() {
@@ -617,14 +612,14 @@ play.prototype = {
   quitGame  : function() {
     win = playerMark === 1 ? 2 : 1 ;
     saveGameData(true);
-    backgroundImage.inputEnabled = true;
-    backgroundImage.input.priorityID = 1 ;
+    gameLayoutVariables.backgroundImage.inputEnabled = true;
+    gameLayoutVariables.backgroundImage.input.priorityID = 1 ;
     this.yesResignButton.destroy();
     this.cancelButton.destroy();
     this.resignModal.destroy();
     this.darkOverlay.destroy();
     tempCells = phaserGame.state.states.play.cells.children;
-    turnText.text = " YOU LOSE!";
+    gameLayoutVariables.turnText.text = " YOU LOSE!";
     gameEndHandler(1);
     // setTimeout(function() {
     //   kapow.endSoloGame(function() {
@@ -645,8 +640,8 @@ play.prototype = {
     this.musicButton = (this.musicButton.frame + 1)%2;
   },
   backButtonHandler :function() {
-    console.log(myGame.gameStatus);
-    if(myGame.gameStatus !== 3) {
+    console.log(gameLayoutVariables.myGame.gameStatus);
+    if(gameLayoutVariables.myGame.gameStatus !== 3) {
       // saveGameData(false);
     }
     else {
