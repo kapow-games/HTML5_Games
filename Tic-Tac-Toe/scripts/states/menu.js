@@ -11,6 +11,10 @@ menu.prototype = {
     this.activeGames = this.add.button(16, 256, 'onGoing', this.showActiveGames, this, 0, 0, 1, 0);
     this.activeGames.anchor.setTo(0, 0);
 
+    this.startNewGameType = this.add.sprite(16, 332, 'newGameType');
+    this.startNewGameType.frame = 1;
+    this.startNewGameType.anchor.setTo(0, 0);
+
     this.startNewGame = this.add.button(16, 332, 'newGame', this.newGameButtonHandler, this, 0, 0, 1, 0);
     this.startNewGame.anchor.setTo(0, 0);
 
@@ -29,6 +33,15 @@ menu.prototype = {
     this.helpButton = this.add.button(280, 32, 'help', this.helpButtonHandler, this);
     this.helpButton.anchor.setTo(0, 0);
 
+    this.slideDirection = 0 ; // 0 signigies downward glide and 1 signifies upward
+    this.slideStatsDown = this.add.tween(this.stats).to( { y: 438 }, 300, "Quart.easeOut");
+    this.slideLeaderboardDown = this.add.tween(this.leaderboard).to( { y: 500 }, 300, "Quart.easeOut");
+
+    this.slideStatsUp = this.add.tween(this.stats).to( { y: 394 }, 300, "Quart.easeOut");
+    this.slideLeaderboardUp = this.add.tween(this.leaderboard).to( { y: 456 }, 300, "Quart.easeOut");
+    // this.slideLeaderboard.chain(this.slideStats);
+    this.slideNewGameOptionDown = this.add.tween(this.startNewGameType).to( { y: 377 }, 300, "Quart.easeOut");
+    this.slideNewGameOptionUp = this.add.tween(this.startNewGameType).to( { y: 332 }, 300, "Quart.easeOut");
   },
   update: function() {
     screenState = 0;
@@ -50,6 +63,17 @@ menu.prototype = {
   },
   newGameButtonHandler: function() {
     console.log('New Game Button Clicked');
+    if(this.slideDirection === 0) {
+      this.slideNewGameOptionDown.start();
+      this.slideStatsDown.start();
+      this.slideLeaderboardDown.start();
+    }
+    else {
+      this.slideNewGameOptionUp.start();
+      this.slideLeaderboardUp.start();
+      this.slideStatsUp.start();
+    }
+    this.slideDirection = (this.slideDirection + 1)%2 ;
     this.state.start('select');
   },
   helpButtonHandler : function() {

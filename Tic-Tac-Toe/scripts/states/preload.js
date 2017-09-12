@@ -31,6 +31,7 @@ preload.prototype = {
     this.load.image('arena', 'assets/backGround.png');
     this.load.image('back', 'assets/back.svg');
     this.load.spritesheet('newGame', 'assets/newGame.png', 328, 46);
+    this.load.spritesheet('newGameType', 'assets/newGameType.png', 328, 45);
     this.load.spritesheet('music', 'assets/volume.png', 24, 24);
     this.load.spritesheet('leaderBoard', 'assets/leaderboard.png', 328, 46);
     this.load.spritesheet('stats', 'assets/stats.png', 328, 46);
