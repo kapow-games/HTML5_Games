@@ -87,20 +87,25 @@ var game = {
 
     },
     onPause: function() {
-      console.log('On Pause Triggered');
-      if(screenState === 1) { //2 goes for play screen and 0 for any other
-        saveGameData(false);
-      }
+      console.log('On Pause Triggered.');
+      // if(screenState === 1) { //2 goes for play screen and 0 for any other
+      //   saveGameData(gameOVer);
+      // }
     },
     onResume:function() {
-
+      console.log('On Resume Triggered.');
     },
     onBackButtonPressed:  function() {
-      if(screenState === 1) { //2 goes for play screen and 0 for any other
-        saveGameData(false);
+      console.log('BackButton Triggered.');
+      if(screenState === 1)
+        phaserGame.state.start('menu');
+      else {
+        kapow.close();
       }
-      phaserGame.state.start();
-      console.log("Back Button Pressed.");
+      // if(screenState === 1) { //2 goes for play screen and 0 for any other
+      //   saveGameData(false);
+      // }
+      // phaserGame.state.start();
       return true;
     }
   }

@@ -572,7 +572,7 @@ play.prototype = {
     console.log("Click Acknowledged");
     next.board[sprite.frameIndex]=playerMark;
     sprite.frame = playerMark;
-    // console.log(myGame);
+    console.log("Player's move logged");
     next.nextTurn();
     myGame.moveTo(next);
     for(let i = 0 ; i < CELL_COLS * CELL_ROWS ;i++) {
