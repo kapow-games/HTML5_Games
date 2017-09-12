@@ -32,6 +32,8 @@ preload.prototype = {
     this.load.image('back', 'assets/back.svg');
     this.load.spritesheet('newGame', 'assets/newGame.png', 328, 46);
     this.load.spritesheet('newGameType', 'assets/newGameType.png', 328, 45);
+    this.load.spritesheet('newGameTop', 'assets/newgame-top.png', 328, 36);
+    this.load.spritesheet('newGameBottom', 'assets/newgame-bottom.png', 328, 38);
     this.load.spritesheet('music', 'assets/volume.png', 24, 24);
     this.load.spritesheet('leaderBoard', 'assets/leaderboard.png', 328, 46);
     this.load.spritesheet('stats', 'assets/stats.png', 328, 46);
@@ -51,6 +53,8 @@ preload.prototype = {
     this.load.image('otherShare', 'assets/other.png');
     this.load.image('darkOverlay', 'assets/dark-overlay.png');
     this.load.spritesheet('startbutton', 'assets/startbutton.png', 210, 46);
+    this.load.spritesheet('gameModes', 'assets/game-modes.png', 109, 28);
+    this.load.spritesheet('gameModesPatch', 'assets/gamemode-patch.svg');
     this.load.spritesheet('rematch', 'assets/rematchbutton.png', 117, 40);
     this.load.image('rectangle', 'assets/rectangle.png');
     this.load.spritesheet('helpEnd', 'assets/help.png',40,40);
