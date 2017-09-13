@@ -1,0 +1,37 @@
+{
+  "resources": [
+    "../assets/music/audiosprite.mp3"
+  ],
+  "spritemap": {
+    "lost": {
+      "start": 0,
+      "end": 0.3657142857142857,
+      "loop": false
+    },
+    "click": {
+      "start": 2,
+      "end": 2.9926530612244897,
+      "loop": false
+    },
+    "gameover": {
+      "start": 4,
+      "end": 7.1951700680272115,
+      "loop": false
+    },
+    "loop": {
+      "start": 9,
+      "end": 103.48489795918367,
+      "loop": true
+    },
+    "start_game": {
+      "start": 120,
+      "end": 122.50836734693877,
+      "loop": false
+    },
+    "win": {
+      "start": 124,
+      "end": 127.39977324263039,
+      "loop": false
+    }
+  }
+}

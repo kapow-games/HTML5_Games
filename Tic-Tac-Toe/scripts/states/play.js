@@ -26,9 +26,10 @@ var gameLayoutVariables = {
 // var help;
 // var clickBlocked;
 var gameEndHandler = function(value) {
+  console.log("Game End Being Handled.");
   gameLayoutVariables.backgroundImage.inputEnabled = true;
-  gameLayoutVariables.backgroundImage.input.priorityID = 1;
-  gameLayoutVariables.backButton.input.priorityID = 2;
+  gameLayoutVariables.backgroundImage.input.priorityID = 2;
+  gameLayoutVariables.backButton.input.priorityID = 3;
   gameLayoutVariables.turnTextBackground.destroy();
   gameLayoutVariables.resign.destroy();
   gameLayoutVariables.help.destroy();
@@ -36,13 +37,13 @@ var gameEndHandler = function(value) {
   shareText = (value===1)?"Lost":(value===2 ? "Won" : "Draw");
   var shareBackground = phaserGame.add.sprite(72, 1584, 'shareBackground');
   var shareFbButton = phaserGame.add.button(294, 1614, 'fbShare', function() {console.log("Fb share clicked");kapow.social.share(shareText, 'facebook', function(){console.log("Fb share Successfull")},function() { console.log("Fb Share Failed") });});
-  shareFbButton.input.priorityID = 2 ;
+  shareFbButton.input.priorityID = 3 ;
   var shareTwitterButton = phaserGame.add.button(408, 1614, 'twitterShare',  function() {console.log("Twitter share clicked");kapow.social.share(shareText, 'twitter',function(){console.log("Twitter share Successfull")},function() { console.log("Twitter Share Failed") });});
-  shareTwitterButton.input.priorityID = 2 ;
+  shareTwitterButton.input.priorityID = 3 ;
   var shareOtherButton = phaserGame.add.button(522, 1614, 'otherShare', function() {console.log("Other share clicked");kapow.social.share(shareText, null, function(){console.log("Other share Successfull")},function() { console.log("Other Share Failed") });});
-  shareOtherButton.input.priorityID = 2 ;
+  shareOtherButton.input.priorityID = 3 ;
   var rematchButton = phaserGame.add.button(657, 1584, 'rematch',rematchButtonHandler, 0, 0, 1, 0);
-  rematchButton.input.priorityID = 2 ;
+  rematchButton.input.priorityID = 3 ;
   // saveGameData(true);
   kapow.endSoloGame(function() {
     boardStatus = {cells:new Array(9)};
@@ -543,23 +544,26 @@ play.prototype = {
   },
 
   clickHandler: function(sprite, pointer) {
-    console.log(gameLayoutVariables.clickBlocked);
-    if(gameLayoutVariables.clickBlocked === false) {
-      gameLayoutVariables.clickBlocked = true ;
-      console.log(gameLayoutVariables.clickBlocked);
-      var cell = this.cells.children;
-      if(sprite.frame === 0) {
-        sprite.frame = playerMark;
-        console.log("Player's Sprite Set");
-        gameLayoutVariables.turnText.text = "BOT'S TURN";
+    var cell = this.cells.children;
+    if(sprite.frame === 0) {
+      gameLayoutVariables.backgroundImage.inputEnabled = true;
+      gameLayoutVariables.backgroundImage.input.priorityID = 2;
+      gameLayoutVariables.backButton.input.priorityID = 2;
+      this.musicButton.input.priorityID = 2;
+      gameLayoutVariables.resign.input.priorityID = 2;
 
-        this.nextMove(sprite, pointer, cell);
-      }
-      gameLayoutVariables.clickBlocked = false;
+      sprite.frame = playerMark;
+      console.log("Player's Sprite Set");
+      gameLayoutVariables.turnText.text = "BOT'S TURN";
+      var that = this;
+      setTimeout(function() {
+        that.nextMove(sprite, pointer, cell);
+      }, 1000);
     }
     else {
-      console.log('Click Cancelled');
+      console.log('Cell already occupied.');
     }
+
   },
 
   nextMove: function(sprite, pointer, cell) {
@@ -576,6 +580,11 @@ play.prototype = {
     if(win === 0 && gameLayoutVariables.myGame.gameStatus !== 3) {
       saveGameData(false);
       gameLayoutVariables.turnText.text = "YOUR TURN";
+      gameLayoutVariables.backgroundImage.input.priorityID = 1;
+      gameLayoutVariables.backgroundImage.inputEnabled = false;
+      gameLayoutVariables.backButton.input.priorityID = 1;
+      this.musicButton.input.priorityID = 1;
+      gameLayoutVariables.resign.input.priorityID = 1;
     }
     else {
       saveGameData(true);
@@ -584,19 +593,19 @@ play.prototype = {
   resignEvent : function() {
     this.darkOverlay = phaserGame.add.button(0, 0, 'darkOverlay', this.cancelResign, this);
     this.darkOverlay.inputEnabled = true ;
-    this.darkOverlay.input.priorityID = 1 ;
+    this.darkOverlay.input.priorityID = 2 ;
 
     this.resignModal = phaserGame.add.sprite(72, 540, 'resignModal');
     this.resignModal.inputEnabled = true ;
-    this.resignModal.input.priorityID = 2 ;
+    this.resignModal.input.priorityID = 3 ;
 
     this.cancelButton = phaserGame.add.button(291, 1191, 'cancel', this.cancelResign, this);
     this.cancelButton.inputEnabled = true ;
-    this.cancelButton.input.priorityID = 3 ;
+    this.cancelButton.input.priorityID = 4 ;
 
     this.yesResignButton = phaserGame.add.button(522, 1191, 'yesResign', this.quitGame, this);
     this.yesResignButton.inputEnabled = true ;
-    this.yesResignButton.input.priorityID = 3 ;
+    this.yesResignButton.input.priorityID = 4 ;
 
 
     // gameLayoutVariables.turnText.text = " YOU LOSE!";

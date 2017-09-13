@@ -7,6 +7,7 @@ var gameVariables = {
   gameResume  : false,
   botLevel  : 1,
   win : 0,
+  gameModeFriend  : null, //0 : vsSolo, 1 : vsRandom, 2 :vsFriend
   playerMark : 0
 };
 

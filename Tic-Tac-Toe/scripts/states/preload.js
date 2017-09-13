@@ -16,6 +16,7 @@ var WebFontConfig = {
     }
 
 };
+
 preload.prototype = {
   preload : function() {
     console.log("Preloading Assets");
@@ -31,7 +32,7 @@ preload.prototype = {
     this.load.image('arena', 'assets/images/backGround.png');
     this.load.image('back', 'assets/images/back.png');
     // this.load.spritesheet('newGame', 'assets/images/newGame.png', 328, 46);
-    // this.load.spritesheet('newGameType', 'assets/images/newGameType.png', 328, 45);
+    // this.load.audiosprite('audio', 'assets/music/audioSprite.mp3', null, "assets/music/audioSprite.json");
     this.load.spritesheet('newGameTop', 'assets/images/newgame-top.png', 984, 108);
     this.load.spritesheet('newGameBottom', 'assets/images/newgame-bottom.png', 984, 114);
     this.load.spritesheet('music', 'assets/images/volume.png', 72, 72);
