@@ -63,7 +63,7 @@ preload.prototype = {
     this.load.spritesheet('resign', 'assets/assets3x/resignbutton.png', 303, 120);
     this.load.image('choose_bg_mark','assets/assets3x/mark-choose.png');
     // this.load.audiosprite("audio-backgroundMusic", "assets/assets3x/audio/audiosprite.mp3");
-    this.load.spritesheet('cell', 'assets/assets3x/xo-sprite.png',296, 264);
+    this.load.spritesheet('cell', 'assets/assets3x/xo-sprite.png',264, 264);
     // this.load.script('font.r','//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
   },
   create: function() {
