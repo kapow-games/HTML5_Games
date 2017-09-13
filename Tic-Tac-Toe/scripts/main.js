@@ -5,7 +5,7 @@
 //   }
 // };
 
-var phaserGame = new Phaser.Game(360, 592, Phaser.CANVAS, 'tic-tac-toe');
+var phaserGame = new Phaser.Game(1080, 1920, Phaser.CANVAS, 'tic-tac-toe');
 
 phaserGame.state.add('boot', boot);
 phaserGame.state.add('gameover', gameover);
