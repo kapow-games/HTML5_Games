@@ -34,14 +34,14 @@ var gameEndHandler = function(value) {
   gameLayoutVariables.help.destroy();
   // gameOver = true;
   shareText = (value===1)?"Lost":(value===2 ? "Won" : "Draw");
-  var shareBackground = phaserGame.add.sprite(24, 528, 'shareBackground');
-  var shareFbButton = phaserGame.add.button(98, 538, 'fbShare', function() {console.log("Fb share clicked");kapow.social.share(shareText, 'facebook', function(){console.log("Fb share Successfull")},function() { console.log("Fb Share Failed") });});
+  var shareBackground = phaserGame.add.sprite(72, 1584, 'shareBackground');
+  var shareFbButton = phaserGame.add.button(294, 1614, 'fbShare', function() {console.log("Fb share clicked");kapow.social.share(shareText, 'facebook', function(){console.log("Fb share Successfull")},function() { console.log("Fb Share Failed") });});
   shareFbButton.input.priorityID = 2 ;
-  var shareTwitterButton = phaserGame.add.button(136, 538, 'twitterShare',  function() {console.log("Twitter share clicked");kapow.social.share(shareText, 'twitter',function(){console.log("Twitter share Successfull")},function() { console.log("Twitter Share Failed") });});
+  var shareTwitterButton = phaserGame.add.button(408, 1614, 'twitterShare',  function() {console.log("Twitter share clicked");kapow.social.share(shareText, 'twitter',function(){console.log("Twitter share Successfull")},function() { console.log("Twitter Share Failed") });});
   shareTwitterButton.input.priorityID = 2 ;
-  var shareOtherButton = phaserGame.add.button(174, 538, 'otherShare', function() {console.log("Other share clicked");kapow.social.share(shareText, null, function(){console.log("Other share Successfull")},function() { console.log("Other Share Failed") });});
+  var shareOtherButton = phaserGame.add.button(522, 1614, 'otherShare', function() {console.log("Other share clicked");kapow.social.share(shareText, null, function(){console.log("Other share Successfull")},function() { console.log("Other Share Failed") });});
   shareOtherButton.input.priorityID = 2 ;
-  var rematchButton = phaserGame.add.button(219, 528, 'rematch',rematchButtonHandler, 0, 0, 1, 0);
+  var rematchButton = phaserGame.add.button(657, 1584, 'rematch',rematchButtonHandler, 0, 0, 1, 0);
   rematchButton.input.priorityID = 2 ;
   // saveGameData(true);
   kapow.endSoloGame(function() {
@@ -341,14 +341,14 @@ var Game = function(bot) {
       }
       if(win !== 0) {
         switch(gameLayoutVariables.winningMarkLine) {
-          case 0 : this.matchPosition = phaserGame.add.sprite(184, 211, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
-          case 1 : this.matchPosition = phaserGame.add.sprite(184, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
-          case 2 : this.matchPosition = phaserGame.add.sprite(184, 421, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
-          case 3 : this.matchPosition = phaserGame.add.sprite(74, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);break;
-          case 4 : this.matchPosition = phaserGame.add.sprite(184, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);break;
-          case 5 : this.matchPosition = phaserGame.add.sprite(294, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);break;
-          case 6 : this.matchPosition = phaserGame.add.sprite(184, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=-45;break;
-          case 7 : this.matchPosition = phaserGame.add.sprite(184, 316, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=45;break;
+          case 0 : this.matchPosition = phaserGame.add.sprite(552, 633, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
+          case 1 : this.matchPosition = phaserGame.add.sprite(552, 948, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
+          case 2 : this.matchPosition = phaserGame.add.sprite(552, 1263, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=90;break;
+          case 3 : this.matchPosition = phaserGame.add.sprite(222, 948, 'rectangle');this.matchPosition.anchor.setTo(0.5);break;
+          case 4 : this.matchPosition = phaserGame.add.sprite(552, 948, 'rectangle');this.matchPosition.anchor.setTo(0.5);break;
+          case 5 : this.matchPosition = phaserGame.add.sprite(882, 948, 'rectangle');this.matchPosition.anchor.setTo(0.5);break;
+          case 6 : this.matchPosition = phaserGame.add.sprite(552, 948, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=-45;break;
+          case 7 : this.matchPosition = phaserGame.add.sprite(552, 948, 'rectangle');this.matchPosition.anchor.setTo(0.5);this.matchPosition.angle=45;break;
         }
       }
       // kapow.endSoloGame(function() {
@@ -407,84 +407,84 @@ play.prototype = {
     screenState = 1 ;
     console.log("Loading Game Layout.");
     var CELL_WIDTH, CELL_HEIGHT, CELL_WIDTH_PAD, CELL_HEIGHT_PAD, CELL_RELATIVE_TOP, CELL_RELATIVE_LEFT;
-    CELL_WIDTH = CELL_HEIGHT = 88;
+    CELL_WIDTH = CELL_HEIGHT = 264;
     CELL_COLS = CELL_ROWS = 3;
-    CELL_WIDTH_PAD = CELL_HEIGHT_PAD = 18;
-    CELL_RELATIVE_TOP = 167;
-    CELL_RELATIVE_LEFT = 30;
+    CELL_WIDTH_PAD = CELL_HEIGHT_PAD = 54;
+    CELL_RELATIVE_TOP = 501;
+    CELL_RELATIVE_LEFT = 90;
 
     gameLayoutVariables.backgroundImage = phaserGame.add.sprite(0, 0, 'arena');
     // gameLayoutVariables.backgroundImage.inputEnabled = false;
 
-    var gameBoard = this.add.sprite(19, 159, 'board');
-    var resultBoard = phaserGame.add.sprite(105, 80, 'winBackground');
-    gameLayoutVariables.turnTextBackground = this.add.sprite(105, 80, 'turnTextBackground');
-    gameLayoutVariables.resign = this.add.button(130, 528, 'resign', this.resignEvent, this, 0, 0, 1, 0);
-    gameLayoutVariables.help = this.add.button(247, 528, 'helpEnd', this.helpButtonHandler, this, 0, 0, 1, 0);
+    var gameBoard = this.add.sprite(57, 477, 'board');
+    var resultBoard = phaserGame.add.sprite(315, 240, 'winBackground');
+    gameLayoutVariables.turnTextBackground = this.add.sprite(315, 240, 'turnTextBackground');
+    gameLayoutVariables.resign = this.add.button(390, 1584, 'resign', this.resignEvent, this, 0, 0, 1, 0);
+    gameLayoutVariables.help = this.add.button(741, 1584, 'helpEnd', this.helpButtonHandler, this, 0, 0, 1, 0);
 
-    this.playerProfilePicBackground = this.add.image(122,24,'circle');
-    this.playerProfilePicBackground.scale.set(40/this.playerProfilePicBackground.width,40/this.playerProfilePicBackground.height);
+    this.playerProfilePicBackground = this.add.image(366,72,'circle');
+    this.playerProfilePicBackground.scale.set(120/this.playerProfilePicBackground.width,120/this.playerProfilePicBackground.height);
 
 
-    this.playerProfilePic = this.add.image(124,26,'profilePic');
-    this.playerProfilePic.scale.set(36/this.playerProfilePic.width,36/this.playerProfilePic.height);
+    this.playerProfilePic = this.add.image(372,78,'profilePic');
+    this.playerProfilePic.scale.set(108/this.playerProfilePic.width,108/this.playerProfilePic.height);
 
     mask = phaserGame.add.graphics(0, 0);
     mask.beginFill(0xffffff);
-    mask.drawCircle(142,44,36);
+    mask.drawCircle(426,132,108);
     this.playerProfilePic.mask = mask;
 
-    this.playerProfilePicMarkBackground = this.add.image(146,48,'circle');
-    this.playerProfilePicMarkBackground.scale.set(16/this.playerProfilePicMarkBackground.width,16/this.playerProfilePicMarkBackground.height);
+    this.playerProfilePicMarkBackground = this.add.image(438,144,'circle');
+    this.playerProfilePicMarkBackground.scale.set(48/this.playerProfilePicMarkBackground.width,48/this.playerProfilePicMarkBackground.height);
 
-    this.playerProfilePicMark = this.add.sprite(146,48,'cell');
+    this.playerProfilePicMark = this.add.sprite(438,144,'cell');
     this.playerProfilePicMark.frame = playerMark ;
-    this.playerProfilePicMark.scale.set(16/this.playerProfilePicMark.width,16/this.playerProfilePicMark.height);
+    this.playerProfilePicMark.scale.set(48/this.playerProfilePicMark.width,48/this.playerProfilePicMark.height);
 
 
-    this.botProfilePicBackground = this.add.image(198,24,'circle');
-    this.botProfilePicBackground.scale.set(40/this.botProfilePicBackground.width,40/this.botProfilePicBackground.height);
+    this.botProfilePicBackground = this.add.image(594,72,'circle');
+    this.botProfilePicBackground.scale.set(120/this.botProfilePicBackground.width,120/this.botProfilePicBackground.height);
 
-    this.botProfilePic = this.add.image(200,26,'botPic');
-    this.botProfilePic.scale.set(36/this.botProfilePic.width,36/this.botProfilePic.height);
+    this.botProfilePic = this.add.image(600,78,'botPic');
+    this.botProfilePic.scale.set(108/this.botProfilePic.width,108/this.botProfilePic.height);
 
     mask = phaserGame.add.graphics(0, 0);
     mask.beginFill(0xffffff);
-    mask.drawCircle(218,44,36);
+    mask.drawCircle(654,132,108);
     this.botProfilePic.mask = mask;
 
-    this.botProfilePicMarkBackground = this.add.image(198,48,'circle');
-    this.botProfilePicMarkBackground.scale.set(16/this.botProfilePicMarkBackground.width,16/this.botProfilePicMarkBackground.height);
+    this.botProfilePicMarkBackground = this.add.image(594,144,'circle');
+    this.botProfilePicMarkBackground.scale.set(48/this.botProfilePicMarkBackground.width,48/this.botProfilePicMarkBackground.height);
 
-    this.botProfilePicMark = this.add.sprite(198,48,'cell');
+    this.botProfilePicMark = this.add.sprite(594,144,'cell');
     this.botProfilePicMark.frame = ( (playerMark === 2) ? 1 : 2) ;
-    this.botProfilePicMark.scale.set(16/this.botProfilePicMark.width,16/this.botProfilePicMark.height);
+    this.botProfilePicMark.scale.set(48/this.botProfilePicMark.width,48/this.botProfilePicMark.height);
 
 
 
-    gameLayoutVariables.turnText = phaserGame.add.text(122, 92, "");
+    gameLayoutVariables.turnText = phaserGame.add.text(366, 276, "");
     gameLayoutVariables.turnText.fontStyle = 'normal';
-    gameLayoutVariables.turnText.fontSize = "20px";
+    gameLayoutVariables.turnText.fontSize = "60px";
     gameLayoutVariables.turnText.fontWeight = 800;
-    gameLayoutVariables.turnText.wordWrapWidth = 119;
+    gameLayoutVariables.turnText.wordWrapWidth = 355;
     gameLayoutVariables.turnText.fill = "#fefefe";
     gameLayoutVariables.turnText.align = "center";
     gameLayoutVariables.turnText.backgroundColor = "#5684fb";
     gameLayoutVariables.turnText.text = (gameOver === true) ? win === playerMark ? "  YOU WIN!" : "  YOU LOSE!" : "YOUR TURN";
 
-    this.vs = phaserGame.add.text(170, 35, "VS");
+    this.vs = phaserGame.add.text(511, 105, "VS");
     this.vs.fontStyle = 'normal';
-    this.vs.fontSize = "14px";
+    this.vs.fontSize = "42px";
     this.vs.fontWeight = 800;
-    this.vs.wordWrapWidth = 119;
+    this.vs.wordWrapWidth = 58;
     this.vs.fill = "#fefefe";
     this.vs.align = "center";
     this.vs.backgroundColor = "#5684fb";
 
-    gameLayoutVariables.backButton = this.add.button(16, 32, 'back', this.backButtonHandler, this);
+    gameLayoutVariables.backButton = this.add.button(48, 96, 'back', this.backButtonHandler, this);
     gameLayoutVariables.backButton.anchor.setTo(0, 0);
 
-    this.musicButton = this.add.button(320, 32, 'music', this.musicButtonHandler, this);
+    this.musicButton = this.add.button(960, 96, 'music', this.musicButtonHandler, this);
     this.musicButton.anchor.setTo(0, 0);
 
     // gameLayoutVariables.backgroundImage.height = this.height;
@@ -586,15 +586,15 @@ play.prototype = {
     this.darkOverlay.inputEnabled = true ;
     this.darkOverlay.input.priorityID = 1 ;
 
-    this.resignModal = phaserGame.add.sprite(24, 180, 'resignModal');
+    this.resignModal = phaserGame.add.sprite(72, 540, 'resignModal');
     this.resignModal.inputEnabled = true ;
     this.resignModal.input.priorityID = 2 ;
 
-    this.cancelButton = phaserGame.add.button(97, 397, 'cancel', this.cancelResign, this);
+    this.cancelButton = phaserGame.add.button(291, 1191, 'cancel', this.cancelResign, this);
     this.cancelButton.inputEnabled = true ;
     this.cancelButton.input.priorityID = 3 ;
 
-    this.yesResignButton = phaserGame.add.button(174, 397, 'yesResign', this.quitGame, this);
+    this.yesResignButton = phaserGame.add.button(522, 1191, 'yesResign', this.quitGame, this);
     this.yesResignButton.inputEnabled = true ;
     this.yesResignButton.input.priorityID = 3 ;
 
