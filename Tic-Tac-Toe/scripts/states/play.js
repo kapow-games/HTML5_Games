@@ -650,6 +650,14 @@ play.prototype = {
   },
   backButtonHandler :function() {
     console.log(gameLayoutVariables.myGame.gameStatus);
+    kapow.unloadRoom(function(){console.log('Room Succesfully Unloaded');},function(){console.log('Room Unloading Failed');});
+    gameResume = false;
+    room=null;
+    playerMark = 0;
+    botLevel  = -1;
+    boardStatus =  {cells: new Array(9)};
+    gameOver = false;
+    win = 0;
     if(gameLayoutVariables.myGame.gameStatus !== 3) {
       // saveGameData(false);
     }
