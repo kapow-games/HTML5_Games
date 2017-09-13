@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="52" height="12" viewBox="0 0 52 12">
-    <g fill="none" fill-rule="evenodd">
-        <path d="M-9-13h69v40H-9z"/>
-        <text fill="#BEBDBE" font-family="Nunito-ExtraBold, Nunito" font-size="13" font-weight="600" transform="translate(-9 -13)">
-            <tspan x="8.935" y="24">CANCEL</tspan>
-        </text>
-    </g>
-</svg>
