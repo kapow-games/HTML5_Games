@@ -558,6 +558,8 @@ play.prototype = {
       sprite.frame = playerMark;
       console.log("Player's Sprite Set");
       gameLayoutVariables.turnText.text = "BOT'S TURN";
+      this.botProfilePic.alpha = 1;
+      this.playerProfilePic.alpha = 0.3;
       var that = this;
       setTimeout(function() {
         that.nextMove(sprite, pointer, cell);
@@ -583,6 +585,8 @@ play.prototype = {
     if(win === 0 && gameLayoutVariables.myGame.gameStatus !== 3) {
       saveGameData(false);
       gameLayoutVariables.turnText.text = "YOUR TURN";
+      this.botProfilePic.alpha = 0.3;
+      this.playerProfilePic.alpha = 1;
       gameLayoutVariables.backgroundImage.input.priorityID = 1;
       gameLayoutVariables.backgroundImage.inputEnabled = false;
       gameLayoutVariables.backButton.input.priorityID = 1;
