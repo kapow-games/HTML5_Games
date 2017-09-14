@@ -140,7 +140,6 @@ menu.prototype = {
     kapow.startGameWithFriends(2, 2, function(roomDetail) {
       room = roomDetail;
       parseRoomAndRedirectToGame();
-      phaserGame.state.start('play');
     }, function(error) {
       console.log("startcsFriendGame Failed : ",error);
     });

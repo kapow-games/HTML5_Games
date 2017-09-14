@@ -44,22 +44,33 @@ var gameEndHandler = function(value) {
   shareOtherButton.input.priorityID = 3 ;
   var rematchButton = phaserGame.add.button(657, 1584, 'rematch',rematchButtonHandler, 0, 0, 1, 0);
   rematchButton.input.priorityID = 3 ;
-  kapow.endSoloGame(function() {
-    boardStatus = {cells:new Array(9)};
-    botLevel = -1 ; //TODO : Remove This. Redundant
-    win = 0 ;
-    gameOver = false ;
-    room = null;
-    playerMark = 0;
-    gameResume = false ;
-    console.log("Game Succesfully Closed.");
-  }, function(error) {
-    console.log("endSoloGame Failed : ",error);
-  });
+  if(gameLocked === false)
+  {
+    kapow.endSoloGame(function() {
+      boardStatus = {cells:new Array(9)};
+      botLevel = -1 ; //TODO : Remove This. Redundant
+      win = 0 ;
+      gameOver = false ;
+      room = null;
+      playerMark = 0;
+      gameResume = false ;
+      console.log("Game Succesfully Closed.");
+    }, function(error) {
+      console.log("endSoloGame Failed : ",error);
+    });
+  }
 };
 var rematchButtonHandler  = function() {
   console.log('rematchButtonHandler Clicked');
   console.log(gameLayoutVariables.myGame.gameStatus);
+  boardStatus = {cells:new Array(9)};
+  botLevel = -1 ; //TODO : Remove This. Redundant
+  win = 0 ;
+  gameOver = false ;
+  room = null;
+  playerMark = 0;
+  gameResume = false ;
+  gameLocked = false ;
   // gameOver  = true ;
   // saveGameData();
   // kapow.endSoloGame(function() {

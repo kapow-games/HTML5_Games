@@ -45,6 +45,7 @@ var win = 0 ;
 var playerMark = 0 ;
 var gameOver = false ;
 var opponentData = null ;
+var gameLocked = false ;
 
 var parseRoomAndRedirectToGame = function() {
   if (room == null) {
@@ -70,7 +71,7 @@ var parseRoomAndRedirectToGame = function() {
           }
           console.log("Redirecting to game...");
           console.log("\nUser: " + JSON.stringify(user) + "\nOpponent: " + JSON.stringify(opponent));
-          // redirectToGame();
+          phaserGame.state.start('play');
       } else {
           console.log("Room not having player...");
       }
@@ -99,6 +100,7 @@ var game = {
                       boardStatus =  valueJSON.board;
                       playerData  = valueJSON.playerData;
                       gameOver = valueJSON.gameOver;
+                      gameLocked = gameOver;
                       win = valueJSON.winner;
                     }
                     else {
