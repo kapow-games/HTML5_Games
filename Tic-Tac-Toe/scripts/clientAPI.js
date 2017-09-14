@@ -44,6 +44,39 @@ var botLevel = -1 ;
 var win = 0 ;
 var playerMark = 0 ;
 var gameOver = false ;
+var opponentData = null ;
+
+var parseRoomAndRedirectToGame = function() {
+  if (room == null) {
+      console.log("Room is null, hence not redirecting to game");
+  } else {
+      var players = room.players;
+      if (players.length >= 1) {
+          if (players.length === 2) {
+              if (players[0].id === playerData.id) {
+                  opponent = players[1];
+                  user = players[0];
+              } else {
+                  opponent = players[0];
+                  user = players[1];
+              }
+          }
+          if (players.length === 1) {
+              if (players[0].id === playerData.id) {
+                  playerData = players[0];
+              } else {
+                  opponentData = players[0];
+              }
+          }
+          console.log("Redirecting to game...");
+          console.log("\nUser: " + JSON.stringify(user) + "\nOpponent: " + JSON.stringify(opponent));
+          // redirectToGame();
+      } else {
+          console.log("Room not having player...");
+      }
+  }
+};
+
 var game = {
     onLoad: function(roomObj) {
         console.log("Client onLoad - " + JSON.stringify(roomObj));

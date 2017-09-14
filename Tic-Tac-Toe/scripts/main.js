@@ -8,7 +8,6 @@
 var phaserGame = new Phaser.Game(1080, 1920, Phaser.CANVAS, 'tic-tac-toe');
 
 phaserGame.state.add('boot', boot);
-phaserGame.state.add('gameover', gameover);
 phaserGame.state.add('menu', menu);
 phaserGame.state.add('play', play);
 phaserGame.state.add('preload', preload);

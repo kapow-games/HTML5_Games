@@ -44,10 +44,9 @@ var gameEndHandler = function(value) {
   shareOtherButton.input.priorityID = 3 ;
   var rematchButton = phaserGame.add.button(657, 1584, 'rematch',rematchButtonHandler, 0, 0, 1, 0);
   rematchButton.input.priorityID = 3 ;
-  // saveGameData(true);
   kapow.endSoloGame(function() {
     boardStatus = {cells:new Array(9)};
-    botLevel = -1 ;
+    botLevel = -1 ; //TODO : Remove This. Redundant
     win = 0 ;
     gameOver = false ;
     room = null;
