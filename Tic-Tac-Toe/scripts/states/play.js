@@ -532,6 +532,9 @@ play.prototype = {
       this.cells.children[gameLayoutVariables.initialMark].frame = 1;
       this.cells.children[gameLayoutVariables.initialMark].inputEnabled = false ;
     }
+    if(gameOver === false) {
+      saveGameData(false);
+    }
     myBot.plays(gameLayoutVariables.myGame);
     gameLayoutVariables.myGame.start();
     if(gameOver === true && win === 0) {
