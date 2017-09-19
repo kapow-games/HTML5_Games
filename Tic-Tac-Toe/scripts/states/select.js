@@ -60,6 +60,7 @@ select.prototype = {
     this.startButton.inputEnabled = false ;
     kapow.startSoloGame(function(roomDetail) {
       room = roomDetail;
+      gameType = "solo";
       phaserGame.state.start('play');
     }, function(error) {
       console.log("startSoloGame Failed : ",error);

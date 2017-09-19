@@ -139,12 +139,15 @@ menu.prototype = {
   againstFriend : function() {
     kapow.startGameWithFriends(2, 2, function(roomDetail) {
       room = roomDetail;
+      playerMark = 1 ;
+      opponentMark = 2 ;
       parseRoomAndRedirectToGame();
     }, function(error) {
       console.log("startcsFriendGame Failed : ",error);
     });
   },
   againstComputer : function() {
+    gameType = 'solo';
     this.state.start('select');
   },
   helpButtonHandler : function() {

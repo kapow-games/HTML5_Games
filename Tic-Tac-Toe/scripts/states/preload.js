@@ -25,7 +25,7 @@ preload.prototype = {
     this.asset.anchor.setTo(0.5,0.5);
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-    this.load.image('profilePic',playerData.player.profileImage);
+    this.load.image('profilePic',playerData.profileImage);
     this.load.image('botPic','assets/images/botPic.png');
 		this.load.image('logo', 'assets/images/logo.png');
     this.load.spritesheet('onGoing', 'assets/images/onGoing.png', 984, 180);
