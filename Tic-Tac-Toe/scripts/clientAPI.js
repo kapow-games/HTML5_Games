@@ -233,11 +233,11 @@ var game = {
     },
     onGameEnd : function(outcome) {
       console.log("CLIENT :  Game Ended",outcome);
-      if(outcome[playerData.id] === 1 && outcome[opponentData.id] === 1) {
+      if(outcome.ranks[playerData.id] === 1 && outcome.ranks[opponentData.id] === 1) {
         console.log("Game Draw");
         // gameEndHandler(0);
       }
-      else if(outcome[playerData.id] === 1) {
+      else if(outcome.ranks[playerData.id] === 1) {
         console.log("Game Won");
         // gameEndHandler(2);
       }
@@ -286,6 +286,7 @@ var game = {
         for(var i = 0 ; i < 9 ; i++) {
           phaserGame.state.states.play.cells.children[i].frame = message.data.moveData.board[i];
         }
+        gameLayoutVariables.turnText.text = "Your Turn.";
         boardStatus.cells = message.data.moveData.board;
         if(playerMark === 0) {
           playerMark = 2;

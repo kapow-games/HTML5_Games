@@ -648,7 +648,7 @@ play.prototype = {
       this.musicButton.input.priorityID = 2;
       gameLayoutVariables.resign.input.priorityID = 2;
       console.log("Player's Sprite Set");
-      gameLayoutVariables.turnText.text = "BOT'S TURN";
+      gameLayoutVariables.turnText.text = gameType === "solo" ? "BOT'S TURN" : "Waiting for Turn.";
       this.opponentProfilePic.alpha = 1;
       this.playerProfilePic.alpha = 0.3;
       //What if the move fails
@@ -680,7 +680,7 @@ play.prototype = {
             }
             else {
               // processMoveN(obj);
-              gameLayoutVariables.turnText.text = "YOUR TURN";
+              // gameLayoutVariables.turnText.text = "YOUR TURN";
               that.opponentProfilePic.alpha = 0.3;
               that.playerProfilePic.alpha = 1;
               gameLayoutVariables.backgroundImage.input.priorityID = 1;
@@ -782,7 +782,7 @@ play.prototype = {
     this.musicButton = (this.musicButton.frame + 1)%2;
   },
   backButtonHandler :function() {
-    console.log(gameLayoutVariables.myGame.gameStatus);
+    console.log("WebView BACK presed.");
     kapow.unloadRoom(function(){console.log('Room Succesfully Unloaded');},function(){console.log('Room Unloading Failed');});
     gameResume = false;
     room=null;
@@ -791,22 +791,6 @@ play.prototype = {
     boardStatus =  {cells: new Array(9)};
     gameOver = false;
     win = 0;
-    if(gameLayoutVariables.myGame.gameStatus !== 3) {
-      // saveGameData(false);
-    }
-    else {
-      // kapow.endSoloGame(function() {
-      //   boardStatus = {cells:new Array(9)};
-      //   botLevel = -1 ;
-      //   win = 0 ;
-      //   room = null;
-      //   playerMark = 0;
-      //   gameResume = false ;
-      //   console.log("Game Succesfully Closed.");
-      // }, function(error) {
-      //   console.log("endSoloGame Failed : ",error);
-      // });
-    }
     phaserGame.state.start('menu');
   }
 };
