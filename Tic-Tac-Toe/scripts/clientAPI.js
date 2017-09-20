@@ -98,26 +98,39 @@ var parseRoomAndRedirectToGame = function() {
                       console.log("First Message in was NOT affiliation change indicator", messagesHistory[0]);
                     }
                     for (var i = messagesHistory.length - 1; i >= 0; i--) {
-                      if (messagesHistory[i].type == "move" || messagesHistory[i].type == "outcome") {
+                      if (messagesHistory[i].type == "move") {
                         history.push(messagesHistory[i]);
                       }
-                      if (messagesHistory[i].type === "move" && messagesHistory[i].data.result === "lost") {
+                      if ( messagesHistory[i].type === "outcome") {
                         gameOver = true ;
-                        boardStatus.cells = messagesHistory[i].data.moveData.board;
-                        if(messagesHistory[i].senderId === playerData.id) {
-                          turnOfPlayer = opponentData ;
+                        if(messagesHistory[i].data.type === "result") {
+                          if(messagesHistory[i].data.ranks[playerData.id] === messagesHistory[i].data.ranks[opponentData.id]) {
+                              turnOfPlayer = 0 ;
+                          }
+                          else if(messagesHistory[i].data.ranks[playerData.id] === 1) {
+                            turnOfPlayer = opponentData ;
+                          }
+                          else if(messagesHistory[i].data.ranks[playerData.id] === 2) {
+                            turnOfPlayer = playerData ;
+                          }
+                          else {
+                            console.log("Player Turn couldn't be detrminded");
+                          }
                         }
-                        else if(messagesHistory[i].senderId === opponentData.id) {
-                          turnOfPlayer = playerData ;
+                        else if(messagesHistory[i].data.type === "resignation") {
+                          if(messagesHistory[i].data.ranks[playerData.id] === messagesHistory[i].data.ranks[opponentData.id]) {
+                              turnOfPlayer = 0 ;
+                          }
+                          else if(messagesHistory[i].data.ranks[playerData.id] === 1) {
+                            turnOfPlayer = opponentData ;
+                          }
+                          else if(messagesHistory[i].data.ranks[playerData.id] === 2) {
+                            turnOfPlayer = playerData ;
+                          }
+                          else {
+                            console.log("Player Turn couldn't be detrminded");
+                          }
                         }
-                        else {
-                          console.log("Current Turn can't be determined");
-                        }
-                      }
-                      if (messagesHistory[i].type === "move" && messagesHistory[i].data.result === "draw") {
-                        gameOver = true ;
-                        boardStatus.cells = messagesHistory[i].data.moveData.board;
-                        turnOfPlayer = 0;
                       }
                     }
                   }
@@ -232,7 +245,17 @@ var game = {
 
     },
     onGameEnd : function(outcome) {
-      console.log("CLIENT :  Game Ended",outcome);
+      console.log("CLIENT : Game Ended",outcome);
+      if(outcome.type === "resignation"){
+        if(outcome.ranks[playerData.id] === 1) {
+          console.log("Game Won");
+          gameEndHandler(2);
+        }
+        else {
+          console.log("Game Lost");
+          gameEndHandler(1);
+        }
+      }
       if(outcome.ranks[playerData.id] === 1 && outcome.ranks[opponentData.id] === 1) {
         console.log("Game Draw");
         // gameEndHandler(0);

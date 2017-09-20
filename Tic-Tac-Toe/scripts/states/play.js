@@ -753,30 +753,45 @@ play.prototype = {
   },
   quitGame  : function() {
     win = playerMark === 1 ? 2 : 1 ;
-    saveGameData(true);
-    gameLayoutVariables.backgroundImage.inputEnabled = true;
-    gameLayoutVariables.backgroundImage.input.priorityID = 1 ;
-    this.yesResignButton.destroy();
-    this.cancelButton.destroy();
-    this.resignModal.destroy();
-    this.darkOverlay.destroy();
-    tempCells = phaserGame.state.states.play.cells.children;
-    gameLayoutVariables.turnText.text = " YOU LOSE!";
-    gameEndHandler(1);
-    // setTimeout(function() {
-    //   kapow.endSoloGame(function() {
-    //     boardStatus = {cells:new Array(9)};
-    //     botLevel = -1 ;
-    //     win = 0 ;
-    //     room = null;
-    //     playerMark = 0;
-    //     gameResume = false ;
-    //     console.log("Game Succesfully Closed.");
-    //     phaserGame.state.start('menu');
-    //   }, function(error) {
-    //     console.log("endSoloGame Failed : ",error);
-    //   });
-    // },2000);
+    if(gameType === "solo")
+    {
+      saveGameData(true);
+      gameLayoutVariables.backgroundImage.inputEnabled = true;
+      gameLayoutVariables.backgroundImage.input.priorityID = 1 ;
+      this.yesResignButton.destroy();
+      this.cancelButton.destroy();
+      this.resignModal.destroy();
+      this.darkOverlay.destroy();
+      tempCells = phaserGame.state.states.play.cells.children;
+      gameLayoutVariables.turnText.text = " YOU LOSE!";
+      gameEndHandler(1);
+    }
+    else if(gameType === "friend") {
+      var that = this;
+      kapow.invokeRPC("resignationRequest", {
+              board : boardStatus.cells,
+              playerTurn : playerData.id,
+              opponentTurn : opponentData.id,
+              roomID : room.roomId
+          },
+          function(obj) {
+            console.log("resignation - success : obj: \n",obj);
+            gameLayoutVariables.backgroundImage.inputEnabled = true;
+            gameLayoutVariables.backgroundImage.input.priorityID = 1 ;
+            that.yesResignButton.destroy();
+            that.cancelButton.destroy();
+            that.resignModal.destroy();
+            that.darkOverlay.destroy();
+            gameLayoutVariables.turnText.text = " YOU LOSE!";
+            console.log("Client reisgned, hence lost");
+            gameEndHandler(1);
+          },
+          function(obj) {
+              console.log("resignation - Failure");
+          }
+      );
+    }
+
   },
   musicButtonHandler  : function() {
     this.musicButton = (this.musicButton.frame + 1)%2;

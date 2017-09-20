@@ -102,8 +102,8 @@ var game = {
             outcome["ranks"][move.playerTurn] = 1;
             outcome["ranks"][move.opponentTurn] = 1;
         } else if (gameResult === "lost") {
-            outcome["ranks"][move.opponentTurn] = 1;
-            outcome["ranks"][move.playerTurn] = 2;
+            outcome["ranks"][move.opponentTurn] = 2;
+            outcome["ranks"][move.playerTurn] = 1;
         }
         outcome["type"]="result";
         // outcome["data"]={};
@@ -119,6 +119,24 @@ var game = {
           });
       }
       kapow.return(data);
+    },
+    resignationRequest: function (move) {
+      console.log("SERVER : resignation request recieved in resignationRequest() : ",JSON.stringify(move));
+      var gameResult;
+      var outcome = {};
+      outcome["ranks"] = {}
+      outcome["ranks"][move.opponentTurn] = 1;
+      outcome["ranks"][move.playerTurn] = 2;
+      outcome["type"]="resignation";
+      kapow.game.end(outcome,
+        move.roomID,
+        function () {
+          console.log("Game End Broadcast - success");
+        },
+        function (error) {
+          console.log("Game End Broadcast - failure",error);
+        });
+      kapow.return(outcome);
     }
 
 };
