@@ -59,150 +59,153 @@ function compare(a,b) {
 }
 var parseRoomAndRedirectToGame = function() {
   if (room == null) {
-      console.log("Room is null, hence not redirecting to game");
-  } else {
-      console.log('Parsing Room.');
-      var players = room.players;
-      if (players.length >= 1) {
-          if (players.length === 2) {
-              if (players[0].id === playerData.id) {
-                  opponentData = players[1];
-                  playerData = players[0];
-              } else {
-                  opponentData = players[0];
-                  playerData = players[1];
-              }
-              kapow.fetchHistorySince(null,20,
-                function(messagesHistory) {
-                  console.log("History Fetch at CLIENT : ",messagesHistory);
-                  var history = [];
-                  if(messagesHistory.length === 0) {
-                    //This is the player who has invited
-                    playerMark = 1 ;
-                  }
-                  else {
-                    if(messagesHistory[0].type === "affiliation_change" || messagesHistory[0].type === "room_lock_status") {
-                      console.log("First Message in was "+messagesHistory[0].type+" indicator.");
-                      if(messagesHistory[0].type === "room_lock_status") {
-                        if(messagesHistory.length === 1) {
-                          playerMark = 2 ;
-                          opponentMark = 1 ;
-                          console.log("You are Marked 'O'");
-                        }
-                        else if(messagesHistory[1].data.actorJid === playerData.id) {
-                          playerMark = 2 ;
-                          opponentMark = 1 ;
-                          console.log("You are Marked 'O'");
-                        }
-                        else {
-                          playerMark = 1 ;
-                          opponentMark = 2 ;
-                          console.log("You are Marked 'X'");
-                        }
+    console.log("Room is null, hence not redirecting to game");
+  }
+  else {
+    console.log('Parsing Room.');
+    var players = room.players;
+    if (players.length >= 1) {
+        if (players.length === 2) {
+            if (players[0].id === playerData.id) {
+                opponentData = players[1];
+                playerData = players[0];
+            }
+            else {
+                opponentData = players[0];
+                playerData = players[1];
+            }
+            kapow.fetchHistorySince(null,20,
+              function(messagesHistory) {
+                console.log("History Fetch at CLIENT : ",messagesHistory);
+                var history = [];
+                if(messagesHistory.length === 0) {
+                  //This is the player who has invited for invite friend.
+                  playerMark = 1 ;
+                }
+                else {
+                  if(messagesHistory[0].type === "affiliation_change" || messagesHistory[0].type === "room_lock_status") {
+                    console.log("First Message in was "+messagesHistory[0].type+" indicator.");
+                    if(messagesHistory[0].type === "room_lock_status") {
+                      if(messagesHistory.length === 1) {
+                        playerMark = 1 ;
+                        opponentMark = 2 ;
+                        console.log("You are Marked 'X'");
+                      }
+                      else if(messagesHistory[1].data.actorJid === playerData.id) {
+                        playerMark = 1 ;
+                        opponentMark = 2 ;
+                        console.log("You are Marked 'X'");
                       }
                       else {
-                        if(messagesHistory[0].data.actorJid === playerData.id) {
-                            playerMark = 2 ;
-                            opponentMark = 1 ;
-                            console.log("You are Marked 'O'");
-                        }
-                        else if(messagesHistory[0].data.actorJid === opponentData.id) {
-                          playerMark = 1 ;
-                          opponentMark = 2 ;
-                          console.log("You are Marked 'X'");
-                        }
+                        playerMark = 2 ;
+                        opponentMark = 1 ;
+                        console.log("You are Marked 'O'");
                       }
                     }
                     else {
-                      console.log("First Message in was NOT affiliation change indicator", messagesHistory[0]);
-                    }
-                    for (var i = messagesHistory.length - 1; i >= 0; i--) {
-                      if (messagesHistory[i].type == "move") {
-                        history.push(messagesHistory[i]);
+                      if(messagesHistory[0].data.actorJid === playerData.id) {
+                          playerMark = 2 ;
+                          opponentMark = 1 ;
+                          console.log("You are Marked 'O'");
                       }
-                      if ( messagesHistory[i].type === "outcome") {
-                        gameOver = true ;
-                        if(messagesHistory[i].data.type === "result") {
-                          if(messagesHistory[i].data.ranks[playerData.id] === messagesHistory[i].data.ranks[opponentData.id]) {
-                              turnOfPlayer = 0 ;
-                          }
-                          else if(messagesHistory[i].data.ranks[playerData.id] === 1) {
-                            turnOfPlayer = opponentData ;
-                          }
-                          else if(messagesHistory[i].data.ranks[playerData.id] === 2) {
-                            turnOfPlayer = playerData ;
-                          }
-                          else {
-                            console.log("Player Turn couldn't be detrminded");
-                          }
-                        }
-                        else if(messagesHistory[i].data.type === "resignation") {
-                          if(messagesHistory[i].data.ranks[playerData.id] === messagesHistory[i].data.ranks[opponentData.id]) {
-                              turnOfPlayer = 0 ;
-                          }
-                          else if(messagesHistory[i].data.ranks[playerData.id] === 1) {
-                            turnOfPlayer = opponentData ;
-                          }
-                          else if(messagesHistory[i].data.ranks[playerData.id] === 2) {
-                            turnOfPlayer = playerData ;
-                          }
-                          else {
-                            console.log("Player Turn couldn't be detrminded");
-                          }
-                        }
+                      else if(messagesHistory[0].data.actorJid === opponentData.id) {
+                        playerMark = 1 ;
+                        opponentMark = 2 ;
+                        console.log("You are Marked 'X'");
                       }
-                    }
-                  }
-                  console.log("Move History sorted according to sequence number",history);
-                  if(history.length > 0) {
-                    boardStatus.cells = history[0].data.moveData.board;
-                    if(history[0].senderId === playerData.id) {
-                      turnOfPlayer = opponentData ;
-                    }
-                    else if(history[0].senderId === opponentData.id) {
-                      turnOfPlayer = playerData ;
-                    }
-                    else {
-                      console.log("Current Turn can't be determined");
                     }
                   }
                   else {
-                    if(playerMark === 2) {
-                      turnOfPlayer = opponentData ;
+                    console.log("First Message in was NOT affiliation change indicator", messagesHistory[0]);
+                  }
+                  for (var i = messagesHistory.length - 1; i >= 0; i--) {
+                    if (messagesHistory[i].type == "move") {
+                      history.push(messagesHistory[i]);
                     }
-                    else if(playerMark === 1){
-                      turnOfPlayer = playerData ;
-                    }
-                    else {
-                      console.log("playerMark not set, turn can't be determinded");
+                    if ( messagesHistory[i].type === "outcome") {
+                      gameOver = true ;
+                      if(messagesHistory[i].data.type === "result") {
+                        if(messagesHistory[i].data.ranks[playerData.id] === messagesHistory[i].data.ranks[opponentData.id]) {
+                            turnOfPlayer = 0 ;
+                        }
+                        else if(messagesHistory[i].data.ranks[playerData.id] === 1) {
+                          turnOfPlayer = opponentData ;
+                        }
+                        else if(messagesHistory[i].data.ranks[playerData.id] === 2) {
+                          turnOfPlayer = playerData ;
+                        }
+                        else {
+                          console.log("Player Turn couldn't be detrminded");
+                        }
+                      }
+                      else if(messagesHistory[i].data.type === "resignation") {
+                        if(messagesHistory[i].data.ranks[playerData.id] === messagesHistory[i].data.ranks[opponentData.id]) {
+                            turnOfPlayer = 0 ;
+                        }
+                        else if(messagesHistory[i].data.ranks[playerData.id] === 1) {
+                          turnOfPlayer = opponentData ;
+                        }
+                        else if(messagesHistory[i].data.ranks[playerData.id] === 2) {
+                          turnOfPlayer = playerData ;
+                        }
+                        else {
+                          console.log("Player Turn couldn't be detrminded");
+                        }
+                      }
                     }
                   }
-                },
-                function() {
-                  console.log('fetchHistory Failed')
-                });
+                }
+                console.log("Move History sorted according to sequence number",history);
+                if(history.length > 0) {
+                  boardStatus.cells = history[0].data.moveData.board;
+                  if(history[0].senderId === playerData.id) {
+                    turnOfPlayer = opponentData ;
+                  }
+                  else if(history[0].senderId === opponentData.id) {
+                    turnOfPlayer = playerData ;
+                  }
+                  else {
+                    console.log("Current Turn can't be determined");
+                  }
+                }
+                else {
+                  if(playerMark === 2) {
+                    turnOfPlayer = opponentData ;
+                  }
+                  else if(playerMark === 1){
+                    turnOfPlayer = playerData ;
+                  }
+                  else {
+                    console.log("playerMark not set, turn can't be determinded");
+                  }
+                }
+              },
+              function() {
+                console.log('fetchHistory Failed')
+              });
+        }
+        if (players.length === 1) {
+          //Random opponent not found yet.
+          if (players[0].id === playerData.id) {
+              playerData = players[0];
+              playerMark = 2 ;
+          } else {
+              opponentData = players[0];
           }
-          if (players.length === 1) {
-            if (players[0].id === playerData.id) {
-                playerData = players[0];
-            } else {
-                opponentData = players[0];
-            }
-          }
-          console.log("Redirecting to game...",opponentData);
-          // console.log("\nUser: " + JSON.stringify(playerData.name) + "\nOpponent: " + JSON.stringify(opponentData.name));
-          gameType = 'friend';
-          if(opponentData !== undefined && opponentData.affiliation === "accepted") {
-            phaserGame.state.start('play');
-          }
-          else {
-            console.log("Invitation not accepted by opponent");
-            phaserGame.state.start('waiting');
-          }
-      } else {
-
-          console.log("Room not having player...");
-      }
+        }
+        console.log("Redirecting to game...");
+        gameType = 'friend';
+        if(opponentData !== undefined && opponentData.affiliation === "accepted") {
+          phaserGame.state.start('play');
+        }
+        else {
+          console.log("Invitation not accepted by opponent");
+          phaserGame.state.start('waiting');
+        }
+    }
+    else {
+      console.log("Room not having player...");
+    }
   }
 };
 var onAffiliationChange = function() {
