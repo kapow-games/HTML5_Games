@@ -159,24 +159,36 @@ var parseRoomAndRedirectToGame = function() {
                 if(history.length > 0) {
                   boardStatus.cells = history[0].data.moveData.board;
                   if(history[0].senderId === playerData.id) {
-                    turnOfPlayer = opponentData ;
+                    if(gameOver === false) {
+                      turnOfPlayer = opponentData ;
+                    }
                   }
                   else if(history[0].senderId === opponentData.id) {
-                    turnOfPlayer = playerData ;
+                    if(gameOver === false) {
+                      turnOfPlayer = playerData ;
+                    }
                   }
                   else {
-                    console.log("Current Turn can't be determined");
+                    if(gameOver === false) {
+                      console.log("Current Turn can't be determined");
+                    }
                   }
                 }
                 else {
                   if(playerMark === 2) {
-                    turnOfPlayer = opponentData ;
+                    if(gameOver === false) {
+                      turnOfPlayer = opponentData ;
+                    }
                   }
                   else if(playerMark === 1){
-                    turnOfPlayer = playerData ;
+                    if(gameOver === false) {
+                      turnOfPlayer = playerData ;
+                    }
                   }
                   else {
-                    console.log("playerMark not set, turn can't be determinded");
+                    if(gameOver === false) {
+                      console.log("Current Turn can't be determined");
+                    }
                   }
                 }
               },
@@ -196,6 +208,10 @@ var parseRoomAndRedirectToGame = function() {
         console.log("Redirecting to game...");
         gameType = 'friend';
         if(opponentData !== undefined && opponentData.affiliation === "accepted") {
+          phaserGame.state.start('play');
+        }
+        else if(opponentData != undefined && (opponentData.affiliation === "left" || playerData.affiliation === "left")) {
+          gameOver = true;
           phaserGame.state.start('play');
         }
         else {
@@ -310,7 +326,8 @@ var game = {
     },
     onPlayerLeft: function(playerObj) {
         console.log("Client onPlayerLeft - " + JSON.stringify(playerData));
-        onAffiliationChange();
+        // gameOver = true;
+        // onAffiliationChange();
     },
     onTurnChange : function(playerObj) {
       console.log("Player Turn Changed to : " + JSON.stringify(playerObj));
@@ -345,14 +362,13 @@ var game = {
         }
         if(message.data.result === "lost") {
           console.log("Lost");
-          drawWinnningLine();
+          drawWinningLine();
           gameEndHandler(1);
         }
         else if(message.data.result === "draw") {
           console.log("Draw");
           gameEndHandler(0);
         }
-        // saveGameData(false);
       }
     },
     onBackButtonPressed:  function() {
@@ -362,10 +378,6 @@ var game = {
       else {
         kapow.close();
       }
-      // if(screenState === 1) { //2 goes for play screen and 0 for any other
-      //   saveGameData(false);
-      // }
-      // phaserGame.state.start();
       return true;
     },
     onRoomLockStatusChange:  function(roomObj) {

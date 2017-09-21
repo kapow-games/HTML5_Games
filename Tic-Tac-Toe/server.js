@@ -5,6 +5,13 @@ var game = {
     },
     onPlayerJoined: function(playerObj) {
       console.log("SERVER onPlayerJoined - " + JSON.stringify(playerObj));
+      // var room = kapow.getRoomInfo();
+      // //Devise a method to recognize gametype.
+      // kapow.setNextPlayer(playerObj.id, room.roomId, function() {
+      //   console.log("SERVER setNextPlayer success.");
+      // }, function() {
+      //   console.log("SERVER setNextPlayer FAILED.");
+      // })
     },
     makeMove: function (move) {
       console.log("SERVER : move recieved in makeMove() : ",JSON.stringify(move));
@@ -64,7 +71,7 @@ var game = {
               kapow.return(data);
             }
         },
-        function () {
+        function (error) {
             console.log("sendTurn - failure");
             kapow.return(null,error);
         }
@@ -88,6 +95,29 @@ var game = {
           console.log("Game End Broadcast - failure",error);
           kapow.return(null, error);
       });
+    },
+    onPlayerLeft: function(playerObj) {
+      var room = kapow.getRoomInfo();
+      console.log("SERVER : onPlayer left called by "+JSON.stringify(playerObj)+" in room : "+JSON.stringify(room));
+      var outcome = {} ;
+      outcome["ranks"] = {}
+      outcome["type"]="resignation";
+      if(room.players[0] === playerObj.id) {
+        outcome["ranks"][room.players[0]] = 2;
+        outcome["ranks"][room.players[1]] = 1;
+      }
+      else {
+        outcome["ranks"][room.players[0]] = 1;
+        outcome["ranks"][room.players[1]] = 2;
+      }
+      kapow.game.end(outcome,
+        room.roomId,
+        function () {
+          console.log("Game End Broadcast - success");
+        },
+        function (error) {
+          console.log("Game End Broadcast - failure",error);
+          kapow.return(null, error);
+      });
     }
-
 };

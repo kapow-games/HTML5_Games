@@ -54,30 +54,30 @@ var gameEndHandler = function(value) {
     }
   }
 };
-var drawWinnningLine = function() {
+var drawWinningLine = function() {
   var gameFinalLayout = boardStatus.cells ;
-  if (gameFinalLayout[0] !== null && gameFinalLayout[0] === gameFinalLayout[1] && gameFinalLayout[0] === gameFinalLayout[2]) {
+  if (gameFinalLayout[0] !== null &&  gameFinalLayout[0] !== undefined && gameFinalLayout[0] === gameFinalLayout[1] && gameFinalLayout[0] === gameFinalLayout[2]) {
     matchPosition = phaserGame.add.sprite(222, 948, 'rectangle');matchPosition.anchor.setTo(0.5);
   }
-  else if (gameFinalLayout[3] !== null && gameFinalLayout[3] === gameFinalLayout[4] && gameFinalLayout[3] === gameFinalLayout[5]) {
+  else if (gameFinalLayout[3] !== null && gameFinalLayout[3] !== undefined && gameFinalLayout[3] === gameFinalLayout[4] && gameFinalLayout[3] === gameFinalLayout[5]) {
     matchPosition = phaserGame.add.sprite(552, 948, 'rectangle');matchPosition.anchor.setTo(0.5);
   }
-  else if (gameFinalLayout[6] !== null && gameFinalLayout[6] === gameFinalLayout[7] && gameFinalLayout[6] === gameFinalLayout[8]) {
+  else if (gameFinalLayout[6] !== null && gameFinalLayout[6] !== undefined && gameFinalLayout[6] === gameFinalLayout[7] && gameFinalLayout[6] === gameFinalLayout[8]) {
     matchPosition = phaserGame.add.sprite(882, 948, 'rectangle');matchPosition.anchor.setTo(0.5);
   }
-  else if (gameFinalLayout[0] !== null && gameFinalLayout[0] === gameFinalLayout[3] && gameFinalLayout[0] === gameFinalLayout[6]) {
+  else if (gameFinalLayout[0] !== null && gameFinalLayout[0] !== undefined && gameFinalLayout[0] === gameFinalLayout[3] && gameFinalLayout[0] === gameFinalLayout[6]) {
     matchPosition = phaserGame.add.sprite(552, 633, 'rectangle');matchPosition.anchor.setTo(0.5);matchPosition.angle=90;
   }
-  else if (gameFinalLayout[1] !== null && gameFinalLayout[1] === gameFinalLayout[4] && gameFinalLayout[1] === gameFinalLayout[7]) {
+  else if (gameFinalLayout[1] !== null && gameFinalLayout[1] !== undefined && gameFinalLayout[1] === gameFinalLayout[4] && gameFinalLayout[1] === gameFinalLayout[7]) {
     matchPosition = phaserGame.add.sprite(552, 948, 'rectangle');matchPosition.anchor.setTo(0.5);matchPosition.angle=90;
   }
-  else if (gameFinalLayout[2] !== null && gameFinalLayout[2] === gameFinalLayout[5] && gameFinalLayout[2] === gameFinalLayout[8]) {
+  else if (gameFinalLayout[2] !== null && gameFinalLayout[2] !== undefined && gameFinalLayout[2] === gameFinalLayout[5] && gameFinalLayout[2] === gameFinalLayout[8]) {
     matchPosition = phaserGame.add.sprite(552, 1263, 'rectangle');matchPosition.anchor.setTo(0.5);matchPosition.angle=90;
   }
-  else if (gameFinalLayout[0] !== null && gameFinalLayout[0] === gameFinalLayout[4] && gameFinalLayout[0] === gameFinalLayout[8]) { // Diagonal
+  else if (gameFinalLayout[0] !== null && gameFinalLayout[0] !== undefined && gameFinalLayout[0] === gameFinalLayout[4] && gameFinalLayout[0] === gameFinalLayout[8]) { // Diagonal
     matchPosition = phaserGame.add.sprite(552, 948, 'rectangle');matchPosition.anchor.setTo(0.5);matchPosition.angle=-45;
   }
-  else if (gameFinalLayout[2] !== null && gameFinalLayout[2] === gameFinalLayout[4] && gameFinalLayout[2] === gameFinalLayout[6]) {
+  else if (gameFinalLayout[2] !== null && gameFinalLayout[2] !== undefined && gameFinalLayout[2] === gameFinalLayout[4] && gameFinalLayout[2] === gameFinalLayout[6]) {
     matchPosition = phaserGame.add.sprite(552, 948, 'rectangle');matchPosition.anchor.setTo(0.5);matchPosition.angle=45;
   }
   else {
@@ -364,10 +364,6 @@ var Game = function(bot) {
           gameLayoutVariables.turnText.text = "  YOU LOSE!";
           gameEndHandler(1);
         }
-        // tempCells = phaserGame.state.states.play.cells.children;
-        // for(let i = 0 ; i < 9 ; i++) {
-        //   tempCells[i].inputEnabled = false;
-        // }
       }
       else {
         gameLayoutVariables.turnText.text = "GAME DRAW!";
@@ -386,17 +382,6 @@ var Game = function(bot) {
           case 7 : matchPosition = phaserGame.add.sprite(552, 948, 'rectangle');matchPosition.anchor.setTo(0.5);matchPosition.angle=45;break;
         }
       }
-      // kapow.endSoloGame(function() {
-      //   boardStatus = {cells:new Array(9)};
-      //   botLevel = -1 ;
-      //   room = null;
-      //   playerMark = 0;
-      //   gameResume = false ;
-      //   console.log("Game Succesfully Closed.");
-      //   // phaserGame.state.start('gameover');
-      // }, function(error) {
-      //   console.log("endSoloGame Failed : ",error);
-      // });
     }
     else {
       if(this.currentState.turn === 1) {
@@ -599,11 +584,11 @@ play.prototype = {
           gameEndHandler(0);
         }
         else if(turnOfPlayer.id === opponentData.id) {
-          drawWinnningLine();
+          drawWinningLine();
           gameEndHandler(2);
         }
         else if(turnOfPlayer.id === playerData.id) {
-          drawWinnningLine();
+          drawWinningLine();
           gameEndHandler(1);
         }
       }
@@ -672,7 +657,7 @@ play.prototype = {
             sprite.frame = playerMark;
             if(obj.result === "lost") {
               gameLayoutVariables.turnText.text = " YOU WON!";
-              drawWinnningLine();
+              drawWinningLine();
               gameEndHandler(2);
               console.log("You won");
               // gameEndHandler(1);
