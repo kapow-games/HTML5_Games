@@ -24,7 +24,6 @@ var gameEndHandler = function(value) {
   gameLayoutVariables.turnTextBackground.destroy();
   gameLayoutVariables.resign.destroy();
   gameLayoutVariables.help.destroy();
-  // gameOver = true;
   gameLayoutVariables.turnText.text = (value===1)?"YOU LOST!":(value===2 ? "YOU WON!" : "GAME DRAW!");
   shareText = (value===1)?"Lost":(value===2 ? "Won" : "Draw");
   var shareBackground = phaserGame.add.sprite(72, 1584, 'shareBackground');
@@ -86,7 +85,6 @@ var drawWinningLine = function() {
 };
 var rematchButtonHandler  = function() {
   console.log('rematchButtonHandler Clicked');
-  // console.log(gameLayoutVariables.myGame.gameStatus);
   boardStatus = {cells:new Array(9)};
   win = 0 ;
   gameOver = false ;
@@ -128,7 +126,6 @@ var gameState = function(oldGameState) {
   }
   this.nextTurn = function() {
     this.turn = ( this.turn === 1 )? 2 : 1 ;
-    // gameLayoutVariables.clickBlocked = false;
   };
   this.emptyCells = function() {
     var indices = [] ;
@@ -625,10 +622,8 @@ play.prototype = {
 
   },
   clickHandlerMulti:  function(sprite, pointer) {
-    // var index = event.target.id;
     console.log(turnOfPlayer,playerData,sprite.frame);
     if (turnOfPlayer !== undefined && turnOfPlayer.id === playerData.id && sprite.frame === 0) {
-      //Disabling further input
       gameLayoutVariables.backgroundImage.inputEnabled = true;
       gameLayoutVariables.backgroundImage.input.priorityID = 2;
       gameLayoutVariables.backButton.input.priorityID = 2;
@@ -638,7 +633,6 @@ play.prototype = {
       gameLayoutVariables.turnText.text = gameType === "solo" ? "BOT'S TURN" : "Waiting for Turn.";
       gameLayoutVariables.opponentProfilePic.alpha = 1;
       gameLayoutVariables.playerProfilePic.alpha = 0.3;
-      //What if the move fails
       turnOfPlayer = undefined;
       boardStatus.cells[sprite.frameIndex] = playerMark;
 
@@ -653,14 +647,12 @@ play.prototype = {
       kapow.invokeRPC("makeMove", sentData,
           function(obj) {
             console.log("makeMove - success : obj: \n",obj);
-            // saveGameData(false);
             sprite.frame = playerMark;
             if(obj.result === "lost") {
               gameLayoutVariables.turnText.text = " YOU WON!";
               drawWinningLine();
               gameEndHandler(2);
               console.log("You won");
-              // gameEndHandler(1);
             }
             else if(obj.result === "draw") {
               gameLayoutVariables.turnText.text = " GAME DRAW!";
@@ -668,7 +660,6 @@ play.prototype = {
               gameEndHandler(0);
             }
             else {
-              // processMoveN(obj);
               gameLayoutVariables.backgroundImage.input.priorityID = 1;
               gameLayoutVariables.backgroundImage.inputEnabled = false;
               gameLayoutVariables.backButton.input.priorityID = 1;
@@ -727,9 +718,6 @@ play.prototype = {
     this.yesResignButton.input.priorityID = 4 ;
 
 
-    // gameLayoutVariables.turnText.text = " YOU LOSE!";
-    // gameLayoutVariables.backgroundImage.input.priorityID = 1 ;
-    // setTimeout(this.quitGame,4000);
   },
   cancelResign  : function() {
     this.yesResignButton.destroy();

@@ -11,18 +11,10 @@ menu.prototype = {
     this.activeGames = this.add.button(48, 768 , 'onGoing', this.showActiveGames, this, 0, 0, 1, 0);
     this.activeGames.anchor.setTo(0, 0);
 
-    // this.startNewGameType = this.add.sprite(16, 332, 'newGameType');
-    // this.startNewGameType.frame = 1;
-    // this.startNewGameType.anchor.setTo(0, 0);
-    //
-    // this.startNewGame = this.add.button(16, 332, 'newGame', this.newGameButtonHandler, this, 0, 0, 1, 0);
-    // this.startNewGame.anchor.setTo(0, 0);
-
     this.startNewGameBottom = this.add.sprite(48, 1020, 'newGameBottom');
     this.startNewGameBottom.frame = 0;
     this.startNewGameBottom.anchor.setTo(0, 0);
 
-    // this.gameModeFriend = this.add.sprite(16, 340, 'gameModes');
     this.gameModeFriend = this.add.button(48, 1020, 'gameModes', this.againstFriend, this, 0, 0, 0, 0);
     this.gameModeFriend.inputEnabled = false;
     this.gameModeFriend.anchor.setTo(0, 0);
@@ -34,8 +26,6 @@ menu.prototype = {
     this.gameModeSolo = this.add.button(702, 1020, 'gameModes', this.againstComputer, this, 2, 2, 2, 2);
     this.gameModeSolo.inputEnabled = false;
     this.gameModeSolo.anchor.setTo(0, 0);
-
-
 
     this.startNewGameTop = this.add.button(48, 996, 'newGameTop', this.newGameButtonHandler, this, 0, 0, 1, 0);
     this.startNewGameTop.anchor.setTo(0, 0);
@@ -67,7 +57,6 @@ menu.prototype = {
 
     this.slideStatsUp = this.add.tween(this.stats).to( { y: 1182 }, 300, "Quart.easeOut");
     this.slideLeaderboardUp = this.add.tween(this.leaderboard).to( { y: 1368 }, 300, "Quart.easeOut");
-    // this.slideLeaderboard.chain(this.slideStats);
     this.slideNewGameBottomDown = this.add.tween(this.startNewGameBottom).to( { y: 1104 }, 300, "Quart.easeOut");
     this.slideNewGameBottomUp = this.add.tween(this.startNewGameBottom).to( { y: 1020 }, 300, "Quart.easeOut");
 
@@ -131,7 +120,6 @@ menu.prototype = {
       this.gameModeFriend.inputEnabled = false;
     }
     this.slideDirection = (this.slideDirection + 1)%2 ;
-    // this.state.start('select');
   },
   againstRandom : function() {
     gameType = 'random';

@@ -1,4 +1,3 @@
-
 var game = {
     onMessageDelivered: function (data) {
         console.log("SERVER onMessageDelivered - " + JSON.stringify(data));
@@ -6,12 +5,12 @@ var game = {
     onPlayerJoined: function(playerObj) {
       console.log("SERVER onPlayerJoined - " + JSON.stringify(playerObj));
       // var room = kapow.getRoomInfo();
-      // //Devise a method to recognize gametype.
+      // Devise a method to recognize gametype.
       // kapow.setNextPlayer(playerObj.id, room.roomId, function() {
       //   console.log("SERVER setNextPlayer success.");
       // }, function() {
       //   console.log("SERVER setNextPlayer FAILED.");
-      // })
+      // });
     },
     makeMove: function (move) {
       console.log("SERVER : move recieved in makeMove() : ",JSON.stringify(move));
@@ -40,7 +39,6 @@ var game = {
         moveData : move,
         result : gameResult,
       };
-      // console.log(JSON.stringify(kapow));
       kapow.game.sendTurn(data,move.roomID,move.playerTurn,move.opponentTurn, null,
         function () {
             console.log("sendTurn - success");

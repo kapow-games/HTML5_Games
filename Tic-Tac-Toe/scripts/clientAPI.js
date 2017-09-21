@@ -246,16 +246,13 @@ var game = {
                   gameResume = true;
                   if(room.players.length > 1) {
                     gameType = "friend";
-                    // parseRoomAndRedirectToGame();
                   }
                   else if(room.lockStatus === "locked"){
                     gameType = "solo";
                     kapow.roomStore.get('game_data',function(value) {
-                      // console.log("roomStore.get : ",value);
                       if(value) {
                         let valueJSON = JSON.parse(value);
                         console.log(valueJSON);
-                        //Set Up a layout Redirecct game;
                         playerMark = valueJSON.colorPlayer;
                         botLevel  = valueJSON.difficulty;
                         boardStatus =  valueJSON.board;
@@ -277,11 +274,9 @@ var game = {
                 }
                 else {
                   gameResume = false ;
-                  //New Game;
                 }
                 console.log("room : ",room);
                 phaserGame.state.start('boot');
-                // parseRoomAnxdRedirectToGame();
             }, function () {
             console.log("Client getUserInfo failure");
         });
@@ -301,23 +296,16 @@ var game = {
       }
       if(outcome.ranks[playerData.id] === 1 && outcome.ranks[opponentData.id] === 1) {
         console.log("Game Draw");
-        // gameEndHandler(0);
       }
       else if(outcome.ranks[playerData.id] === 1) {
         console.log("Game Won");
-        // gameEndHandler(2);
       }
       else {
         console.log("Game Lost");
-        // gameEndHandler(1);
       }
     },
     onPlayerJoined: function(playerObj) {
       console.log("CLIENT onPlayerJoined - " + JSON.stringify(playerData));
-      // turnOfPlayer = playerData;
-      // playermark = 1;
-      // opponentMark = 2;
-      // opponentData  = playerObj;
       onAffiliationChange();
     },
     onInviteRejected: function(playerObj) {
@@ -326,8 +314,6 @@ var game = {
     },
     onPlayerLeft: function(playerObj) {
         console.log("Client onPlayerLeft - " + JSON.stringify(playerData));
-        // gameOver = true;
-        // onAffiliationChange();
     },
     onTurnChange : function(playerObj) {
       console.log("Player Turn Changed to : " + JSON.stringify(playerObj));
@@ -340,9 +326,6 @@ var game = {
     },
     onPause: function() {
       console.log('On Pause Triggered.');
-      // if(screenState === 1) { //2 goes for play screen and 0 for any other
-      //   saveGameData(gameOVer);
-      // }
     },
     onResume:function() {
       console.log('On Resume Triggered.');
