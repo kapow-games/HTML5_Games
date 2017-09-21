@@ -12,7 +12,9 @@ var gameLayoutVariables = {
   backButton  : null,
   turnTextBackground : null,
   help  : null,
-  clickBlocked  : null
+  clickBlocked  : null,
+  playerProfilePic : null,
+  opponentProfilePic : null
 };
 var gameEndHandler = function(value) {
   console.log("Game End Being Handled.");
@@ -467,13 +469,13 @@ play.prototype = {
     this.playerProfilePicBackground.scale.set(120/this.playerProfilePicBackground.width,120/this.playerProfilePicBackground.height);
 
 
-    this.playerProfilePic = this.add.image(372,78,'profilePic');
-    this.playerProfilePic.scale.set(108/this.playerProfilePic.width,108/this.playerProfilePic.height);
+    gameLayoutVariables.playerProfilePic = this.add.image(372,78,'profilePic');
+    gameLayoutVariables.playerProfilePic.scale.set(108/gameLayoutVariables.playerProfilePic.width,108/gameLayoutVariables.playerProfilePic.height);
 
     mask = phaserGame.add.graphics(0, 0);
     mask.beginFill(0xffffff);
     mask.drawCircle(426,132,108);
-    this.playerProfilePic.mask = mask;
+    gameLayoutVariables.playerProfilePic.mask = mask;
 
     this.playerProfilePicMarkBackground = this.add.image(438,144,'circle');
     this.playerProfilePicMarkBackground.scale.set(48/this.playerProfilePicMarkBackground.width,48/this.playerProfilePicMarkBackground.height);
@@ -486,13 +488,13 @@ play.prototype = {
     this.opponentProfilePicBackground = this.add.image(594,72,'circle');
     this.opponentProfilePicBackground.scale.set(120/this.opponentProfilePicBackground.width,120/this.opponentProfilePicBackground.height);
 
-    this.opponentProfilePic = this.add.image(600,78,gameType === 'solo' ? 'botPic' : 'opponentPic');
-    this.opponentProfilePic.scale.set(108/this.opponentProfilePic.width,108/this.opponentProfilePic.height);
+    gameLayoutVariables.opponentProfilePic = this.add.image(600,78,gameType === 'solo' ? 'botPic' : 'opponentPic');
+    gameLayoutVariables.opponentProfilePic.scale.set(108/gameLayoutVariables.opponentProfilePic.width,108/gameLayoutVariables.opponentProfilePic.height);
 
     mask = phaserGame.add.graphics(0, 0);
     mask.beginFill(0xffffff);
     mask.drawCircle(654,132,108);
-    this.opponentProfilePic.mask = mask;
+    gameLayoutVariables.opponentProfilePic.mask = mask;
 
     this.opponentProfilePicMarkBackground = this.add.image(594,144,'circle');
     this.opponentProfilePicMarkBackground.scale.set(48/this.opponentProfilePicMarkBackground.width,48/this.opponentProfilePicMarkBackground.height);
@@ -509,7 +511,7 @@ play.prototype = {
     gameLayoutVariables.turnText.fill = "#fefefe";
     gameLayoutVariables.turnText.align = "center";
     gameLayoutVariables.turnText.backgroundColor = "#5684fb";
-    gameLayoutVariables.turnText.text = (gameOver === true) ? win === playerMark ? "  YOU WIN!" : "  YOU LOSE!" : "YOUR TURN";
+    gameLayoutVariables.turnText.text = (gameOver === true) ? win === playerMark ? "  YOU WIN!" : "  YOU LOSE!" : playerMark === 1 ? "YOUR TURN" : gameType ===  "solo" ? "BOT's TURN" : "Waiting for turn.";
 
     this.vs = phaserGame.add.text(511, 105, "VS");
     this.vs.fontStyle = 'normal';
@@ -625,8 +627,8 @@ play.prototype = {
       sprite.frame = playerMark;
       console.log("Player's Sprite Set");
       gameLayoutVariables.turnText.text = "BOT'S TURN";
-      this.opponentProfilePic.alpha = 1;
-      this.playerProfilePic.alpha = 0.3;
+      gameLayoutVariables.opponentProfilePic.alpha = 1;
+      gameLayoutVariables.playerProfilePic.alpha = 0.3;
       var that = this;
       setTimeout(function() {
         that.nextMove(sprite, pointer, cell);
@@ -649,8 +651,8 @@ play.prototype = {
       gameLayoutVariables.resign.input.priorityID = 2;
       console.log("Player's Sprite Set");
       gameLayoutVariables.turnText.text = gameType === "solo" ? "BOT'S TURN" : "Waiting for Turn.";
-      this.opponentProfilePic.alpha = 1;
-      this.playerProfilePic.alpha = 0.3;
+      gameLayoutVariables.opponentProfilePic.alpha = 1;
+      gameLayoutVariables.playerProfilePic.alpha = 0.3;
       //What if the move fails
       turnOfPlayer = undefined;
       boardStatus.cells[sprite.frameIndex] = playerMark;
@@ -682,9 +684,6 @@ play.prototype = {
             }
             else {
               // processMoveN(obj);
-              // gameLayoutVariables.turnText.text = "YOUR TURN";
-              that.opponentProfilePic.alpha = 0.3;
-              that.playerProfilePic.alpha = 1;
               gameLayoutVariables.backgroundImage.input.priorityID = 1;
               gameLayoutVariables.backgroundImage.inputEnabled = false;
               gameLayoutVariables.backButton.input.priorityID = 1;
@@ -713,8 +712,8 @@ play.prototype = {
     if(win === 0 && gameLayoutVariables.myGame.gameStatus !== 3) {
       saveGameData(false);
       gameLayoutVariables.turnText.text = "YOUR TURN";
-      this.opponentProfilePic.alpha = 0.3;
-      this.playerProfilePic.alpha = 1;
+      gameLayoutVariables.opponentProfilePic.alpha = 0.3;
+      gameLayoutVariables.playerProfilePic.alpha = 1;
       gameLayoutVariables.backgroundImage.input.priorityID = 1;
       gameLayoutVariables.backgroundImage.inputEnabled = false;
       gameLayoutVariables.backButton.input.priorityID = 1;

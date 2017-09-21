@@ -336,6 +336,8 @@ var game = {
         for(var i = 0 ; i < 9 ; i++) {
           phaserGame.state.states.play.cells.children[i].frame = message.data.moveData.board[i];
         }
+        gameLayoutVariables.opponentProfilePic.alpha = 0.3;
+        gameLayoutVariables.playerProfilePic.alpha = 1;
         gameLayoutVariables.turnText.text = "Your Turn.";
         boardStatus.cells = message.data.moveData.board;
         if(playerMark === 0) {
