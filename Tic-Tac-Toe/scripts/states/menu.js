@@ -134,9 +134,18 @@ menu.prototype = {
     // this.state.start('select');
   },
   againstRandom : function() {
-
+    gameType = 'random';
+    kapow.startGameWithRandomPlayers({'difficulty':'medium'}, function(roomDetail) {
+      room = roomDetail;
+      // playerMark = 1 ;
+      // opponentMark = 2 ;
+      parseRoomAndRedirectToGame();
+    }, function(error) {
+      console.log("startcsFriendGame Failed : ",error);
+    });
   },
   againstFriend : function() {
+    gameType = 'friend';
     kapow.startGameWithFriends(2, 2, function(roomDetail) {
       room = roomDetail;
       playerMark = 1 ;

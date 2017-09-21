@@ -81,17 +81,36 @@ var parseRoomAndRedirectToGame = function() {
                     playerMark = 1 ;
                   }
                   else {
-                    if(messagesHistory[0].type === "affiliation_change") {
-                      console.log("First Message in was affiliation change indicator", messagesHistory[0]);
-                      if(messagesHistory[0].data.actorJid === playerData.id) {
+                    if(messagesHistory[0].type === "affiliation_change" || messagesHistory[0].type === "room_lock_status") {
+                      console.log("First Message in was "+messagesHistory[0].type+" indicator.");
+                      if(messagesHistory[0].type === "room_lock_status") {
+                        if(messagesHistory.length === 1) {
                           playerMark = 2 ;
                           opponentMark = 1 ;
                           console.log("You are Marked 'O'");
+                        }
+                        else if(messagesHistory[1].data.actorJid === playerData.id) {
+                          playerMark = 2 ;
+                          opponentMark = 1 ;
+                          console.log("You are Marked 'O'");
+                        }
+                        else {
+                          playerMark = 1 ;
+                          opponentMark = 2 ;
+                          console.log("You are Marked 'X'");
+                        }
                       }
-                      else if(messagesHistory[0].data.actorJid === opponentData.id) {
-                        playerMark = 1 ;
-                        opponentMark = 2 ;
-                        console.log("You are Marked 'X'");
+                      else {
+                        if(messagesHistory[0].data.actorJid === playerData.id) {
+                            playerMark = 2 ;
+                            opponentMark = 1 ;
+                            console.log("You are Marked 'O'");
+                        }
+                        else if(messagesHistory[0].data.actorJid === opponentData.id) {
+                          playerMark = 1 ;
+                          opponentMark = 2 ;
+                          console.log("You are Marked 'X'");
+                        }
                       }
                     }
                     else {
@@ -164,22 +183,24 @@ var parseRoomAndRedirectToGame = function() {
                 });
           }
           if (players.length === 1) {
-              if (players[0].id === playerData.id) {
-                  playerData = players[0];
-              } else {
-                  opponentData = players[0];
-              }
+            if (players[0].id === playerData.id) {
+                playerData = players[0];
+            } else {
+                opponentData = players[0];
+            }
           }
-          console.log("Redirecting to game...");
-          console.log("\nUser: " + JSON.stringify(playerData.name) + "\nOpponent: " + JSON.stringify(opponentData.name));
+          console.log("Redirecting to game...",opponentData);
+          // console.log("\nUser: " + JSON.stringify(playerData.name) + "\nOpponent: " + JSON.stringify(opponentData.name));
           gameType = 'friend';
           if(opponentData !== undefined && opponentData.affiliation === "accepted") {
             phaserGame.state.start('play');
           }
           else {
+            console.log("Invitation not accepted by opponent");
             phaserGame.state.start('waiting');
           }
       } else {
+
           console.log("Room not having player...");
       }
   }
@@ -206,9 +227,9 @@ var game = {
                   gameResume = true;
                   if(room.players.length > 1) {
                     gameType = "friend";
-                    parseRoomAndRedirectToGame();
+                    // parseRoomAndRedirectToGame();
                   }
-                  else {
+                  else if(room.lockStatus === "locked"){
                     gameType = "solo";
                     kapow.roomStore.get('game_data',function(value) {
                       // console.log("roomStore.get : ",value);
@@ -230,6 +251,9 @@ var game = {
                     }, function(error) {
                       console.log("Nothing Found : ",error);
                     });
+                  }
+                  else {
+                    gameType = "friend";
                   }
                 }
                 else {
@@ -338,5 +362,8 @@ var game = {
       // }
       // phaserGame.state.start();
       return true;
+    },
+    onRoomLockStatusChange:  function(roomObj) {
+      console.log("Room Lock status changed.");
     }
   }

@@ -72,8 +72,14 @@ preload.prototype = {
   },
   update: function() {
     if(this.ready) {
-      if(gameResume === true) {
-        this.state.start('play');
+      if(gameResume === true ) {
+        if(gameType === "solo")
+        {
+          this.state.start('play');
+        }
+        else if(gameType === "friend") {
+          parseRoomAndRedirectToGame();
+        }
       }
       else {
         this.state.start('menu');

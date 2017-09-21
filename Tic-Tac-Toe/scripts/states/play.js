@@ -654,14 +654,16 @@ play.prototype = {
       //What if the move fails
       turnOfPlayer = undefined;
       boardStatus.cells[sprite.frameIndex] = playerMark;
-      console.log("Client - invokeRPC makeMove");
+
       var that = this;
-      kapow.invokeRPC("makeMove", {
+      var sentData = {
               board : boardStatus.cells,
               playerTurn : playerData.id,
               opponentTurn : opponentData.id,
               roomID : room.roomId
-          },
+          };
+      console.log("Client - invokeRPC makeMove",sentData);
+      kapow.invokeRPC("makeMove", sentData,
           function(obj) {
             console.log("makeMove - success : obj: \n",obj);
             // saveGameData(false);
@@ -690,8 +692,8 @@ play.prototype = {
               gameLayoutVariables.resign.input.priorityID = 1;
             }
           },
-          function(obj) {
-              console.log("makeMove - failure");
+          function(error) {
+              console.log("makeMove - failure",error);
           }
       );
     }
