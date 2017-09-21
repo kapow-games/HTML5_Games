@@ -60,6 +60,9 @@ var game = {
                   kapow.return(null,error);
                 });
             }
+            else {
+              kapow.return(data);
+            }
         },
         function () {
             console.log("sendTurn - failure");
