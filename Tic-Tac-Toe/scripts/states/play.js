@@ -426,6 +426,7 @@ play.prototype = {
           console.log("opponentData was not set.");
       }
     }
+    console.log(phaserGame.cache.checkImageKey('opponentPic'),this.load);
     gameLayoutVariables.clickBlocked = false;
   },
   create: function() {
@@ -470,9 +471,9 @@ play.prototype = {
     this.opponentProfilePicBackground = this.add.image(594,72,'circle');
     this.opponentProfilePicBackground.scale.set(120/this.opponentProfilePicBackground.width,120/this.opponentProfilePicBackground.height);
 
-    gameLayoutVariables.opponentProfilePic = this.add.image(600,78,gameType === 'solo' ? 'botPic' : 'opponentPic');
-    gameLayoutVariables.opponentProfilePic.scale.set(108/gameLayoutVariables.opponentProfilePic.width,108/gameLayoutVariables.opponentProfilePic.height);
-
+    gameLayoutVariables.opponentProfilePic = this.add.image(600, 78, gameType === 'solo' ? 'botPic' : "opponentPic");
+    gameLayoutVariables.opponentProfilePic.scale.set(108/gameLayoutVariables.opponentProfilePic.width);
+    // console.log("Pointer");
     mask = phaserGame.add.graphics(0, 0);
     mask.beginFill(0xffffff);
     mask.drawCircle(654,132,108);
@@ -780,8 +781,11 @@ play.prototype = {
     gameResume = false;
     room=null;
     playerMark = 0;
+    gameType = null;
     botLevel  = -1;
     boardStatus =  {cells: new Array(9)};
+    opponentData = undefined;
+    turnOfPlayer = undefined;
     gameOver = false;
     win = 0;
     phaserGame.state.start('menu');

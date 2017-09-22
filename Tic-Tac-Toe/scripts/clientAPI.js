@@ -205,7 +205,7 @@ var parseRoomAndRedirectToGame = function() {
               opponentData = players[0];
           }
         }
-        console.log("Redirecting to game...");
+        console.log("Redirecting to game...",opponentData);
         gameType = 'friend';
         if(opponentData !== undefined && opponentData.affiliation === "accepted") {
           phaserGame.state.start('play');
@@ -356,8 +356,20 @@ var game = {
     },
     onBackButtonPressed:  function() {
       console.log('BackButton Triggered.');
-      if(screenState === 1)
+      if(screenState === 1) {
+        kapow.unloadRoom(function(){console.log('Room Succesfully Unloaded');},function(){console.log('Room Unloading Failed');});
+        gameResume = false;
+        room=null;
+        playerMark = 0;
+        gameType = null;
+        botLevel  = -1;
+        boardStatus =  {cells: new Array(9)};
+        opponentData = undefined;
+        turnOfPlayer = undefined;
+        gameOver = false;
+        win = 0;
         phaserGame.state.start('menu');
+      }
       else {
         kapow.close();
       }
