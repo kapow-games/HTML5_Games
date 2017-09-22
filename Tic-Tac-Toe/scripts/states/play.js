@@ -760,8 +760,12 @@ play.prototype = {
             console.log("Client reisgned, hence lost");
             gameEndHandler(1);
           },
-          function(obj) {
-              console.log("resignation - Failure");
+          function(error) {
+              console.log("resignation - Failure due to following error : ",error);
+              that.yesResignButton.destroy();
+              that.cancelButton.destroy();
+              that.resignModal.destroy();
+              that.darkOverlay.destroy();
           }
       );
     }
