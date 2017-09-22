@@ -494,7 +494,7 @@ play.prototype = {
     gameLayoutVariables.turnText.fill = "#fefefe";
     gameLayoutVariables.turnText.align = "center";
     gameLayoutVariables.turnText.backgroundColor = "#5684fb";
-    gameLayoutVariables.turnText.text = (gameOver === true) ? win === playerMark ? "  YOU WIN!" : "  YOU LOSE!" : playerMark === 1 ? "YOUR TURN" : gameType ===  "solo" ? "BOT's TURN" : "Waiting for turn.";
+    gameLayoutVariables.turnText.text = (gameOver === true) ? win === playerMark ? "  YOU WIN!" : "  YOU LOSE!" : gameType ===  "solo" ? playerMark === 1 ? "Your Turn" : "BOT's TURN" : turnOfPlayer.id === playerData.id ? "Your Turn" : "Waiting for turn.";
 
     this.vs = phaserGame.add.text(511, 105, "VS");
     this.vs.fontStyle = 'normal';

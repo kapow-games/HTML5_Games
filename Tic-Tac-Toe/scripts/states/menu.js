@@ -129,7 +129,7 @@ menu.prototype = {
       // opponentMark = 2 ;
       parseRoomAndRedirectToGame();
     }, function(error) {
-      console.log("startcsFriendGame Failed : ",error);
+      console.log("startvsFriendGame Failed : ",error);
     });
   },
   againstFriend : function() {

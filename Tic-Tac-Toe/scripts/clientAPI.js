@@ -15,7 +15,6 @@ var saveGameData = function(value) {
   let currentGameState = phaserGame.state.states.play.cells.children;
   let len = currentGameState.length;
   for(let i = 0 ; i < len ; i++) {
-    // boardStatus = boar
     boardStatus.cells[i]=currentGameState[i].frame ;
   }
   console.log("Board Status recorded on pause : ",boardStatus);
@@ -79,7 +78,7 @@ var parseRoomAndRedirectToGame = function() {
                 console.log("History Fetch at CLIENT : ",messagesHistory);
                 var history = [];
                 if(messagesHistory.length === 0) {
-                  //This is the player who has invited for invite friend.
+                  //This is the player who has invited for vsFriend.
                   playerMark = 1 ;
                 }
                 else {
@@ -87,18 +86,18 @@ var parseRoomAndRedirectToGame = function() {
                     console.log("First Message in was "+messagesHistory[0].type+" indicator.");
                     if(messagesHistory[0].type === "room_lock_status") {
                       if(messagesHistory.length === 1) {
-                        playerMark = 1 ;
-                        opponentMark = 2 ;
+                        playerMark = 2 ;
+                        opponentMark = 1 ;
                         console.log("You are Marked 'X'");
                       }
-                      else if(messagesHistory[1].data.actorJid === playerData.id) {
-                        playerMark = 1 ;
-                        opponentMark = 2 ;
+                      else if(messagesHistory[0].data.actorJid === playerData.id) {
+                        playerMark = 2 ;
+                        opponentMark = 1 ;
                         console.log("You are Marked 'X'");
                       }
                       else {
-                        playerMark = 2 ;
-                        opponentMark = 1 ;
+                        playerMark = 1 ;
+                        opponentMark = 2 ;
                         console.log("You are Marked 'O'");
                       }
                     }
@@ -357,7 +356,11 @@ var game = {
     onBackButtonPressed:  function() {
       console.log('BackButton Triggered.');
       if(screenState === 1) {
-        kapow.unloadRoom(function(){console.log('Room Succesfully Unloaded');},function(){console.log('Room Unloading Failed');});
+        kapow.unloadRoom(function() {
+          console.log('Room Succesfully Unloaded');
+        },function() {
+          console.log('Room Unloading Failed');
+        });
         gameResume = false;
         room=null;
         playerMark = 0;
