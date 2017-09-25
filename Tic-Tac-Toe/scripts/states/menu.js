@@ -123,13 +123,14 @@ menu.prototype = {
   },
   againstRandom : function() {
     gameType = 'random';
+    console.log("Creating room for Random game");
     kapow.startGameWithRandomPlayers({'difficulty':'medium'}, function(roomDetail) {
       room = roomDetail;
       playerMark = 1 ;
       opponentMark = 2 ;
       parseRoomAndRedirectToGame();
     }, function(error) {
-      console.log("startvsFriendGame Failed : ",error);
+      console.log("startvsRandomGame Failed : ",error);
     });
   },
   againstFriend : function() {
@@ -140,7 +141,7 @@ menu.prototype = {
       opponentMark = 2 ;
       parseRoomAndRedirectToGame();
     }, function(error) {
-      console.log("startcsFriendGame Failed : ",error);
+      console.log("startvsFriendGame Failed : ",error);
     });
   },
   againstComputer : function() {

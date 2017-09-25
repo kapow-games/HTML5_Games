@@ -77,6 +77,13 @@ var parseRoomAndRedirectToGame = function() {
               function(messagesHistory) {
                 console.log("History Fetch at CLIENT : ",messagesHistory);
                 var history = [];
+                var i = 0 ;
+                while(i < messagesHistory.length && messagesHistory[i].type === "turn_change") {
+                  i+=1;
+                }
+                messagesHistory = messagesHistory.slice(i,messagesHistory.length);
+                console.log("History Fetch at CLIENT after turn_change filter: ",messagesHistory);
+
                 if(messagesHistory.length === 0) {
                   //This is the player who has invited for vsFriend.
                   playerMark = 2 ;
@@ -103,9 +110,9 @@ var parseRoomAndRedirectToGame = function() {
                     }
                     else {
                       if(messagesHistory[0].data.actorJid === playerData.id) {
-                          playerMark = 2 ;
-                          opponentMark = 1 ;
-                          console.log("You are Marked 'O'");
+                        playerMark = 2 ;
+                        opponentMark = 1 ;
+                        console.log("You are Marked 'O'");
                       }
                       else if(messagesHistory[0].data.actorJid === opponentData.id) {
                         playerMark = 2 ;
@@ -227,6 +234,8 @@ var onAffiliationChange = function() {
     kapow.getRoomInfo(function (roomObj) {
         console.log("Client getRoomInfo - Room: " + JSON.stringify(roomObj));
         room = roomObj;
+        playerMark = 2 ;
+        opponentMark = 1 ;
         parseRoomAndRedirectToGame();
     }, function () {
         console.log("Client - onAffiliationChange failure");
