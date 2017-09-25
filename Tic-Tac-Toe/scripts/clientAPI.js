@@ -79,7 +79,7 @@ var parseRoomAndRedirectToGame = function() {
                 var history = [];
                 if(messagesHistory.length === 0) {
                   //This is the player who has invited for vsFriend.
-                  playerMark = 1 ;
+                  playerMark = 2 ;
                 }
                 else {
                   if(messagesHistory[0].type === "affiliation_change" || messagesHistory[0].type === "room_lock_status") {
@@ -108,8 +108,8 @@ var parseRoomAndRedirectToGame = function() {
                           console.log("You are Marked 'O'");
                       }
                       else if(messagesHistory[0].data.actorJid === opponentData.id) {
-                        playerMark = 1 ;
-                        opponentMark = 2 ;
+                        playerMark = 2 ;
+                        opponentMark = 1 ;
                         console.log("You are Marked 'X'");
                       }
                     }

@@ -4,13 +4,13 @@ var game = {
     },
     onPlayerJoined: function(playerObj) {
       console.log("SERVER onPlayerJoined - " + JSON.stringify(playerObj));
-      // var room = kapow.getRoomInfo();
+      var room = kapow.getRoomInfo();
       // Devise a method to recognize gametype.
-      // kapow.setNextPlayer(playerObj.id, room.roomId, function() {
-      //   console.log("SERVER setNextPlayer success.");
-      // }, function() {
-      //   console.log("SERVER setNextPlayer FAILED.");
-      // });
+      kapow.setNextPlayer(playerObj.id, room.roomId, function() {
+        console.log("SERVER setNextPlayer success.");
+      }, function() {
+        console.log("SERVER setNextPlayer FAILED.");
+      });
     },
     makeMove: function (move) {
       console.log("SERVER : move recieved in makeMove() : ",JSON.stringify(move));
