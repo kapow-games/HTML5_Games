@@ -125,8 +125,8 @@ menu.prototype = {
     gameType = 'random';
     kapow.startGameWithRandomPlayers({'difficulty':'medium'}, function(roomDetail) {
       room = roomDetail;
-      // playerMark = 1 ;
-      // opponentMark = 2 ;
+      playerMark = 1 ;
+      opponentMark = 2 ;
       parseRoomAndRedirectToGame();
     }, function(error) {
       console.log("startvsFriendGame Failed : ",error);

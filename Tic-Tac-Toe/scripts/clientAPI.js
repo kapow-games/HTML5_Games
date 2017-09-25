@@ -84,22 +84,22 @@ var parseRoomAndRedirectToGame = function() {
                 else {
                   if(messagesHistory[0].type === "affiliation_change" || messagesHistory[0].type === "room_lock_status") {
                     console.log("First Message in was "+messagesHistory[0].type+" indicator.");
-                    if(messagesHistory[0].type === "room_lock_status") {
-                      if(messagesHistory.length === 1) {
-                        playerMark = 2 ;
-                        opponentMark = 1 ;
-                        console.log("You are Marked 'X'");
-                      }
-                      else if(messagesHistory[0].data.actorJid === playerData.id) {
-                        playerMark = 2 ;
-                        opponentMark = 1 ;
+                    if(messagesHistory[0].type === "affiliation_change" && messagesHistory.length > 1 && messagesHistory[1].type === "room_lock_status") {
+                      if(messagesHistory[0].data.actorJid === playerData.id) {
+                        playerMark = 1 ;
+                        opponentMark = 2;
                         console.log("You are Marked 'X'");
                       }
                       else {
-                        playerMark = 1 ;
-                        opponentMark = 2 ;
+                        playerMark = 2 ;
+                        opponentMark = 1;
                         console.log("You are Marked 'O'");
                       }
+                    }
+                    else if(messagesHistory[0].type === "room_lock_status") {
+                      playerMark = 1 ;
+                      opponentMark = 2;
+                      console.log("You are Marked 'X'");
                     }
                     else {
                       if(messagesHistory[0].data.actorJid === playerData.id) {
