@@ -347,7 +347,7 @@ var game = {
         }
         gameLayoutVariables.opponentProfilePic.alpha = 0.3;
         gameLayoutVariables.playerProfilePic.alpha = 1;
-        gameLayoutVariables.turnText.text = "Your Turn.";
+        gameLayoutVariables.turnText.text = "YOUR TURN";
         boardStatus.cells = message.data.moveData.board;
         if(playerMark === 0) {
           playerMark = 2;

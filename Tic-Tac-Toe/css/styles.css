@@ -1,6 +1,10 @@
-
 html, body, div, canvas {
   margin: 0;
   padding: 0;
   /*cursor: pointer;*/
+}
+@font-face {
+    font-family: "nunito-regular";
+    font-style: normal;
+    src: url("../assets/fonts/Nunito-Regular.ttf");
 }

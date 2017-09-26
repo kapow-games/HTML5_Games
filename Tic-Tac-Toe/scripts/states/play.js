@@ -486,18 +486,20 @@ play.prototype = {
     this.opponentProfilePicMark.frame = ( (playerMark === 2) ? 1 : 2) ;
     this.opponentProfilePicMark.scale.set(48/this.opponentProfilePicMark.width,48/this.opponentProfilePicMark.height);
 
-    gameLayoutVariables.turnText = phaserGame.add.text(366, 276, "");
-    gameLayoutVariables.turnText.fontStyle = 'normal';
+    gameLayoutVariables.turnText = createText(366, 276, "");//phaserGame.add.text(366, 276, "");
+    gameLayoutVariables.turnText.anchor.setTo(0.5,0);
+    gameLayoutVariables.turnText.position.x = phaserGame.world.centerX;
+    gameLayoutVariables.turnText.font = 'nunito-regular';
     gameLayoutVariables.turnText.fontSize = "60px";
     gameLayoutVariables.turnText.fontWeight = 800;
     gameLayoutVariables.turnText.wordWrapWidth = 355;
     gameLayoutVariables.turnText.fill = "#fefefe";
     gameLayoutVariables.turnText.align = "center";
     gameLayoutVariables.turnText.backgroundColor = "#5684fb";
-    gameLayoutVariables.turnText.text = (gameOver === true) ? win === playerMark ? "  YOU WIN!" : "  YOU LOSE!" : gameType ===  "solo" ? playerMark === 1 ? "Your Turn" : "BOT's TURN" : turnOfPlayer === playerData ? "Your Turn" : "Waiting for turn.";
+    gameLayoutVariables.turnText.text = (gameOver === true) ? win === playerMark ? "YOU WIN!" : "YOU LOSE!" : gameType ===  "solo" ? playerMark === 1 ? "YOUR TURN" : "BOT'S TURN" : turnOfPlayer === playerData ? "YOUR TURN" : "WAITING";
 
-    this.vs = phaserGame.add.text(511, 105, "VS");
-    this.vs.fontStyle = 'normal';
+    this.vs = createText(511, 105, "VS");
+    this.vs.font = 'nunito-regular';
     this.vs.fontSize = "42px";
     this.vs.fontWeight = 800;
     this.vs.wordWrapWidth = 58;
@@ -631,7 +633,7 @@ play.prototype = {
       this.musicButton.input.priorityID = 2;
       gameLayoutVariables.resign.input.priorityID = 2;
       console.log("Player's Sprite Set");
-      gameLayoutVariables.turnText.text = gameType === "solo" ? "BOT'S TURN" : "Waiting for Turn.";
+      gameLayoutVariables.turnText.text = gameType === "solo" ? "BOT'S TURN" : "WAITING";
       gameLayoutVariables.opponentProfilePic.alpha = 1;
       gameLayoutVariables.playerProfilePic.alpha = 0.3;
       turnOfPlayer = undefined;

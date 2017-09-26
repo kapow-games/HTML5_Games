@@ -1,26 +1,23 @@
 'use strict';
+var WebFontConfig = {
+
+  active: function() { phaserGame.time.events.add(Phaser.Timer.SECOND, createText, this); }
+  // google: {
+  //     families: ['Nunito:800']
+  //     // families: ["Exo:300", "Exo:700", "Roboto Slab:300", "Roboto Slab:700", "Permanent Marker"]
+  // }
+};
 var preload = function() {
   this.asset = null;
   this.ready = false;
 };
-var WebFontConfig = {
-
-    //  'active' means all requested fonts have finished loading
-    //  We set a 1 second delay before calling 'createText'.
-    //  For some reason if we don't the browser cannot render the text the first time it's created.
-    // active: function() { phaserGame.time.events.add(Phaser.Timer.SECOND, preload, this); },
-
-    //  The Google Fonts we want to load (specify as many as you like in the array)
-    google: {
-      families: ['Nunito']
-    }
-
-};
-
 preload.prototype = {
   preload : function() {
+    // var textMessage = createText("Loading Game");
+    // console.log(textMessage);
     console.log("Preloading Assets");
     phaserGame.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+    this.add.text(0, 0, "hack", { font: "1px nunito-regular", fill: "#000000" });
     this.asset = this.add.sprite(this.world.centerX,this.world.centerY,"loading");
     this.asset.anchor.setTo(0.5,0.5);
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
@@ -90,3 +87,7 @@ preload.prototype = {
     this.ready = true;
   }
 };
+var createText = function(positionX, positionY, messageToDisplay) {
+  var text = phaserGame.add.text(positionX, positionY, messageToDisplay);
+  return text;
+}
