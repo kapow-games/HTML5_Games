@@ -14,13 +14,15 @@ var gameLayoutVariables = {
   help  : null,
   clickBlocked  : null,
   playerProfilePic : null,
-  opponentProfilePic : null
+  opponentProfilePic : null,
+  resultBoard : null
 };
 var gameEndHandler = function(value) {
   console.log("Game End Being Handled.");
   gameLayoutVariables.backgroundImage.inputEnabled = true;
   gameLayoutVariables.backgroundImage.input.priorityID = 2;
   gameLayoutVariables.backButton.input.priorityID = 3;
+  gameLayoutVariables.resultBoard.frame = value === 1 ? 2 : value === 0 ? 1 : 0;
   gameLayoutVariables.turnTextBackground.destroy();
   gameLayoutVariables.resign.destroy();
   gameLayoutVariables.help.destroy();
@@ -443,7 +445,8 @@ play.prototype = {
     gameLayoutVariables.backgroundImage = phaserGame.add.sprite(0, 0, 'arena');
 
     var gameBoard = this.add.sprite(57, 477, 'board');
-    var resultBoard = phaserGame.add.sprite(315, 240, 'winBackground');
+    gameLayoutVariables.resultBoard = phaserGame.add.sprite(315, 240, 'winBackground',);
+    gameLayoutVariables.resultBoard.frame = 0;
     gameLayoutVariables.turnTextBackground = this.add.sprite(315, 240, 'turnTextBackground');
     gameLayoutVariables.resign = this.add.button(390, 1584, 'resign', this.resignEvent, this, 0, 0, 1, 0);
     gameLayoutVariables.help = this.add.button(741, 1584, 'helpEnd', this.helpButtonHandler, this, 0, 0, 1, 0);

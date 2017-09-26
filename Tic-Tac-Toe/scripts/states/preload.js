@@ -45,7 +45,7 @@ preload.prototype = {
     this.load.image('cancel', 'assets/images/cancel.png');
     this.load.image('shareBackground', 'assets/images/share-bg.png');
     this.load.image('fbShare', 'assets/images/fb.png');
-    this.load.image('winBackground', 'assets/images/win-bg.png');
+    this.load.spritesheet('winBackground', 'assets/images/resultBackground.png',456, 153);
     this.load.image('confetti', 'assets/images/confetti.png');
     this.load.image('twitterShare', 'assets/images/twitter.png');
     this.load.image('otherShare', 'assets/images/other.png');
