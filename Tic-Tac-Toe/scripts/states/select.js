@@ -61,7 +61,7 @@ select.prototype = {
     kapow.startSoloGame(function(roomDetail) {
       room = roomDetail;
       gameType = "solo";
-      phaserGame.state.start('play');
+      phaserGame.state.start('playLoad');
     }, function(error) {
       console.log("startSoloGame Failed : ",error);
     });

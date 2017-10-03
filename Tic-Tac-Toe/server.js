@@ -1,3 +1,7 @@
+var mysql = require('mysql');
+var getToken = function() {
+    return "23lu3u3z52liil2zz7i829il2zz53uul";
+};
 var game = {
     onMessageDelivered: function (data) {
         console.log("SERVER onMessageDelivered - " + JSON.stringify(data));
@@ -11,6 +15,16 @@ var game = {
       }, function() {
         console.log("SERVER setNextPlayer FAILED.");
       });
+      var sql = mysql.createConnection({
+        host: process.env.RDS_ENDPOINT,
+        user: 'ttt',
+        password: getToken(),
+        database: 'ttt'
+      });
+      sql.connect();
+      console.log("INSERT INTO playerRoomMark (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
+      sql.query("INSERT INTO playerRoomMark (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
+      sql.end();
     },
     makeMove: function (move) {
       console.log("SERVER : move recieved in makeMove() : ",JSON.stringify(move));
@@ -58,7 +72,19 @@ var game = {
                 move.roomID,
                 function () {
                   console.log("Game End Broadcast - success");
-                  kapow.return(data);
+                  kapow.boards.postScores( {
+                    'playerId' : move.playerTurn,
+                    'scores' : {
+                      'points' : 5
+                    }
+                  },
+                  function() {
+                    kapow.return(data);
+                  },
+                  function(error) {
+                    console.log("Error in posting scores",error);
+                    kapow.return(null,error);
+                  });
                 },
                 function (error) {
                   console.log("Game End Broadcast - failure",error);
@@ -75,6 +101,28 @@ var game = {
         }
       );
     },
+    playerMark: function(playerObj) {
+      var room = kapow.getRoomInfo();
+      var sql = mysql.createConnection({
+        host: process.env.RDS_ENDPOINT,
+        user: 'ttt',
+        password: getToken(),
+        database: 'ttt'
+      });
+      sql.connect();
+      console.log("SELECT * FROM playerRoomMark where roomID = \""+room.roomId+"\";");
+      sql.query("SELECT * FROM playerRoomMark where roomID = \""+room.roomId+"\";",
+        function (error, results, fields) {
+            if(results[0].playerID === playerObj.id) {
+            // if nothing has changed terminate the game
+                kapow.return(1);
+            }
+            else {
+                kapow.return(2);
+            }
+        });
+      sql.end();
+    },
     resignationRequest: function (move) {
       console.log("SERVER : resignation request recieved in resignationRequest() : ",JSON.stringify(move));
       var gameResult;
@@ -87,7 +135,19 @@ var game = {
         move.roomID,
         function () {
           console.log("Game End Broadcast - success");
-          kapow.return(move);
+          kapow.boards.postScores( {
+            'playerId' : move.playerTurn,
+            'scores' : {
+              'points' : 5
+            }
+          },
+          function() {
+            kapow.return(move);
+          },
+          function(error) {
+            console.log("Error in posting scores",error);
+            kapow.return(null,error);
+          });
         },
         function (error) {
           console.log("Game End Broadcast - failure",error);

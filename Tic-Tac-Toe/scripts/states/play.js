@@ -419,7 +419,7 @@ Game.score = function(_state) {
 var play = function() {};
 play.prototype = {
   preload:  function() {
-    screenState = 1;
+    screenState = 1 ;
     if(gameType === 'friend') {
       if(opponentData !== undefined) {
         this.load.image('opponentPic',opponentData.profileImage);
@@ -467,6 +467,7 @@ play.prototype = {
     this.playerProfilePicMarkBackground.scale.set(48/this.playerProfilePicMarkBackground.width,48/this.playerProfilePicMarkBackground.height);
 
     this.playerProfilePicMark = this.add.sprite(438,144,'cell');
+    console.log("playerMark at time of showing on screen",playerMark);
     this.playerProfilePicMark.frame = playerMark ;
     this.playerProfilePicMark.scale.set(48/this.playerProfilePicMark.width,48/this.playerProfilePicMark.height);
 
