@@ -26,6 +26,12 @@ playLoad.prototype = {
     }
   },
   create : function() {
+    phaserGame.add.sprite(0, 0, 'arena');
+    this.sprite = phaserGame.add.sprite(phaserGame.world.centerX, phaserGame.world.centerY, 'loaderSpinner');
+    this.sprite.anchor.setTo(0.5, 0.5);
 
+  },
+  update  : function() {
+    this.sprite.angle += 2;
   }
 }
