@@ -3,13 +3,23 @@ var waiting = function() {};
 waiting.prototype = {
   preload: function() {
     if(opponentData !== undefined) {
-      this.load.image('opponentPic',opponentData.profileImage);
+      this.load.image('opponentPic',opponentData.profileImage+"?height=276&width=276");
     }
   },
   create: function() {
     screenState = 0 ;
     this.bg = this.add.image(0, 0, 'arena');
     this.waitingPlayerBackground = this.add.image(48, 372, 'waitingPlayer');
+
+    this.backButton = this.add.button(48, 96, 'back', this.backButtonHandler, this);
+    this.backButton.anchor.setTo(0, 0);
+
+    this.soundToggle = this.add.button(960, 96, 'music', this.musicToggle, this);
+    this.soundToggle.anchor.setTo(0, 0);
+
+    this.helpButton = this.add.button(840, 96, 'help', this.helpButtonHandler, this);
+    this.helpButton.anchor.setTo(0, 0);
+
 
     this.waitingText = createText(366, 780, "");//phaserGame.add.text(366, 276, "");
     this.waitingText.anchor.setTo(0.5,0);
@@ -55,4 +65,13 @@ waiting.prototype = {
   update: function() {
 
   },
+  backButtonHandler : function() {
+    kapow.close();
+  },
+  musicToggle : function() {
+    this.soundToggle.frame = (1+this.soundToggle.frame)%2 ;
+  },
+  helpButtonHandler : function() {
+    console.log('Helpp Button Clicked');
+  }
 };
