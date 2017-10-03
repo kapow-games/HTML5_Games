@@ -51,6 +51,8 @@ preload.prototype = {
     this.load.image('otherShare', 'assets/images/other.png');
     this.load.image('darkOverlay', 'assets/images/dark-overlay.png');
     this.load.image('arrowRight', 'assets/images/arrowRight.png');
+    this.load.image('waitingPlayer', 'assets/images/waitingPlayer.png');
+    this.load.image('anonymousOpponentPic', 'assets/images/waitingOpponent.png');
     this.load.spritesheet('startbutton', 'assets/images/startbutton.png', 630, 138);
     this.load.spritesheet('gameModes', 'assets/images/game-modes.png', 328, 84);
     // this.load.spritesheet('gameModesPatch', 'assets/images/gamemode-patch.png');
