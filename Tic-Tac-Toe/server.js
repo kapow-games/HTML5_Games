@@ -12,9 +12,35 @@ var game = {
       // Devise a method to recognize gametype.
       kapow.setNextPlayer(playerObj.id, room.roomId, function() {
         console.log("SERVER setNextPlayer success.");
+        var sql = mysql.createConnection({
+          host: process.env.RDS_ENDPOINT,
+          user: 'ttt',
+          password: getToken(),
+          database: 'ttt'
+        });
+        sql.connect();
+        console.log("INSERT INTO playerRoomMark (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
+        sql.query("INSERT INTO playerRoomMark (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
+        console.log("INSERT INTO gameStatus (roomID, playerID, board) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\" , \""+"000000000"+"\");");
+        sql.query("INSERT INTO gameStatus (roomID, playerID, board) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\" , \""+"000000000"+"\");");
+        sql.end();
       }, function() {
         console.log("SERVER setNextPlayer FAILED.");
       });
+    },
+    makeMove: function (move) {
+      console.log("SERVER : move recieved in makeMove() : ",JSON.stringify(move));
+      var gameResult;
+      var dataArray = move.board;
+      var moveString = "";
+      for(var j = 0 ; j < 9 ; j++) {
+        if(dataArray[j] === null) {
+          moveString+="0";
+        }
+        else {
+          moveString+=dataArray[j]===1 ? "1" : "2" ;
+        }
+      }
       var sql = mysql.createConnection({
         host: process.env.RDS_ENDPOINT,
         user: 'ttt',
@@ -22,84 +48,126 @@ var game = {
         database: 'ttt'
       });
       sql.connect();
-      console.log("INSERT INTO playerRoomMark (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
-      sql.query("INSERT INTO playerRoomMark (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
-      sql.end();
-    },
-    makeMove: function (move) {
-      console.log("SERVER : move recieved in makeMove() : ",JSON.stringify(move));
-      var gameResult;
-      var dataArray = move.board;
-      console.log(dataArray);
-      if ((dataArray[0] !== null && dataArray[0] === dataArray[1] && dataArray[0] === dataArray[2]) || // COL 0
-          (dataArray[3] !== null && dataArray[3] === dataArray[4] && dataArray[3] === dataArray[5]) ||
-          (dataArray[6] !== null && dataArray[6] === dataArray[7] && dataArray[6] === dataArray[8]) ||
-          (dataArray[0] !== null && dataArray[0] === dataArray[3] && dataArray[0] === dataArray[6]) || // ROW 0
-          (dataArray[1] !== null && dataArray[1] === dataArray[4] && dataArray[1] === dataArray[7]) ||
-          (dataArray[2] !== null && dataArray[2] === dataArray[5] && dataArray[2] === dataArray[8]) ||
-          (dataArray[0] !== null && dataArray[0] === dataArray[4] && dataArray[0] === dataArray[8]) || // Diagonal
-          (dataArray[2] !== null && dataArray[2] === dataArray[4] && dataArray[2] === dataArray[6])) {
-          gameResult = "lost";
-      }
-      else if (dataArray[0] != null && dataArray[1] != null && dataArray[2] != null &&
-        dataArray[3] != null && dataArray[4] != null && dataArray[5] != null &&
-        dataArray[6] != null && dataArray[7] != null && dataArray[8] != null) {
-        gameResult = "draw";
-      }
-      else {
-        gameResult = "unknown";
-      }
-      var data = {
-        moveData : move,
-        result : gameResult,
-      };
-      kapow.game.sendTurn(data,move.roomID,move.playerTurn,move.opponentTurn, null,
-        function () {
-            console.log("sendTurn - success");
-            if (gameResult !== "unknown") {
-              var outcome = {};
-              outcome["ranks"] = {}
-              if (gameResult === "draw") {
-                  outcome["ranks"][move.playerTurn] = 1;
-                  outcome["ranks"][move.opponentTurn] = 1;
-              } else if (gameResult === "lost") {
-                  outcome["ranks"][move.opponentTurn] = 2;
-                  outcome["ranks"][move.playerTurn] = 1;
-              }
-              outcome["type"]="result";
-              console.log("SERVER Game End Broadcast data",outcome);
-              kapow.game.end(outcome,
-                move.roomID,
-                function () {
-                  console.log("Game End Broadcast - success");
-                  kapow.boards.postScores( {
-                    'playerId' : move.playerTurn,
-                    'scores' : {
-                      'points' : 5
+      sql.query("SELECT * FROM gameStatus WHERE roomID = \""+move.roomID+"\" AND playerID = \""+move.playerTurn+"\";",
+          function (error, results, fields) {
+              if(results.length === 1) {
+                var flag = 0 ;
+                var boardString = "" ;
+                console.log("results.board",results[0].board);
+                console.log("moveString",moveString);
+                for(var i = 0 ; i < 9 ; i++) {
+                  boardString = boardString + moveString[i];
+                  if(results[0].board[i] !== moveString[i] && flag !== 0) {
+                    flag = 2 ;
+                    console.log("Invalid Move");
+                  }
+                  else if (results[0].board[i] !== moveString[i] && results[0].board[i] === '0') {
+                    flag = 1 ;
+                  }
+                }
+                if(flag === 1) {
+                  //Move Identified
+                  console.log("SERVER : move received : ",dataArray);
+                  if ((dataArray[0] !== null && dataArray[0] === dataArray[1] && dataArray[0] === dataArray[2]) || // COL 0
+                      (dataArray[3] !== null && dataArray[3] === dataArray[4] && dataArray[3] === dataArray[5]) ||
+                      (dataArray[6] !== null && dataArray[6] === dataArray[7] && dataArray[6] === dataArray[8]) ||
+                      (dataArray[0] !== null && dataArray[0] === dataArray[3] && dataArray[0] === dataArray[6]) || // ROW 0
+                      (dataArray[1] !== null && dataArray[1] === dataArray[4] && dataArray[1] === dataArray[7]) ||
+                      (dataArray[2] !== null && dataArray[2] === dataArray[5] && dataArray[2] === dataArray[8]) ||
+                      (dataArray[0] !== null && dataArray[0] === dataArray[4] && dataArray[0] === dataArray[8]) || // Diagonal
+                      (dataArray[2] !== null && dataArray[2] === dataArray[4] && dataArray[2] === dataArray[6])) {
+                      gameResult = "lost";
+                  }
+                  else if (dataArray[0] != null && dataArray[1] != null && dataArray[2] != null &&
+                    dataArray[3] != null && dataArray[4] != null && dataArray[5] != null &&
+                    dataArray[6] != null && dataArray[7] != null && dataArray[8] != null) {
+                    gameResult = "draw";
+                  }
+                  else {
+                    gameResult = "unknown";
+                  }
+                  var data = {
+                    moveData : move,
+                    result : gameResult,
+                  };
+                  kapow.game.sendTurn(data,move.roomID,move.playerTurn,move.opponentTurn, null,
+                    function () {
+                        console.log("sendTurn - success");
+                        //save game state in DB
+                        console.log("INSERT INTO gameStatus (roomID, playerID, board) VALUES (\""+move.roomID+"\" , \""+move.opponentTurn+"\" , \""+boardString+"\");");
+                        var sanitysql = mysql.createConnection({
+                          host: process.env.RDS_ENDPOINT,
+                          user: 'ttt',
+                          password: getToken(),
+                          database: 'ttt'
+                        });
+                        sanitysql.connect();
+                        sanitysql.query("UPDATE gameStatus SET playerID =\""+move.opponentTurn+"\" , board =  \""+boardString+"\" WHERE roomID = \""+move.roomID+"\";");
+                        sanitysql.end();
+                        if (gameResult !== "unknown") {
+                          var outcome = {};
+                          outcome["ranks"] = {}
+                          if (gameResult === "draw") {
+                              outcome["ranks"][move.playerTurn] = 1;
+                              outcome["ranks"][move.opponentTurn] = 1;
+                          } else if (gameResult === "lost") {
+                              outcome["ranks"][move.opponentTurn] = 2;
+                              outcome["ranks"][move.playerTurn] = 1;
+                          }
+                          outcome["type"]="result";
+                          console.log("SERVER Game End Broadcast data",outcome);
+                          kapow.game.end(outcome,
+                            move.roomID,
+                            function () {
+                              console.log("Game End Broadcast - success");
+                              kapow.boards.postScores( {
+                                'playerId' : move.playerTurn,
+                                'scores' : {
+                                  'points' : 5
+                                }
+                              },
+                              function() {
+                                kapow.return(data);
+                              },
+                              function(error) {
+                                console.log("Error in posting scores",error);
+                                kapow.return(null,error);
+                              });
+                            },
+                            function (error) {
+                              console.log("Game End Broadcast - failure",error);
+                              kapow.return(null,error);
+                            });
+                        }
+                        else {
+                          kapow.return(data);
+                        }
+                    },
+                    function (error) {
+                        console.log("sendTurn - failure");
+                        kapow.return(null,error);
                     }
-                  },
-                  function() {
-                    kapow.return(data);
-                  },
-                  function(error) {
-                    console.log("Error in posting scores",error);
-                    kapow.return(null,error);
-                  });
-                },
-                function (error) {
-                  console.log("Game End Broadcast - failure",error);
-                  kapow.return(null,error);
-                });
-            }
-            else {
-              kapow.return(data);
-            }
-        },
-        function (error) {
-            console.log("sendTurn - failure");
-            kapow.return(null,error);
-        }
-      );
+                  );
+                }
+                else if(flag === 2) {
+                  //Multiple Move Registered
+                  kapow.return(null,{"error" : "Multiple Move Received"});
+                }
+                else {
+                  //Invalid Move Handler
+                  kapow.return(null,{"error" : "No Move Received"});
+                }
+              }
+              else if(results.length === 0) {
+                console.log("SERVER : Game Status record for the playerID and roomID combination not Found");
+                kapow.return(null,{"error" : "Game Status record for the playerID and roomID combination not Found"});
+              }
+              else {
+                console.log("SERVER : Game Status record for the playerID and roomID combination was more than 1");
+                kapow.return(null,{"error" : "SERVER : Game Status record for the playerID and roomID combination was more than 1"});
+              }
+      });
+      sql.end();
     },
     playerMark: function(playerObj) {
       var room = kapow.getRoomInfo();
