@@ -23,6 +23,8 @@ var game = {
         sql.query("INSERT INTO playerRoomMark (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
         console.log("INSERT INTO gameStatus (roomID, playerID, board) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\" , \""+"000000000"+"\");");
         sql.query("INSERT INTO gameStatus (roomID, playerID, board) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\" , \""+"000000000"+"\");");
+        console.log("INSERT INTO timeoutRecord (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
+        sql.query("INSERT INTO timeoutRecord (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
         sql.end();
       }, function() {
         console.log("SERVER setNextPlayer FAILED.");
@@ -94,7 +96,6 @@ var game = {
                     function () {
                         console.log("sendTurn - success");
                         //save game state in DB
-                        console.log("INSERT INTO gameStatus (roomID, playerID, board) VALUES (\""+move.roomID+"\" , \""+move.opponentTurn+"\" , \""+boardString+"\");");
                         var sanitysql = mysql.createConnection({
                           host: process.env.RDS_ENDPOINT,
                           user: 'ttt',
@@ -102,8 +103,28 @@ var game = {
                           database: 'ttt'
                         });
                         sanitysql.connect();
-                        sanitysql.query("UPDATE gameStatus SET playerID =\""+move.opponentTurn+"\" , board =  \""+boardString+"\" WHERE roomID = \""+move.roomID+"\";");
+                        console.log("UPDATE gameStatus SET playerID =\""+move.opponentTurn+"\", board =  \""+boardString+"\" WHERE roomID = \""+move.roomID+"\";");
+                        sanitysql.query("UPDATE gameStatus SET playerID =\""+move.opponentTurn+"\", board =  \""+boardString+"\" WHERE roomID = \""+move.roomID+"\";");
+                        console.log("UPDATE timeoutRecord SET playerID =\""+move.opponentTurn+"\" WHERE roomID = \""+move.roomID+"\";");
+                        sanitysql.query("UPDATE timeoutRecord SET playerID =\""+move.opponentTurn+"\" WHERE roomID = \""+move.roomID+"\";");
                         sanitysql.end();
+                        //TODO : scheduleRPC
+                        kapow.rpc.schedule("timeout",
+                          {
+                            "playerID" :  move.opponentTurn,
+                            "winnerID" :  move.playerTurn,
+                            "boardStatus" : boardString,
+                            "roomID"  :move.roomID
+                          }, 1,
+                          function(){
+                            console.log("SERVER : scheduleRpc successfull");
+                          },
+                          function(error) {
+                            console.log("SERVER : scheduleRpc failed");
+                            kapow.return(null,error);
+                          }
+                        );
+
                         if (gameResult !== "unknown") {
                           var outcome = {};
                           outcome["ranks"] = {}
@@ -245,5 +266,47 @@ var game = {
           console.log("Game End Broadcast - failure",error);
           kapow.return(null, error);
       });
+    },
+    timeout : function(parameter) {
+      console.log("SERVER : Timeout Triggered");
+      var sql = mysql.createConnection({
+        host: process.env.RDS_ENDPOINT,
+        user: 'ttt',
+        password: getToken(),
+        database: 'ttt'
+      });
+      sql.connect();
+      sql.query("SELECT * FROM timeoutRecord WHERE roomID = \""+parameter.roomID+"\" AND playerID = \""+parameter.playerID+"\";",
+        function (error, results, fields) {
+          console.log("SERVER : Results fetched at \"timeout\"",results);
+          console.log("SERVER : \"parameter\" received at \"timeout\"",parameter);
+          if(results.length === 1) {
+            if(results[0].playerID === parameter.playerID) {
+              var outcome = {} ;
+              outcome["ranks"] = {}
+              outcome["type"]="timeout";
+              outcome["ranks"][parameter.playerID] = 2;
+              outcome["ranks"][parameter.winnerID] = 1;
+              //TODO :  Outcome of type timeout to be updated in client
+              kapow.game.end(outcome,
+                parameter.roomID,
+                function () {
+                  console.log("Game End Broadcast - success");
+                },
+                function (error) {
+                  console.log("Game End Broadcast - failure",error);
+                  kapow.return(null, error);
+              });
+            }
+          }
+          else if(results.length === 0) {
+            console.log("SERVER : No timeOUT record Found");
+          }
+          else {
+            console.log("SERVER : MoreThan 1 timeOUT record Found");
+          }
+        }
+      );
+      sql.end();
     }
 };

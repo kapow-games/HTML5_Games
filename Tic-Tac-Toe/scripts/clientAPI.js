@@ -98,7 +98,7 @@ var parseRoomAndRedirectToGame = function() {
                       console.log("Player Turn couldn't be detrminded");
                     }
                   }
-                  else if(messagesHistory[i].data.type === "resignation") {
+                  else if(messagesHistory[i].data.type === "resignation" || messagesHistory[i].data.type === "timeout") {
                     if(messagesHistory[i].data.ranks[playerData.id] === messagesHistory[i].data.ranks[opponentData.id]) {
                       turnOfPlayer = 0 ;
                     }
@@ -222,7 +222,7 @@ var game = {
     },
     onGameEnd : function(outcome) {
       console.log("CLIENT : Game Ended",outcome);
-      if(outcome.type === "resignation"){
+      if(outcome.type === "resignation" || outcome.type === "timeout"){
         if(outcome.ranks[playerData.id] === 1) {
           console.log("Game Won");
           gameEndHandler(2);
