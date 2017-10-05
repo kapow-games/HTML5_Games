@@ -679,6 +679,15 @@ play.prototype = {
           function(error) {
             sprite.frame = 0 ;
             boardStatus.cells[sprite.frameIndex] = 0;
+            turnOfPlayer = playerData;
+            gameLayoutVariables.backgroundImage.input.priorityID = 1;
+            gameLayoutVariables.backgroundImage.inputEnabled = false;
+            gameLayoutVariables.backButton.input.priorityID = 1;
+            this.musicButton.input.priorityID = 1;
+            gameLayoutVariables.resign.input.priorityID = 1;
+            gameLayoutVariables.turnText.text = gameType === "YOUR TURN";
+            gameLayoutVariables.opponentProfilePic.alpha = 0.3;
+            gameLayoutVariables.playerProfilePic.alpha = 1;
             console.log("makeMove - failure",error);
           }
       );
