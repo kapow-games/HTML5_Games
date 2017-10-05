@@ -642,7 +642,8 @@ play.prototype = {
       gameLayoutVariables.playerProfilePic.alpha = 0.3;
       turnOfPlayer = undefined;
       boardStatus.cells[sprite.frameIndex] = playerMark;
-
+      sprite.frame = playerMark;
+      sprite.alpha = 0.3;
       var that = this;
       var sentData = {
               board : boardStatus.cells,
@@ -655,6 +656,7 @@ play.prototype = {
           function(obj) {
             console.log("makeMove - success : obj: \n",obj);
             sprite.frame = playerMark;
+            sprite.alpha = 1;
             if(obj.result === "lost") {
               gameLayoutVariables.turnText.text = " YOU WON!";
               drawWinningLine();
@@ -675,7 +677,9 @@ play.prototype = {
             }
           },
           function(error) {
-              console.log("makeMove - failure",error);
+            sprite.frame = 0 ;
+            boardStatus.cells[sprite.frameIndex] = 0;
+            console.log("makeMove - failure",error);
           }
       );
     }
