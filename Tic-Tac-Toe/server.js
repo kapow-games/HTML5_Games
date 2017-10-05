@@ -18,13 +18,14 @@ var game = {
           password: getToken(),
           database: 'ttt'
         });
+        timeNow = Math.floor(Date.now()/1000);
         sql.connect();
         console.log("INSERT INTO playerRoomMark (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
         sql.query("INSERT INTO playerRoomMark (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
         console.log("INSERT INTO gameStatus (roomID, playerID, board) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\" , \""+"000000000"+"\");");
         sql.query("INSERT INTO gameStatus (roomID, playerID, board) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\" , \""+"000000000"+"\");");
-        console.log("INSERT INTO timeoutRecord (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
-        sql.query("INSERT INTO timeoutRecord (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
+        console.log("INSERT INTO timeoutRecord (roomID, playerID, timeStamp) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\" , \""+timeNow+"\");");
+        sql.query("INSERT INTO timeoutRecord (roomID, playerID, timeStamp) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\" , \""+timeNow+"\");");
         sql.end();
       }, function() {
         console.log("SERVER setNextPlayer FAILED.");
@@ -103,27 +104,13 @@ var game = {
                           database: 'ttt'
                         });
                         sanitysql.connect();
+                        var timeNow = Math.floor(Date.now()/1000);
                         console.log("UPDATE gameStatus SET playerID =\""+move.opponentTurn+"\", board =  \""+boardString+"\" WHERE roomID = \""+move.roomID+"\";");
                         sanitysql.query("UPDATE gameStatus SET playerID =\""+move.opponentTurn+"\", board =  \""+boardString+"\" WHERE roomID = \""+move.roomID+"\";");
-                        console.log("UPDATE timeoutRecord SET playerID =\""+move.opponentTurn+"\" WHERE roomID = \""+move.roomID+"\";");
-                        sanitysql.query("UPDATE timeoutRecord SET playerID =\""+move.opponentTurn+"\" WHERE roomID = \""+move.roomID+"\";");
+                        console.log("UPDATE timeoutRecord SET playerID =\""+move.opponentTurn+"\" , timeStamp = \""+timeNow+"\" WHERE roomID = \""+move.roomID+"\";");
+                        sanitysql.query("UPDATE timeoutRecord SET playerID =\""+move.opponentTurn+"\" , timeStamp = \""+timeNow+"\" WHERE roomID = \""+move.roomID+"\";");
                         sanitysql.end();
                         //TODO : scheduleRPC
-                        kapow.rpc.schedule("timeout",
-                          {
-                            "playerID" :  move.opponentTurn,
-                            "winnerID" :  move.playerTurn,
-                            "boardStatus" : boardString,
-                            "roomID"  :move.roomID
-                          }, 1,
-                          function(){
-                            console.log("SERVER : scheduleRpc successfull");
-                          },
-                          function(error) {
-                            console.log("SERVER : scheduleRpc failed");
-                            kapow.return(null,error);
-                          }
-                        );
 
                         if (gameResult !== "unknown") {
                           var outcome = {};
@@ -161,7 +148,22 @@ var game = {
                             });
                         }
                         else {
-                          kapow.return(data);
+                            kapow.rpc.schedule("timeout",
+                              {
+                                "playerID" :  move.opponentTurn,
+                                "winnerID" :  move.playerTurn,
+                                "boardStatus" : boardString,
+                                "roomID"  :move.roomID
+                              }, 1,
+                              function(){
+                                console.log("SERVER : scheduleRpc successfull");
+                                kapow.return(data);
+                              },
+                              function(error) {
+                                console.log("SERVER : scheduleRpc failed");
+                                kapow.return(null,error);
+                              }
+                            );
                         }
                     },
                     function (error) {
@@ -281,7 +283,9 @@ var game = {
           console.log("SERVER : Results fetched at \"timeout\"",results);
           console.log("SERVER : \"parameter\" received at \"timeout\"",parameter);
           if(results.length === 1) {
-            if(results[0].playerID === parameter.playerID) {
+            timeNow = Math.floor(Date.now()/1000);
+            console.log("timeOut query done at "+timeNow+" "+(timeNow-results[0].timeStamp));
+            if(results[0].playerID === parameter.playerID && Number(timeNow - results[0].timeStamp)>60) {
               var outcome = {} ;
               outcome["ranks"] = {}
               outcome["type"]="timeout";
