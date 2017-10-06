@@ -96,6 +96,7 @@ var rematchButtonHandler  = function() {
   gameLocked = false ;
   if(gameType === "solo") {
     botLevel = -1 ; //TODO : Remove This. Redundant
+    gameLayoutLoaded = false;
     phaserGame.state.start('select');
   }
   else if(gameType === "friend") {
@@ -103,6 +104,7 @@ var rematchButtonHandler  = function() {
         room = roomObj;
         playerMark = 1 ;
         opponentMark = 2 ;
+        gameLayoutLoaded = false;
         parseRoomAndRedirectToGame();
         console.log("Rematch Room Created");
       },
@@ -807,6 +809,7 @@ play.prototype = {
     turnOfPlayer = undefined;
     gameOver = false;
     win = 0;
+    gameLayoutLoaded = false;
     phaserGame.state.start('menu');
   }
 };

@@ -79,7 +79,7 @@ var parseRoomAndRedirectToGame = function() {
               var history = [];
               var i = 0 ;
               for (var i = messagesHistory.length - 1; i >= 0; i--) {
-                if (messagesHistory[i].type == "move") {
+                if (messagesHistory[i].type === "move" && messagesHistory[i].data.type === "move") {
                   history.push(messagesHistory[i]);
                 }
                 if ( messagesHistory[i].type === "outcome") {
@@ -244,7 +244,7 @@ var game = {
     },
     onPlayerJoined: function(playerObj) {
       console.log("CLIENT onPlayerJoined - " + JSON.stringify(playerData));
-      onAffiliationChange();
+      //onAffiliationChange();
     },
     onInviteRejected: function(playerObj) {
         console.log("Client onInviteRejected - " + JSON.stringify(playerData));
@@ -290,6 +290,9 @@ var game = {
           console.log("Draw");
           gameEndHandler(0);
         }
+      }
+      else if(gameLayoutLoaded === false && message.type === "move" && message.data.type === "markSet") {
+        onAffiliationChange();
       }
     },
     onBackButtonPressed:  function() {

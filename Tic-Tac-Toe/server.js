@@ -21,7 +21,14 @@ var game = {
         timeNow = Math.floor(Date.now()/1000);
         sql.connect();
         console.log("INSERT INTO playerRoomMark (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
-        sql.query("INSERT INTO playerRoomMark (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");");
+        sql.query("INSERT INTO playerRoomMark (roomID, playerID) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\");",
+          function(error,results,fields) {
+            kapow.game.sendData({type:"markSet"},playerObj.id,room.roomId,function() {
+              console.log("SERVER : sending markSet trigger successful");
+            },function(){
+              console.log("SERVER : sending markSet trigger failure");
+            });
+          });
         console.log("INSERT INTO gameStatus (roomID, playerID, board) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\" , \""+"000000000"+"\");");
         sql.query("INSERT INTO gameStatus (roomID, playerID, board) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\" , \""+"000000000"+"\");");
         console.log("INSERT INTO timeoutRecord (roomID, playerID, timeStamp) VALUES (\""+room.roomId+"\" , \""+playerObj.id+"\" , \""+timeNow+"\");");
@@ -90,6 +97,7 @@ var game = {
                     gameResult = "unknown";
                   }
                   var data = {
+                    type  : "move",
                     moveData : move,
                     result : gameResult,
                   };
