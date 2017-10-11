@@ -67,7 +67,20 @@ waiting.prototype = {
 
   },
   backButtonHandler : function() {
-    kapow.close();
+    console.log("WebView BACK presed.");
+    kapow.unloadRoom(function(){console.log('Room Succesfully Unloaded');},function(){console.log('Room Unloading Failed');});
+    gameResume = false;
+    room=null;
+    playerMark = 0;
+    gameType = null;
+    botLevel  = -1;
+    boardStatus =  {cells: new Array(9)};
+    opponentData = undefined;
+    turnOfPlayer = undefined;
+    gameOver = false;
+    win = 0;
+    gameLayoutLoaded = false;
+    phaserGame.state.start('menu');
   },
   musicToggle : function() {
     this.soundToggle.frame = (1+this.soundToggle.frame)%2 ;
