@@ -2,12 +2,13 @@
 var waiting = function() {};
 waiting.prototype = {
   preload: function() {
+    screenState = 1;
     if(opponentData !== undefined) {
       this.load.image('opponentPic',opponentData.profileImage+"?height=276&width=276");
     }
   },
   create: function() {
-    screenState = 0 ;
+    // screenState = 0 ;
     this.bg = this.add.image(0, 0, 'arena');
     this.waitingPlayerBackground = this.add.image(48, 372, 'waitingPlayer');
 

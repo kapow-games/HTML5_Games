@@ -91,7 +91,8 @@ menu.prototype = {
     console.log('Leaderboard handler funtion not implemented');
   },
   showActiveGames : function() {
-    console.log('Active game funtion not implemented');
+    console.log('Active games requested');
+    kapow.showActiveRooms();
   },
   newGameButtonHandler: function() {
     console.log('New Game Button Clicked');

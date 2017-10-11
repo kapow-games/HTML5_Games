@@ -2,10 +2,6 @@
 var WebFontConfig = {
 
   active: function() { phaserGame.time.events.add(Phaser.Timer.SECOND, createText, this); }
-  // google: {
-  //     families: ['Nunito:800']
-  //     // families: ["Exo:300", "Exo:700", "Roboto Slab:300", "Roboto Slab:700", "Permanent Marker"]
-  // }
 };
 var preload = function() {
   this.asset = null;
@@ -13,8 +9,6 @@ var preload = function() {
 };
 preload.prototype = {
   preload : function() {
-    // var textMessage = createText("Loading Game");
-    // console.log(textMessage);
     console.log("Preloading Assets");
     phaserGame.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     this.add.text(0, 0, "hack", { font: "1px nunito-regular", fill: "#000000" });
@@ -28,8 +22,6 @@ preload.prototype = {
     this.load.spritesheet('onGoing', 'assets/images/onGoing.png', 984, 180);
     this.load.image('arena', 'assets/images/backGround.png');
     this.load.image('back', 'assets/images/back.png');
-    // this.load.spritesheet('newGame', 'assets/images/newGame.png', 328, 46);
-    // this.load.audiosprite('audio', 'assets/music/audioSprite.mp3', null, "assets/music/audioSprite.json");
     this.load.spritesheet('newGameTop', 'assets/images/newgame-top.png', 984, 108);
     this.load.spritesheet('newGameBottom', 'assets/images/newgame-bottom.png', 984, 114);
     this.load.spritesheet('music', 'assets/images/volume.png', 72, 72);
@@ -56,16 +48,13 @@ preload.prototype = {
     this.load.image('loaderSpinner', 'assets/images/loader_tictac.png');
     this.load.spritesheet('startbutton', 'assets/images/startbutton.png', 630, 138);
     this.load.spritesheet('gameModes', 'assets/images/game-modes.png', 328, 84);
-    // this.load.spritesheet('gameModesPatch', 'assets/images/gamemode-patch.png');
     this.load.spritesheet('rematch', 'assets/images/rematchbutton.png', 351, 120);
     this.load.image('rectangle', 'assets/images/rectangle.png');
     this.load.spritesheet('helpEnd', 'assets/images/helpEnd.png',120,120);
     this.load.spritesheet('help', 'assets/images/helpStart.png',72,72);
     this.load.spritesheet('resign', 'assets/images/resignbutton.png', 303, 120);
     this.load.image('choose_bg_mark','assets/images/mark-choose.png');
-    // this.load.audiosprite("audio-backgroundMusic", "assets/images/audio/audiosprite.mp3");
     this.load.spritesheet('cell', 'assets/images/xo-sprite.png',264, 264);
-    // this.load.script('font.r','//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
   },
   create: function() {
     this.asset.cropEnabled = false;

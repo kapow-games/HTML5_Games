@@ -5,7 +5,7 @@ var boot = function() {
 };
 boot.prototype = {
   preload : function() {
-    this.load.image("loading","assets/loading.png");
+    this.load.image("loading","assets/images/loading.png");
   },
   create  : function() {
     // this.stage.disableVisibilityChange = true;
