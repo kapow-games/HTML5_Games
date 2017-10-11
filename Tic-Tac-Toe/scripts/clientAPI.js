@@ -266,6 +266,10 @@ var game = {
       console.log('On Pause Triggered.');
     },
     onResume:function() {
+      if(screenState === 1 && gameType === "friend") {
+        gameResume = true;
+        parseRoomAndRedirectToGame();
+      }
       console.log('On Resume Triggered.');
     },
     onMessageReceived : function (message) {

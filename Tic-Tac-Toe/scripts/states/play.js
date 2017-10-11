@@ -779,7 +779,7 @@ play.prototype = {
             that.resignModal.destroy();
             that.darkOverlay.destroy();
             gameLayoutVariables.turnText.text = " YOU LOSE!";
-            console.log("Client reisgned, hence lost");
+            console.log("Client resigned, hence lost");
             gameEndHandler(1);
           },
           function(error) {
