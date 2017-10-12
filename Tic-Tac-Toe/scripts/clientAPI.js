@@ -1,4 +1,5 @@
 //TODO : An object that stores all gameVariables necessary to recreate game layout and game status.
+var randomRoom = false ;
 var gameVariables = {
   room : null,
   screenState : 0,
@@ -173,6 +174,47 @@ var onAffiliationChange = function() {
 }
 var game = {
     onLoad: function(roomObj) {
+        //Stats sync
+        kapow.gameStore.get('stats',function(statsValue) {
+          console.log("onLoad gameStore fetch successfull.");
+          if(statsValue) {
+            console.log("Value fetched from gameStore was : ",statsValue);
+            let valueJSON = JSON.parse(statsValue);
+            //TODO : get server view of stats
+            //TODO : sync
+            // kapow.gameStore.set('stats',function(){
+            //   console.log("gameState set successfully");
+            //   //TODO : set server side view of table
+            // },
+            // function(error) {
+            //   console.log("gameStore sync failed at load Time");
+            // });
+          }
+          else {
+            newStats = {
+              "soloStats" : {
+                "won"   : 0,
+                "lost"  : 0,
+                "draw"  : 0 },
+               "friendsStats" : {
+                 "won"   : 0,
+                 "lost"  : 0,
+                 "draw"  : 0 },
+               "randomStats" : {
+                 "won"   : 0,
+                 "lost"  : 0,
+                 "draw"  : 0 },
+             };
+            kapow.gameStore.set("stats", JSON.stringify(newStats), function () {
+              console.log("Storing following fresh stats data was successful : ",newStats);
+            }, function(error) {
+              console.log("Storing room data Failed : ",error);
+            });
+          }
+        },
+        function(error) {
+          console.log("No stats table fetched at loadTable : ",error);
+        });
         console.log("Client onLoad - " + JSON.stringify(roomObj));
         room = roomObj;
         console.log(room);

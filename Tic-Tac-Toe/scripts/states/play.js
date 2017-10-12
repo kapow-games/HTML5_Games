@@ -37,6 +37,84 @@ var gameEndHandler = function(value) {
   shareOtherButton.input.priorityID = 3 ;
   var rematchButton = phaserGame.add.button(657, 1584, 'rematch',rematchButtonHandler, 0, 0, 1, 0);
   rematchButton.input.priorityID = 3 ;
+  if(gameOver === false) {
+    kapow.gameStore.get('stats',function(statsValue) {
+      console.log("gameStore fetch successfull.");
+      if(statsValue) {
+        console.log("Value fetched from gameStore was : ",statsValue);
+        let valueJSON = JSON.parse(statsValue);
+        console.log(valueJSON);
+        soloStats = valueJSON.soloStats;
+        randomStats = valueJSON.randomStats;
+        friendsStats = valueJSON.friendsStats;
+        if(gameType === "solo") {
+          if(value === 1) {
+            soloStats.lost += 1;
+          }
+          else if(value === 2) {
+            soloStats.won += 1;
+          }
+          else {
+            soloStats.draw += 1;
+          }
+        }
+        else if(gameType === "friend") {
+          if(randomRoom === false){
+            if(value === 1) {
+              friendsStats.lost += 1;
+            }
+            else if(value === 2) {
+              friendsStats.won += 1;
+            }
+            else {
+              friendsStats.draw += 1;
+            }
+          }
+          else {
+            if(value === 1) {
+              randomStats.lost += 1;
+            }
+            else if(value === 2) {
+              randomStats.won += 1;
+            }
+            else {
+              randomStats.draw += 1;
+            }
+          }
+        }
+        newStats = {"soloStats" : soloStats, "friendsStats" : friendsStats, "randomStats" : randomStats};
+        kapow.gameStore.set("stats", JSON.stringify(newStats), function () {
+          console.log("Storing following stats data was successful : ",newStats);
+        }, function(error) {
+          console.log("Storing room data Failed : ",error);
+        });
+      }
+      else {
+        console.log('stats Variables Not Set');
+        newStats = {
+          "soloStats" : {
+            "won"   : 0,
+            "lost"  : 0,
+            "draw"  : 0 },
+           "friendsStats" : {
+             "won"   : 0,
+             "lost"  : 0,
+             "draw"  : 0 },
+           "randomStats" : {
+             "won"   : 0,
+             "lost"  : 0,
+             "draw"  : 0 },
+         };
+        kapow.gameStore.set("stats", JSON.stringify(newStats), function () {
+          console.log("Storing following fresh stats data was successful : ",newStats);
+        }, function(error) {
+          console.log("Storing room data Failed : ",error);
+        });
+      }
+    }, function(error) {
+      console.log("gameStore fetch Failed: ",error);
+    });
+  }
   if(gameLocked === false)// To ensure that game doesn't multiple times in Kapow
   {
     if(gameType === "solo") {
@@ -447,7 +525,7 @@ play.prototype = {
     gameLayoutVariables.backgroundImage = phaserGame.add.sprite(0, 0, 'arena');
 
     var gameBoard = this.add.sprite(57, 477, 'board');
-    gameLayoutVariables.resultBoard = phaserGame.add.sprite(315, 240, 'winBackground',);
+    gameLayoutVariables.resultBoard = phaserGame.add.sprite(315, 240, 'winBackground');
     gameLayoutVariables.resultBoard.frame = 0;
     gameLayoutVariables.turnTextBackground = this.add.sprite(315, 240, 'turnTextBackground');
     gameLayoutVariables.resign = this.add.button(390, 1584, 'resign', this.resignEvent, this, 0, 0, 1, 0);

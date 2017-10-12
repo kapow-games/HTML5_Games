@@ -17,6 +17,11 @@ preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
     this.load.image('profilePic',playerData.profileImage+"?height=276&width=276");
+    this.load.image('modeBackground', 'assets/images/statsModeHeader.png');
+    this.load.image('statsBackground', 'assets/images/statsBackground.png');
+    this.load.image('statsTotalBackground', 'assets/images/statsTotalBackground.png');
+    this.load.image('statsClose', 'assets/images/statsClose.png');
+    this.load.image('statsLogo', 'assets/images/statsLogo.png');
     this.load.image('botPic','assets/images/botPic.png');
 		this.load.image('logo', 'assets/images/logo.png');
     this.load.spritesheet('onGoing', 'assets/images/onGoing.png', 984, 180);
