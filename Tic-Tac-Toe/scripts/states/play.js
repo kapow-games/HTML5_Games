@@ -29,11 +29,49 @@ var gameEndHandler = function(value) {
   gameLayoutVariables.turnText.text = (value===1)?"YOU LOST!":(value===2 ? "YOU WON!" : "GAME DRAW!");
   shareText = (value===1 || value === 0)?"I just played a game of Tic Tac Toe on Kapow. Join Kapow now to play with me!":"I just won a game of Tic Tac Toe on Kapow. Join Kapow now to beat me!";
   var shareBackground = phaserGame.add.sprite(72, 1584, 'shareBackground');
-  var shareFbButton = phaserGame.add.button(294, 1614, 'fbShare', function() {console.log("Fb share clicked");kapow.social.share(shareText, 'facebook', function(){console.log("Fb share Successfull")},function() { console.log("Fb Share Failed") });});
+  var shareLoad = phaserGame.add.sprite(phaserGame.world.centerX, phaserGame.world.centerY, 'loaderSpinner');
+  shareLoad.anchor.setTo(0.5);
+  var shareLoadTween = phaserGame.add.tween(shareLoad).to({angle: 359}, 400, null, true, 0, Infinity);
+  shareLoad.kill();
+  shareLoadTween.start();
+  var shareFbButton = phaserGame.add.button(294, 1614, 'fbShare', function() {
+    console.log("Fb share clicked");
+    shareLoad.reset(phaserGame.world.centerX, phaserGame.world.centerY);
+    kapow.social.share(shareText, 'facebook', function(){
+      shareLoad.kill();
+      console.log("Fb share Successfull");
+    },
+    function(error){
+      shareLoad.kill();
+      console.log("Fb Share Failed",error);
+    });
+  });
   shareFbButton.input.priorityID = 3 ;
-  var shareTwitterButton = phaserGame.add.button(408, 1614, 'twitterShare',  function() {console.log("Twitter share clicked");kapow.social.share(shareText, 'twitter',function(){console.log("Twitter share Successfull")},function() { console.log("Twitter Share Failed") });});
+  var shareTwitterButton = phaserGame.add.button(408, 1614, 'twitterShare',  function(){
+    console.log("Twitter share clicked");
+    shareLoad.reset(phaserGame.world.centerX, phaserGame.world.centerY);
+    kapow.social.share(shareText, 'twitter',function(){
+      shareLoad.kill();
+      console.log("Twitter share Successfull");
+    },
+    function(error) {
+      shareLoad.kill();
+      console.log("Twitter Share Failed",error);
+    });
+  });
   shareTwitterButton.input.priorityID = 3 ;
-  var shareOtherButton = phaserGame.add.button(522, 1614, 'otherShare', function() {console.log("Other share clicked");kapow.social.share(shareText, null, function(){console.log("Other share Successfull")},function() { console.log("Other Share Failed") });});
+  var shareOtherButton = phaserGame.add.button(522, 1614, 'otherShare', function() {
+    console.log("Other share clicked");
+    shareLoad.reset(phaserGame.world.centerX, phaserGame.world.centerY);
+    kapow.social.share(shareText, null, function(){
+      shareLoad.kill();
+      console.log("Other share Successfull");
+    },
+    function(error) {
+      shareLoad.kill();
+      console.log("Other Share Failed",error);
+    });
+  });
   shareOtherButton.input.priorityID = 3 ;
   var rematchButton = phaserGame.add.button(657, 1584, 'rematch',rematchButtonHandler, 0, 0, 1, 0);
   rematchButton.input.priorityID = 3 ;
