@@ -96,18 +96,21 @@ menu.prototype = {
     this.statsModal.anchor.setTo(0.5);
     ////////
     this.statsModal.scale.setTo(0);
-    this.popUpStatsModal = this.add.tween(this.statsModal.scale).to( { x : 1, y :1 }, 300, "Quart.easeOut");
+    this.popUpStatsModal = this.add.tween(this.statsModal.scale).to( { x : 1, y :1 }, 600, "Quart.easeOut");
     this.popUpStatsModal.start();
     this.popUpStatsModal.onComplete.add(function() {
       this.statsLogo = phaserGame.add.sprite(360, 465, 'statsLogo');
-      // this.myStatsText = createText(394.5, 848, 'MY STATS');
-      // that.myStatsText.font = 'nunito-regular';
-      // that.myStatsText.fontSize = "60px";
-      // that.myStatsText.fontWeight = 800;
-      // that.myStatsText.wordWrapWidth = 291;
-      // that.myStatsText.fill = "#6d616d";
-      // that.myStatsText.align = "center";
-      // that.myStatsText.backgroundColor = "#fefefe";
+      // this.statsLogoTween = this.add.tween(this.statsLogo).to({ x: this.statsLogo.position.x + aRadius}, aTime, function (k) {
+      //   return Easing.wiggle(k, aXPeriod1, aXPeriod2);
+      // }, true, 0, -1);
+      this.myStatsText = createText(394.5, 848, 'MY STATS');
+      this.myStatsText.font = 'nunito-regular';
+      this.myStatsText.fontSize = "60px";
+      this.myStatsText.fontWeight = 800;
+      this.myStatsText.wordWrapWidth = 291;
+      this.myStatsText.fill = "#6d616d";
+      this.myStatsText.align = "center";
+      this.myStatsText.backgroundColor = "#fefefe";
 
       this.cancelButton = phaserGame.add.button(888, 441, 'statsClose', this.cancelStats, this);
       this.cancelButton.inputEnabled = true ;
@@ -125,7 +128,7 @@ menu.prototype = {
           that.modeText = createText(156, 1002, "MODE");
           that.modeText.font = 'nunito-regular';
           that.modeText.fontSize = "36px";
-          that.modeText.fontWeight = 900;
+          that.modeText.fontWeight = 800;
           that.modeText.wordWrapWidth = 109;
           that.modeText.fill = "#9e7eff";
           that.modeText.align = "center";
@@ -134,7 +137,7 @@ menu.prototype = {
           that.playedText = createText(414.5, 1002, "PLAYED");
           that.playedText.font = 'nunito-regular';
           that.playedText.fontSize = "36px";
-          that.playedText.fontWeight = 900;
+          that.playedText.fontWeight = 800;
           that.playedText.wordWrapWidth = 143;
           that.playedText.fill = "#9e7eff";
           that.playedText.align = "center";
@@ -143,7 +146,7 @@ menu.prototype = {
           that.wonText = createText(576, 1002, "WON");
           that.wonText.font = 'nunito-regular';
           that.wonText.fontSize = "36px";
-          that.wonText.fontWeight = 900;
+          that.wonText.fontWeight = 800;
           that.wonText.wordWrapWidth = 96;
           that.wonText.fill = "#9e7eff";
           that.wonText.align = "center";
@@ -152,7 +155,7 @@ menu.prototype = {
           that.lostText = createText(691, 1002, "LOST");
           that.lostText.font = 'nunito-regular';
           that.lostText.fontSize = "36px";
-          that.lostText.fontWeight = 900;
+          that.lostText.fontWeight = 800;
           that.lostText.wordWrapWidth = 94;
           that.lostText.fill = "#9e7eff";
           that.lostText.align = "center";
@@ -161,7 +164,7 @@ menu.prototype = {
           that.drawText = createText(804.5, 1002, "DRAW");
           that.drawText.font = 'nunito-regular';
           that.drawText.fontSize = "36px";
-          that.drawText.fontWeight = 900;
+          that.drawText.fontWeight = 800;
           that.drawText.wordWrapWidth = 119;
           that.drawText.fill = "#9e7eff";
           that.drawText.align = "center";
@@ -170,7 +173,7 @@ menu.prototype = {
           that.friendsText = createText(156, 1110, "FRIENDS");
           that.friendsText.font = 'nunito-regular';
           that.friendsText.fontSize = "36px";
-          that.friendsText.fontWeight = 900;
+          that.friendsText.fontWeight = 800;
           that.friendsText.wordWrapWidth = 158;
           that.friendsText.fill = "#7a797a";
           that.friendsText.align = "center";
@@ -179,7 +182,7 @@ menu.prototype = {
           that.randomText = createText(156, 1194, "RANDOM");
           that.randomText.font = 'nunito-regular';
           that.randomText.fontSize = "36px";
-          that.randomText.fontWeight = 900;
+          that.randomText.fontWeight = 800;
           that.randomText.wordWrapWidth = 167;
           that.randomText.fill = "#7a797a";
           that.randomText.align = "center";
@@ -188,7 +191,7 @@ menu.prototype = {
           that.practiceText = createText(156, 1278, "PRACTICE");
           that.practiceText.font = 'nunito-regular';
           that.practiceText.fontSize = "36px";
-          that.practiceText.fontWeight = 900;
+          that.practiceText.fontWeight = 800;
           that.practiceText.wordWrapWidth = 181;
           that.practiceText.fill = "#7a797a";
           that.practiceText.align = "center";
@@ -197,9 +200,9 @@ menu.prototype = {
           that.totalText = createText(156, 1386, "TOTAL");
           that.totalText.font = 'nunito-regular';
           that.totalText.fontSize = "36px";
-          that.totalText.fontWeight = 900;
+          that.totalText.fontWeight = 800;
           that.totalText.wordWrapWidth = 117;
-          that.totalText.fill = "#f4be28";
+          that.totalText.fill = "#f0a207";
           that.totalText.align = "center";
           that.totalText.backgroundColor = "#fefefe";
 
@@ -207,7 +210,7 @@ menu.prototype = {
           that.randomPlayedText.anchor.setTo(0.5,0.5);
           that.randomPlayedText.font = 'nunito-regular';
           that.randomPlayedText.fontSize = "36px";
-          that.randomPlayedText.fontWeight = 900;
+          that.randomPlayedText.fontWeight = 800;
           that.randomPlayedText.wordWrapWidth = 181;
           that.randomPlayedText.fill = "#7a797a";
           that.randomPlayedText.align = "center";
@@ -217,7 +220,7 @@ menu.prototype = {
           that.randomWonText.anchor.setTo(0.5,0.5);
           that.randomWonText.font = 'nunito-regular';
           that.randomWonText.fontSize = "36px";
-          that.randomWonText.fontWeight = 900;
+          that.randomWonText.fontWeight = 800;
           that.randomWonText.wordWrapWidth = 181;
           that.randomWonText.fill = "#7a797a";
           that.randomWonText.align = "center";
@@ -227,7 +230,7 @@ menu.prototype = {
           that.randomLostText.anchor.setTo(0.5,0.5);
           that.randomLostText.font = 'nunito-regular';
           that.randomLostText.fontSize = "36px";
-          that.randomLostText.fontWeight = 900;
+          that.randomLostText.fontWeight = 800;
           that.randomLostText.wordWrapWidth = 181;
           that.randomLostText.fill = "#7a797a";
           that.randomLostText.align = "center";
@@ -237,7 +240,7 @@ menu.prototype = {
           that.randomDrawText.anchor.setTo(0.5,0.5);
           that.randomDrawText.font = 'nunito-regular';
           that.randomDrawText.fontSize = "36px";
-          that.randomDrawText.fontWeight = 900;
+          that.randomDrawText.fontWeight = 800;
           that.randomDrawText.wordWrapWidth = 181;
           that.randomDrawText.fill = "#7a797a";
           that.randomDrawText.align = "center";
@@ -247,7 +250,7 @@ menu.prototype = {
           that.friendsPlayedText.anchor.setTo(0.5,0.5);
           that.friendsPlayedText.font = 'nunito-regular';
           that.friendsPlayedText.fontSize = "36px";
-          that.friendsPlayedText.fontWeight = 900;
+          that.friendsPlayedText.fontWeight = 800;
           that.friendsPlayedText.wordWrapWidth = 181;
           that.friendsPlayedText.fill = "#7a797a";
           that.friendsPlayedText.align = "center";
@@ -257,7 +260,7 @@ menu.prototype = {
           that.friendsWonText.anchor.setTo(0.5,0.5);
           that.friendsWonText.font = 'nunito-regular';
           that.friendsWonText.fontSize = "36px";
-          that.friendsWonText.fontWeight = 900;
+          that.friendsWonText.fontWeight = 800;
           that.friendsWonText.wordWrapWidth = 181;
           that.friendsWonText.fill = "#7a797a";
           that.friendsWonText.align = "center";
@@ -267,7 +270,7 @@ menu.prototype = {
           that.friendsLostText.anchor.setTo(0.5,0.5);
           that.friendsLostText.font = 'nunito-regular';
           that.friendsLostText.fontSize = "36px";
-          that.friendsLostText.fontWeight = 900;
+          that.friendsLostText.fontWeight = 800;
           that.friendsLostText.wordWrapWidth = 181;
           that.friendsLostText.fill = "#7a797a";
           that.friendsLostText.align = "center";
@@ -277,7 +280,7 @@ menu.prototype = {
           that.friendsDrawText.anchor.setTo(0.5,0.5);
           that.friendsDrawText.font = 'nunito-regular';
           that.friendsDrawText.fontSize = "36px";
-          that.friendsDrawText.fontWeight = 900;
+          that.friendsDrawText.fontWeight = 800;
           that.friendsDrawText.wordWrapWidth = 181;
           that.friendsDrawText.fill = "#7a797a";
           that.friendsDrawText.align = "center";
@@ -287,7 +290,7 @@ menu.prototype = {
           that.soloPlayedText.anchor.setTo(0.5,0.5);
           that.soloPlayedText.font = 'nunito-regular';
           that.soloPlayedText.fontSize = "36px";
-          that.soloPlayedText.fontWeight = 900;
+          that.soloPlayedText.fontWeight = 800;
           that.soloPlayedText.wordWrapWidth = 181;
           that.soloPlayedText.fill = "#7a797a";
           that.soloPlayedText.align = "center";
@@ -297,7 +300,7 @@ menu.prototype = {
           that.soloWonText.anchor.setTo(0.5,0.5);
           that.soloWonText.font = 'nunito-regular';
           that.soloWonText.fontSize = "36px";
-          that.soloWonText.fontWeight = 900;
+          that.soloWonText.fontWeight = 800;
           that.soloWonText.wordWrapWidth = 181;
           that.soloWonText.fill = "#7a797a";
           that.soloWonText.align = "center";
@@ -307,7 +310,7 @@ menu.prototype = {
           that.soloLostText.anchor.setTo(0.5,0.5);
           that.soloLostText.font = 'nunito-regular';
           that.soloLostText.fontSize = "36px";
-          that.soloLostText.fontWeight = 900;
+          that.soloLostText.fontWeight = 800;
           that.soloLostText.wordWrapWidth = 181;
           that.soloLostText.fill = "#7a797a";
           that.soloLostText.align = "center";
@@ -317,7 +320,7 @@ menu.prototype = {
           that.soloDrawText.anchor.setTo(0.5,0.5);
           that.soloDrawText.font = 'nunito-regular';
           that.soloDrawText.fontSize = "36px";
-          that.soloDrawText.fontWeight = 900;
+          that.soloDrawText.fontWeight = 800;
           that.soloDrawText.wordWrapWidth = 181;
           that.soloDrawText.fill = "#7a797a";
           that.soloDrawText.align = "center";
@@ -327,41 +330,41 @@ menu.prototype = {
           that.totalPlayedText.anchor.setTo(0.5,0.5);
           that.totalPlayedText.font = 'nunito-regular';
           that.totalPlayedText.fontSize = "36px";
-          that.totalPlayedText.fontWeight = 900;
+          that.totalPlayedText.fontWeight = 800;
           that.totalPlayedText.wordWrapWidth = 181;
-          that.totalPlayedText.fill = "#7a797a";
+          that.totalPlayedText.fill = "#f0a207";
           that.totalPlayedText.align = "center";
-          that.totalPlayedText.backgroundColor = "#fefefe";
+          that.totalPlayedText.backgroundColor = "#fcf6e4";
 
           that.totalWonText = createText(624, 1410.5, (valueJSON.soloStats.won + valueJSON.friendsStats.won + valueJSON.randomStats.won).toString());
           that.totalWonText.anchor.setTo(0.5,0.5);
           that.totalWonText.font = 'nunito-regular';
           that.totalWonText.fontSize = "36px";
-          that.totalWonText.fontWeight = 900;
+          that.totalWonText.fontWeight = 800;
           that.totalWonText.wordWrapWidth = 181;
-          that.totalWonText.fill = "#7a797a";
+          that.totalWonText.fill = "#f0a207";
           that.totalWonText.align = "center";
-          that.totalWonText.backgroundColor = "#fefefe";
+          that.totalWonText.backgroundColor = "#fcf6e4";
 
           that.totalLostText = createText(738, 1410.5, (valueJSON.soloStats.lost + valueJSON.friendsStats.lost + valueJSON.randomStats.lost).toString());
           that.totalLostText.anchor.setTo(0.5,0.5);
           that.totalLostText.font = 'nunito-regular';
           that.totalLostText.fontSize = "36px";
-          that.totalLostText.fontWeight = 900;
+          that.totalLostText.fontWeight = 800;
           that.totalLostText.wordWrapWidth = 181;
-          that.totalLostText.fill = "#7a797a";
+          that.totalLostText.fill = "#f0a207";
           that.totalLostText.align = "center";
-          that.totalLostText.backgroundColor = "#fefefe";
+          that.totalLostText.backgroundColor = "#fcf6e4";
 
           that.totalDrawText = createText(864, 1410.5, (valueJSON.soloStats.draw + valueJSON.friendsStats.draw + valueJSON.randomStats.draw).toString());
           that.totalDrawText.anchor.setTo(0.5,0.5);
           that.totalDrawText.font = 'nunito-regular';
           that.totalDrawText.fontSize = "36px";
-          that.totalDrawText.fontWeight = 900;
+          that.totalDrawText.fontWeight = 800;
           that.totalDrawText.wordWrapWidth = 181;
-          that.totalDrawText.fill = "#7a797a";
+          that.totalDrawText.fill = "#f0a207";
           that.totalDrawText.align = "center";
-          that.totalDrawText.backgroundColor = "#fefefe";
+          that.totalDrawText.backgroundColor = "#fcf6e4";
         }
       },
       function(error) {
@@ -451,6 +454,7 @@ menu.prototype = {
     this.friendsText.destroy();
     this.practiceText.destroy();
     this.totalText.destroy();
+    this.myStatsText.destroy();
     this.friendsPlayedText.destroy();
     this.friendsWonText.destroy();
     this.friendsLostText.destroy();
@@ -471,3 +475,9 @@ menu.prototype = {
     this.statsTotalBackground.destroy();
   }
 };
+// var wiggle = function(aProgress, aPeriod1, aPeriod2){
+//     var current1 = aProgress * Math.PI * 2 * aPeriod1;
+//     var current2 = aProgress * (Math.PI * 2 * aPeriod2 + Math.PI / 2);
+//
+//     return Math.sin(current1) * Math.cos(current2);
+// };
