@@ -27,7 +27,7 @@ var gameEndHandler = function(value) {
   gameLayoutVariables.resign.destroy();
   gameLayoutVariables.help.destroy();
   gameLayoutVariables.turnText.text = (value===1)?"YOU LOST!":(value===2 ? "YOU WON!" : "GAME DRAW!");
-  shareText = (value===1)?"Lost":(value===2 ? "Won" : "Draw");
+  shareText = (value===1 || value === 0)?"I just played a game of Tic Tac Toe on Kapow. Join Kapow now to play with me!":"I just won a game of Tic Tac Toe on Kapow. Join Kapow now to beat me!";
   var shareBackground = phaserGame.add.sprite(72, 1584, 'shareBackground');
   var shareFbButton = phaserGame.add.button(294, 1614, 'fbShare', function() {console.log("Fb share clicked");kapow.social.share(shareText, 'facebook', function(){console.log("Fb share Successfull")},function() { console.log("Fb Share Failed") });});
   shareFbButton.input.priorityID = 3 ;
