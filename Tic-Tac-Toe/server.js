@@ -43,6 +43,7 @@ var game = {
       var gameResult;
       var dataArray = move.board;
       var moveString = "";
+      var roomDetails = kapow.getRoomInfo();
       for(var j = 0 ; j < 9 ; j++) {
         if(dataArray[j] === null) {
           moveString+="0";
@@ -101,7 +102,29 @@ var game = {
                     moveData : move,
                     result : gameResult,
                   };
-                  kapow.game.sendTurn(data,move.roomID,move.playerTurn,move.opponentTurn, null,
+                  var opponentPlayer = null ;
+                  console.log('roomDetails :',roomDetails);
+                  if(roomDetails.playerInfos[0].id === move.playerTurn) {
+                      opponentPlayer = roomDetails.playerInfos[0].name.split(" ")[0];
+                  }
+                  else if(roomDetails.playerInfos[1].id === move.playerTurn) {
+                      opponentPlayer = roomDetails.playerInfos[1].name.split(" ")[0];
+                  }
+                  else {
+                    console.log("Next Player Couldn't be determined");
+                  }
+                  notificationDetail = {
+                    'id': ('nudge_'+move.roomID),
+                    'title': 'TIC TAC TOE',
+                    'text': 'Hey! It is your turn in game against '+opponentPlayer,
+                    'buttons': [
+                        {
+                            'text': 'Play',
+                            'action': 'kapow://room/open?roomId='+move.roomID
+                        }
+                    ]
+                  }
+                  kapow.game.sendTurn(data,move.roomID,move.playerTurn,move.opponentTurn, notificationDetail,
                     function () {
                         console.log("sendTurn - success");
                         //save game state in DB
