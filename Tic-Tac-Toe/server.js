@@ -119,7 +119,7 @@ var game = {
                         sanitysql.query("UPDATE timeoutRecord SET playerID =\""+move.opponentTurn+"\" , timeStamp = \""+timeNow+"\" WHERE roomID = \""+move.roomID+"\";");
                         sanitysql.end();
                         //TODO : scheduleRPC
-
+                        console.log("GameResult  : ",gameResult);
                         if (gameResult !== "unknown") {
                           var outcome = {};
                           outcome["ranks"] = {}
@@ -136,19 +136,24 @@ var game = {
                             move.roomID,
                             function () {
                               console.log("Game End Broadcast - success");
-                              kapow.boards.postScores( {
-                                'playerId' : move.playerTurn,
-                                'scores' : {
-                                  'points' : 5
-                                }
-                              },
-                              function() {
+                              if(gameResult === 'lost') {
+                                kapow.boards.postScores( {
+                                  'playerId' : move.playerTurn,
+                                  'scores' : {
+                                    'points' : 5
+                                  }
+                                },
+                                function() {
+                                  kapow.return(data);
+                                },
+                                function(error) {
+                                  console.log("Error in posting scores",error);
+                                  kapow.return(null,error);
+                                });
+                              }
+                              else {
                                 kapow.return(data);
-                              },
-                              function(error) {
-                                console.log("Error in posting scores",error);
-                                kapow.return(null,error);
-                              });
+                              }
                             },
                             function (error) {
                               console.log("Game End Broadcast - failure",error);

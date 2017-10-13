@@ -100,6 +100,14 @@ menu.prototype = {
     this.popUpStatsModal.start();
     this.popUpStatsModal.onComplete.add(function() {
       this.statsLogo = phaserGame.add.sprite(360, 465, 'statsLogo');
+      // this.myStatsText = createText(394.5, 848, 'MY STATS');
+      // that.myStatsText.font = 'nunito-regular';
+      // that.myStatsText.fontSize = "60px";
+      // that.myStatsText.fontWeight = 800;
+      // that.myStatsText.wordWrapWidth = 291;
+      // that.myStatsText.fill = "#6d616d";
+      // that.myStatsText.align = "center";
+      // that.myStatsText.backgroundColor = "#fefefe";
 
       this.cancelButton = phaserGame.add.button(888, 441, 'statsClose', this.cancelStats, this);
       this.cancelButton.inputEnabled = true ;

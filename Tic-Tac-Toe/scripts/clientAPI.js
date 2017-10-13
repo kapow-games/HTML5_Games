@@ -74,7 +74,7 @@ var parseRoomAndRedirectToGame = function() {
               opponentData = players[0];
               playerData = players[1];
           }
-          kapow.fetchHistorySince(null,20,
+          kapow.fetchHistorySince(null,25,
             function(messagesHistory) {
               console.log("History Fetch at CLIENT : ",messagesHistory);
               var history = [];
