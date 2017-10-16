@@ -88,8 +88,8 @@ menu.prototype = {
     //TODO : Stats handler
     this.darkOverlay = phaserGame.add.button(0, 0, 'darkOverlay', this.cancelStats, this);
     this.darkOverlay.inputEnabled = true ;
-    this.darkOverlay.input.priorityID = 2 ;
-
+    this.bg.inputEnabled = true;
+    this.bg.input.priorityID = 2;
     this.statsModal = phaserGame.add.sprite(540, 961.5, 'statsBackground');
     this.statsModal.inputEnabled = true ;
     this.statsModal.input.priorityID = 3 ;
@@ -99,7 +99,12 @@ menu.prototype = {
     this.popUpStatsModal = this.add.tween(this.statsModal.scale).to( { x : 1, y :1 }, 600, "Quart.easeOut");
     this.popUpStatsModal.start();
     this.popUpStatsModal.onComplete.add(function() {
+      this.bg.input.priorityID = 1;
+      this.bg.inputEnabled = false;
+      this.darkOverlay.input.priorityID = 2 ;
+
       this.statsLogo = phaserGame.add.sprite(360, 465, 'statsLogo');
+
       // this.statsLogoTween = this.add.tween(this.statsLogo).to({ x: this.statsLogo.position.x + aRadius}, aTime, function (k) {
       //   return Easing.wiggle(k, aXPeriod1, aXPeriod2);
       // }, true, 0, -1);

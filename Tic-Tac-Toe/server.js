@@ -263,7 +263,7 @@ var game = {
         function () {
           console.log("Game End Broadcast - success");
           kapow.boards.postScores( {
-            'playerId' : move.playerTurn,
+            'playerId' : move.opponentTurn,
             'scores' : {
               'points' : 5
             }
