@@ -287,18 +287,34 @@ var game = {
       var outcome = {} ;
       outcome["ranks"] = {}
       outcome["type"]="resignation";
+      var opponentPlayer = null ;
       if(room.players[0] === playerObj.id) {
         outcome["ranks"][room.players[0]] = 2;
         outcome["ranks"][room.players[1]] = 1;
+        opponentPlayer = outcome["ranks"][room.players[1]] ;
       }
       else {
         outcome["ranks"][room.players[0]] = 1;
         outcome["ranks"][room.players[1]] = 2;
+        opponentPlayer = outcome["ranks"][room.players[0]] ;
       }
       kapow.game.end(outcome,
         room.roomId,
         function () {
           console.log("Game End Broadcast - success");
+          kapow.boards.postScores( {
+            'playerId' : opponentPlayer,
+            'scores' : {
+              'points' : 5
+            }
+          },
+          function() {
+            console.log("posetScore successfull.");
+          },
+          function(error) {
+            console.log("Error in posting scores",error);
+            kapow.return(null,error);
+          });
         },
         function (error) {
           console.log("Game End Broadcast - failure",error);

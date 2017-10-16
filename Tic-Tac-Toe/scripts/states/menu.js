@@ -383,8 +383,8 @@ menu.prototype = {
     kapow.boards.display({'metric':'points','interval':'alltime'});
   },
   showActiveGames : function() {
-    console.log('Active games requested');
-    kapow.showActiveRooms();
+    console.log('Active games layout requested');
+    kapow.displayActiveRooms();
   },
   newGameButtonHandler: function() {
     console.log('New Game Button Clicked');

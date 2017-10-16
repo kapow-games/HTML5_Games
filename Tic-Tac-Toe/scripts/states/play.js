@@ -803,7 +803,7 @@ play.prototype = {
             gameLayoutVariables.backButton.input.priorityID = 1;
             this.musicButton.input.priorityID = 1;
             gameLayoutVariables.resign.input.priorityID = 1;
-            gameLayoutVariables.turnText.text = gameType === "YOUR TURN";
+            gameLayoutVariables.turnText.text = "YOUR TURN";
             gameLayoutVariables.opponentProfilePic.alpha = 0.3;
             gameLayoutVariables.playerProfilePic.alpha = 1;
             console.log("makeMove - failure",error);
