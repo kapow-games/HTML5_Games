@@ -321,6 +321,21 @@ var game = {
           kapow.return(null, error);
       });
     },
+    soloPostScore : function(parameter) {
+      kapow.boards.postScores( {
+        'playerId' : parameter.playerID,
+        'scores' : {
+          'points' : parameter.points
+        }
+      },
+      function() {
+        console.log("soloPostScore lazily successfull.");
+      },
+      function(error) {
+        console.log("Error in soloPostScore lazily",error);
+        kapow.return(null,error);
+      });
+    },
     timeout : function(parameter) {
       console.log("SERVER : Timeout Triggered");
       var sql = mysql.createConnection({
