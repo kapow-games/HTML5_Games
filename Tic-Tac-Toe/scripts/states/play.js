@@ -153,10 +153,22 @@ var gameEndHandler = function(value) {
       console.log("gameStore fetch Failed: ",error);
     });
   }
-  if(gameLocked === false)// To ensure that game doesn't multiple times in Kapow
+  if(gameLocked === false)// To ensure that game doesn't close multiple times in Kapow
   {
     if(gameType === "solo") {
       kapow.endSoloGame(function() {
+        if(value === 2) {
+          kapow.rpc.invoke({
+            	"functionName": 'soloPostScore',
+              "parameters": {'points': 5, 'playerID':playerData.id},
+            	"invokeLazily": true
+            },function (successResponse) {
+              console.log("successResponse  for lazy invocation",successResponse);
+            },function(rpcErrorResponse) {
+              console.log("rpcErrorResponse  for lazy invocation",rpcErrorResponse);
+            }
+          );
+        }
         boardStatus = {cells:new Array(9)};
         botLevel = -1 ; //TODO : Remove This. Redundant
         win = 0 ;

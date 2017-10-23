@@ -380,11 +380,11 @@ menu.prototype = {
   },
   leaderboardHandler : function() {
     console.log('Leaderboard handler funtion implemented');
-    kapow.boards.display({'metric':'points','interval':'alltime'});
+    kapow.boards.displayScoreboard({'metric':'points','interval':'alltime'});
   },
   showActiveGames : function() {
     console.log('Active games layout requested');
-    kapow.displayActiveRooms();
+    kapow.getActiveRooms();
   },
   newGameButtonHandler: function() {
     console.log('New Game Button Clicked');

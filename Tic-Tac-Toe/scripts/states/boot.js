@@ -14,7 +14,7 @@ boot.prototype = {
 		this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVertically = true;
     // this.scale.isPortrait = false;
-    this.scale.forceOrientation(true, false);
+    this.scale.forceOrientation(false, true);
     // this.scale.setScreenSize();
     this.input.maxPointers = 1;
     this.state.start('preload');
