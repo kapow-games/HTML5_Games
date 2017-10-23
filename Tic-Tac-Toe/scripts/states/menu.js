@@ -443,7 +443,71 @@ menu.prototype = {
     this.state.start('select');
   },
   helpButtonHandler : function() {
+    this.darkOverlay = phaserGame.add.button(0, 0, 'darkOverlay', this.cancelHelp, this);
+    this.darkOverlay.inputEnabled = true ;
+    this.bg.inputEnabled = true;
+    this.bg.input.priorityID = 2;
+    this.helpModal = phaserGame.add.sprite(540, 961.5, 'statsBackground');
+    this.helpModal.inputEnabled = true ;
+    this.helpModal.input.priorityID = 3 ;
+    this.helpModal.anchor.setTo(0.5);
+    this.helpModal.scale.setTo(0);
+    this.popUpHelpModal = this.add.tween(this.helpModal.scale).to( { x : 1, y :1 }, 600, "Quart.easeOut");
+    this.popUpHelpModal.start();
+    self = this;
+    this.popUpHelpModal.onComplete.add(function() {
+      self.bg.input.priorityID = 1;
+      self.bg.inputEnabled = false;
+      self.darkOverlay.input.priorityID = 2 ;
+      self.howToPlayText = createText(319.5, 465, "HOW-TO-PLAY");
+      self.howToPlayText.anchor.setTo(0);
+      self.howToPlayText.font = 'nunito-regular';
+      self.howToPlayText.fontSize = "60px";
+      self.howToPlayText.fontWeight = 800;
+      self.howToPlayText.wordWrapWidth = 441;
+      self.howToPlayText.fill = "#6d616d";
+      self.howToPlayText.align = "center";
+      self.howToPlayText.backgroundColor = "#fefefe";
+
+      self.vsFriendText = createText(468, 729, "VS FRIEND");
+      self.vsFriendText.anchor.setTo(0);
+      self.vsFriendText.font = 'nunito-regular';
+      self.vsFriendText.fontSize = "42px";
+      self.vsFriendText.fontWeight = 800;
+      self.vsFriendText.wordWrapWidth = 224;
+      self.vsFriendText.fill = "#d8d8d8";
+      self.vsFriendText.align = "center";
+      self.vsFriendText.backgroundColor = "#fefefe";
+
+      self.vsRandomText = createText(189, 909, "RANDOM OPPONENT");
+      self.vsRandomText.anchor.setTo(0);
+      self.vsRandomText.font = 'nunito-regular';
+      self.vsRandomText.fontSize = "42px";
+      self.vsRandomText.fontWeight = 800;
+      self.vsRandomText.wordWrapWidth = 453;
+      self.vsRandomText.fill = "#d8d8d8";
+      self.vsRandomText.align = "center";
+      self.vsRandomText.backgroundColor = "#fefefe";
+
+      self.helpTabView1Text = createText(222, 1284, "Play with a friend, a random\nopponent or practice vs AI");
+      self.helpTabView1Text.anchor.setTo(0);
+      self.helpTabView1Text.font = 'nunito-regular';
+      self.helpTabView1Text.fontSize = "42px";
+      self.helpTabView1Text.fontWeight = 800;
+      self.helpTabView1Text.wordWrapWidth = 636;
+      self.helpTabView1Text.fill = "#7a797a";
+      self.helpTabView1Text.align = "center";
+      self.helpTabView1Text.backgroundColor = "#fefefe";
+    });
     console.log('Help Button Clicked');
+  },
+  cancelHelp  : function() {
+    this.howToPlayText.destroy();
+    this.vsFriendText.destroy();
+    this.vsRandomText.destroy();
+    this.helpTabView1Text.destroy();
+    this.helpModal.destroy();
+    this.darkOverlay.destroy();
   },
   cancelStats  : function() {
     this.statsLogo.destroy();
