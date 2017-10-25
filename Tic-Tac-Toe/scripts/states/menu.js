@@ -419,7 +419,7 @@ menu.prototype = {
     randomRoom = true;
     console.log("Creating room for Random game");
     kapow.startGameWithRandomPlayers({'difficulty':'medium'}, function(roomDetail) {
-      room = roomDetail;
+      gameGlobalVariables.room = roomDetail;
       gameGlobalVariables.playerMark = 1 ;
       gameGlobalVariables.opponentMark = 2 ;
       parseRoomAndRedirectToGame();
