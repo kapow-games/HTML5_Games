@@ -1,31 +1,36 @@
 //TODO : An object that stores all gameVariables necessary to recreate game layout and game status.
 var randomRoom = false ;
-var gameVariables = {
+var gameGlobalVariables = {
   room : null,
   screenState : 0,
-  playerData : null,
+  playerData : undefined,
   boardStatus : {cells  : new Array(9)},
   gameResume  : false,
-  botLevel  : 1,
+  botLevel  : -1,
   win : 0,
-  gameModeFriend  : null, //0 : vsSolo, 1 : vsRandom, 2 :vsFriend
-  playerMark : 0
+  playerMark : 0 ,
+  opponentMark : 0 ,
+  gameOver : false,
+  gameType : null,
+  opponentData : undefined,
+  gameLocked : false,
+  turnOfPlayer : undefined
 };
 gameLayoutLoaded = false ;
 var saveGameData = function(value) {
   let currentGameState = phaserGame.state.states.play.cells.children;
   let len = currentGameState.length;
   for(let i = 0 ; i < len ; i++) {
-    boardStatus.cells[i]=currentGameState[i].frame ;
+    gameGlobalVariables.boardStatus.cells[i]=currentGameState[i].frame ;
   }
-  console.log("Board Status recorded on pause : ",boardStatus);
+  console.log("Board Status recorded on pause : ",gameGlobalVariables.boardStatus);
   let roomData = {
-    colorPlayer  : playerMark,
+    colorPlayer  : gameGlobalVariables.playerMark,
     difficulty  : 2,
-    board :  boardStatus,
-    playerData  : playerData,
+    board :  gameGlobalVariables.boardStatus,
+    playerData  : gameGlobalVariables.playerData,
     gameOver  : value,
-    winner : win
+    winner : gameGlobalVariables.win
   };
   kapow.roomStore.set("game_data", JSON.stringify(roomData), function () {
     console.log("Storing room data was successful.",roomData);
@@ -58,21 +63,21 @@ function compare(a,b) {
   }
 }
 var parseRoomAndRedirectToGame = function() {
-  if (room == null) {
+  if (gameGlobalVariables.room == null) {
     console.log("Room is null, hence not redirecting to game");
   }
   else {
     console.log('Parsing Room.');
-    var players = room.players;
+    var players = gameGlobalVariables.room.players;
     if (players.length >= 1) {
       if (players.length === 2) {
-          if (players[0].id === playerData.id) {
-              opponentData = players[1];
-              playerData = players[0];
+          if (players[0].id === gameGlobalVariables.playerData.id) {
+              gameGlobalVariables.opponentData = players[1];
+              gameGlobalVariables.playerData = players[0];
           }
           else {
-              opponentData = players[0];
-              playerData = players[1];
+              gameGlobalVariables.opponentData = players[0];
+              gameGlobalVariables.playerData = players[1];
           }
           kapow.fetchHistorySince(null,25,
             function(messagesHistory) {
@@ -84,30 +89,33 @@ var parseRoomAndRedirectToGame = function() {
                   history.push(messagesHistory[i]);
                 }
                 if ( messagesHistory[i].type === "outcome") {
-                  gameOver = true ;
+                  gameGlobalVariables.gameOver = true ;
                   if(messagesHistory[i].data.type === "result") {
-                    if(messagesHistory[i].data.ranks[playerData.id] === messagesHistory[i].data.ranks[opponentData.id]) {
-                      turnOfPlayer = 0 ;
+                    if(messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id] === messagesHistory[i].data.ranks[gameGlobalVariables.opponentData.id]) {
+                      gameGlobalVariables.turnOfPlayer = 0 ;
                     }
-                    else if(messagesHistory[i].data.ranks[playerData.id] === 1) {
-                      turnOfPlayer = opponentData ;
+                    else if(messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id] === 1) {
+                      gameGlobalVariables.turnOfPlayer = gameGlobalVariables.opponentData ;
                     }
-                    else if(messagesHistory[i].data.ranks[playerData.id] === 2) {
-                      turnOfPlayer = playerData ;
+                    else if(messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id] === 2) {
+                      gameGlobalVariables.turnOfPlayer = gameGlobalVariables.playerData ;
                     }
                     else {
                       console.log("Player Turn couldn't be detrminded");
                     }
                   }
                   else if(messagesHistory[i].data.type === "resignation" || messagesHistory[i].data.type === "timeout") {
-                    if(messagesHistory[i].data.ranks[playerData.id] === messagesHistory[i].data.ranks[opponentData.id]) {
-                      turnOfPlayer = 0 ;
+                    console.log("Outcome  data :",messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id]);
+                    if(messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id] === messagesHistory[i].data.ranks[gameGlobalVariables.opponentData.id]) {
+                      gameGlobalVariables.turnOfPlayer = 0 ;
                     }
-                    else if(messagesHistory[i].data.ranks[playerData.id] === 1) {
-                      turnOfPlayer = opponentData ;
+                    else if(messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id] === 1) {
+                      gameGlobalVariables.turnOfPlayer = gameGlobalVariables.opponentData ;
+                      console.log("Turn of player set to : ",gameGlobalVariables.opponentData.id);
                     }
-                    else if(messagesHistory[i].data.ranks[playerData.id] === 2) {
-                      turnOfPlayer = playerData ;
+                    else if(messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id] === 2) {
+                      gameGlobalVariables.turnOfPlayer = gameGlobalVariables.playerData ;
+                      console.log("Turn of player set to : ",gameGlobalVariables.playerData.id);
                     }
                     else {
                       console.log("Player Turn couldn't be detrminded");
@@ -117,38 +125,38 @@ var parseRoomAndRedirectToGame = function() {
               }
               console.log("Move History sorted according to sequence number",history);
               if(history.length > 0) {
-                boardStatus.cells = history[0].data.moveData.board;
-                if(history[0].senderId === playerData.id) {
-                  if(gameOver === false) {
-                    turnOfPlayer = opponentData ;
+                gameGlobalVariables.boardStatus.cells = history[0].data.moveData.board;
+                if(history[0].senderId === gameGlobalVariables.playerData.id) {
+                  if(gameGlobalVariables.gameOver === false) {
+                    gameGlobalVariables.turnOfPlayer = gameGlobalVariables.opponentData ;
                   }
                 }
-                else if(history[0].senderId === opponentData.id) {
-                  if(gameOver === false) {
-                    turnOfPlayer = playerData ;
+                else if(history[0].senderId === gameGlobalVariables.opponentData.id) {
+                  if(gameGlobalVariables.gameOver === false) {
+                    gameGlobalVariables.turnOfPlayer = gameGlobalVariables.playerData ;
                   }
                 }
                 else {
-                  if(gameOver === false) {
+                  if(gameGlobalVariables.gameOver === false) {
                     console.log("Current Turn can't be determined");
                   }
                 }
               }
-              else {
-                turnOfPlayer = undefined ;
+              else if(gameGlobalVariables.gameOver !== true){
+                gameGlobalVariables.turnOfPlayer = undefined ;
               }
             },
             function() {
               console.log('fetchHistory Failed')
             });
       }
-      console.log("Redirecting to game...",opponentData);
-      gameType = 'friend';
-      if(opponentData !== undefined && opponentData.affiliation === "accepted") {
+      console.log("Redirecting to game...",gameGlobalVariables.opponentData);
+      gameGlobalVariables.gameType = 'friend';
+      if(gameGlobalVariables.opponentData !== undefined && gameGlobalVariables.opponentData.affiliation === "accepted") {
         phaserGame.state.start('playLoad');
       }
-      else if(opponentData != undefined && (opponentData.affiliation === "left" || playerData.affiliation === "left")) {
-        gameOver = true;
+      else if(gameGlobalVariables.opponentData != undefined && (gameGlobalVariables.opponentData.affiliation === "left" || gameGlobalVariables.playerData.affiliation === "left")) {
+        gameGlobalVariables.gameOver = true;
         phaserGame.state.start('playLoad');
       }
       else {
@@ -164,9 +172,9 @@ var parseRoomAndRedirectToGame = function() {
 var onAffiliationChange = function() {
     kapow.getRoomInfo(function (roomObj) {
         console.log("Client getRoomInfo - Room: " + JSON.stringify(roomObj));
-        room = roomObj;
-        playerMark = 2 ;
-        opponentMark = 1 ;
+        gameGlobalVariables.room = roomObj;
+        gameGlobalVariables.playerMark = 2 ;
+        gameGlobalVariables.opponentMark = 1 ;
         parseRoomAndRedirectToGame();
     }, function () {
         console.log("Client - onAffiliationChange failure");
@@ -216,30 +224,30 @@ var game = {
           console.log("No stats table fetched at loadTable : ",error);
         });
         console.log("Client onLoad - " + JSON.stringify(roomObj));
-        room = roomObj;
-        console.log(room);
+        gameGlobalVariables.room = roomObj;
+        console.log(gameGlobalVariables.room);
         kapow.getUserInfo(function (userObj) {
                 console.log("Client getUserInfoSuccess - User: " + JSON.stringify(userObj));
                 user = userObj.player;
-                playerData = user;
-                if(room !== null) { //Game already created sometime earlier
-                  gameResume = true;
-                  if(room.players.length > 1) {
-                    gameType = "friend";
+                gameGlobalVariables.playerData = user;
+                if(gameGlobalVariables.room !== null) { //Game already created sometime earlier
+                  gameGlobalVariables.gameResume = true;
+                  if(gameGlobalVariables.room.players.length > 1) {
+                    gameGlobalVariables.gameType = "friend";
                   }
-                  else if(room.lockStatus === "locked"){
-                    gameType = "solo";
+                  else if(gameGlobalVariables.room.lockStatus === "locked"){
+                    gameGlobalVariables.gameType = "solo";
                     kapow.roomStore.get('game_data',function(value) {
                       if(value) {
                         let valueJSON = JSON.parse(value);
                         console.log(valueJSON);
-                        playerMark = valueJSON.colorPlayer;
-                        botLevel  = valueJSON.difficulty;
-                        boardStatus =  valueJSON.board;
-                        playerData  = valueJSON.playerData;
-                        gameOver = valueJSON.gameOver;
-                        gameLocked = gameOver;
-                        win = valueJSON.winner;
+                        gameGlobalVariables.playerMark = valueJSON.colorPlayer;
+                        gameGlobalVariables.botLevel  = valueJSON.difficulty;
+                        gameGlobalVariables.boardStatus =  valueJSON.board;
+                        gameGlobalVariables.playerData  = valueJSON.playerData;
+                        gameGlobalVariables.gameOver = valueJSON.gameOver;
+                        gameGlobalVariables.gameLocked = gameGlobalVariables.gameOver;
+                        gameGlobalVariables.win = valueJSON.winner;
                       }
                       else {
                         console.log('Game Variables Not set');
@@ -249,13 +257,13 @@ var game = {
                     });
                   }
                   else {
-                    gameType = "friend";
+                    gameGlobalVariables.gameType = "friend";
                   }
                 }
                 else {
-                  gameResume = false ;
+                  gameGlobalVariables.gameResume = false ;
                 }
-                console.log("room : ",room);
+                console.log("room : ",gameGlobalVariables.room);
                 phaserGame.state.start('boot');
             }, function () {
             console.log("Client getUserInfo failure");
@@ -265,7 +273,7 @@ var game = {
     onGameEnd : function(outcome) {
       console.log("CLIENT : Game Ended",outcome);
       if(outcome.type === "resignation" || outcome.type === "timeout"){
-        if(outcome.ranks[playerData.id] === 1) {
+        if(outcome.ranks[gameGlobalVariables.playerData.id] === 1) {
           console.log("Game Won");
           gameEndHandler(2);
         }
@@ -274,10 +282,10 @@ var game = {
           gameEndHandler(1);
         }
       }
-      if(outcome.ranks[playerData.id] === 1 && outcome.ranks[opponentData.id] === 1) {
+      if(outcome.ranks[gameGlobalVariables.playerData.id] === 1 && outcome.ranks[gameGlobalVariables.opponentData.id] === 1) {
         console.log("Game Draw");
       }
-      else if(outcome.ranks[playerData.id] === 1) {
+      else if(outcome.ranks[gameGlobalVariables.playerData.id] === 1) {
         console.log("Game Won");
       }
       else {
@@ -285,47 +293,47 @@ var game = {
       }
     },
     onPlayerJoined: function(playerObj) {
-      console.log("CLIENT onPlayerJoined - " + JSON.stringify(playerData));
+      console.log("CLIENT onPlayerJoined - " + JSON.stringify(gameGlobalVariables.playerData));
       //onAffiliationChange();
     },
     onInviteRejected: function(playerObj) {
-        console.log("Client onInviteRejected - " + JSON.stringify(playerData));
+        console.log("Client onInviteRejected - " + JSON.stringify(gameGlobalVariables.playerData));
         onAffiliationChange();
     },
     onPlayerLeft: function(playerObj) {
-        console.log("Client onPlayerLeft - " + JSON.stringify(playerData));
+        console.log("Client onPlayerLeft - " + JSON.stringify(gameGlobalVariables.playerData));
     },
     onTurnChange : function(playerObj) {
       console.log("Player Turn Changed to : " + JSON.stringify(playerObj));
-      if(playerObj.id === playerData.id) {
-        turnOfPlayer = playerObj ;
+      if(playerObj.id === gameGlobalVariables.playerData.id) {
+        gameGlobalVariables.turnOfPlayer = playerObj ;
       }
       else {
-        turnOfPlayer = undefined ;
+        gameGlobalVariables.turnOfPlayer = undefined ;
       }
     },
     onPause: function() {
       console.log('On Pause Triggered.');
     },
     onResume:function() {
-      if(screenState === 1 && gameType === "friend") {
-        gameResume = true;
+      if(gameGlobalVariables.screenState === 1 && gameGlobalVariables.gameType === "friend") {
+        gameGlobalVariables.gameResume = true;
         parseRoomAndRedirectToGame();
       }
       console.log('On Resume Triggered.');
     },
     onMessageReceived : function (message) {
       console.log('CLIENT : Message Received - ',message);
-      if(gameLayoutLoaded === true && message.type === "move" && message.senderId === opponentData.id) {
+      if(gameLayoutLoaded === true && message.type === "move" && message.senderId === gameGlobalVariables.opponentData.id) {
         for(var i = 0 ; i < 9 ; i++) {
           phaserGame.state.states.play.cells.children[i].frame = message.data.moveData.board[i];
         }
         gameLayoutVariables.opponentProfilePic.alpha = 0.3;
         gameLayoutVariables.playerProfilePic.alpha = 1;
         gameLayoutVariables.turnText.text = "YOUR TURN";
-        boardStatus.cells = message.data.moveData.board;
-        if(playerMark === 0) {
-          playerMark = 2;
+        gameGlobalVariables.boardStatus.cells = message.data.moveData.board;
+        if(gameGlobalVariables.playerMark === 0) {
+          gameGlobalVariables.playerMark = 2;
         }
         if(message.data.result === "lost") {
           console.log("Lost");
@@ -343,22 +351,22 @@ var game = {
     },
     onBackButtonPressed:  function() {
       console.log('BackButton Triggered.');
-      if(screenState === 1) {
+      if(gameGlobalVariables.screenState === 1) {
         kapow.unloadRoom(function() {
           console.log('Room Succesfully Unloaded');
         },function() {
           console.log('Room Unloading Failed');
         });
-        gameResume = false;
-        room=null;
-        playerMark = 0;
-        gameType = null;
-        botLevel  = -1;
-        boardStatus =  {cells: new Array(9)};
-        opponentData = undefined;
-        turnOfPlayer = undefined;
-        gameOver = false;
-        win = 0;
+        gameGlobalVariables.gameResume = false;
+        gameGlobalVariables.room=null;
+        gameGlobalVariables.playerMark = 0;
+        gameGlobalVariables.gameType = null;
+        gameGlobalVariables.botLevel  = -1;
+        gameGlobalVariables.boardStatus =  {cells: new Array(9)};
+        gameGlobalVariables.opponentData = undefined;
+        gameGlobalVariables.turnOfPlayer = undefined;
+        gameGlobalVariables.gameOver = false;
+        gameGlobalVariables.win = 0;
         phaserGame.state.start('menu');
       }
       else {

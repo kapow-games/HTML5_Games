@@ -2,17 +2,18 @@
 var playLoad = function() {};
 playLoad.prototype = {
   preload: function() {
-    screenState = 1;
-    if(gameType === "friend") {
-      kapow.invokeRPC("playerMark", playerData,
+    gameGlobalVariables.screenState = 1;
+    if(gameGlobalVariables.gameType === "friend") {
+      kapow.invokeRPC("playerMark", gameGlobalVariables.playerData,
           function(playerMarkAssignedByServer) {
             console.log("playerMark - success : obj:",playerMarkAssignedByServer);
-            playerMark = playerMarkAssignedByServer;
-            if(turnOfPlayer === undefined) {
-              turnOfPlayer = playerMark === 1 ? playerData : opponentData;
+            console.log("Turn of player during playload :",gameGlobalVariables.turnOfPlayer);
+            gameGlobalVariables.playerMark = playerMarkAssignedByServer;
+            if(gameGlobalVariables.turnOfPlayer === undefined) {
+              gameGlobalVariables.turnOfPlayer = gameGlobalVariables.playerMark === 1 ? gameGlobalVariables.playerData : gameGlobalVariables.opponentData;
             }
             else {
-              console.log("playerMark set already as",playerData);
+              console.log("playerMark set already as",gameGlobalVariables.playerData);
             }
             phaserGame.state.start('play');
           },

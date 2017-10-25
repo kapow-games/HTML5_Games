@@ -2,7 +2,7 @@
 var menu = function() {};
 menu.prototype = {
   create: function() {
-    screenState = 0 ;
+    gameGlobalVariables.screenState = 0 ;
     this.bg = this.add.image(0, 0, 'arena');
 
     this.logo = this.add.image(165, 285, 'logo');
@@ -70,7 +70,7 @@ menu.prototype = {
     this.arrowRotateDownToRight = this.add.tween(this.arrowRight).to( { angle: 0 }, 200, Phaser.Easing.Linear.None);
   },
   update: function() {
-    screenState = 0;
+    gameGlobalVariables.screenState = 0;
   },
   startNewGameTopInputDown : function() {
     this.startNewGameBottom.frame = 1 ;
@@ -415,31 +415,31 @@ menu.prototype = {
     this.slideDirection = (this.slideDirection + 1)%2 ;
   },
   againstRandom : function() {
-    gameType = 'random';
+    gameGlobalVariables.gameType = 'random';
     randomRoom = true;
     console.log("Creating room for Random game");
     kapow.startGameWithRandomPlayers({'difficulty':'medium'}, function(roomDetail) {
       room = roomDetail;
-      playerMark = 1 ;
-      opponentMark = 2 ;
+      gameGlobalVariables.playerMark = 1 ;
+      gameGlobalVariables.opponentMark = 2 ;
       parseRoomAndRedirectToGame();
     }, function(error) {
       console.log("startvsRandomGame Failed : ",error);
     });
   },
   againstFriend : function() {
-    gameType = 'friend';
+    gameGlobalVariables.gameType = 'friend';
     kapow.startGameWithFriends(2, 2, function(roomDetail) {
-      room = roomDetail;
-      playerMark = 1 ;
-      opponentMark = 2 ;
+      gameGlobalVariables.room = roomDetail;
+      gameGlobalVariables.playerMark = 1 ;
+      gameGlobalVariables.opponentMark = 2 ;
       parseRoomAndRedirectToGame();
     }, function(error) {
       console.log("startvsFriendGame Failed : ",error);
     });
   },
   againstComputer : function() {
-    gameType = 'solo';
+    gameGlobalVariables.gameType = 'solo';
     this.state.start('select');
   },
   helpButtonHandler : function() {

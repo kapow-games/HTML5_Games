@@ -16,7 +16,7 @@ preload.prototype = {
     this.asset.anchor.setTo(0.5,0.5);
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-    this.load.image('profilePic',playerData.profileImage+"?height=276&width=276");
+    this.load.image('profilePic',gameGlobalVariables.playerData.profileImage+"?height=276&width=276");
     this.load.image('modeBackground', 'assets/images/statsModeHeader.png');
     this.load.image('statsBackground', 'assets/images/statsBackground.png');
     this.load.image('statsTotalBackground', 'assets/images/statsTotalBackground.png');
@@ -66,12 +66,12 @@ preload.prototype = {
   },
   update: function() {
     if(this.ready) {
-      if(gameResume === true ) {
-        if(gameType === "solo")
+      if(gameGlobalVariables.gameResume === true ) {
+        if(gameGlobalVariables.gameType === "solo")
         {
           this.state.start('play');
         }
-        else if(gameType === "friend") {
+        else if(gameGlobalVariables.gameType === "friend") {
           parseRoomAndRedirectToGame();
         }
       }

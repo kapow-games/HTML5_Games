@@ -5,7 +5,7 @@ select.prototype = {
     this.gameDifficulty = -1 ;
     this.mark = 0 ;
     this.startButtonFlag = true ;
-    screenState = 0 ;
+    gameGlobalVariables.screenState = 0 ;
   },
   create  : function() {
     var bg = this.add.sprite(0, 0, 'arena');
@@ -43,7 +43,7 @@ select.prototype = {
 
     this.musicButton = this.game.add.button(960, 96, 'music', this.musicToggle, this);
     this.musicButton.anchor.setTo(0, 0);
-    screenState = 0 ;
+    gameGlobalVariables.screenState = 0 ;
   },
   update: function() {
     if(this.mark !== 0) {
@@ -53,14 +53,14 @@ select.prototype = {
         this.startButton.inputEnabled = true ;
         this.startButtonFlag = false ;
       }
-      playerMark = this.mark ;
+      gameGlobalVariables.playerMark = this.mark ;
     }
   },
   startGame : function() {
     this.startButton.inputEnabled = false ;
     kapow.startSoloGame(function(roomDetail) {
-      room = roomDetail;
-      gameType = "solo";
+      gameGlobalVariables.room = roomDetail;
+      gameGlobalVariables.gameType = "solo";
       phaserGame.state.start('playLoad');
     }, function(error) {
       console.log("startSoloGame Failed : ",error);
