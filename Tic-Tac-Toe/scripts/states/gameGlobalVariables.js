@@ -1,4 +1,4 @@
-use 'strict'
+'use strict';
 class gameGlobalVariables {
     constructor() {
         this.room = null;
@@ -17,11 +17,11 @@ class gameGlobalVariables {
         this.turnOfPlayer = undefined;
     }
 	get(key) {
-	    console.log("gameGlobalVaribales.get("+key+") invoked.Returning : "+this.key);
+//	    console.log("gameGlobalVaribales.get("+key+") invoked.Returning : "+this[key]);
 		return this[key];
 	}
 	set(key,val) {
-	    console.log("gameGlobalVaribales.set("+key+","+val+") invoked.");
+//	    console.log("gameGlobalVaribales.set("+key+","+val+") invoked.");
 	    this[key] = val;
 	}
 }

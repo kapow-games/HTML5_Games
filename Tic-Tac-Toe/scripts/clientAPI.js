@@ -1,36 +1,39 @@
 //TODO : An object that stores all gameVariables necessary to recreate game layout and game status.
 var randomRoom = false ;
-var gameGlobalVariables = {
-  room : null,
-  screenState : 0,
-  playerData : undefined,
-  boardStatus : {cells  : new Array(9)},
-  gameResume  : false,
-  botLevel  : -1,
-  win : 0,
-  playerMark : 0 ,
-  opponentMark : 0 ,
-  gameOver : false,
-  gameType : null,
-  opponentData : undefined,
-  gameLocked : false,
-  turnOfPlayer : undefined
-};
+var globalVariableInstance = new gameGlobalVariables();
+//var globalVariableInstance = {
+//  room : null,
+//  screenState : 0,
+//  playerData : undefined,
+//  boardStatus : {cells  : new Array(9)},
+//  gameResume  : false,
+//  botLevel  : -1,
+//  win : 0,
+//  playerMark : 0 ,
+//  opponentMark : 0 ,
+//  gameOver : false,
+//  gameType : null,
+//  opponentData : undefined,
+//  gameLocked : false,
+//  turnOfPlayer : undefined
+//};
 gameLayoutLoaded = false ;
 var saveGameData = function(value) {
   let currentGameState = phaserGame.state.states.play.cells.children;
   let len = currentGameState.length;
+  var tempCells = new Array(9);
   for(let i = 0 ; i < len ; i++) {
-    gameGlobalVariables.boardStatus.cells[i]=currentGameState[i].frame ;
+    tempCells[i]=currentGameState[i].frame ;
   }
-  console.log("Board Status recorded on pause : ",gameGlobalVariables.boardStatus);
+  globalVariableInstance.set("boardStatus",{cells : tempCells});
+  console.log("Board Status recorded on pause : ",globalVariableInstance.get("boardStatus"));
   let roomData = {
-    colorPlayer  : gameGlobalVariables.playerMark,
+    colorPlayer  : globalVariableInstance.get("playerMark"),
     difficulty  : 2,
-    board :  gameGlobalVariables.boardStatus,
-    playerData  : gameGlobalVariables.playerData,
+    board :  globalVariableInstance.get("boardStatus"),
+    playerData  : globalVariableInstance.get("playerData"),
     gameOver  : value,
-    winner : gameGlobalVariables.win
+    winner : globalVariableInstance.get("win")
   };
   kapow.roomStore.set("game_data", JSON.stringify(roomData), function () {
     console.log("Storing room data was successful.",roomData);
@@ -39,21 +42,20 @@ var saveGameData = function(value) {
   });
 };
 
-// var shareType = null;
-var room = null;
-var screenState = 0 ;
-var playerData ;
-var boardStatus = {cells: new Array(9)};
-var gameResume = false ;
-var botLevel = -1 ;
-var win = 0 ;
-var playerMark = 0 ;
-var opponentMark = 0 ;
-var gameOver = false ;
-var gameType = null;
-var opponentData;
-var gameLocked = false ;
-var turnOfPlayer;
+//var room = null;
+//var screenState = 0 ;
+//var playerData ;
+//var boardStatus = {cells: new Array(9)};
+//var gameResume = false ;
+//var botLevel = -1 ;
+//var win = 0 ;
+//var playerMark = 0 ;
+//var opponentMark = 0 ;
+//var gameOver = false ;
+//var gameType = null;
+//var opponentData;
+//var gameLocked = false ;
+//var turnOfPlayer;
 function compare(a,b) {
   if(a.data.turnSequenceID < b.data.turnSequenceID) {
     return -1 ;
@@ -63,21 +65,21 @@ function compare(a,b) {
   }
 }
 var parseRoomAndRedirectToGame = function() {
-  if (gameGlobalVariables.room == null) {
+  if (globalVariableInstance.get("room") == null) {
     console.log("Room is null, hence not redirecting to game");
   }
   else {
     console.log('Parsing Room.');
-    var players = gameGlobalVariables.room.players;
+    var players = globalVariableInstance.get("room").players;
     if (players.length >= 1) {
       if (players.length === 2) {
-          if (players[0].id === gameGlobalVariables.playerData.id) {
-              gameGlobalVariables.opponentData = players[1];
-              gameGlobalVariables.playerData = players[0];
+          if (players[0].id === globalVariableInstance.get("playerData").id) {
+              globalVariableInstance.set("opponentData", players[1]);
+              globalVariableInstance.set("playerData", players[0]);
           }
           else {
-              gameGlobalVariables.opponentData = players[0];
-              gameGlobalVariables.playerData = players[1];
+              globalVariableInstance.set("opponentData", players[0]);
+              globalVariableInstance.set("playerData", players[1]);
           }
           kapow.fetchHistorySince(null,25,
             function(messagesHistory) {
@@ -89,74 +91,74 @@ var parseRoomAndRedirectToGame = function() {
                   history.push(messagesHistory[i]);
                 }
                 if ( messagesHistory[i].type === "outcome") {
-                  gameGlobalVariables.gameOver = true ;
+                  globalVariableInstance.set("gameOver", true) ;
                   if(messagesHistory[i].data.type === "result") {
-                    if(messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id] === messagesHistory[i].data.ranks[gameGlobalVariables.opponentData.id]) {
-                      gameGlobalVariables.turnOfPlayer = 0 ;
+                    if(messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id] === messagesHistory[i].data.ranks[globalVariableInstance.get("opponentData").id]) {
+                      globalVariableInstance.set("turnOfPlayer", 0) ;
                     }
-                    else if(messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id] === 1) {
-                      gameGlobalVariables.turnOfPlayer = gameGlobalVariables.opponentData ;
+                    else if(messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id] === 1) {
+                      globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("opponentData")) ;
                     }
-                    else if(messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id] === 2) {
-                      gameGlobalVariables.turnOfPlayer = gameGlobalVariables.playerData ;
+                    else if(messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id] === 2) {
+                      globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("playerData")) ;
                     }
                     else {
                       console.log("Player Turn couldn't be detrminded");
                     }
                   }
                   else if(messagesHistory[i].data.type === "resignation" || messagesHistory[i].data.type === "timeout") {
-                    console.log("Outcome  data :",messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id]);
-                    if(messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id] === messagesHistory[i].data.ranks[gameGlobalVariables.opponentData.id]) {
-                      gameGlobalVariables.turnOfPlayer = 0 ;
+                    console.log("Outcome  data :",messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id]);
+                    if(messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id] === messagesHistory[i].data.ranks[globalVariableInstance.get("opponentData").id]) {
+                      globalVariableInstance.set("turnOfPlayer", 0) ;
                     }
-                    else if(messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id] === 1) {
-                      gameGlobalVariables.turnOfPlayer = gameGlobalVariables.opponentData ;
-                      console.log("Turn of player set to : ",gameGlobalVariables.opponentData.id);
+                    else if(messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id] === 1) {
+                      globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("opponentData")) ;
+                      console.log("Turn of player set to : ",globalVariableInstance.get("opponentData").id);
                     }
-                    else if(messagesHistory[i].data.ranks[gameGlobalVariables.playerData.id] === 2) {
-                      gameGlobalVariables.turnOfPlayer = gameGlobalVariables.playerData ;
-                      console.log("Turn of player set to : ",gameGlobalVariables.playerData.id);
+                    else if(messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id] === 2) {
+                      globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("playerData")) ;
+                      console.log("Turn of player set to : ",globalVariableInstance.get("playerData").id);
                     }
                     else {
-                      console.log("Player Turn couldn't be detrminded");
+                      console.log("Player Turn couldn't be determined");
                     }
                   }
                 }
               }
               console.log("Move History sorted according to sequence number",history);
               if(history.length > 0) {
-                gameGlobalVariables.boardStatus.cells = history[0].data.moveData.board;
-                if(history[0].senderId === gameGlobalVariables.playerData.id) {
-                  if(gameGlobalVariables.gameOver === false) {
-                    gameGlobalVariables.turnOfPlayer = gameGlobalVariables.opponentData ;
+                globalVariableInstance.set("boardStatus", {cells : history[0].data.moveData.board});
+                if(history[0].senderId === globalVariableInstance.get("playerData").id) {
+                  if(globalVariableInstance.get("gameOver") === false) {
+                    globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("opponentData")) ;
                   }
                 }
-                else if(history[0].senderId === gameGlobalVariables.opponentData.id) {
-                  if(gameGlobalVariables.gameOver === false) {
-                    gameGlobalVariables.turnOfPlayer = gameGlobalVariables.playerData ;
+                else if(history[0].senderId === globalVariableInstance.get("opponentData").id) {
+                  if(globalVariableInstance.get("gameOver") === false) {
+                    globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("playerData")) ;
                   }
                 }
                 else {
-                  if(gameGlobalVariables.gameOver === false) {
+                  if(globalVariableInstance.get("gameOver") === false) {
                     console.log("Current Turn can't be determined");
                   }
                 }
               }
-              else if(gameGlobalVariables.gameOver !== true){
-                gameGlobalVariables.turnOfPlayer = undefined ;
+              else if(globalVariableInstance.get("gameOver") !== true){
+                globalVariableInstance.set("turnOfPlayer", undefined) ;
               }
             },
             function() {
               console.log('fetchHistory Failed')
             });
       }
-      console.log("Redirecting to game...",gameGlobalVariables.opponentData);
-      gameGlobalVariables.gameType = 'friend';
-      if(gameGlobalVariables.opponentData !== undefined && gameGlobalVariables.opponentData.affiliation === "accepted") {
+      console.log("Redirecting to game...",globalVariableInstance.get("opponentData"));
+      globalVariableInstance.set("gameType", 'friend');
+      if(globalVariableInstance.get("opponentData") !== undefined && globalVariableInstance.get("opponentData").affiliation === "accepted") {
         phaserGame.state.start('playLoad');
       }
-      else if(gameGlobalVariables.opponentData != undefined && (gameGlobalVariables.opponentData.affiliation === "left" || gameGlobalVariables.playerData.affiliation === "left")) {
-        gameGlobalVariables.gameOver = true;
+      else if(globalVariableInstance.get("opponentData") != undefined && (globalVariableInstance.get("opponentData").affiliation === "left" || globalVariableInstance.get("playerData").affiliation === "left")) {
+        globalVariableInstance.set("gameOver", true);
         phaserGame.state.start('playLoad');
       }
       else {
@@ -172,9 +174,9 @@ var parseRoomAndRedirectToGame = function() {
 var onAffiliationChange = function() {
     kapow.getRoomInfo(function (roomObj) {
         console.log("Client getRoomInfo - Room: " + JSON.stringify(roomObj));
-        gameGlobalVariables.room = roomObj;
-        gameGlobalVariables.playerMark = 2 ;
-        gameGlobalVariables.opponentMark = 1 ;
+        globalVariableInstance.set("room", roomObj);
+        globalVariableInstance.set("playerMark", 2) ;
+        globalVariableInstance.set("opponentMark", 1) ;
         parseRoomAndRedirectToGame();
     }, function () {
         console.log("Client - onAffiliationChange failure");
@@ -224,30 +226,30 @@ var game = {
           console.log("No stats table fetched at loadTable : ",error);
         });
         console.log("Client onLoad - " + JSON.stringify(roomObj));
-        gameGlobalVariables.room = roomObj;
-        console.log(gameGlobalVariables.room);
+        globalVariableInstance.set("room", roomObj);
+        console.log(globalVariableInstance.get("room"));
         kapow.getUserInfo(function (userObj) {
                 console.log("Client getUserInfoSuccess - User: " + JSON.stringify(userObj));
                 user = userObj.player;
-                gameGlobalVariables.playerData = user;
-                if(gameGlobalVariables.room !== null) { //Game already created sometime earlier
-                  gameGlobalVariables.gameResume = true;
-                  if(gameGlobalVariables.room.players.length > 1) {
-                    gameGlobalVariables.gameType = "friend";
+                globalVariableInstance.set("playerData",user);
+                if(globalVariableInstance.get("room") !== null) { //Game already created sometime earlier
+                  globalVariableInstance.set("gameResume", true);
+                  if(globalVariableInstance.get("room").players.length > 1) {
+                    globalVariableInstance.set("gameType","friend");
                   }
-                  else if(gameGlobalVariables.room.lockStatus === "locked"){
-                    gameGlobalVariables.gameType = "solo";
+                  else if(globalVariableInstance.get("room").lockStatus === "locked"){
+                    globalVariableInstance.set("gameType", "solo");
                     kapow.roomStore.get('game_data',function(value) {
                       if(value) {
                         let valueJSON = JSON.parse(value);
                         console.log(valueJSON);
-                        gameGlobalVariables.playerMark = valueJSON.colorPlayer;
-                        gameGlobalVariables.botLevel  = valueJSON.difficulty;
-                        gameGlobalVariables.boardStatus =  valueJSON.board;
-                        gameGlobalVariables.playerData  = valueJSON.playerData;
-                        gameGlobalVariables.gameOver = valueJSON.gameOver;
-                        gameGlobalVariables.gameLocked = gameGlobalVariables.gameOver;
-                        gameGlobalVariables.win = valueJSON.winner;
+                        globalVariableInstance.set("playerMark", valueJSON.colorPlayer);
+                        globalVariableInstance.set("botLevel", valueJSON.difficulty);
+                        globalVariableInstance.set("boardStatus", valueJSON.board);
+                        globalVariableInstance.set("playerData", valueJSON.playerData);
+                        globalVariableInstance.set("gameOver", valueJSON.gameOver);
+                        globalVariableInstance.set("gameLocked", globalVariableInstance.get("gameOver"));
+                        globalVariableInstance.set("win", valueJSON.winner);
                       }
                       else {
                         console.log('Game Variables Not set');
@@ -257,13 +259,13 @@ var game = {
                     });
                   }
                   else {
-                    gameGlobalVariables.gameType = "friend";
+                    globalVariableInstance.set("gameType", "friend");
                   }
                 }
                 else {
-                  gameGlobalVariables.gameResume = false ;
+                  globalVariableInstance.set("gameResume", false);
                 }
-                console.log("room : ",gameGlobalVariables.room);
+                console.log("room : ",globalVariableInstance.get("room"));
                 phaserGame.state.start('boot');
             }, function () {
             console.log("Client getUserInfo failure");
@@ -273,7 +275,7 @@ var game = {
     onGameEnd : function(outcome) {
       console.log("CLIENT : Game Ended",outcome);
       if(outcome.type === "resignation" || outcome.type === "timeout"){
-        if(outcome.ranks[gameGlobalVariables.playerData.id] === 1) {
+        if(outcome.ranks[globalVariableInstance.get("playerData").id] === 1) {
           console.log("Game Won");
           gameEndHandler(2);
         }
@@ -282,10 +284,10 @@ var game = {
           gameEndHandler(1);
         }
       }
-      if(outcome.ranks[gameGlobalVariables.playerData.id] === 1 && outcome.ranks[gameGlobalVariables.opponentData.id] === 1) {
+      if(outcome.ranks[globalVariableInstance.get("playerData").id] === 1 && outcome.ranks[globalVariableInstance.get("opponentData").id] === 1) {
         console.log("Game Draw");
       }
-      else if(outcome.ranks[gameGlobalVariables.playerData.id] === 1) {
+      else if(outcome.ranks[globalVariableInstance.get("playerData").id] === 1) {
         console.log("Game Won");
       }
       else {
@@ -293,47 +295,47 @@ var game = {
       }
     },
     onPlayerJoined: function(playerObj) {
-      console.log("CLIENT onPlayerJoined - " + JSON.stringify(gameGlobalVariables.playerData));
+      console.log("CLIENT onPlayerJoined - " + JSON.stringify(globalVariableInstance.get("playerData")));
       //onAffiliationChange();
     },
     onInviteRejected: function(playerObj) {
-        console.log("Client onInviteRejected - " + JSON.stringify(gameGlobalVariables.playerData));
+        console.log("Client onInviteRejected - " + JSON.stringify(globalVariableInstance.get("playerData")));
         onAffiliationChange();
     },
     onPlayerLeft: function(playerObj) {
-        console.log("Client onPlayerLeft - " + JSON.stringify(gameGlobalVariables.playerData));
+        console.log("Client onPlayerLeft - " + JSON.stringify(globalVariableInstance.get("playerData")));
     },
     onTurnChange : function(playerObj) {
       console.log("Player Turn Changed to : " + JSON.stringify(playerObj));
-      if(playerObj.id === gameGlobalVariables.playerData.id) {
-        gameGlobalVariables.turnOfPlayer = playerObj ;
+      if(playerObj.id === globalVariableInstance.get("playerData").id) {
+        globalVariableInstance.set("turnOfPlayer", playerObj) ;
       }
       else {
-        gameGlobalVariables.turnOfPlayer = undefined ;
+        globalVariableInstance.set("turnOfPlayer", undefined) ;
       }
     },
     onPause: function() {
       console.log('On Pause Triggered.');
     },
     onResume:function() {
-      if(gameGlobalVariables.screenState === 1 && gameGlobalVariables.gameType === "friend") {
-        gameGlobalVariables.gameResume = true;
+      if(globalVariableInstance.get("screenState") === 1 && globalVariableInstance.get("gameType") === "friend") {
+        globalVariableInstance.set("gameResume", true);
         parseRoomAndRedirectToGame();
       }
       console.log('On Resume Triggered.');
     },
     onMessageReceived : function (message) {
       console.log('CLIENT : Message Received - ',message);
-      if(gameLayoutLoaded === true && message.type === "move" && message.senderId === gameGlobalVariables.opponentData.id) {
+      if(gameLayoutLoaded === true && message.type === "move" && message.senderId === globalVariableInstance.get("opponentData").id) {
         for(var i = 0 ; i < 9 ; i++) {
           phaserGame.state.states.play.cells.children[i].frame = message.data.moveData.board[i];
         }
         gameLayoutVariables.opponentProfilePic.alpha = 0.3;
         gameLayoutVariables.playerProfilePic.alpha = 1;
         gameLayoutVariables.turnText.text = "YOUR TURN";
-        gameGlobalVariables.boardStatus.cells = message.data.moveData.board;
-        if(gameGlobalVariables.playerMark === 0) {
-          gameGlobalVariables.playerMark = 2;
+        globalVariableInstance.set("boardStatus", {cells : message.data.moveData.board});
+        if(globalVariableInstance.get("playerMark") === 0) {
+          globalVariableInstance.set("playerMark", 2);
         }
         if(message.data.result === "lost") {
           console.log("Lost");
@@ -351,22 +353,22 @@ var game = {
     },
     onBackButtonPressed:  function() {
       console.log('BackButton Triggered.');
-      if(gameGlobalVariables.screenState === 1) {
+      if(globalVariableInstance.get("screenState") === 1) {
         kapow.unloadRoom(function() {
           console.log('Room Succesfully Unloaded');
         },function() {
           console.log('Room Unloading Failed');
         });
-        gameGlobalVariables.gameResume = false;
-        gameGlobalVariables.room=null;
-        gameGlobalVariables.playerMark = 0;
-        gameGlobalVariables.gameType = null;
-        gameGlobalVariables.botLevel  = -1;
-        gameGlobalVariables.boardStatus =  {cells: new Array(9)};
-        gameGlobalVariables.opponentData = undefined;
-        gameGlobalVariables.turnOfPlayer = undefined;
-        gameGlobalVariables.gameOver = false;
-        gameGlobalVariables.win = 0;
+        globalVariableInstance.set("gameResume", false);
+        globalVariableInstance.set("room", null);
+        globalVariableInstance.set("playerMark", 0);
+        globalVariableInstance.set("gameType", null);
+        globalVariableInstance.set("botLevel",-1);
+        globalVariableInstance.set("boardStatus", {cells :new Array(9)});
+        globalVariableInstance.set("opponentData", undefined);
+        globalVariableInstance.set("turnOfPlayer", undefined);
+        globalVariableInstance.set("gameOver", false);
+        globalVariableInstance.set("win", 0);
         phaserGame.state.start('menu');
       }
       else {

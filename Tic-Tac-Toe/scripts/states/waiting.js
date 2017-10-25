@@ -2,9 +2,9 @@
 var waiting = function() {};
 waiting.prototype = {
   preload: function() {
-    gameGlobalVariables.screenState = 1;
-    if(gameGlobalVariables.opponentData !== undefined) {
-      this.load.image('opponentPic',gameGlobalVariables.opponentData.profileImage+"?height=276&width=276");
+    globalVariableInstance.set("screenState", 1);
+    if(globalVariableInstance.get("opponentData") !== undefined) {
+      this.load.image('opponentPic',globalVariableInstance.get("opponentData").profileImage+"?height=276&width=276");
     }
   },
   create: function() {
@@ -41,15 +41,15 @@ waiting.prototype = {
     this.playerMask.drawCircle(360,582,276);
     this.playerProfilePic.mask = this.playerMask;
 
-    if(gameGlobalVariables.opponentData !== undefined) {
+    if(globalVariableInstance.get("opponentData") !== undefined) {
       this.opponentProfilePic = this.add.image(582, 444, "opponentPic");
       this.opponentProfilePic.scale.set(276/this.opponentProfilePic.width);
       this.opponentMask = phaserGame.add.graphics(0, 0);
       this.opponentMask.beginFill("#f0f0f0");
       this.opponentMask.drawCircle(720,582,276);
       this.opponentProfilePic.mask = this.opponentMask;
-      console.log('opponentData at waiting state : ',gameGlobalVariables.opponentData);
-      this.waitingText.text = "WAITING FOR "+gameGlobalVariables.opponentData.name.split(" ")[0].toUpperCase()+" TO JOIN";
+      console.log('opponentData at waiting state : ',globalVariableInstance.get("opponentData"));
+      this.waitingText.text = "WAITING FOR "+globalVariableInstance.get("opponentData").name.split(" ")[0].toUpperCase()+" TO JOIN";
     }
     else {
       this.opponentProfilePic = this.add.image(654, 492, "anonymousOpponentPic");
@@ -68,16 +68,16 @@ waiting.prototype = {
   backButtonHandler : function() {
     console.log("WebView BACK presed.");
     kapow.unloadRoom(function(){console.log('Room Succesfully Unloaded');},function(){console.log('Room Unloading Failed');});
-    gameGlobalVariables.gameResume = false;
-    gameGlobalVariables.room=null;
-    gameGlobalVariables.playerMark = 0;
-    gameGlobalVariables.gameType = null;
-    gameGlobalVariables.botLevel  = -1;
-    gameGlobalVariables.boardStatus =  {cells: new Array(9)};
-    gameGlobalVariables.opponentData = undefined;
-    gameGlobalVariables.turnOfPlayer = undefined;
-    gameGlobalVariables.gameOver = false;
-    gameGlobalVariables.win = 0;
+    globalVariableInstance.set("gameResume", false);
+    globalVariableInstance.set("room", null);
+    globalVariableInstance.set("playerMark", 0);
+    globalVariableInstance.set("gameType", null);
+    globalVariableInstance.set("botLevel", -1);
+    globalVariableInstance.set("boardStatus", {cells : new Array(9)});
+    globalVariableInstance.set("opponentData", undefined);
+    globalVariableInstance.set("turnOfPlayer", undefined);
+    globalVariableInstance.set("gameOver", false);
+    globalVariableInstance.set("win", 0);
     gameLayoutLoaded = false;
     phaserGame.state.start('menu');
   },

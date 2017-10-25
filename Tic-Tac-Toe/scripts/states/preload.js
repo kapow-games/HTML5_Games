@@ -16,14 +16,14 @@ preload.prototype = {
     this.asset.anchor.setTo(0.5,0.5);
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-    this.load.image('profilePic',gameGlobalVariables.playerData.profileImage+"?height=276&width=276");
+    this.load.image('profilePic',globalVariableInstance.get("playerData").profileImage+"?height=276&width=276");
     this.load.image('modeBackground', 'assets/images/statsModeHeader.png');
     this.load.image('statsBackground', 'assets/images/statsBackground.png');
     this.load.image('statsTotalBackground', 'assets/images/statsTotalBackground.png');
     this.load.image('statsClose', 'assets/images/statsClose.png');
     this.load.image('statsLogo', 'assets/images/statsLogo.png');
     this.load.image('botPic','assets/images/botPic.png');
-		this.load.image('logo', 'assets/images/logo.png');
+    this.load.image('logo', 'assets/images/logo.png');
     this.load.spritesheet('onGoing', 'assets/images/onGoing.png', 984, 180);
     this.load.image('arena', 'assets/images/backGround.png');
     this.load.image('back', 'assets/images/back.png');
@@ -66,12 +66,12 @@ preload.prototype = {
   },
   update: function() {
     if(this.ready) {
-      if(gameGlobalVariables.gameResume === true ) {
-        if(gameGlobalVariables.gameType === "solo")
+      if(globalVariableInstance.get("gameResume") === true ) {
+        if(globalVariableInstance.get("gameType") === "solo")
         {
           this.state.start('play');
         }
-        else if(gameGlobalVariables.gameType === "friend") {
+        else if(globalVariableInstance.get("gameType") === "friend") {
           parseRoomAndRedirectToGame();
         }
       }

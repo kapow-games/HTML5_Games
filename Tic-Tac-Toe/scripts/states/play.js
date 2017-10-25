@@ -75,7 +75,7 @@ var gameEndHandler = function(value) {
   shareOtherButton.input.priorityID = 3 ;
   var rematchButton = phaserGame.add.button(657, 1584, 'rematch',rematchButtonHandler, 0, 0, 1, 0);
   rematchButton.input.priorityID = 3 ;
-  if(gameGlobalVariables.gameOver === false) {
+  if(globalVariableInstance.get("gameOver") === false) {
     kapow.gameStore.get('stats',function(statsValue) {
       console.log("gameStore fetch successfull.");
       if(statsValue) {
@@ -85,7 +85,7 @@ var gameEndHandler = function(value) {
         soloStats = valueJSON.soloStats;
         randomStats = valueJSON.randomStats;
         friendsStats = valueJSON.friendsStats;
-        if(gameGlobalVariables.gameType === "solo") {
+        if(globalVariableInstance.get("gameType") === "solo") {
           if(value === 1) {
             soloStats.lost += 1;
           }
@@ -96,7 +96,7 @@ var gameEndHandler = function(value) {
             soloStats.draw += 1;
           }
         }
-        else if(gameGlobalVariables.gameType === "friend") {
+        else if(globalVariableInstance.get("gameType") === "friend") {
           if(randomRoom === false){
             if(value === 1) {
               friendsStats.lost += 1;
@@ -153,14 +153,14 @@ var gameEndHandler = function(value) {
       console.log("gameStore fetch Failed: ",error);
     });
   }
-  if(gameGlobalVariables.gameLocked === false)// To ensure that game doesn't close multiple times in Kapow
+  if(globalVariableInstance.get("gameLocked") === false)// To ensure that game doesn't close multiple times in Kapow
   {
-    if(gameGlobalVariables.gameType === "solo") {
+    if(globalVariableInstance.get("gameType") === "solo") {
       kapow.endSoloGame(function() {
         if(value === 2) {
           kapow.rpc.invoke({
             	"functionName": 'soloPostScore',
-              "parameters": {'points': 5, 'playerID':gameGlobalVariables.playerData.id},
+                "parameters": {'points': 5, 'playerID':globalVariableInstance.get("playerData").id},
             	"invokeLazily": true
             },function (successResponse) {
               console.log("successResponse  for lazy invocation",successResponse);
@@ -169,13 +169,13 @@ var gameEndHandler = function(value) {
             }
           );
         }
-        gameGlobalVariables.boardStatus = {cells:new Array(9)};
-        gameGlobalVariables.botLevel = -1 ; //TODO : Remove This. Redundant
-        gameGlobalVariables.win = 0 ;
-        gameGlobalVariables.gameOver = false ;
-        gameGlobalVariables.room = null;
-        gameGlobalVariables.playerMark = 0;
-        gameGlobalVariables.gameResume = false ;
+        globalVariableInstance.set("boardStatus", {cells : new Array(9)});
+        globalVariableInstance.set("botLevel", -1) ; //TODO : Remove This. Redundant
+        globalVariableInstance.set("win", 0) ;
+        globalVariableInstance.set("gameOver", false);
+        globalVariableInstance.set("room", null);
+        globalVariableInstance.set("playerMark", 0);
+        globalVariableInstance.set("gameResume", false) ;
         console.log("Game Succesfully Closed.");
       }, function(error) {
         console.log("endSoloGame Failed : ",error);
@@ -184,7 +184,7 @@ var gameEndHandler = function(value) {
   }
 };
 var drawWinningLine = function() {
-  var gameFinalLayout = gameGlobalVariables.boardStatus.cells ;
+  var gameFinalLayout = globalVariableInstance.get("boardStatus").cells ;
   if (gameFinalLayout[0] !== null &&  gameFinalLayout[0] !== undefined && gameFinalLayout[0] === gameFinalLayout[1] && gameFinalLayout[0] === gameFinalLayout[2]) {
     matchPosition = phaserGame.add.sprite(222, 948, 'rectangle');matchPosition.anchor.setTo(0.5);
   }
@@ -215,23 +215,23 @@ var drawWinningLine = function() {
 };
 var rematchButtonHandler  = function() {
   console.log('rematchButtonHandler Clicked');
-  gameGlobalVariables.boardStatus = {cells:new Array(9)};
-  gameGlobalVariables.win = 0 ;
-  gameGlobalVariables.gameOver = false ;
-  gameGlobalVariables.room = null;
-  gameGlobalVariables.playerMark = 0;
-  gameGlobalVariables.gameResume = false ;
-  gameGlobalVariables.gameLocked = false ;
-  if(gameGlobalVariables.gameType === "solo") {
-    gameGlobalVariables.botLevel = -1 ; //TODO : Remove This. Redundant
+  globalVariableInstance.set("boardStatus", {cells : new Array(9)});
+  globalVariableInstance.set("win", 0) ;
+  globalVariableInstance.set("gameOver", false) ;
+  globalVariableInstance.set("room", null);
+  globalVariableInstance.set("playerMark", 0);
+  globalVariableInstance.set("gameResume", false) ;
+  globalVariableInstance.set("gameLocked", false) ;
+  if(globalVariableInstance.get("gameType") === "solo") {
+    globalVariableInstance.set("botLevel", -1) ; //TODO : Remove This. Redundant
     gameLayoutLoaded = false;
     phaserGame.state.start('select');
   }
-  else if(gameGlobalVariables.gameType === "friend") {
+  else if(globalVariableInstance.get("gameType") === "friend") {
     kapow.rematch(function(roomObj) {
-        gameGlobalVariables.room = roomObj;
-        gameGlobalVariables.playerMark = 1 ;
-        gameGlobalVariables.opponentMark = 2 ;
+        globalVariableInstance.set("room", roomObj);
+        globalVariableInstance.set("playerMark", 1) ;
+        globalVariableInstance.set("opponentMark", 2);
         gameLayoutLoaded = false;
         parseRoomAndRedirectToGame();
         console.log("Rematch Room Created");
@@ -419,7 +419,7 @@ var botBehaviour = function(pos) {
   this.miniMaxValue = 0 ;
   this.applyTo = function(currentGameState) {
     var nextGameState = new gameState(currentGameState);
-    nextGameState.board[this.movePosition] = (currentGameState.turn === 1 ? gameGlobalVariables.playerMark : ((gameGlobalVariables.playerMark === 1) ? 2 : 1));
+    nextGameState.board[this.movePosition] = (currentGameState.turn === 1 ? globalVariableInstance.get("playerMark") : ((globalVariableInstance.get("playerMark") === 1) ? 2 : 1));
     if(currentGameState.turn == 2) {
       nextGameState.oMovesCount++;
     }
@@ -458,11 +458,11 @@ var Game = function(bot) {
   this.currentState.board = new Array(9);
   for(let i = 0 ; i < CELL_COLS*CELL_ROWS ; i++) {
     // this.currentState.board.push(0);
-    this.currentState.board[i] = gameGlobalVariables.boardStatus.cells[i]!==undefined ? gameGlobalVariables.boardStatus.cells[i] :0;
+    this.currentState.board[i] = globalVariableInstance.get("boardStatus").cells[i]!==undefined ? globalVariableInstance.get("boardStatus").cells[i] :0;
   }
   this.currentState.turn = 1 ;//playerMark === 1 ? 2 : 1 ;
 
-  if(gameGlobalVariables.playerMark === 2 && gameGlobalVariables.gameResume === false) {
+  if(globalVariableInstance.get("playerMark") === 2 && globalVariableInstance.get("gameResume") === false) {
     var randomCell = Math.floor(Math.random() * CELL_ROWS*CELL_COLS);
     this.currentState.board[randomCell] = 1 ;
     gameLayoutVariables.initialMark = randomCell ;
@@ -476,16 +476,16 @@ var Game = function(bot) {
       this.gameStatus = 3 // Indicating game Over
       // console.log(_state);
       if(_state.boardResult === 1) {
-        gameGlobalVariables.win = 1 ;
+        globalVariableInstance.set("win", 1) ;
       }
       else if(_state.boardResult === 2) {
-        gameGlobalVariables.win = 2 ;
+        globalVariableInstance.set("win", 2) ;
       }
       else {
-        gameGlobalVariables.win = 0 ;
+        globalVariableInstance.set("win", 0) ;
       }
-      if(gameGlobalVariables.win !== 0) {
-        if(gameGlobalVariables.win === gameGlobalVariables.playerMark) {
+      if(globalVariableInstance.get("win") !== 0) {
+        if(globalVariableInstance.get("win") === globalVariableInstance.get("playerMark")) {
           gameLayoutVariables.turnText.text = "  YOU WIN!";
           gameEndHandler(2);
         }
@@ -499,7 +499,7 @@ var Game = function(bot) {
         gameEndHandler(0);
         // gameInputHandler(0)
       }
-      if(gameGlobalVariables.win !== 0) {
+      if(globalVariableInstance.get("win") !== 0) {
         switch(gameLayoutVariables.winningMarkLine) {
           case 0 : matchPosition = phaserGame.add.sprite(552, 633, 'rectangle');matchPosition.anchor.setTo(0.5);matchPosition.angle=90;break;
           case 1 : matchPosition = phaserGame.add.sprite(552, 948, 'rectangle');matchPosition.anchor.setTo(0.5);matchPosition.angle=90;break;
@@ -549,10 +549,10 @@ Game.score = function(_state) {
 var play = function() {};
 play.prototype = {
   preload:  function() {
-    gameGlobalVariables.screenState = 1 ;
-    if(gameGlobalVariables.gameType === 'friend') {
-      if(gameGlobalVariables.opponentData !== undefined) {
-        this.load.image('opponentPic',gameGlobalVariables.opponentData.profileImage);
+    globalVariableInstance.set("screenState", 1) ;
+    if(globalVariableInstance.get("gameType") === 'friend') {
+      if(globalVariableInstance.get("opponentData") !== undefined) {
+        this.load.image('opponentPic',globalVariableInstance.get("opponentData").profileImage);
       }
       else {
           console.log("opponentData was not set.");
@@ -562,7 +562,7 @@ play.prototype = {
     gameLayoutVariables.clickBlocked = false;
   },
   create: function() {
-    gameGlobalVariables.screenState = 1 ;
+    globalVariableInstance.set("screenState", 1) ;
 
     console.log("Loading Game Layout.");
     var CELL_WIDTH, CELL_HEIGHT, CELL_WIDTH_PAD, CELL_HEIGHT_PAD, CELL_RELATIVE_TOP, CELL_RELATIVE_LEFT;
@@ -597,15 +597,15 @@ play.prototype = {
     this.playerProfilePicMarkBackground.scale.set(48/this.playerProfilePicMarkBackground.width,48/this.playerProfilePicMarkBackground.height);
 
     this.playerProfilePicMark = this.add.sprite(438,144,'cell');
-    console.log("playerMark at time of showing on screen",gameGlobalVariables.playerMark);
-    this.playerProfilePicMark.frame = gameGlobalVariables.playerMark ;
+    console.log("playerMark at time of showing on screen",globalVariableInstance.get("playerMark"));
+    this.playerProfilePicMark.frame = globalVariableInstance.get("playerMark") ;
     this.playerProfilePicMark.scale.set(48/this.playerProfilePicMark.width,48/this.playerProfilePicMark.height);
 
 
     this.opponentProfilePicBackground = this.add.image(594,72,'circle');
     this.opponentProfilePicBackground.scale.set(120/this.opponentProfilePicBackground.width,120/this.opponentProfilePicBackground.height);
 
-    gameLayoutVariables.opponentProfilePic = this.add.image(600, 78, gameGlobalVariables.gameType === 'solo' ? 'botPic' : "opponentPic");
+    gameLayoutVariables.opponentProfilePic = this.add.image(600, 78, globalVariableInstance.get("gameType") === 'solo' ? 'botPic' : "opponentPic");
     gameLayoutVariables.opponentProfilePic.scale.set(108/gameLayoutVariables.opponentProfilePic.width);
     // console.log("Pointer");
     mask = phaserGame.add.graphics(0, 0);
@@ -617,7 +617,7 @@ play.prototype = {
     this.opponentProfilePicMarkBackground.scale.set(48/this.opponentProfilePicMarkBackground.width,48/this.opponentProfilePicMarkBackground.height);
 
     this.opponentProfilePicMark = this.add.sprite(594,144,'cell');
-    this.opponentProfilePicMark.frame = ( (gameGlobalVariables.playerMark === 2) ? 1 : 2) ;
+    this.opponentProfilePicMark.frame = ( (globalVariableInstance.get("playerMark") === 2) ? 1 : 2) ;
     this.opponentProfilePicMark.scale.set(48/this.opponentProfilePicMark.width,48/this.opponentProfilePicMark.height);
 
     gameLayoutVariables.turnText = createText(366, 276, "");//phaserGame.add.text(366, 276, "");
@@ -630,7 +630,7 @@ play.prototype = {
     gameLayoutVariables.turnText.fill = "#fefefe";
     gameLayoutVariables.turnText.align = "center";
     gameLayoutVariables.turnText.backgroundColor = "#5684fb";
-    gameLayoutVariables.turnText.text = (gameGlobalVariables.gameOver === true) ? gameGlobalVariables.win === gameGlobalVariables.playerMark ? "YOU WIN!" : "YOU LOSE!" : gameGlobalVariables.gameType ===  "solo" ? gameGlobalVariables.playerMark === 1 ? "YOUR TURN" : "BOT'S TURN" : gameGlobalVariables.turnOfPlayer === gameGlobalVariables.playerData ? "YOUR TURN" : "WAITING";
+    gameLayoutVariables.turnText.text = (globalVariableInstance.get("gameOver") === true) ? globalVariableInstance.get("win") === globalVariableInstance.get("playerMark") ? "YOU WIN!" : "YOU LOSE!" : globalVariableInstance.get("gameType") ===  "solo" ? globalVariableInstance.get("playerMark") === 1 ? "YOUR TURN" : "BOT'S TURN" : globalVariableInstance.get("turnOfPlayer") === globalVariableInstance.get("playerData") ? "YOUR TURN" : "WAITING";
 
     this.vs = createText(511, 105, "VS");
     this.vs.font = 'nunito-regular';
@@ -648,7 +648,7 @@ play.prototype = {
     this.musicButton.anchor.setTo(0, 0);
 
     var count = 0 ;
-    gameGlobalVariables.win = 0 ;
+    globalVariableInstance.set("win", 0) ;
     this.cells = this.add.group();
     this.player = 1;
     this.cellFilled = 0 ;
@@ -656,72 +656,72 @@ play.prototype = {
     for (var i = 0; i < CELL_COLS; i++) {
       for (var j = 0; j < CELL_ROWS; j++) {
         var cell = this.cells.create(i * (CELL_WIDTH+CELL_WIDTH_PAD) + CELL_RELATIVE_LEFT, j * (CELL_HEIGHT+CELL_HEIGHT_PAD) + CELL_RELATIVE_TOP, 'cell');
-        if(gameGlobalVariables.gameResume === true){
-          cell.frame = gameGlobalVariables.boardStatus.cells[count] ;
-          if(gameGlobalVariables.boardStatus.cells[count] === 0 || gameGlobalVariables.boardStatus.cells[count] === undefined || gameGlobalVariables.boardStatus.cells[count] === null){
+        if(globalVariableInstance.get("gameResume") === true){
+          cell.frame = globalVariableInstance.get("boardStatus").cells[count] ;
+          if(globalVariableInstance.get("boardStatus").cells[count] === 0 || globalVariableInstance.get("boardStatus").cells[count] === undefined || globalVariableInstance.get("boardStatus").cells[count] === null){
             cell.frame = 0;
-            cell.inputEnabled = gameGlobalVariables.gameOver === true ? false : true;
-            cell.events.onInputDown.add(gameGlobalVariables.gameType === 'solo' ? this.clickHandlerSolo: this.clickHandlerMulti, this);
+            cell.inputEnabled = globalVariableInstance.get("gameOver") === true ? false : true;
+            cell.events.onInputDown.add(globalVariableInstance.get("gameType") === 'solo' ? this.clickHandlerSolo: this.clickHandlerMulti, this);
           }
           else {
-            cell.frame = gameGlobalVariables.boardStatus.cells[count];
+            cell.frame = globalVariableInstance.get("boardStatus").cells[count];
             cell.inputEnabled = false;
           }
         }
         else {
           cell.frame = 0;
           cell.inputEnabled = true;
-          cell.events.onInputDown.add(gameGlobalVariables.gameType === 'solo' ? this.clickHandlerSolo: this.clickHandlerMulti , this);
+          cell.events.onInputDown.add(globalVariableInstance.get("gameType") === 'solo' ? this.clickHandlerSolo: this.clickHandlerMulti , this);
         }
         cell.frameIndex = count++;
         this.physics.arcade.enable(cell);
       }
     }
-    if(gameGlobalVariables.gameType === 'solo') {
+    if(globalVariableInstance.get("gameType") === 'solo') {
       myBot = new bot(1);
       gameLayoutVariables.myGame = new Game(myBot);
-      if(gameGlobalVariables.playerMark === 2 && gameGlobalVariables.gameResume === false) {
+      if(globalVariableInstance.get("playerMark") === 2 && globalVariableInstance.get("gameResume") === false) {
         this.cells.children[gameLayoutVariables.initialMark].frame = 1;
         this.cells.children[gameLayoutVariables.initialMark].inputEnabled = false ;
       }
-      if(gameGlobalVariables.gameOver === false) {
+      if(globalVariableInstance.get("gameOver") === false) {
         saveGameData(false);// To store the initial state of the Game. Even if the user or bot haven't made any move.
       }
       myBot.plays(gameLayoutVariables.myGame);
       gameLayoutVariables.myGame.start();
-      if(gameGlobalVariables.gameOver === true && gameGlobalVariables.win === 0) {
+      if(globalVariableInstance.get("gameOver") === true && globalVariableInstance.get("win") === 0) {
         gameEndHandler(1);
       }
     }
-    else if(gameGlobalVariables.gameType === 'friend') {
-      if(gameGlobalVariables.opponentData !== undefined && gameGlobalVariables.opponentData.affiliation === "accepted") {
+    else if(globalVariableInstance.get("gameType") === 'friend') {
+      if(globalVariableInstance.get("opponentData") !== undefined && globalVariableInstance.get("opponentData").affiliation === "accepted") {
         console.log("Opponent Accepted.");
       }
-      else if(gameGlobalVariables.opponentData.affiliation === undefined) {
+      else if(globalVariableInstance.get("opponentData").affiliation === undefined) {
         console.log("No Opponent Found.");
       }
-      else if(gameGlobalVariables.opponentData.affiliation === "invited") {
+      else if(globalVariableInstance.get("opponentData").affiliation === "invited") {
         console.log("Friend hasn't responded to invitation");
       }
-      else if(gameGlobalVariables.opponentData.affiliation === "rejected") {
+      else if(globalVariableInstance.get("opponentData").affiliation === "rejected") {
         console.log("Friend rejected the invitation");
       }
-      else if(gameGlobalVariables.opponentData.affiliation === "left") {
+      else if(globalVariableInstance.get("opponentData").affiliation === "left") {
         console.log("Friend left the room.");
       }
       else {
         console.log("Opponent not on Kapow. Waiting");
       }
 
-      if(gameGlobalVariables.gameOver === true) {
-        if(gameGlobalVariables.turnOfPlayer === 0) {
+      if(globalVariableInstance.get("gameOver") === true) {
+        if(globalVariableInstance.get("turnOfPlayer") === 0) {
           gameEndHandler(0);
         }
-        else if(gameGlobalVariables.turnOfPlayer.id === gameGlobalVariables.opponentData.id) {
+        else if(globalVariableInstance.get("turnOfPlayer").id === globalVariableInstance.get("opponentData").id) {
           drawWinningLine();
           gameEndHandler(2);
         }
-        else if(gameGlobalVariables.turnOfPlayer.id === gameGlobalVariables.playerData.id) {
+        else if(globalVariableInstance.get("turnOfPlayer").id === globalVariableInstance.get("playerData").id) {
           drawWinningLine();
           gameEndHandler(1);
         }
@@ -743,7 +743,7 @@ play.prototype = {
       this.musicButton.input.priorityID = 2;
       gameLayoutVariables.resign.input.priorityID = 2;
 
-      sprite.frame = gameGlobalVariables.playerMark;
+      sprite.frame = globalVariableInstance.get("playerMark");
       console.log("Player's Sprite Set");
       gameLayoutVariables.turnText.text = "BOT'S TURN";
       gameLayoutVariables.opponentProfilePic.alpha = 1;
@@ -759,33 +759,35 @@ play.prototype = {
 
   },
   clickHandlerMulti:  function(sprite, pointer) {
-    console.log(gameGlobalVariables.turnOfPlayer,gameGlobalVariables.playerData,sprite.frame);
-    if (gameGlobalVariables.turnOfPlayer !== undefined && gameGlobalVariables.turnOfPlayer.id === gameGlobalVariables.playerData.id && sprite.frame === 0) {
+    console.log(globalVariableInstance.get("turnOfPlayer"),globalVariableInstance.get("playerData"),sprite.frame);
+    if (globalVariableInstance.get("turnOfPlayer") !== undefined && globalVariableInstance.get("turnOfPlayer").id === globalVariableInstance.get("playerData").id && sprite.frame === 0) {
       gameLayoutVariables.backgroundImage.inputEnabled = true;
       gameLayoutVariables.backgroundImage.input.priorityID = 2;
       gameLayoutVariables.backButton.input.priorityID = 2;
       this.musicButton.input.priorityID = 2;
       gameLayoutVariables.resign.input.priorityID = 2;
       console.log("Player's Sprite Set");
-      gameLayoutVariables.turnText.text = gameGlobalVariables.gameType === "solo" ? "BOT'S TURN" : "WAITING";
+      gameLayoutVariables.turnText.text = globalVariableInstance.get("gameType") === "solo" ? "BOT'S TURN" : "WAITING";
       gameLayoutVariables.opponentProfilePic.alpha = 1;
       gameLayoutVariables.playerProfilePic.alpha = 0.3;
-      gameGlobalVariables.turnOfPlayer = undefined;
-      gameGlobalVariables.boardStatus.cells[sprite.frameIndex] = gameGlobalVariables.playerMark;
-      sprite.frame = gameGlobalVariables.playerMark;
+      globalVariableInstance.set("turnOfPlayer", undefined);
+      let tempCells = globalVariableInstance.get("boardStatus").cells;
+      tempCells[sprite.frameIndex] = globalVariableInstance.get("playerMark");
+      globalVariableInstance.set("boardStatus",{cells : tempCells});
+      sprite.frame = globalVariableInstance.get("playerMark");
       sprite.alpha = 0.3;
       var that = this;
       var sentData = {
-              board : gameGlobalVariables.boardStatus.cells,
-              playerTurn : gameGlobalVariables.playerData.id,
-              opponentTurn : gameGlobalVariables.opponentData.id,
-              roomID : gameGlobalVariables.room.roomId
+              board : globalVariableInstance.get("boardStatus").cells,
+              playerTurn : globalVariableInstance.get("playerData").id,
+              opponentTurn : globalVariableInstance.get("opponentData").id,
+              roomID : globalVariableInstance.get("room").roomId
           };
       console.log("Client - invokeRPC makeMove",sentData);
       kapow.invokeRPC("makeMove", sentData,
           function(obj) {
             console.log("makeMove - success : obj: \n",obj);
-            sprite.frame = gameGlobalVariables.playerMark;
+            sprite.frame = globalVariableInstance.get("playerMark");
             sprite.alpha = 1;
             if(obj.result === "lost") {
               gameLayoutVariables.turnText.text = " YOU WON!";
@@ -808,8 +810,10 @@ play.prototype = {
           },
           function(error) {
             sprite.frame = 0 ;
-            gameGlobalVariables.boardStatus.cells[sprite.frameIndex] = 0;
-            gameGlobalVariables.turnOfPlayer = gameGlobalVariables.playerData;
+            let tempCells = globalVariableInstance.get("boardStatus").cells;
+            tempCells[sprite.frameIndex] = 0 ;
+            globalVariableInstance.set("boardStatus", {cells : tempCells});
+            globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("playerData"));
             gameLayoutVariables.backgroundImage.input.priorityID = 1;
             gameLayoutVariables.backgroundImage.inputEnabled = false;
             gameLayoutVariables.backButton.input.priorityID = 1;
@@ -827,15 +831,15 @@ play.prototype = {
   nextMove: function(sprite, pointer, cell) {
     var next = new gameState(gameLayoutVariables.myGame.currentState);
     console.log("Click Acknowledged");
-    next.board[sprite.frameIndex]=gameGlobalVariables.playerMark;
-    sprite.frame = gameGlobalVariables.playerMark;
+    next.board[sprite.frameIndex]=globalVariableInstance.get("playerMark");
+    sprite.frame = globalVariableInstance.get("playerMark");
     console.log("Player's move logged");
     next.nextTurn();
     gameLayoutVariables.myGame.moveTo(next);
     for(let i = 0 ; i < CELL_COLS * CELL_ROWS ;i++) {
       cell[i].frame = gameLayoutVariables.myGame.currentState.board[i];
     }
-    if(gameGlobalVariables.win === 0 && gameLayoutVariables.myGame.gameStatus !== 3) {
+    if(globalVariableInstance.get("win") === 0 && gameLayoutVariables.myGame.gameStatus !== 3) {
       saveGameData(false);
       gameLayoutVariables.turnText.text = "YOUR TURN";
       gameLayoutVariables.opponentProfilePic.alpha = 0.3;
@@ -876,8 +880,8 @@ play.prototype = {
     this.darkOverlay.destroy();
   },
   quitGame  : function() {
-    gameGlobalVariables.win = gameGlobalVariables.playerMark === 1 ? 2 : 1 ;
-    if(gameGlobalVariables.gameType === "solo")
+    globalVariableInstance.set("win", globalVariableInstance.get("playerMark") === 1 ? 2 : 1) ;
+    if(globalVariableInstance.get("gameType") === "solo")
     {
       saveGameData(true);
       gameLayoutVariables.backgroundImage.inputEnabled = true;
@@ -890,13 +894,13 @@ play.prototype = {
       gameLayoutVariables.turnText.text = " YOU LOSE!";
       gameEndHandler(1);
     }
-    else if(gameGlobalVariables.gameType === "friend") {
+    else if(globalVariableInstance.get("gameType") === "friend") {
       var that = this;
       kapow.invokeRPC("resignationRequest", {
-              board : gameGlobalVariables.boardStatus.cells,
-              playerTurn : gameGlobalVariables.playerData.id,
-              opponentTurn : gameGlobalVariables.opponentData.id,
-              roomID : gameGlobalVariables.room.roomId
+              board : globalVariableInstance.get("boardStatus").cells,
+              playerTurn : globalVariableInstance.get("playerData").id,
+              opponentTurn : globalVariableInstance.get("opponentData").id,
+              roomID : globalVariableInstance.get("room").roomId
           },
           function(obj) {
             console.log("resignation - success : obj: \n",obj);
@@ -927,16 +931,16 @@ play.prototype = {
   backButtonHandler :function() {
     console.log("WebView BACK presed.");
     kapow.unloadRoom(function(){console.log('Room Succesfully Unloaded');},function(){console.log('Room Unloading Failed');});
-    gameGlobalVariables.gameResume = false;
-    gameGlobalVariables.room=null;
-    gameGlobalVariables.playerMark = 0;
-    gameGlobalVariables.gameType = null;
-    gameGlobalVariables.botLevel  = -1;
-    gameGlobalVariables.boardStatus =  {cells: new Array(9)};
-    gameGlobalVariables.opponentData = undefined;
-    gameGlobalVariables.turnOfPlayer = undefined;
-    gameGlobalVariables.gameOver = false;
-    gameGlobalVariables.win = 0;
+    globalVariableInstance.set("gameResume", false);
+    globalVariableInstance.set("room", null);
+    globalVariableInstance.set("playerMark", 0);
+    globalVariableInstance.set("gameType", null);
+    globalVariableInstance.set("botLevel", -1);
+    globalVariableInstance.set("boardStatus", { cells : new Array(9)});
+    globalVariableInstance.set("opponentData", undefined);
+    globalVariableInstance.set("turnOfPlayer", undefined);
+    globalVariableInstance.set("gameOver", false);
+    globalVariableInstance.set("win", 0);
     gameLayoutLoaded = false;
     phaserGame.state.start('menu');
   }

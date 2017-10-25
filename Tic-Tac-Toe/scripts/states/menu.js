@@ -2,7 +2,7 @@
 var menu = function() {};
 menu.prototype = {
   create: function() {
-    gameGlobalVariables.screenState = 0 ;
+    globalVariableInstance.set("screenState", 0) ;
     this.bg = this.add.image(0, 0, 'arena');
 
     this.logo = this.add.image(165, 285, 'logo');
@@ -70,7 +70,7 @@ menu.prototype = {
     this.arrowRotateDownToRight = this.add.tween(this.arrowRight).to( { angle: 0 }, 200, Phaser.Easing.Linear.None);
   },
   update: function() {
-    gameGlobalVariables.screenState = 0;
+    globalVariableInstance.set("screenState", 0);
   },
   startNewGameTopInputDown : function() {
     this.startNewGameBottom.frame = 1 ;
@@ -415,31 +415,31 @@ menu.prototype = {
     this.slideDirection = (this.slideDirection + 1)%2 ;
   },
   againstRandom : function() {
-    gameGlobalVariables.gameType = 'random';
+    globalVariableInstance.set("gameType", 'random');
     randomRoom = true;
     console.log("Creating room for Random game");
     kapow.startGameWithRandomPlayers({'difficulty':'medium'}, function(roomDetail) {
-      room = roomDetail;
-      gameGlobalVariables.playerMark = 1 ;
-      gameGlobalVariables.opponentMark = 2 ;
+      globalVariableInstance.set("room", roomDetail);
+      globalVariableInstance.set("playerMark", 1) ;
+      globalVariableInstance.set("opponentMark", 2) ;
       parseRoomAndRedirectToGame();
     }, function(error) {
       console.log("startvsRandomGame Failed : ",error);
     });
   },
   againstFriend : function() {
-    gameGlobalVariables.gameType = 'friend';
+    globalVariableInstance.set("gameType", 'friend');
     kapow.startGameWithFriends(2, 2, function(roomDetail) {
-      gameGlobalVariables.room = roomDetail;
-      gameGlobalVariables.playerMark = 1 ;
-      gameGlobalVariables.opponentMark = 2 ;
+      globalVariableInstance.set("room", roomDetail);
+      globalVariableInstance.set("playerMark", 1) ;
+      globalVariableInstance.set("opponentMark", 2) ;
       parseRoomAndRedirectToGame();
     }, function(error) {
       console.log("startvsFriendGame Failed : ",error);
     });
   },
   againstComputer : function() {
-    gameGlobalVariables.gameType = 'solo';
+    globalVariableInstance.set("gameType", 'solo');
     this.state.start('select');
   },
   helpButtonHandler : function() {
