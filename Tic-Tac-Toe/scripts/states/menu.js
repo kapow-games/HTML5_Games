@@ -384,7 +384,7 @@ menu.prototype = {
   },
   showActiveGames : function() {
     console.log('Active games layout requested');
-    kapow.getActiveRooms();
+    kapow.displayActiveRooms();
   },
   newGameButtonHandler: function() {
     console.log('New Game Button Clicked');
