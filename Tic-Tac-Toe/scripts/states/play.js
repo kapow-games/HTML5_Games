@@ -34,15 +34,19 @@ var gameEndHandler = function(value) {
   var shareLoadTween = phaserGame.add.tween(shareLoad).to({angle: 359}, 400, null, true, 0, Infinity);
   shareLoad.kill();
   shareLoadTween.start();
-  new socialShareModal = new socialShare(value === 1 ? "loss" : value === 0 ? "draw", value === "won");
+
+  var socialShareModal = new socialShare(value === 1 ? "loss" : value === 0 ? "draw" : "won");
   var shareFbButton = socialShareModal(294, 1614, shareLoad, 'facebook', 'fbShare');
   shareFbButton.input.priorityID = 3 ;
   var shareTwitterButton = socialShareModal(408, 1614,  shareLoad, 'twitter', 'twitterShare');
   shareTwitterButton.input.priorityID = 3 ;
   var shareOtherButton = socialShareModal(522, 1614,  shareLoad, 'twitter', 'twitterShare');
   shareOtherButton.input.priorityID = 3 ;
+
+
   var rematchButton = phaserGame.add.button(657, 1584, 'rematch',rematchButtonHandler, 0, 0, 1, 0);
   rematchButton.input.priorityID = 3 ;
+
   if(globalVariableInstance.get("gameOver") === false) {
     kapow.gameStore.get('stats',function(statsValue) {
       console.log("gameStore fetch successfull.");

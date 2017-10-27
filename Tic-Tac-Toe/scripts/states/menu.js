@@ -419,16 +419,10 @@ menu.prototype = {
     randomRoom = true;
     console.log("Creating room for Random game");
     kapow.startGameWithRandomPlayers({'difficulty':'medium'}, function(roomDetail) {
-<<<<<<< HEAD
-      globalVariableInstance.set("room", roomDetail);
-      globalVariableInstance.set("playerMark", 1) ;
-      globalVariableInstance.set("opponentMark", 2) ;
-=======
-      gameGlobalVariables.room = roomDetail;
-      gameGlobalVariables.playerMark = 1 ;
-      gameGlobalVariables.opponentMark = 2 ;
->>>>>>> 1b3fd64eb65380566c75c064c4dbe3e3632ebbf3
-      parseRoomAndRedirectToGame();
+        globalVariableInstance.set("room", roomDetail);
+        globalVariableInstance.set("playerMark", 1) ;
+        globalVariableInstance.set("opponentMark", 2) ;
+        parseRoomAndRedirectToGame();
     }, function(error) {
       console.log("startvsRandomGame Failed : ",error);
     });
