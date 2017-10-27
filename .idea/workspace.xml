@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="673571e1-64df-4386-9e20-ad24f4e5d32f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/bot.js" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/aiBot.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tic-Tac-Toe/index.html" afterPath="$PROJECT_DIR$/Tic-Tac-Toe/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/play.js" afterPath="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/play.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,18 +19,36 @@
       <file leaf-file-name="play.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/play.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="42" column="54" lean-forward="false" selection-start-line="42" selection-start-column="54" selection-end-line="42" selection-end-column="54" />
+            <state relative-caret-position="6030">
+              <caret line="19" column="18" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="18" />
+              <caret line="360" column="22" lean-forward="false" selection-start-line="360" selection-start-column="8" selection-end-line="360" selection-end-column="22" />
+              <caret line="385" column="24" lean-forward="false" selection-start-line="385" selection-start-column="10" selection-end-line="385" selection-end-column="24" />
+              <caret line="389" column="24" lean-forward="false" selection-start-line="389" selection-start-column="10" selection-end-line="389" selection-end-column="24" />
+              <caret line="393" column="24" lean-forward="false" selection-start-line="393" selection-start-column="10" selection-end-line="393" selection-end-column="24" />
+              <caret line="462" column="28" lean-forward="false" selection-start-line="462" selection-start-column="14" selection-end-line="462" selection-end-column="28" />
+              <caret line="468" column="28" lean-forward="false" selection-start-line="468" selection-start-column="14" selection-end-line="468" selection-end-column="28" />
+              <caret line="562" column="20" lean-forward="false" selection-start-line="562" selection-start-column="6" selection-end-line="562" selection-end-column="20" />
+              <caret line="582" column="26" lean-forward="false" selection-start-line="582" selection-start-column="12" selection-end-line="582" selection-end-column="26" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="socialShare.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/socialShare.js">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Tic-Tac-Toe/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="4" lean-forward="true" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="16" />
+            <state relative-caret-position="105">
+              <caret line="7" column="37" lean-forward="false" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="aiBot.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/aiBot.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1671">
+              <caret line="303" column="2" lean-forward="false" selection-start-line="303" selection-start-column="2" selection-end-line="303" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -88,7 +108,7 @@
           <entry type="LOCAL">
             <value>
               <list>
-                <branch-info repo="$PROJECT_DIR$" source="socialShare_Refactoring" />
+                <branch-info repo="$PROJECT_DIR$" source="aiBot_Refactoring" />
               </list>
             </value>
           </entry>
@@ -127,10 +147,11 @@
         <option value="$PROJECT_DIR$/Tic-Tac-Toe/scripts/clientAPI.js" />
         <option value="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/gameGlobalVariables.js" />
         <option value="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/socialShare.js" />
-        <option value="$PROJECT_DIR$/Tic-Tac-Toe/index.html" />
         <option value="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/menu.js" />
         <option value="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/bot.js" />
+        <option value="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/aiBot.js" />
         <option value="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/play.js" />
+        <option value="$PROJECT_DIR$/Tic-Tac-Toe/index.html" />
       </list>
     </option>
   </component>
@@ -423,6 +444,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
           <caret line="20" column="7" lean-forward="true" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -556,13 +578,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tic-Tac-Toe/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="43" lean-forward="false" selection-start-line="6" selection-start-column="43" selection-end-line="6" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/preload.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
@@ -588,7 +603,7 @@
     <entry file="file://$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/socialShare.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
-          <caret line="5" column="4" lean-forward="true" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="16" />
+          <caret line="5" column="4" lean-forward="false" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -601,10 +616,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/aiBot.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1671">
+          <caret line="303" column="2" lean-forward="false" selection-start-line="303" selection-start-column="2" selection-end-line="303" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tic-Tac-Toe/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="37" lean-forward="false" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/play.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="42" column="54" lean-forward="false" selection-start-line="42" selection-start-column="54" selection-end-line="42" selection-end-column="54" />
+        <state relative-caret-position="6030">
+          <caret line="19" column="18" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="18" />
+          <caret line="360" column="22" lean-forward="false" selection-start-line="360" selection-start-column="8" selection-end-line="360" selection-end-column="22" />
+          <caret line="385" column="24" lean-forward="false" selection-start-line="385" selection-start-column="10" selection-end-line="385" selection-end-column="24" />
+          <caret line="389" column="24" lean-forward="false" selection-start-line="389" selection-start-column="10" selection-end-line="389" selection-end-column="24" />
+          <caret line="393" column="24" lean-forward="false" selection-start-line="393" selection-start-column="10" selection-end-line="393" selection-end-column="24" />
+          <caret line="462" column="28" lean-forward="false" selection-start-line="462" selection-start-column="14" selection-end-line="462" selection-end-column="28" />
+          <caret line="468" column="28" lean-forward="false" selection-start-line="468" selection-start-column="14" selection-end-line="468" selection-end-column="28" />
+          <caret line="562" column="20" lean-forward="false" selection-start-line="562" selection-start-column="6" selection-end-line="562" selection-end-column="20" />
+          <caret line="582" column="26" lean-forward="false" selection-start-line="582" selection-start-column="12" selection-end-line="582" selection-end-column="26" />
           <folding />
         </state>
       </provider>
