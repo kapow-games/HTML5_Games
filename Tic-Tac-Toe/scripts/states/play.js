@@ -36,11 +36,11 @@ var gameEndHandler = function(value) {
   shareLoadTween.start();
 
   var socialShareModal = new socialShare(value === 1 ? "loss" : value === 0 ? "draw" : "won");
-  var shareFbButton = socialShareModal.shareButton((294, 1614, shareLoad, 'facebook', 'fbShare');
+  var shareFbButton = socialShareModal.shareButton(294, 1614, shareLoad, 'facebook', 'fbShare');
   shareFbButton.input.priorityID = 3 ;
-  var shareTwitterButton = socialShareModal.shareButton((408, 1614,  shareLoad, 'twitter', 'twitterShare');
+  var shareTwitterButton = socialShareModal.shareButton(408, 1614,  shareLoad, 'twitter', 'twitterShare');
   shareTwitterButton.input.priorityID = 3 ;
-  var shareOtherButton = socialShareModal.shareButton((522, 1614,  shareLoad, 'twitter', 'twitterShare');
+  var shareOtherButton = socialShareModal.shareButton(522, 1614,  shareLoad, 'twitter', 'twitterShare');
   shareOtherButton.input.priorityID = 3 ;
 
 
