@@ -137,8 +137,8 @@
         <option value="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/menu.js" />
         <option value="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/bot.js" />
         <option value="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/aiBot.js" />
-        <option value="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/play.js" />
         <option value="$PROJECT_DIR$/Tic-Tac-Toe/index.html" />
+        <option value="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/play.js" />
       </list>
     </option>
   </component>
