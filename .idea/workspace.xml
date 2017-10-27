@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="673571e1-64df-4386-9e20-ad24f4e5d32f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/aiBot.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tic-Tac-Toe/index.html" afterPath="$PROJECT_DIR$/Tic-Tac-Toe/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/play.js" afterPath="$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/play.js" />
-    </list>
+    <list default="true" id="673571e1-64df-4386-9e20-ad24f4e5d32f" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,16 +14,8 @@
       <file leaf-file-name="play.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/play.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6030">
-              <caret line="19" column="18" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="18" />
-              <caret line="360" column="22" lean-forward="false" selection-start-line="360" selection-start-column="8" selection-end-line="360" selection-end-column="22" />
-              <caret line="385" column="24" lean-forward="false" selection-start-line="385" selection-start-column="10" selection-end-line="385" selection-end-column="24" />
-              <caret line="389" column="24" lean-forward="false" selection-start-line="389" selection-start-column="10" selection-end-line="389" selection-end-column="24" />
-              <caret line="393" column="24" lean-forward="false" selection-start-line="393" selection-start-column="10" selection-end-line="393" selection-end-column="24" />
-              <caret line="462" column="28" lean-forward="false" selection-start-line="462" selection-start-column="14" selection-end-line="462" selection-end-column="28" />
-              <caret line="468" column="28" lean-forward="false" selection-start-line="468" selection-start-column="14" selection-end-line="468" selection-end-column="28" />
-              <caret line="562" column="20" lean-forward="false" selection-start-line="562" selection-start-column="6" selection-end-line="562" selection-end-column="20" />
-              <caret line="582" column="26" lean-forward="false" selection-start-line="582" selection-start-column="12" selection-end-line="582" selection-end-column="26" />
+            <state relative-caret-position="1488">
+              <caret line="191" column="49" lean-forward="true" selection-start-line="191" selection-start-column="49" selection-end-line="191" selection-end-column="49" />
               <folding />
             </state>
           </provider>
@@ -634,16 +621,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Tic-Tac-Toe/scripts/states/play.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6030">
-          <caret line="19" column="18" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="18" />
-          <caret line="360" column="22" lean-forward="false" selection-start-line="360" selection-start-column="8" selection-end-line="360" selection-end-column="22" />
-          <caret line="385" column="24" lean-forward="false" selection-start-line="385" selection-start-column="10" selection-end-line="385" selection-end-column="24" />
-          <caret line="389" column="24" lean-forward="false" selection-start-line="389" selection-start-column="10" selection-end-line="389" selection-end-column="24" />
-          <caret line="393" column="24" lean-forward="false" selection-start-line="393" selection-start-column="10" selection-end-line="393" selection-end-column="24" />
-          <caret line="462" column="28" lean-forward="false" selection-start-line="462" selection-start-column="14" selection-end-line="462" selection-end-column="28" />
-          <caret line="468" column="28" lean-forward="false" selection-start-line="468" selection-start-column="14" selection-end-line="468" selection-end-column="28" />
-          <caret line="562" column="20" lean-forward="false" selection-start-line="562" selection-start-column="6" selection-end-line="562" selection-end-column="20" />
-          <caret line="582" column="26" lean-forward="false" selection-start-line="582" selection-start-column="12" selection-end-line="582" selection-end-column="26" />
+        <state relative-caret-position="1488">
+          <caret line="191" column="49" lean-forward="true" selection-start-line="191" selection-start-column="49" selection-end-line="191" selection-end-column="49" />
           <folding />
         </state>
       </provider>
