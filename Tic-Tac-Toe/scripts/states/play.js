@@ -48,81 +48,71 @@ var gameEndHandler = function(value) {
   rematchButton.input.priorityID = 3 ;
 
   if(globalVariableInstance.get("gameOver") === false) {
-    kapow.gameStore.get('stats',function(statsValue) {
-      console.log("gameStore fetch successfull.");
-      if(statsValue) {
-        console.log("Value fetched from gameStore was : ",statsValue);
-        let valueJSON = JSON.parse(statsValue);
-        console.log(valueJSON);
-        soloStats = valueJSON.soloStats;
-        randomStats = valueJSON.randomStats;
-        friendsStats = valueJSON.friendsStats;
-        if(globalVariableInstance.get("gameType") === "solo") {
-          if(value === 1) {
-            soloStats.lost += 1;
-          }
-          else if(value === 2) {
-            soloStats.won += 1;
+    var gameStoreContainer = new gameStoreQuery();
+    gameStoreContainer.get("stats", function(statsValue, self) {
+        if(statsValue) {
+            console.log("Value fetched from gameStore was : ",statsValue);
+            let valueJSON = JSON.parse(statsValue);
+            console.log(valueJSON);
+            soloStats = valueJSON.soloStats;
+            randomStats = valueJSON.randomStats;
+            friendsStats = valueJSON.friendsStats;
+            if(globalVariableInstance.get("gameType") === "solo") {
+              if(value === 1) {
+                soloStats.lost += 1;
+              }
+              else if(value === 2) {
+                soloStats.won += 1;
+              }
+              else {
+                soloStats.draw += 1;
+              }
+            }
+            else if(globalVariableInstance.get("gameType") === "friend") {
+              if(randomRoom === false){
+                if(value === 1) {
+                  friendsStats.lost += 1;
+                }
+                else if(value === 2) {
+                  friendsStats.won += 1;
+                }
+                else {
+                  friendsStats.draw += 1;
+                }
+              }
+              else {
+                if(value === 1) {
+                  randomStats.lost += 1;
+                }
+                else if(value === 2) {
+                  randomStats.won += 1;
+                }
+                else {
+                  randomStats.draw += 1;
+                }
+              }
+            }
+            newStats = {"soloStats" : soloStats, "friendsStats" : friendsStats, "randomStats" : randomStats};
+            self.set("stats",newStats);
           }
           else {
-            soloStats.draw += 1;
-          }
+            console.log('stats Variables Not Set');
+            newStats = {
+              "soloStats" : {
+                "won"   : 0,
+                "lost"  : 0,
+                "draw"  : 0 },
+               "friendsStats" : {
+                 "won"   : 0,
+                 "lost"  : 0,
+                 "draw"  : 0 },
+               "randomStats" : {
+                 "won"   : 0,
+                 "lost"  : 0,
+                 "draw"  : 0 },
+             };
+            self.set("stats",newStats);
         }
-        else if(globalVariableInstance.get("gameType") === "friend") {
-          if(randomRoom === false){
-            if(value === 1) {
-              friendsStats.lost += 1;
-            }
-            else if(value === 2) {
-              friendsStats.won += 1;
-            }
-            else {
-              friendsStats.draw += 1;
-            }
-          }
-          else {
-            if(value === 1) {
-              randomStats.lost += 1;
-            }
-            else if(value === 2) {
-              randomStats.won += 1;
-            }
-            else {
-              randomStats.draw += 1;
-            }
-          }
-        }
-        newStats = {"soloStats" : soloStats, "friendsStats" : friendsStats, "randomStats" : randomStats};
-        kapow.gameStore.set("stats", JSON.stringify(newStats), function () {
-          console.log("Storing following stats data was successful : ",newStats);
-        }, function(error) {
-          console.log("Storing room data Failed : ",error);
-        });
-      }
-      else {
-        console.log('stats Variables Not Set');
-        newStats = {
-          "soloStats" : {
-            "won"   : 0,
-            "lost"  : 0,
-            "draw"  : 0 },
-           "friendsStats" : {
-             "won"   : 0,
-             "lost"  : 0,
-             "draw"  : 0 },
-           "randomStats" : {
-             "won"   : 0,
-             "lost"  : 0,
-             "draw"  : 0 },
-         };
-        kapow.gameStore.set("stats", JSON.stringify(newStats), function () {
-          console.log("Storing following fresh stats data was successful : ",newStats);
-        }, function(error) {
-          console.log("Storing room data Failed : ",error);
-        });
-      }
-    }, function(error) {
-      console.log("gameStore fetch Failed: ",error);
     });
   }
   if(globalVariableInstance.get("gameLocked") === false)// To ensure that game doesn't close multiple times in Kapow
