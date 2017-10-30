@@ -1,5 +1,6 @@
-class gameStoreQuery {
-    get(key,successCallback,failiureCallback) {
+'use-strict';
+class gameStoreQuery { // TODO : @mayank file name and class name should ideally be same. You can name it as gameQueryStore or gameStore or queryStore
+    get(key,successCallback,failiureCallback) { // TODO : @mayank spelling mistake in failiureCallback
         var that = this;
         kapow.gameStore.get(key,function(val){
             console.log("Fetching gameStore "+key+" data successful",val);

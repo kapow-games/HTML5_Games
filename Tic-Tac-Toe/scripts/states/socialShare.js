@@ -7,7 +7,7 @@ class socialShare {
         return phaserGame.add.button(x, y, buttonID, function() {
             console.log(buttonID+" share clicked");
             shareLoad.reset(phaserGame.world.centerX, phaserGame.world.centerY);
-            kapow.social.share(shareText, medium, function(){
+            kapow.social.share(shareText, medium, function(){ // TODO : either use this.shareText here or keep shareTxt in closure http://speakingjs.com/es5/ch17.html#private_data_for_objects
               shareLoad.kill();
               console.log(buttonID+"Fb share Successfull");
             },

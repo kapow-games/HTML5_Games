@@ -1,3 +1,5 @@
+// TODO : @mayank can be named as Bot .
+// Instead of vars change it to class and seperate it
 var gameState = function(oldGameState) {
   this.turn = 0 ; // 0 : No One's Move // 1 : Player 1(x)'s Move // 2 : Player 2(o)'s Move'
   this.oMovesCount = 0 ;
@@ -65,8 +67,9 @@ var gameState = function(oldGameState) {
   };
 };
 
+// TODO : Extract out gameState , Bot and Game
 var bot = function(difficultyLevel) {
-  var botLevel = difficultyLevel ; //0 : easy //1 : Medium //2: Hard
+  var botLevel = difficultyLevel ; //0 : easy //1 : Medium //2: Hard // TODO @mayank: Take argument as botLevel , is there any logic of changing botLevel to difficultyLevel
   var gameDetail = {} ;
   function miniMaxValue(state) {
     if(state.isTerminal()) {
@@ -171,11 +174,13 @@ var bot = function(difficultyLevel) {
   };
 };
 
+// TODO : @mayank If botBehaviour is a class , move it to seperate file .
+//
 var botBehaviour = function(pos) {
   this.movePosition = pos;
   this.miniMaxValue = 0 ;
   this.applyTo = function(currentGameState) {
-    var nextGameState = new gameState(currentGameState);
+    var nextGameState = new gameState(currentGameState);  // TODO : @mayank , if doing new means its a class and not variables. Initialize as new GameState()
     nextGameState.board[this.movePosition] = (currentGameState.turn === 1 ? globalVariableInstance.get("playerMark") : ((globalVariableInstance.get("playerMark") === 1) ? 2 : 1));
     if(currentGameState.turn == 2) {
       nextGameState.oMovesCount++;
@@ -211,7 +216,7 @@ botBehaviour.DESCENDING = function(firstAction, secondAction) {
 
 var Game = function(bot) {
   this.bot = bot ;
-  this.currentState = new gameState();
+  this.currentState = new gameState(); // TODO : @mayank , if doing new means its a class and not variables. Initialize as new GameState()
   this.currentState.board = new Array(9);
   for(let i = 0 ; i < CELL_COLS*CELL_ROWS ; i++) {
     // this.currentState.board.push(0);

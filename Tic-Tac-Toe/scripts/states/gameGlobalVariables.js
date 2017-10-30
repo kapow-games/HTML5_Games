@@ -1,10 +1,10 @@
 'use strict';
-class gameGlobalVariables {
+class gameGlobalVariables { // TODO @mayank : better name for class
     constructor() {
         this.room = null;
         this.screenState = 0;
         this.playerData = undefined;
-        this.boardStatus = {cells  : new Array(9)};
+        this.boardStatus = {cells  : new Array(9)}; // TODO @mayank : formatting
         this.gameResume = false;
         this.botLevel = -1;
         this.win = 0;

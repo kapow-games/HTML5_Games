@@ -1,3 +1,4 @@
+// TODO : @mayank : use .gitignore to avoid commiting your .idea and .iml local files
 'use strict';
 var phaserGame = new Phaser.Game(1080, 1920, Phaser.CANVAS, 'tic-tac-toe');
 

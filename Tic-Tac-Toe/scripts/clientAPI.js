@@ -17,6 +17,7 @@ var globalVariableInstance = new gameGlobalVariables();
 //  gameLocked : false,
 //  turnOfPlayer : undefined
 //};
+// TODO : @mayank : no globals are needed , use your client store
 gameLayoutLoaded = false ;
 var saveGameData = function(value) {
   let currentGameState = phaserGame.state.states.play.cells.children;
