@@ -1,5 +1,6 @@
 'use strict';
 
+// TODO : @mayank use classes not variables
 var boot = function() {
   console.log("%cStarting my awesome game", "color:white; background:red");
 };
@@ -20,3 +21,9 @@ boot.prototype = {
     this.state.start('preload');
   }
 };
+
+
+// TODO : @mayank : each class needs to be exported with a name
+// https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export
+// TODO : look at this example: http://www.photonstorm.com/phaser/advanced-phaser-and-typescript-projects avoid typescript
+// but it uses classes in a very nice way. Try using a similar structure

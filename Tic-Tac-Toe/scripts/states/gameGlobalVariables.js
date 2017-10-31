@@ -25,3 +25,4 @@ class gameGlobalVariables { // TODO @mayank : better name for class
 	    this[key] = val;
 	}
 }
+// TODO : @mayank : all classes need an export. Script import is not needed.
