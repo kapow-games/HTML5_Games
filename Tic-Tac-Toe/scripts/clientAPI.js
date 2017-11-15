@@ -18,7 +18,6 @@ var globalVariableInstance = new gameGlobalVariables();
 //  turnOfPlayer : undefined
 //};
 // TODO : @mayank : no globals are needed , use your client store
-gameLayoutLoaded = false ;
 var saveGameData = function(value) {
   let currentGameState = phaserGame.state.states.play.cells.children;
   let len = currentGameState.length;
@@ -327,7 +326,7 @@ var game = {
     },
     onMessageReceived : function (message) {
       console.log('CLIENT : Message Received - ',message);
-      if(gameLayoutLoaded === true && message.type === "move" && message.senderId === globalVariableInstance.get("opponentData").id) {
+      if(globalVariableInstance.get("gameLayoutLoaded") === true && message.type === "move" && message.senderId === globalVariableInstance.get("opponentData").id) {
         for(var i = 0 ; i < 9 ; i++) {
           phaserGame.state.states.play.cells.children[i].frame = message.data.moveData.board[i];
         }
@@ -348,7 +347,7 @@ var game = {
           gameEndHandler(0);
         }
       }
-      else if(gameLayoutLoaded === false && message.type === "move" && message.data.type === "markSet") {
+      else if(globalVariableInstance.get("gameLayoutLoaded") === false && message.type === "move" && message.data.type === "markSet") {
         onAffiliationChange();
       }
     },

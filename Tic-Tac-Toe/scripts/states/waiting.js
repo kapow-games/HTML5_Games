@@ -78,7 +78,7 @@ waiting.prototype = {
     globalVariableInstance.set("turnOfPlayer", undefined);
     globalVariableInstance.set("gameOver", false);
     globalVariableInstance.set("win", 0);
-    gameLayoutLoaded = false;
+    globalVariableInstance.set("gameLayoutLoaded", false);
     phaserGame.state.start('menu');
   },
   musicToggle : function() {

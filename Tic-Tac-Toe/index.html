@@ -3,12 +3,17 @@
   <head>
     <title>Tic-Tac-Toe</title>
     <link href="css/styles.css" rel="stylesheet" type="text/css">
-    // TODO : @mayank any reason why script tag is before body div https://stackoverflow.com/questions/436411/where-should-i-put-script-tags-in-html-markup
-    // TODO : Remove script tags. you should ideally include only 1 js file which is main controller. Other files should be included in that file only
+    <!--// TODO : Remove script tags. you should ideally include only 1 js file which is main controller. Other files should be included in that file only-->
+  </head>
+  <body>
+    <div id="tic-tac-toe"></div>
     <script src="scripts/states/gameGlobalVariables.js"></script>
     <script src="scripts/states/socialShare.js"></script>
     <script src="scripts/states/storeQuery.js"></script>
-    <script src="scripts/states/aiBot.js"></script>
+    <script src="scripts/states/gameState.js"></script>
+    <script src="scripts/states/bot.js"></script>
+    <script src="scripts/states/botBehaviour.js"></script>
+    <script src="scripts/states/game.js"></script>
     <script src="scripts/clientAPI.js"></script>
     <script src="scripts/phaser.min.js"></script>
     <script src="scripts/states/boot.js"></script>
@@ -18,9 +23,6 @@
     <script src="scripts/states/playLoad.js"></script>
     <script src="scripts/states/play.js"></script>
     <script src="scripts/states/select.js"></script>
-  </head>
-  <body>
-    <div id="tic-tac-toe"></div>
     <script src="scripts/main.js"></script>
   </body>
 </html>

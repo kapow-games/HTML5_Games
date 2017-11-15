@@ -15,6 +15,7 @@ class gameGlobalVariables { // TODO @mayank : better name for class
         this.opponentData = undefined;
         this.gameLocked = false;
         this.turnOfPlayer = undefined;
+        this.gameLayoutLoaded = false;
     }
 	get(key) {
 //	    console.log("gameGlobalVaribales.get("+key+") invoked.Returning : "+this[key]);

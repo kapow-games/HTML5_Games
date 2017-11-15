@@ -186,7 +186,7 @@ var rematchButtonHandler  = function() {
   globalVariableInstance.set("gameLocked", false) ;
   if(globalVariableInstance.get("gameType") === "solo") {
     globalVariableInstance.set("botLevel", -1) ; //TODO : Remove This. Redundant
-    gameLayoutLoaded = false;
+    globalVariableInstance.set("gameLayoutLoaded", false);
     phaserGame.state.start('select');
   }
   else if(globalVariableInstance.get("gameType") === "friend") {
@@ -194,7 +194,7 @@ var rematchButtonHandler  = function() {
         globalVariableInstance.set("room", roomObj);
         globalVariableInstance.set("playerMark", 1) ;
         globalVariableInstance.set("opponentMark", 2);
-        gameLayoutLoaded = false;
+        globalVariableInstance.set("gameLayoutLoaded", false);
         parseRoomAndRedirectToGame();
         console.log("Rematch Room Created");
       },
@@ -386,7 +386,7 @@ play.prototype = {
       }
 
     }
-    gameLayoutLoaded = true;
+    globalVariableInstance.set("gameLayoutLoaded", true);
     this.physics.startSystem(Phaser.Physics.ARCADE);
   },
   update: function() {
@@ -599,7 +599,7 @@ play.prototype = {
     globalVariableInstance.set("turnOfPlayer", undefined);
     globalVariableInstance.set("gameOver", false);
     globalVariableInstance.set("win", 0);
-    gameLayoutLoaded = false;
+    globalVariableInstance.set("gameLayoutLoaded", false);
     phaserGame.state.start('menu');
   }
 };
