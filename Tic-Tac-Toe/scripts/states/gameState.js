@@ -1,4 +1,4 @@
-class gameState {
+class GameState {
     constructor(oldGameState) {
         this.turn = 0 ; // 0 : No One's Move // 1 : Player 1(x)'s Move // 2 : Player 2(o)'s Move'
         this.oMovesCount = 0 ;

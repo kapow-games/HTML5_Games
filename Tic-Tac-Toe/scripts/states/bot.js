@@ -1,4 +1,4 @@
-class bot{
+class Bot{
     constructor(difficultyLevel) {
         this.botLevel = difficultyLevel ; //0 : easy //1 : Medium //2: Hard // TODO @mayank: Take argument as botLevel , is there any logic of changing botLevel to difficultyLevel
         this.gameDetail = {} ;
@@ -57,10 +57,10 @@ class bot{
             return action;
         });
         if(turn === 2) {
-            availableActions.sort(botBehaviour.ASCENDING);
+            availableActions.sort(botBehaviour.ascending);
         }
         else {
-            availableActions.sort(botBehaviour.DESCENDING);
+            availableActions.sort(botBehaviour.descending);
         }
         var chosenAction;
         if(Math.random()*100 <= 80) {
@@ -86,10 +86,10 @@ class bot{
             return action;
         });
         if(turn == 2) {
-            availableActions.sort(botBehaviour.ASCENDING);
+            availableActions.sort(botBehaviour.ascending);
         }
         else {
-            availableActions.sort(botBehaviour.DESCENDING);
+            availableActions.sort(botBehaviour.descending);
         }
         var chosenAction = availableActions[0];
         var next = chosenAction.applyTo(gameDetail.currentState);

@@ -1,4 +1,4 @@
-class botBehaviour {
+class BotBehaviour {
     constructor(pos) {
         this.movePosition = pos;
         this.miniMaxValue = 0 ;
@@ -13,7 +13,7 @@ class botBehaviour {
         nextGameState.nextTurn();
         return nextGameState;
     }
-    ASCENDING(firstAction, secondAction) {
+    ascending(firstAction, secondAction) {
         if(firstAction.miniMaxValue < secondAction.miniMaxValue) {
             return -1;
         }
@@ -24,7 +24,7 @@ class botBehaviour {
             return 0 ;
         }
     }
-    DESCENDING(firstAction, secondAction) {
+    descending(firstAction, secondAction) {
         if(firstAction.miniMaxValue > secondAction.miniMaxValue) {
             return -1;
         }
