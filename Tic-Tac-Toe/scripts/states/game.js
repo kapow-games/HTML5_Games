@@ -1,7 +1,7 @@
 class Game {
     constructor(bot) {
         this.bot = bot ;
-        this.currentState = new gameState(); // TODO : @mayank , if doing new means its a class and not variables. Initialize as new GameState()
+        this.currentState = new gameState();
         this.currentState.board = new Array(9);
         for(let i = 0 ; i < CELL_COLS*CELL_ROWS ; i++) {
             this.currentState.board[i] = globalVariableInstance.get("boardStatus").cells[i]!==undefined ? globalVariableInstance.get("boardStatus").cells[i] :0;

@@ -415,6 +415,7 @@ menu.prototype = {
     this.slideDirection = (this.slideDirection + 1)%2 ;
   },
   againstRandom : function() {
+    this.gameModeRandom.inputEnabled = false ;
     globalVariableInstance.set("gameType", 'random');
     randomRoom = true;
     console.log("Creating room for Random game");
@@ -424,7 +425,8 @@ menu.prototype = {
         globalVariableInstance.set("opponentMark", 2) ;
         parseRoomAndRedirectToGame();
     }, function(error) {
-      console.log("startvsRandomGame Failed : ",error);
+        this.gameModeRandom.inputEnabled = true ;
+        console.log("startvsRandomGame Failed : ",error);
     });
   },
   againstFriend : function() {
