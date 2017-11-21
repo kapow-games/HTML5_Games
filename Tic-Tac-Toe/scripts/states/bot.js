@@ -8,9 +8,9 @@ class Bot{
         if(state.isTerminal()) {
             return Game.score(state);
         }
-        else {
+        else { // TODO : else is not required
             var stateScore;
-            if(state.turn === 1) {
+            if(state.turn === 1) { // TODO : use ternary operator
                 stateScore = -1000 ;
             }
             else {
@@ -18,7 +18,7 @@ class Bot{
             }
             var availablePositions = state.emptyCells() ;
             var availableNextStates = availablePositions.map(function(pos) {
-                var action = new botBehaviour(pos);
+                var action = new botBehaviour(pos); // TODO : use pascal case  .  // Bot behavior is not imported
                 var nextState = action.applyTo(state);
                 return nextState;
             });
@@ -47,8 +47,8 @@ class Bot{
         var next = action.applyTo(gameDetail.currentState);
         //Reflect in UI
         gameDetail.moveTo(next);
-    }
-    mediumBotMove(turn) {
+    } // TODO : can be made private
+    mediumBotMove(turn) { // TODO : rename turn to something else
         var available = gameDetail.currentState.emptyCells();
         var availableActions = available.map(function(pos) {
             var action = new botBehaviour(pos);
@@ -56,7 +56,7 @@ class Bot{
             action.miniMaxValue = miniMaxValue(next);
             return action;
         });
-        if(turn === 2) {
+        if(turn === 2) { // TODO : @maynak :
             availableActions.sort(botBehaviour.ascending);
         }
         else {
@@ -77,7 +77,7 @@ class Bot{
         var next = chosenAction.applyTo(gameDetail.currentState);
         gameDetail.moveTo(next);
     }
-    hardBotMove(turn) {
+    hardBotMove(turn) { // TODO : almost repeated code for medium level. Can be extracted out
         var available = gameDetail.currentState.emptyCells();
         var availableActions = available.map(function(pos) {
             var action = new botBehaviour(pos);
@@ -95,11 +95,11 @@ class Bot{
         var next = chosenAction.applyTo(gameDetail.currentState);
         gameDetail.moveTo(next);
     }
-    plays(_gameDetail) {
+    plays(_gameDetail) { // TODO : avoid passing args as _
         gameDetail = _gameDetail ;
     }
     notifyTurn(turn){
-        switch(botLevel) {
+        switch(botLevel) { // TODO : always add default case with a log error statement for better debugging
             case 0 : easyBotMove(turn); break;
             case 1 : mediumBotMove(turn); break;
             case 2 : hardBotMove(turn); break;

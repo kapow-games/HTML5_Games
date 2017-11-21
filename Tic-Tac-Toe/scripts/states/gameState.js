@@ -1,12 +1,12 @@
-class GameState {
-    constructor(oldGameState) {
-        this.turn = 0 ; // 0 : No One's Move // 1 : Player 1(x)'s Move // 2 : Player 2(o)'s Move'
+class GameState { // TODO : add 'use-strict' in all files
+    constructor(oldGameState) { // TODO : rename it to just state ?
+        this.turn = 0 ; // 0 : No One's Move // 1 : Player 1(x)'s Move // 2 : Player 2(o)'s Move' // TODO : @mayank : Can be a boolean ?
         this.oMovesCount = 0 ;
         this.boardResult ; // 0 : Board Result Draw // 1 : Board Result Player 1(x) wins // 2 : Board Result Player 2(o) wins // undefined : game state not decided
         this.board = [] ; //board[i] = 0 : Empty //board[i] = 1 : 'X' //board[i] = 2 : 'O'
-        if(typeof(oldGameState) !== "undefined") {
+        if(typeof(oldGameState) !== "undefined") { // TODO : can do if(oldGameState ) {} // undefined is falsy
             var len = oldGameState.board.length ;
-            this.board = new Array(len) ;
+            this.board = new Array(len) ; // TODO : initialize array with [] https://stackoverflow.com/a/1273936
             for( var i = 0 ; i < len ; i++ ) {
               this.board[i] = oldGameState.board[i] ;
             }

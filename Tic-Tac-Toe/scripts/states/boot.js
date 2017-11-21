@@ -1,6 +1,6 @@
 'use strict';
 
-// TODO : @mayank use classes not variables
+// TODO : @mayank avoid extra lines use CMD+ALT+L to do default formatting
 
 export class Boot extends Phaser.State {
     preload() {

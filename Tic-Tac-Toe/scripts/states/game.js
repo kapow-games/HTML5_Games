@@ -1,9 +1,9 @@
-class Game {
+class Game { // TODO : add use strict at top
     constructor(bot) {
         this.bot = bot ;
-        this.currentState = new gameState();
+        this.currentState = new gameState(); // TODO :  use PascalCase
         this.currentState.board = new Array(9);
-        for(let i = 0 ; i < CELL_COLS*CELL_ROWS ; i++) {
+        for(let i = 0 ; i < CELL_COLS*CELL_ROWS ; i++) { // TODO : CELL_COL is not declared
             this.currentState.board[i] = globalVariableInstance.get("boardStatus").cells[i]!==undefined ? globalVariableInstance.get("boardStatus").cells[i] :0;
         }
         this.currentState.turn = 1 ;//playerMark === 1 ? 2 : 1 ;
@@ -14,13 +14,13 @@ class Game {
         }
         this.gameStatus = -1 ;// To indicate game begining
     }
-    moveTo(_state) {
+    moveTo(_state) { // TODO : avoid using variable args with _ .  _ vars are only private variables
         this.currentState = _state ;
-        if(_state.isTerminal()) {
+        if(_state.isTerminal()) { // TODO : extra line ? :P
 
-            this.gameStatus = 3 // Indicating game Over
+            this.gameStatus = 3 // Indicating game Over //  // TODO : avoid excessive use of game while naming vars. only status works
             // console.log(_state);
-            if(_state.boardResult === 1) {
+            if(_state.boardResult === 1) { // TODO : any reason for comparing with _state and not currentState
                 globalVariableInstance.set("win", 1) ;
             }
             else if(_state.boardResult === 2) {
@@ -45,7 +45,7 @@ class Game {
                 // gameInputHandler(0)
             }
             if(globalVariableInstance.get("win") !== 0) {
-                switch(gameLayoutVariables.winningMarkLine) {
+                switch(gameLayoutVariables.winningMarkLine) { // TODO : avoid using multi line statements without braces {}.
                     case 0 : matchPosition = phaserGame.add.sprite(552, 633, 'rectangle');matchPosition.anchor.setTo(0.5);matchPosition.angle=90;break;
                     case 1 : matchPosition = phaserGame.add.sprite(552, 948, 'rectangle');matchPosition.anchor.setTo(0.5);matchPosition.angle=90;break;
                     case 2 : matchPosition = phaserGame.add.sprite(552, 1263, 'rectangle');matchPosition.anchor.setTo(0.5);matchPosition.angle=90;break;
@@ -62,7 +62,7 @@ class Game {
                 //Player's Turn
             }
             else {
-                this.bot.notifyTurn(2);
+                this.bot.notifyTurn(2); // TODO : rename  to play move ?
             }
         }
     }
@@ -72,8 +72,8 @@ class Game {
           this.gameStatus = 0;
         }
     }
-    score(_state) {
-        if(_state.result !== 0) {
+    score(_state) { // TODO : same
+        if(_state.result !== 0) { // TODO : should the current state be changed too ?
             if(_state.boardResult === 1) {
             //X won
                 return 10 - _state.oMovesCount;
