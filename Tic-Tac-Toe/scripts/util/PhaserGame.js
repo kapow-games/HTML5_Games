@@ -7,12 +7,11 @@ import {PlayLoad} from '../states/PlayLoad';
 import {Select} from '../states/Select';
 
 
-export default class PhaserGame extends Phaser.Game {
+export default class PhaserGame extends Phaser.Game { // TODO : @mayank : rename it to just Game ?
+
     constructor(width, height, container) {
-
-        super(width, height, Phaser.CANVAS, container);
-
-        this.state.add('boot', Boot);
+        super(width, height, Phaser.CANVAS, container); // TODO : @mayank new line ?
+        this.state.add('boot', Boot); // ADD state as PascalCase
         this.state.add('menu', Menu);
         this.state.add('waiting', Waiting);
         this.state.add('play', Play);
