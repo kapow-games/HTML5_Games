@@ -1,5 +1,4 @@
 'use strict';
-import phaserManager from '../util/phaserManager';
 import globalVariableInstance from '../objects/gameGlobalVariables'
 import Background from '../objects/Background';
 import Logo from '../objects/Logo';
@@ -12,6 +11,8 @@ import StartNewGameTopButton from '../objects/StartNewGameTopButton';
 import StatsButton from "../objects/StatsButton";
 import LeaderboardButton from "../objects/LeaderboardButton";
 import HelpButton from "../objects/HelpButton";
+import BackButton from "../objects/BackButton";
+import MusicButton from "../objects/MusicButton";
 
 export class Menu extends Phaser.State {
     create() {
@@ -58,7 +59,7 @@ export class Menu extends Phaser.State {
             frame: 0
         });
 
-        this.gameModeFriend =   new VsFriendGameButton({
+        this.gameModeFriend = new VsFriendGameButton({
             phaserGameObj: this.game,
             posX: 48,
             posY: 1020,
@@ -72,7 +73,7 @@ export class Menu extends Phaser.State {
             inputEnabled: false
         });
 
-        this.gameModeRandom =   new VsRandomGameButton({
+        this.gameModeRandom = new VsRandomGameButton({
             phaserGameObj: this.game,
             posX: 48,
             posY: 1020,
@@ -86,7 +87,7 @@ export class Menu extends Phaser.State {
             inputEnabled: false
         });
 
-        this.gameModeSolo =   new VsBotGameButton({
+        this.gameModeSolo = new VsBotGameButton({
             phaserGameObj: this.game,
             posX: 48,
             posY: 1020,
@@ -103,8 +104,8 @@ export class Menu extends Phaser.State {
         this.arrowRight = this.add.sprite(972, 1062, 'arrowRight');
         this.arrowRight.anchor.setTo(0.5, 0.5);
 
-        this.stats =    new StatsButton({
-            phaserGameObj:  this.game,
+        this.stats = new StatsButton({
+            phaserGameObj: this.game,
             posX: 48,
             posY: 1182,
             label: 'stats',
@@ -118,7 +119,7 @@ export class Menu extends Phaser.State {
         });
 
         this.leaderboard = new LeaderboardButton({
-            phaserGameObj:  this.game,
+            phaserGameObj: this.game,
             posX: 48,
             posY: 1368,
             label: 'leaderBoard',
@@ -131,7 +132,7 @@ export class Menu extends Phaser.State {
         });
 
         this.startNewGameTop = new StartNewGameTopButton({
-            phaserGameObj:  this.game,
+            phaserGameObj: this.game,
             posX: 48,
             posY: 996,
             label: 'newGameTop',
@@ -141,36 +142,50 @@ export class Menu extends Phaser.State {
             outFrame: 0,
             downFrame: 1,
             upFrame: 0,
-            startNewGameBottomSlider:   this.startNewGameBottom,
+            startNewGameBottomSlider: this.startNewGameBottom,
             arrowObj: this.arrowRight,
             stats: this.stats,
             leaderboard: this.leaderboard,
             startNewGameBottom: this.startNewGameBottom,
             gameModeFriend: this.gameModeFriend,
             gameModeRandom: this.gameModeRandom,
-            gameModeSolo:   this.gameModeSolo
+            gameModeSolo: this.gameModeSolo
         });
 
-        this.backButton = this.add.button(48, 96, 'back', this.backButtonHandler, this);
-        this.backButton.anchor.setTo(0, 0);
+        this.backButton = new BackButton({
+            phaserGameObj: this.game,
+            posX: 48,
+            posY: 96,
+            label: 'back',
+            anchorX: 0,
+            anchorY: 0,
+            callback: this.backButtonHandler.bind(this)
+        });
 
-        this.soundToggle = this.add.button(960, 96, 'music', this.musicToggle, this);
-        this.soundToggle.anchor.setTo(0, 0);
+        this.musicButton = new MusicButton({
+            phaserGameObj: this.game,
+            posX: 960,
+            posY: 96,
+            label: 'music',
+            anchorX: 0,
+            anchorY: 0,
+        });
 
         this.helpButton = new HelpButton({
-            phaserGameObj:  this.game,
+            phaserGameObj: this.game,
             posX: 840,
             posY: 96,
-            label: 'leaderBoard',
+            label: 'help',
             anchorX: 0,
             anchorY: 0,
         });
     }
-    update() {}
+
+    update() {
+    }
+
     backButtonHandler() {
         kapow.close();
     }
-    musicToggle() {
-        this.soundToggle.frame = (1 + this.soundToggle.frame) % 2;
-    }
+
 }

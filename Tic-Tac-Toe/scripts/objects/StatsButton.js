@@ -22,14 +22,14 @@ export default class StatsButton extends Phaser.Button {
 
     statButtonClickHandler() {
         this.darkOverlay = new DarkOverlay({
-            phaserGameObj: this.game,
+            phaserGameObj: this.phaserGame,
             posX: 0,
             posY: 0,
             label: 'darkOverlay',
             anchorX: 0,
             anchorY: 0,
             inputEnabled: true,
-            clickHandler: this.cancelStats
+            clickHandler: this.cancelStats.bind(this)
         });
         this.bg.setInputEnabled(true);
         this.bg.setInputPriority(2);

@@ -1,11 +1,13 @@
-class BotBehaviour {  // TODO : why is bot and bot behavior different ?
+'use strict';
+import GameState from "./GameState";
+
+export default class BotBehaviour { // TODO : why is bot and bot behavior different ?
     constructor(pos) {
         this.movePosition = pos;
         this.miniMaxValue = 0 ;
     }
-
-    applyTo(currentGameState) { // TODO : rename function to play and args to state
-        var nextGameState = new gameState(currentGameState);  // TODO : @mayank , if doing new means its a class and not variables. Initialize as new GameState()
+    applyTo(currentGameState) {// TODO : rename function to play and args to state
+        var nextGameState = new GameState(currentGameState);
         nextGameState.board[this.movePosition] = (currentGameState.turn === 1 ? globalVariableInstance.get("playerMark") : ((globalVariableInstance.get("playerMark") === 1) ? 2 : 1));
         if(currentGameState.turn == 2) {
             nextGameState.oMovesCount++;

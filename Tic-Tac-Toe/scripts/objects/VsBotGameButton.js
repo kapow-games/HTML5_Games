@@ -1,4 +1,4 @@
-import {globalVariableInstance} from './gameGlobalVariables'
+import globalVariableInstance from './gameGlobalVariables';
 
 export default class VsBotGameButton extends Phaser.Button {
     constructor(obj) {
@@ -14,7 +14,7 @@ export default class VsBotGameButton extends Phaser.Button {
         let _upFrame = obj.upFrame;
         let _inputEnabled = obj.inputEnabled;
 
-        super(_phaserGameObj, _posX, _posY, _label, vsBotGameStart, this, _overFrame, _outFrame, _downFrame, _upFrame);
+        super(_phaserGameObj, _posX, _posY, _label, () => this.vsBotGameStart, () => this, _overFrame, _outFrame, _downFrame, _upFrame);
 
         this.anchor.setTo(_anchorX, _anchorY);
         this.inputEnabled = _inputEnabled;

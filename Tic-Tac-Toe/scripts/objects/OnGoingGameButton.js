@@ -12,7 +12,7 @@ export default class OnGoingGameButton extends Phaser.Button {
         let _downFrame = obj.downFrame;
         let _upFrame = obj.upFrame;
 
-        super(_phaserGameObj, _posX, _posY, _label, onGoingGameHandler, this, _overFrame, _outFrame, _downFrame, _upFrame);
+        super(_phaserGameObj, _posX, _posY, _label, () => this.onGoingGameHandler, () => this, _overFrame, _outFrame, _downFrame, _upFrame);
         this.anchor.setTo(_anchorX, _anchorY);
 
     }

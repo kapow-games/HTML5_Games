@@ -1,6 +1,6 @@
 'use strict';
 
-export default globalVariableInstance =  function() {
+export default globalVariableInstance = function () {
     this.room = null;
     this.screenState = 0;
     this.playerData = undefined;

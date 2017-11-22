@@ -8,9 +8,8 @@ export default class DarkOverLay extends Phaser.Button {
         let _anchorY = obj.anchorY;
         let _inputEnabled = obj.inputEnabled;
 
-        super(_phaserGameObj, _posX, _posY, _label, () => this.clickHandler, () => this);
+        super(_phaserGameObj, _posX, _posY, _label, obj.clickHandler);
 
-        this.clickHandler = obj.clickHandler;
         this.anchor.setTo(_anchorX, _anchorY);
         this.inputEnabled = _inputEnabled;
     }
