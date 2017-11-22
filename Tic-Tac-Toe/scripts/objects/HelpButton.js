@@ -40,7 +40,7 @@ export default class HelpButton extends Phaser.Button {
         this.popUpHelpModal.start();
 
         var self = this;
-        this.popUpHelpModal.onComplete.add(function () {
+        this.popUpHelpModal.onComplete.add(function () { // TODO : use .bind instead of self  and extract out callback in variable function
             self.bg.setInputPriority(1);
             self.bg.setInputEnabled(false);
             self.darkOverlay.setInputPriority(2);
@@ -99,7 +99,7 @@ export default class HelpButton extends Phaser.Button {
         });
         console.log('Help Button Clicked');
     }
-    cancelHelp()
+    cancelHelp() // TODO : formatting
     {
         this.howToPlayText.destroy();
         this.vsFriendText.destroy();

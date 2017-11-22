@@ -1,4 +1,4 @@
-import BotBehaviour from "./BotBehaviour";
+import BotBehaviour from "./BotBehaviour"; // TODO : @mayank use strict
 
 export default class Bot {
     constructor(botLevel) {
@@ -12,7 +12,7 @@ export default class Bot {
     }
 
     //TODO : handle Game.score
-    miniMaxValue(gameObj, state) {
+    miniMaxValue(gameObj, state) { // TODO: @mayank: Rename to getMiniMaxValue
         if (state.isTerminal()) {
             return gameObj.score(state);
         }
@@ -21,13 +21,13 @@ export default class Bot {
         var availablePositions = state.emptyCells();
         var availableNextStates = availablePositions.map(function (pos) {
             var action = new BotBehaviour(pos);
-            var nextState = action.applyTo(state);
+            var nextState = action.applyTo(state); // TODO : nextState var is redundant
             return nextState;
         });
         // console.log(availableNextStates);
         availableNextStates.forEach(function (nextState) {
             var nextScore = miniMaxValue(gameObj, nextState);
-            if (state.turn === 1) {
+            if (state.turn === 1) { // TODO :  can do (state.turn === 1 && nextScore > stateScore) {}
                 if (nextScore > stateScore) {
                     stateScore = nextScore;
                 }
@@ -75,14 +75,14 @@ export default class Bot {
         this.gameDetail.moveTo(next);
     }
 
-    plays(gameDetail) {
+    plays(gameDetail) { // TODO : @mayank : plays ? what does the function do ?
         this.gameDetail = gameDetail;
     }
 
-    notifyTurn(turn) {
+    notifyTurn(turn) { // TODO : @mayank: it plays the nextMove , can be renamed accordingly
         switch (botLevel) {
             case 0 :
-                easyBotMove(turn);
+                easyBotMove(turn); // TODO : use this.easyBotMove
                 break;
             case 1 :
                 mediumBotMove(turn);
@@ -96,7 +96,7 @@ export default class Bot {
     }
 
     sortPossibleBotMoves(turn) {
-        var available = this.gameDetail.currentState.emptyCells();
+        var available = this.gameDetail.currentState.emptyCells(); // TODO : redundant var
         var availableActions = available.map(function (pos) {
             var action = new BotBehaviour(pos);
             var next = action.applyTo(this.gameDetail.currentState);

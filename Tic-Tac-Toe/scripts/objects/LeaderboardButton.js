@@ -1,4 +1,4 @@
-export default class LeaderboardButton extends Phaser.Button {
+export default class LeaderboardButton extends Phaser.Button { // TODO : its a scoreboard not leaderboard :P
     constructor(obj) {
         let _phaserGameObj = obj.phaserGameObj;
         let _posX = obj.posX;

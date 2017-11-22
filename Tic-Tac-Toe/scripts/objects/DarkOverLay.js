@@ -1,4 +1,4 @@
-export default class DarkOverLay extends Phaser.Button {
+export default class DarkOverLay extends Phaser.Button { // TODO : move to widgets , use-strict . Do it in all necessary files
     constructor(obj) {
         let _phaserGameObj = obj.phaserGameObj;
         let _posX = obj.posX;
@@ -10,16 +10,16 @@ export default class DarkOverLay extends Phaser.Button {
 
         super(_phaserGameObj, _posX, _posY, _label, obj.clickHandler);
 
-        this.anchor.setTo(_anchorX, _anchorY);
+        this.anchor.setTo(_anchorX, _anchorY); // TODO : rename it just x, y ?
         this.inputEnabled = _inputEnabled;
     }
     destroy() {
-        this.destroy();
+        this.destroy(); // TODO : do u want to call super.destory ? there is infinite recursion here
     }
-    setInputEnabled(val) {
+    setInputEnabled(val) { // TODO : rename to enableInput and take args as isEnabled boolean
         this.inputEnabled = val;
     }
-    setInputPriority(val){
+    setInputPriority(val){ // TODO : same
         this.input.priorityID = val;
     }
 }

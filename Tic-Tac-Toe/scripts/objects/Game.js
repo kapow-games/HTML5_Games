@@ -4,13 +4,13 @@ import {gameLayoutVariables} from "./gameLayoutVariables";
 import {gameEndHandler} from "../util/gameEnd";
 
 
-export default class Game {
-    constructor(phaserGameObj, bot) {
+export default class Game { // TODO : formatting , extra line . Only one extra line before class and import
+    constructor(phaserGameObj, bot) { // TODO : just game ?
         this.phaserGame = phaserGameObj;
         this.bot = bot;
         this.currentState = new GameState();
-        this.currentState.board = new Array(9);
-        for (let i = 0; i < 9; i++) {
+        this.currentState.board = new Array(9); // TODO : is it a CONSTANT ? extract such CONSTANTS
+        for (let i = 0; i < 9; i++) { // TODO : move to new line after 120 chars
             this.currentState.board[i] = globalVariableInstance.get("boardStatus").cells[i] !== undefined ? globalVariableInstance.get("boardStatus").cells[i] : 0;
         }
         this.currentState.turn = 1;//playerMark === 1 ? 2 : 1 ;
@@ -24,7 +24,7 @@ export default class Game {
 
     moveTo(state) {
         this.currentState = state;
-        if (state.isTerminal()) {
+        if (state.isTerminal()) { // TODO : logic can be simplified
             this.gameStatus = 3; // Indicating game Over
             if (this.currentState.boardResult === 1) {
                 globalVariableInstance.set("win", 1);

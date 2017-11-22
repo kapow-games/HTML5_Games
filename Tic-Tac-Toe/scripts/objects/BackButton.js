@@ -1,6 +1,6 @@
-export default class BackButton extends Phaser.Button {
-    constructor(obj) {
-        let _phaserGameObj = obj.phaserGameObj;
+export default class BackButton extends Phaser.Button { // TODO : @mayank : 'use-strict' . Move Phaser classes to widgets package
+    constructor(obj) { // TODO : formattting
+        let _phaserGameObj = obj.phaserGameObj; //  TODO : redundant vars
         let _posX = obj.posX;
         let _posY = obj.posY;
         let _label = obj.label;
@@ -12,7 +12,7 @@ export default class BackButton extends Phaser.Button {
 
         this.anchor.setTo(_anchorX, _anchorY);
     }
-    setInputPriority(val) {
+    setInputPriority(val) { // TODO : use .input.disable ? much cleaner
         this.input.priorityID = val;
     }
 }

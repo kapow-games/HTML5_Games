@@ -1,6 +1,6 @@
 export default class Logo extends Phaser.Sprite {
     constructor(obj) {
-        let _phaserGameObj = obj.phaserGameObj;
+        let _phaserGameObj = obj.phaserGameObj; // TODO : remove redundant vars
         let _posX = obj.posX;
         let _posY = obj.posY;
         let _label = obj.label;

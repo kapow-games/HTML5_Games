@@ -1,6 +1,6 @@
 export default class Background extends Phaser.Sprite {
     constructor(obj) {
-        let _phaserGameObj = obj.phaserGameObj;
+        let _phaserGameObj = obj.phaserGameObj; // TODO @mayank: same
         let _posX = obj.posX;
         let _posY = obj.posY;
         let _label = obj.label;
@@ -14,7 +14,7 @@ export default class Background extends Phaser.Sprite {
     setInputEnabled(val) {
         this.inputEnabled = val;
     }
-    setInputPriority(val) {
+    setInputPriority(val) { // TODO : Same
         this.input.priorityID = val;
     }
 }

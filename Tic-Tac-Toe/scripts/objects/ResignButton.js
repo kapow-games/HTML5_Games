@@ -42,12 +42,12 @@ export default class ResignButton extends Phaser.Button {
             gameLayoutVariables.backgroundImage.inputEnabled = true;
             gameLayoutVariables.backgroundImage.input.priorityID = 1;
             this.cancelResign();
-            tempCells = this.game.state.states.play.cells.children;
+            tempCells = this.game.state.states.play.cells.children; // TODO : accidental global
             gameLayoutVariables.turnText.text = " YOU LOSE!";
             gameEndHandler(this.phaserGame, 1);
         }
         else if (globalVariableInstance.get("gameType") === "friend") {
-            var that = this;
+            var that = this; // TODO : either use self everywhere or that .
             kapow.invokeRPC("resignationRequest", {
                     board: globalVariableInstance.get("boardStatus").cells,
                     playerTurn: globalVariableInstance.get("playerData").id,

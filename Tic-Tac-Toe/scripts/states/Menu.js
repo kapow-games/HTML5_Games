@@ -14,11 +14,11 @@ import HelpButton from "../objects/HelpButton";
 import BackButton from "../objects/BackButton";
 import MusicButton from "../objects/MusicButton";
 
-export class Menu extends Phaser.State {
+export class Menu extends Phaser.State { // TODO : formatting ?
     create() {
         globalVariableInstance.set("screenState", 0);
         this.bg = new Background({
-            phaserGameObj: this.game,
+            phaserGameObj: this.game, // TODO : rename key to just game ?
             posX: 0,
             posY: 0,
             label: 'arena',
@@ -35,7 +35,7 @@ export class Menu extends Phaser.State {
             anchorY: 0
         });
 
-        this.activeGames = new OnGoingGameButton({
+        this.activeGames = new OnGoingGameButton({ // TODO : Should the class be named to Active game Button or viceversa ?
             phaserGameObj: this.game,
             posX: 48,
             posY: 768,
@@ -49,7 +49,7 @@ export class Menu extends Phaser.State {
         });
 
 
-        this.startNewGameBottom = new StartNewGameBottomSlider({
+        this.startNewGameBottom = new StartNewGameBottomSlider({ // TODO : rename it to NewGameButton and this.newGameButton
             phaserGameObj: this.game,
             posX: 48,
             posY: 1020,

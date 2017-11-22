@@ -28,7 +28,7 @@ export default class StartNewGameTopButton extends Phaser.Button {
         this.onInputOut.add(this.startNewGameTopInputUp, this);
 
         //Animation
-        this.arrowRotateRightToDown = _phaserGameObj.add.tween(_arrowObj).to({angle: 90}, 200, Phaser.Easing.Linear.None);
+        this.arrowRotateRightToDown = _phaserGameObj.add.tween(_arrowObj).to({angle: 90}, 200, Phaser.Easing.Linear.None); // TODO : typical example of how to use ENUMS or alternate names
         this.arrowRotateDownToRight = _phaserGameObj.add.tween(_arrowObj).to({angle: 0}, 200, Phaser.Easing.Linear.None);
 
         this.slideStatsDown = this.add.tween(_stats).to({y: 1314}, 300, "Quart.easeOut");
