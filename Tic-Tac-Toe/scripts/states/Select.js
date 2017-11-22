@@ -1,8 +1,8 @@
 'use strict'
-import globalVariableInstance from '../objects/gameGlobalVariables';
-import BackButton from '../objects/BackButton';
-import MusicButton from '../objects/MusicButton';
-import Background from "../objects/Background";
+import globalVariableInstance from '../objects/store/gameGlobalVariables';
+import BackButton from '../objects/widgets/button/BackButton';
+import MusicButton from '../objects/widgets/button/MusicButton';
+import Background from "../objects/widgets/icons/Background";
 
 export class Select extends Phaser.State {
     preload() {
@@ -47,7 +47,7 @@ export class Select extends Phaser.State {
 
     createBackground() {
         this.bg = new Background({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 0,
             posY: 0,
             label: 'arena',
@@ -102,7 +102,7 @@ export class Select extends Phaser.State {
 
     createBackButton() {
         this.backButton = new BackButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 48,
             posY: 96,
             label: 'back',
@@ -119,7 +119,7 @@ export class Select extends Phaser.State {
 
     createMusicButton() {
         this.musicButton = new MusicButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 960,
             posY: 96,
             label: 'music',

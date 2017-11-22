@@ -1,11 +1,11 @@
 'use strict';
-import GameState from "./GameState";
-import {gameLayoutVariables} from "./gameLayoutVariables";
-import {gameEndHandler} from "../util/gameEnd";
 
+import GameState from "./GameState";
+import gameLayoutVariables from "../store/gameLayoutVariables";
+import {gameEndHandler} from "../../util/gameEnd";
 
 export default class Game { // TODO : formatting , extra line . Only one extra line before class and import
-    constructor(phaserGameObj, bot) { // TODO : just game ?
+    constructor(phaserGameObj, bot) { // TODO : just game ? @sukhmeet don't want to use game. also used as an object in game.js.
         this.phaserGame = phaserGameObj;
         this.bot = bot;
         this.currentState = new GameState();

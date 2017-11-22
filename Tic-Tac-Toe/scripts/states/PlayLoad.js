@@ -1,6 +1,6 @@
 'use strict';
-import globalVariableInstance from "../objects/gameGlobalVariables";
-import Background from "../objects/Background";
+import globalVariableInstance from "../objects/store/gameGlobalVariables";
+import Background from "../objects/widgets/icons/Background";
 
 export class PlayLoad extends Phaser.State {
     preload() {
@@ -33,7 +33,7 @@ export class PlayLoad extends Phaser.State {
 
     create() {
         this.bg = new Background({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 0,
             posY: 0,
             label: 'arena',

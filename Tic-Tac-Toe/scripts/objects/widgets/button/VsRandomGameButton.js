@@ -1,23 +1,12 @@
-import globalVariableInstance from './gameGlobalVariables';
+import globalVariableInstance from '../../store/gameGlobalVariables';
+import parseRoomAndRedirectToGame from "../../../util/parseRoomAndRedirectToGame";
 
 export default class VsRandomGameButton extends Phaser.Button {
     constructor(obj) {
-        let _phaserGameObj = obj.phaserGameObj;
-        let _posX = obj.posX;
-        let _posY = obj.posY;
-        let _label = obj.label;
-        let _anchorX = obj.anchorX;
-        let _anchorY = obj.anchorY;
-        let _overFrame = obj.overFrame;
-        let _outFrame = obj.outFrame;
-        let _downFrame = obj.downFrame;
-        let _upFrame = obj.upFrame;
-        let _inputEnabled = obj.inputEnabled;
+        super(obj.phaserGameObj, obj.posX, obj.posY, obj.label, () => this.vsRandomGameStart, () => this, obj.overFrame, obj.outFrame, obj.downFrame, obj.upFrame);
 
-        super(_phaserGameObj, _posX, _posY, _label, () => this.vsRandomGameStart, () => this, _overFrame, _outFrame, _downFrame, _upFrame);
-
-        this.anchor.setTo(_anchorX, _anchorY);
-        this.inputEnabled = _inputEnabled;
+        this.anchor.setTo(obj.anchorX, obj.anchorY);
+        this.inputEnabled = obj.inputEnabled;
     }
 
     vsRandomGameStart() {
@@ -30,11 +19,18 @@ export default class VsRandomGameButton extends Phaser.Button {
             globalVariableInstance.set("room", roomDetail);
             globalVariableInstance.set("playerMark", 1);
             globalVariableInstance.set("opponentMark", 2);
-            parseRoomAndRedirectToGame();//TODO :  import from clientAPI.js
+            parseRoomAndRedirectToGame();
         }, function (error) {
             this.inputEnabled = true;
             console.log("Random Room Creation - Failure.", error);
         });
     }
 
+    enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
+        this.inputEnabled = val;
+    }
+
+    setInputPriority(priorityID) { // TODO : same
+        this.input.priorityID = priorityID;
+    }
 }

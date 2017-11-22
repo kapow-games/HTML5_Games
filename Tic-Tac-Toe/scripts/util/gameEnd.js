@@ -1,8 +1,10 @@
-import gameLayoutVariables from "../objects/gameLayoutVariables";
-import SocialShare from "../objects/SocialShare";
+import {gameLayoutVariables} from "../objects/store/gameLayoutVariables";
+import SocialShare from "./SocialShare";
+import GameStoreQuery from "../objects/store/GameStoreQuery";
+import globalVariableInstance from "../objects/store/gameGlobalVariables";
 
 
-export function gameEndHandler(phaserGame, value) {
+export default function gameEndHandler(phaserGame, value) {
     console.log("Game End Being Handled.");
 
     gameLayoutVariables.backgroundImage.inputEnabled = true;
@@ -38,7 +40,7 @@ export function gameEndHandler(phaserGame, value) {
     rematchButton.input.priorityID = 3;
 
     if (globalVariableInstance.get("gameOver") === false) {
-        var gameStoreContainer = new gameStoreQuery();
+        var gameStoreContainer = new GameStoreQuery();
         gameStoreContainer.get("stats", function (statsValue, self) {
             if (statsValue) {
                 console.log("Value fetched from gameStore was : ", statsValue);

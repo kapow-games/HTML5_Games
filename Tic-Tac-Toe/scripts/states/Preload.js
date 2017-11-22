@@ -1,5 +1,6 @@
 'use strict';
-import globalVariableInstance from "../objects/gameGlobalVariables";
+import globalVariableInstance from "../objects/store/gameGlobalVariables";
+import parseRoomAndRedirectToGame from "../util/parse";
 
 export class Preload extends Phaser.State {
     preload() {

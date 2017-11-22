@@ -1,4 +1,4 @@
-import globalVariableInstance from "../objects/gameGlobalVariables";
+import globalVariableInstance from "../objects/store/gameGlobalVariables";
 
 var saveGameData = function (phaserGame, value) {
     let currentGameState = phaserGame.state.states.play.cells.children;

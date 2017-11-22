@@ -8,3 +8,5 @@ var WebFontConfig = {
         phaserGame.time.events.add(Phaser.Timer.SECOND, createText, this);
     }
 };
+
+export default phaserGame;

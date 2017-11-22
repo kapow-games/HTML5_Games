@@ -1,11 +1,11 @@
 'use strict';
 import phaserManager from "../util/phaserManager";
-import globalVariableInstance from "../objects/gameGlobalVariables";
-import Background from "../objects/Background";
-import OnGoingGameButton from "../objects/OnGoingGameButton";
-import BackButton from "../objects/BackButton";
-import MusicButton from "../objects/MusicButton";
-import HelpButton from "../objects/HelpButton";
+import globalVariableInstance from "../objects/store/gameGlobalVariables";
+import Background from "../objects/widgets/icons/Background";
+import OnGoingGameButton from "../objects/widgets/button/OnGoingGameButton";
+import BackButton from "../objects/widgets/button/BackButton";
+import MusicButton from "../objects/widgets/button/MusicButton";
+import HelpButton from "../objects/widgets/button/HelpButton";
 
 
 export class Waiting extends Phaser.State {
@@ -16,7 +16,7 @@ export class Waiting extends Phaser.State {
 
     create() {
         this.bg = new Background({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 0,
             posY: 0,
             label: 'arena',
@@ -27,7 +27,7 @@ export class Waiting extends Phaser.State {
         this.waitingPlayerBackground = this.game.add.image(48, 372, 'waitingPlayer');
 
         this.backButton = new BackButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 48,
             posY: 96,
             label: 'back',
@@ -37,7 +37,7 @@ export class Waiting extends Phaser.State {
         });
 
         this.musicButton = new MusicButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 960,
             posY: 96,
             label: 'music',
@@ -46,7 +46,7 @@ export class Waiting extends Phaser.State {
         });
 
         this.helpButton = new HelpButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 840,
             posY: 96,
             label: 'help',
@@ -72,8 +72,8 @@ export class Waiting extends Phaser.State {
         this.createPlayerProfileImage();
         this.createOpponentProfileImage();
 
-        this.activeGames = new OnGoingGameButton({
-            phaserGameObj: this.game,
+        this.onGoingGame = new OnGoingGameButton({
+            game: this.game,
             posX: 48,
             posY: 942,
             label: 'onGoing',

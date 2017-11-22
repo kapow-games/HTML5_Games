@@ -1,24 +1,25 @@
 'use strict';
-import globalVariableInstance from '../objects/gameGlobalVariables'
-import Background from '../objects/Background';
-import Logo from '../objects/Logo';
-import OnGoingGameButton from '../objects/OnGoingGameButton';
-import StartNewGameBottomSlider from '../objects/StartNewGameBottomSlider';
-import VsFriendGameButton from '../objects/VsFriendGameButton';
-import VsRandomGameButton from '../objects/VsRandomGameButton';
-import VsBotGameButton from '../objects/VsBotGameButton';
-import StartNewGameTopButton from '../objects/StartNewGameTopButton';
-import StatsButton from "../objects/StatsButton";
-import LeaderboardButton from "../objects/LeaderboardButton";
-import HelpButton from "../objects/HelpButton";
-import BackButton from "../objects/BackButton";
-import MusicButton from "../objects/MusicButton";
+
+import globalVariableInstance from '../objects/store/gameGlobalVariables'
+import Background from '../objects/widgets/icons/Background';
+import Logo from '../objects/widgets/icons/Logo';
+import OnGoingGameButton from '../objects/widgets/button/OnGoingGameButton';
+import StartNewGameBottomSlider from '../objects/widgets/icons/StartNewGameBottomSlider';
+import VsFriendGameButton from '../objects/widgets/button/VsFriendGameButton';
+import VsRandomGameButton from '../objects/widgets/button/VsRandomGameButton';
+import VsBotGameButton from '../objects/widgets/button/VsBotGameButton';
+import StartNewGameTopButton from '../objects/widgets/button/StartNewGameTopButton';
+import StatsButton from "../objects/widgets/button/StatsButton";
+import LeaderboardButton from "../objects/widgets/button/ScoreboardButton";
+import HelpButton from "../objects/widgets/button/HelpButton";
+import BackButton from "../objects/widgets/button/BackButton";
+import MusicButton from "../objects/widgets/button/MusicButton";
 
 export class Menu extends Phaser.State { // TODO : formatting ?
     create() {
         globalVariableInstance.set("screenState", 0);
         this.bg = new Background({
-            phaserGameObj: this.game, // TODO : rename key to just game ?
+            game: this.game, // TODO : rename key to just game ?
             posX: 0,
             posY: 0,
             label: 'arena',
@@ -27,7 +28,7 @@ export class Menu extends Phaser.State { // TODO : formatting ?
         });
 
         this.logo = new Logo({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 165,
             posY: 285,
             label: 'logo',
@@ -35,8 +36,8 @@ export class Menu extends Phaser.State { // TODO : formatting ?
             anchorY: 0
         });
 
-        this.activeGames = new OnGoingGameButton({ // TODO : Should the class be named to Active game Button or viceversa ?
-            phaserGameObj: this.game,
+        this.onGoingGame = new OnGoingGameButton({ // TODO : Should the class be named to Active game Button or viceversa ?
+            game: this.game,
             posX: 48,
             posY: 768,
             label: 'onGoing',
@@ -49,8 +50,8 @@ export class Menu extends Phaser.State { // TODO : formatting ?
         });
 
 
-        this.startNewGameBottom = new StartNewGameBottomSlider({ // TODO : rename it to NewGameButton and this.newGameButton
-            phaserGameObj: this.game,
+        this.startNewGameBottom = new StartNewGameBottomSlider({ // TODO : rename it to NewGameButton and this.newGameButton // @sukhmeet there are two copies of newGameButton. (one underlying the other)
+            game: this.game,
             posX: 48,
             posY: 1020,
             label: 'newGameBottom',
@@ -60,7 +61,7 @@ export class Menu extends Phaser.State { // TODO : formatting ?
         });
 
         this.gameModeFriend = new VsFriendGameButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 48,
             posY: 1020,
             label: 'gameModes',
@@ -74,7 +75,7 @@ export class Menu extends Phaser.State { // TODO : formatting ?
         });
 
         this.gameModeRandom = new VsRandomGameButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 48,
             posY: 1020,
             label: 'gameModes',
@@ -88,7 +89,7 @@ export class Menu extends Phaser.State { // TODO : formatting ?
         });
 
         this.gameModeSolo = new VsBotGameButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 48,
             posY: 1020,
             label: 'gameModes',
@@ -105,7 +106,7 @@ export class Menu extends Phaser.State { // TODO : formatting ?
         this.arrowRight.anchor.setTo(0.5, 0.5);
 
         this.stats = new StatsButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 48,
             posY: 1182,
             label: 'stats',
@@ -119,7 +120,7 @@ export class Menu extends Phaser.State { // TODO : formatting ?
         });
 
         this.leaderboard = new LeaderboardButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 48,
             posY: 1368,
             label: 'leaderBoard',
@@ -132,7 +133,7 @@ export class Menu extends Phaser.State { // TODO : formatting ?
         });
 
         this.startNewGameTop = new StartNewGameTopButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 48,
             posY: 996,
             label: 'newGameTop',
@@ -153,7 +154,7 @@ export class Menu extends Phaser.State { // TODO : formatting ?
         });
 
         this.backButton = new BackButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 48,
             posY: 96,
             label: 'back',
@@ -163,7 +164,7 @@ export class Menu extends Phaser.State { // TODO : formatting ?
         });
 
         this.musicButton = new MusicButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 960,
             posY: 96,
             label: 'music',
@@ -172,7 +173,7 @@ export class Menu extends Phaser.State { // TODO : formatting ?
         });
 
         this.helpButton = new HelpButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 840,
             posY: 96,
             label: 'help',

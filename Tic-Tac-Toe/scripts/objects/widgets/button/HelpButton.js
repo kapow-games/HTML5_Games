@@ -1,20 +1,15 @@
-import phaserManager from "../util/phaserManager";
+'use strict';
+
+import phaserManager from "../../../util/phaserManager";
 import DarkOverlay from './DarkOverLay';
 
 export default class HelpButton extends Phaser.Button {
     constructor(obj) {
-        let _phaserGameObj = obj.phaserGameObj;
-        let _posX = obj.posX;
-        let _posY = obj.posY;
-        let _label = obj.label;
-        let _anchorX = obj.anchorX;
-        let _anchorY = obj.anchorY;
-
-        super(_phaserGameObj, _posX, _posY, _label, () => this.clickHandler, () => this);
+        super(obj.phaserGameObj, obj.posX, obj.posY, obj.label, () => this.clickHandler, () => this);
 
         this.bg = obj.bg;
         this.phaserGame = obj.phaserGameObj;
-        this.anchor.setTo(_anchorX, _anchorY);
+        this.anchor.setTo(obj.anchorX, obj.anchorY);
     }
 
     clickHandler() {
@@ -28,24 +23,24 @@ export default class HelpButton extends Phaser.Button {
             inputEnabled: true,
             clickHandler: this.cancelHelp
         });
-        this.bg.inputEnabled = true;
-        this.bg.input.priorityID = 2;
+
+        this.bg.enableInput(true);
+        this.bg.setInputPriority(2);
 
         this.helpModal = this.game.add.sprite(540, 961.5, 'statsBackground');
         this.helpModal.inputEnabled = true;
         this.helpModal.input.priorityID = 3;
         this.helpModal.anchor.setTo(0.5);
         this.helpModal.scale.setTo(0);
+        //Pop Up Animation
         this.popUpHelpModal = this.add.tween(this.helpModal.scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
         this.popUpHelpModal.start();
 
-        var self = this;
-        this.popUpHelpModal.onComplete.add(function () { // TODO : use .bind instead of self  and extract out callback in variable function
-            self.bg.setInputPriority(1);
-            self.bg.setInputEnabled(false);
-            self.darkOverlay.setInputPriority(2);
-
-            self.howToPlayText = phaserManager.createText(self.game, {
+        this.popUpHelpModal.onComplete.add(function () {
+            this.bg.setInputPriority(1);
+            this.bg.enableInput(false);
+            this.darkOverlay.setInputPriority(2);
+            this.howToPlayText = phaserManager.createText(this.game, {
                 positionX: 319.5,
                 positionY: 465,
                 messageToDisplay: 'HOW TO PLAY',
@@ -58,7 +53,7 @@ export default class HelpButton extends Phaser.Button {
                 wordWrapWidth: 441
             });
 
-            self.vsFriendText = phaserManager.createText(self.game, {
+            this.vsFriendText = phaserManager.createText(this.game, {
                 positionX: 468,
                 positionY: 729,
                 messageToDisplay: 'VS FRIEND',
@@ -71,7 +66,7 @@ export default class HelpButton extends Phaser.Button {
                 wordWrapWidth: 224
             });
 
-            self.vsRandomText = phaserManager.createText(self.game, {
+            this.vsRandomText = phaserManager.createText(this.game, {
                 positionX: 189,
                 positionY: 909,
                 messageToDisplay: 'RANDOM OPPONENT',
@@ -84,7 +79,7 @@ export default class HelpButton extends Phaser.Button {
                 wordWrapWidth: 453
             });
 
-            self.helpTabView1Text = phaserManager.createText(self.game, {
+            this.helpTabView1Text = phaserManager.createText(this.game, {
                 positionX: 222,
                 positionY: 1284,
                 messageToDisplay: 'Play with a friend, a random\nopponent or practice vs AI',
@@ -96,16 +91,24 @@ export default class HelpButton extends Phaser.Button {
                 fontWeight: 800,
                 wordWrapWidth: 636
             });
-        });
+        }.bind(this));
         console.log('Help Button Clicked');
     }
-    cancelHelp() // TODO : formatting
-    {
+
+    enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
+        this.inputEnabled = val;
+    }
+
+    setInputPriority(priorityID) { // TODO : same
+        this.input.priorityID = priorityID;
+    }
+
+    cancelHelp() {// TODO : formatting
         this.howToPlayText.destroy();
         this.vsFriendText.destroy();
         this.vsRandomText.destroy();
         this.helpTabView1Text.destroy();
         this.helpModal.destroy();
-        this.darkOverlay.destroy();
+        this.darkOverlay.destroyButton();
     }
 }

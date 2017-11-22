@@ -1,24 +1,14 @@
-import {gameLayoutVariables} from "./gameLayoutVariables";
-import DarkOverlay from "../objects/DarkOverLay";
-import saveGameData from "../util/saveGameData";
-import {gameEndHandler} from "../util/gameEnd";
+import gameLayoutVariables from "../../store/gameLayoutVariables";
+import DarkOverlay from "./DarkOverLay";
+import saveGameData from "../../../util/saveGameData";
+import gameEndHandler from "../../../util/gameEnd";
+import globalVariableInstance from "../../store/gameGlobalVariables"
 
 export default class ResignButton extends Phaser.Button {
     constructor(obj) {
-        let _phaserGameObj = obj.phaserGameObj;
-        let _posX = obj.posX;
-        let _posY = obj.posY;
-        let _label = obj.label;
-        let _anchorX = obj.anchorX;
-        let _anchorY = obj.anchorY;
-        let _overFrame = obj.overFrame;
-        let _outFrame = obj.outFrame;
-        let _downFrame = obj.downFrame;
-        let _upFrame = obj.upFrame;
-
-        super(_phaserGameObj, _posX, _posY, _label, () => this.resignClickHandler, () => this, _overFrame, _outFrame, _downFrame, _upFrame);
-        this.phaserGame = _phaserGameObj;
-        this.anchor.setTo(_anchorX, _anchorY);
+        super(obj.phaserGameObj, obj.posX, obj.posY, obj.label, () => this.resignClickHandler, () => this, obj.overFrame, obj.outFrame, obj.downFrame, obj.upFrame);
+        this.phaserGame = obj.phaserGameObj;
+        this.anchor.setTo(obj.anchorX, obj.anchorY);
     }
 
     resignClickHandler() {
@@ -39,15 +29,14 @@ export default class ResignButton extends Phaser.Button {
         globalVariableInstance.set("win", globalVariableInstance.get("playerMark") === 1 ? 2 : 1);
         if (globalVariableInstance.get("gameType") === "solo") {
             saveGameData(this.phaserGame, true);
-            gameLayoutVariables.backgroundImage.inputEnabled = true;
-            gameLayoutVariables.backgroundImage.input.priorityID = 1;
+            gameLayoutVariables.backgroundImage.enableInput(true);
+            gameLayoutVariables.backgroundImage.setInputPriority(1);
             this.cancelResign();
-            tempCells = this.game.state.states.play.cells.children; // TODO : accidental global
+            let tempCells = this.game.state.states.play.cells.children; // TODO : accidental global
             gameLayoutVariables.turnText.text = " YOU LOSE!";
             gameEndHandler(this.phaserGame, 1);
         }
         else if (globalVariableInstance.get("gameType") === "friend") {
-            var that = this; // TODO : either use self everywhere or that .
             kapow.invokeRPC("resignationRequest", {
                     board: globalVariableInstance.get("boardStatus").cells,
                     playerTurn: globalVariableInstance.get("playerData").id,
@@ -56,20 +45,21 @@ export default class ResignButton extends Phaser.Button {
                 },
                 function (obj) {
                     console.log("resignation - success : obj: \n", obj);
-                    gameLayoutVariables.backgroundImage.inputEnabled = true;
-                    gameLayoutVariables.backgroundImage.input.priorityID = 1;
-                    that.cancelResign();
+                    gameLayoutVariables.backgroundImage.enableInput(true);
+                    gameLayoutVariables.backgroundImage.setInputPriority(1);
+                    this.cancelResign();
                     gameLayoutVariables.turnText.text = " YOU LOSE!";
                     console.log("Client resigned, hence lost");
-                    gameEndHandler(that.phaserGame, 1);
-                },
+                    gameEndHandler(this.phaserGame, 1);
+                }.bind(this),
                 function (error) {
                     console.log("resignation - Failure due to following error : ", error);
-                    that.cancelResign();
-                }
+                    this.cancelResign();
+                }.bind(this)
             );
         }
     }
+
     createDarkOverlay() {
         this.darkOverlay = new DarkOverlay({
             phaserGameObj: this.phaserGame,
@@ -83,22 +73,30 @@ export default class ResignButton extends Phaser.Button {
         });
         this.darkOverlay.setInputPriority(2);
     }
+
     createResignModal() {
-        this.resignModal = this.game.add.sprite(72, 540, 'resignModal');
+        this.resignModal = this.phaserGame.add.sprite(72, 540, 'resignModal');
         this.resignModal.inputEnabled = true;
         this.resignModal.input.priorityID = 3;
     }
+
     createCancelButton() {
-        this.cancelButton = this.game.add.button(291, 1191, 'cancel', this.cancelResign, this);
+        this.cancelButton = this.phaserGame.add.button(291, 1191, 'cancel', this.cancelResign, this);
         this.cancelButton.inputEnabled = true;
         this.cancelButton.input.priorityID = 4;
     }
+
     createYesResignButton() {
-        this.yesResignButton = this.game.add.button(522, 1191, 'yesResign', this.quitGame, this);
+        this.yesResignButton = this.phaserGame.add.button(522, 1191, 'yesResign', this.quitGame, this);
         this.yesResignButton.inputEnabled = true;
         this.yesResignButton.input.priorityID = 4;
     }
-    setInputPriority(val) {
-        this.input.priorityID = val;
+
+    enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
+        this.inputEnabled = val;
+    }
+
+    setInputPriority(priorityID) { // TODO : same
+        this.input.priorityID = priorityID;
     }
 }

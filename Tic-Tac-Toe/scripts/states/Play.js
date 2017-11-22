@@ -1,17 +1,17 @@
 'use strict';
 import phaserManager from "../util/phaserManager";
-import globalVariableInstance from "../objects/gameGlobalVariables";
+import globalVariableInstance from "../objects/store/gameGlobalVariables";
 import {gameEndHandler, drawWinningLine} from '../util/gameEnd';
-import {gameLayoutVariables} from "../objects/gameLayoutVariables";
-import Bot from "../objects/Bot";
-import Game from "../objects/Game";
-import Background from "../objects/Background";
-import ResignButton from "../objects/ResignButton";
+import {gameLayoutVariables} from "../objects/store/gameLayoutVariables";
+import Bot from "../objects/bot/Bot";
+import Game from "../objects/bot/Game";
+import Background from "../objects/widgets/icons/Background";
+import ResignButton from "../objects/widgets/button/ResignButton";
 import saveGameData from "../util/saveGameData";
-import MusicButton from "../objects/MusicButton";
-import GameState from "../objects/GameState";
-import BackButton from "../objects/BackButton";
-import HelpButton from "../objects/HelpButton";
+import MusicButton from "../objects/widgets/button/MusicButton";
+import GameState from "../objects/bot/GameState";
+import BackButton from "../objects/widgets/button/BackButton";
+import HelpButton from "../objects/widgets/button/HelpButton";
 
 const CELL_WIDTH = 264;
 const CELL_HEIGHT = 264;
@@ -67,7 +67,7 @@ export class Play extends Phaser.State {
     clickHandlerSolo(sprite, pointer) {
         var cell = this.cells.children;
         if (sprite.frame === 0) {
-            gameLayoutVariables.backgroundImage.setInputEnabled(true);
+            gameLayoutVariables.backgroundImage.enableInput(true);
             gameLayoutVariables.backgroundImage.setInputPriority(2);
             gameLayoutVariables.backButton.setInputPriority(2);
             this.musicButton.setInputPriority(2);
@@ -95,7 +95,7 @@ export class Play extends Phaser.State {
         console.log(globalVariableInstance.get("turnOfPlayer"), globalVariableInstance.get("playerData"), sprite.frame);
 
         if (globalVariableInstance.get("turnOfPlayer") !== undefined && globalVariableInstance.get("turnOfPlayer").id === globalVariableInstance.get("playerData").id && sprite.frame === 0) {
-            gameLayoutVariables.backgroundImage.setInputEnabled(true);
+            gameLayoutVariables.backgroundImage.enableInput(true);
             gameLayoutVariables.backgroundImage.setInputPriority(2);
             gameLayoutVariables.backButton.setInputPriority(2);
             this.musicButton.setInputPriority(2);
@@ -141,7 +141,7 @@ export class Play extends Phaser.State {
                     }
                     else {
                         gameLayoutVariables.backgroundImage.setInputPriority(1);
-                        gameLayoutVariables.backgroundImage.setInputEnabled(false);
+                        gameLayoutVariables.backgroundImage.enableInput(false);
                         gameLayoutVariables.backButton.setInputPriority(1);
                         that.musicButton.setInputPriority(1);
                         gameLayoutVariables.resign.setInputPriority(1);
@@ -154,7 +154,7 @@ export class Play extends Phaser.State {
                     globalVariableInstance.set("boardStatus", {cells: tempCells});
                     globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("playerData"));
                     gameLayoutVariables.backgroundImage.setInputPriority(1);
-                    gameLayoutVariables.backgroundImage.setInputEnabled(false);
+                    gameLayoutVariables.backgroundImage.enableInput(false);
                     gameLayoutVariables.backButton.setInputPriority(1);
                     this.musicButton.setInputPriority(1);
                     gameLayoutVariables.resign.setInputPriority(1);
@@ -186,7 +186,7 @@ export class Play extends Phaser.State {
             gameLayoutVariables.opponentProfilePic.alpha = 0.3;
             gameLayoutVariables.playerProfilePic.alpha = 1;
             gameLayoutVariables.backgroundImage.setInputPriority(1);
-            gameLayoutVariables.backgroundImage.setInputEnabled(false);
+            gameLayoutVariables.backgroundImage.enableInput(false);
             gameLayoutVariables.backButton.setInputPriority(1);
             this.musicButton.setInputPriority(1);
             gameLayoutVariables.resign.setInputPriority(1);
@@ -210,7 +210,7 @@ export class Play extends Phaser.State {
 
     createBackground() {
         gameLayoutVariables.backgroundImage = new Background({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 0,
             posY: 0,
             label: 'arena',
@@ -284,7 +284,7 @@ export class Play extends Phaser.State {
 
     createMusicButton() {
         this.musicButton = new MusicButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 960,
             posY: 96,
             label: 'music',
@@ -295,7 +295,7 @@ export class Play extends Phaser.State {
 
     createBackButton() {
         gameLayoutVariables.backButton = new BackButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 48,
             posY: 96,
             label: 'back',
@@ -307,7 +307,7 @@ export class Play extends Phaser.State {
 
     createHelpButton() {
         gameLayoutVariables.help = new HelpButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 741,
             posY: 1584,
             label: 'helpEnd',
@@ -319,7 +319,7 @@ export class Play extends Phaser.State {
 
     createResignButton() {
         gameLayoutVariables.resign = new ResignButton({
-            phaserGameObj: this.game,
+            game: this.game,
             posX: 390,
             posY: 1584,
             label: 'resign',
