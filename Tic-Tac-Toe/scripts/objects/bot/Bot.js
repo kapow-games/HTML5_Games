@@ -3,32 +3,27 @@
 import BotBehaviour from "./BotBehaviour"; // TODO : @mayank use strict
 
 export default class Bot {
-    constructor(botLevel) {
-        this.botLevel = botLevel;
-        /*
-            0 : Easy
-            1 : Medium
-            2: Hard
-        */
+    constructor() {
+        this.botLevel = 1;
         this.gameDetail = {};
     }
 
     //TODO : handle Game.score
-    getMiniMaxValue(gameObj, state) { // TODO: @mayank: Rename to getMiniMaxValue
+    getMiniMaxValue(ticTacToeGame, state) { // TODO: @mayank: Rename to getMiniMaxValue
         if (state.isTerminal()) {
-            return gameObj.score(state);
+            return ticTacToeGame.score(state);
         }
-        let stateScore = state.turn === 1 ? -1000 : 1000;
+        let stateScore = state.turnOfPlayer ? -1000 : 1000;
 
         let availablePositions = state.emptyCells();
         let availableNextStates = availablePositions.map(function (pos) {
             let action = new BotBehaviour(pos);
-            return action.applyTo(state); // TODO : nextState var is redundant
+            return action.plays(state); // TODO : nextState var is redundant
         });
         // console.log(availableNextStates);
         availableNextStates.forEach(function (nextState) {
-            var nextScore = getMiniMaxValue(gameObj, nextState);
-            if (state.turn === 1 && nextScore > stateScore) { // TODO :  can do (state.turn === 1 && nextScore > stateScore) {}
+            let nextScore = this.getMiniMaxValue(ticTacToeGame, nextState);
+            if (state.turnOfPlayer === 1 && nextScore > stateScore) { // TODO :  can do (state.turn === 1 && nextScore > stateScore) {}
                 stateScore = nextScore;
             }
             else if (nextScore < stateScore) {
@@ -38,9 +33,9 @@ export default class Bot {
         return stateScore;
     }
 
-    botMove(turn) {// TODO : rename turn to something else @sukhmeet medium refered to medium difficulty level.
+    botMove(turnOfPlayer) {// TODO : rename turn to something else @sukhmeet medium referred to medium difficulty level.
         // But since the easy bot move and hard bot move idea was dropped, removing the redundant function and renaming to botMove
-        this.sortPossibleBotMoves(turn);
+        this.sortPossibleBotMoves(turnOfPlayer);
         let chosenAction;
         if (Math.random() * 100 <= 80) {
             chosenAction = availableActions[0];
@@ -53,32 +48,56 @@ export default class Bot {
                 chosenAction = availableActions[0];
             }
         }
-        let next = chosenAction.applyTo(this.gameDetail.currentState);
+        let next = chosenAction.plays(this.gameDetail.currentState);
         this.gameDetail.moveTo(next);
     }
 
-    plays(gameDetail) { // TODO : @mayank : plays ? what does the function do ?
+    gameAssigned(gameDetail) { // TODO : @mayank : plays ? what does the function do ?
+        //Renamed to gameAssigned.
+        //The 'Bot' should be aware of the 'Game' object. This function stores that.
         this.gameDetail = gameDetail;
     }
 
-    notifyTurn(turn) { // TODO : @mayank: it plays the nextMove , can be renamed accordingly
-        this.botMove(turn);
+    notifyTurn(turnOfPlayer) { // TODO : @mayank: it plays the nextMove , can be renamed accordingly
+        this.botMove(turnOfPlayer);
     }
 
-    sortPossibleBotMoves(turn) {
+    sortPossibleBotMoves(turnOfPlayer) {
         let available = this.gameDetail.currentState.emptyCells(); // TODO : redundant var
         let availableActions = available.map(function (pos) {
             let action = new BotBehaviour(pos);
-            let next = action.applyTo(this.gameDetail.currentState);
+            let next = action.plays(this.gameDetail.currentState);
             action.miniMaxValue = getMiniMaxValue(next);
             return action;
         });
-        if (turn === 2) {// TODO : @mayank :
-            availableActions.sort(botBehaviour.ascending);
+        if (turnOfPlayer === false) {// TODO : @mayank :
+            availableActions.sort(this._ascending);
         }
         else {
-            availableActions.sort(botBehaviour.descending);
+            availableActions.sort(this._descending);
         }
     }
+
+    _ascending(firstAction, secondAction) {
+        if (firstAction.miniMaxValue < secondAction.miniMaxValue) {
+            return -1;
+        }
+        else if (firstAction.miniMaxValue > secondAction.miniMaxValue) {
+            return 1;
+        }
+        return 0;
+    }
+
+    _descending(firstAction, secondAction) {
+        if (firstAction.miniMaxValue > secondAction.miniMaxValue) {
+            return -1;
+        }
+        else if (firstAction.miniMaxValue < secondAction.miniMaxValue) {
+            return 1;
+        }
+        return 0;
+    }
+
+    x
 }
 

@@ -1,8 +1,10 @@
 'use strict';
+
 import phaserManager from "../util/phaserManager";
 import globalVariableInstance from "../objects/store/gameGlobalVariables";
-import {gameEndHandler, drawWinningLine} from '../util/gameEnd';
-import {gameLayoutVariables} from "../objects/store/gameLayoutVariables";
+import gameEndHandler from '../util/gameEnd';
+import drawWinningLine from '../util/gameEnd';
+import gameLayoutVariables from "../objects/store/gameLayoutVariables";
 import Bot from "../objects/bot/Bot";
 import Game from "../objects/bot/Game";
 import Background from "../objects/widgets/icons/Background";
@@ -12,15 +14,7 @@ import MusicButton from "../objects/widgets/button/MusicButton";
 import GameState from "../objects/bot/GameState";
 import BackButton from "../objects/widgets/button/BackButton";
 import HelpButton from "../objects/widgets/button/HelpButton";
-
-const CELL_WIDTH = 264;
-const CELL_HEIGHT = 264;
-const CELL_COLS = 3;
-const CELL_ROWS = 3;
-const CELL_HEIGHT_PAD = 54;
-const CELL_WIDTH_PAD = 54;
-const CELL_RELATIVE_TOP = 501;
-const CELL_RELATIVE_LEFT = 90;
+import layoutConst from "../gameParam/gameConst";
 
 export class Play extends Phaser.State {
     preload() {
@@ -65,7 +59,7 @@ export class Play extends Phaser.State {
     }
 
     clickHandlerSolo(sprite, pointer) {
-        var cell = this.cells.children;
+        let cell = this.cells.children;
         if (sprite.frame === 0) {
             gameLayoutVariables.backgroundImage.enableInput(true);
             gameLayoutVariables.backgroundImage.setInputPriority(2);
@@ -80,10 +74,10 @@ export class Play extends Phaser.State {
             gameLayoutVariables.opponentProfilePic.alpha = 1;
             gameLayoutVariables.playerProfilePic.alpha = 0.3;
 
-            var that = this;
+
             setTimeout(function () {
-                that.nextMove(sprite, pointer, cell);
-            }, 1000);
+                this.nextMove(sprite, pointer, cell);
+            }.bind(this), 1000);
         }
         else {
             console.log('Cell already occupied.');
@@ -115,8 +109,7 @@ export class Play extends Phaser.State {
             sprite.frame = globalVariableInstance.get("playerMark");
             sprite.alpha = 0.3;
 
-            var that = this;
-            var sentData = {
+            let sentData = {
                 board: globalVariableInstance.get("boardStatus").cells,
                 playerTurn: globalVariableInstance.get("playerData").id,
                 opponentTurn: globalVariableInstance.get("opponentData").id,
@@ -131,22 +124,22 @@ export class Play extends Phaser.State {
                     if (obj.result === "lost") {
                         gameLayoutVariables.turnText.text = " YOU WON!";
                         drawWinningLine();
-                        gameEndHandler(that.game, 2);
+                        gameEndHandler(this.game, 2);
                         console.log("You won");
                     }
                     else if (obj.result === "draw") {
                         gameLayoutVariables.turnText.text = " GAME DRAW!";
                         console.log("Draw");
-                        gameEndHandler(that.game, 0);
+                        gameEndHandler(this.game, 0);
                     }
                     else {
                         gameLayoutVariables.backgroundImage.setInputPriority(1);
                         gameLayoutVariables.backgroundImage.enableInput(false);
                         gameLayoutVariables.backButton.setInputPriority(1);
-                        that.musicButton.setInputPriority(1);
+                        this.musicButton.setInputPriority(1);
                         gameLayoutVariables.resign.setInputPriority(1);
                     }
-                },
+                }.bind(this),
                 function (error) {
                     sprite.frame = 0;
                     let tempCells = globalVariableInstance.get("boardStatus").cells;
@@ -164,20 +157,20 @@ export class Play extends Phaser.State {
                     gameLayoutVariables.playerProfilePic.alpha = 1;
 
                     console.log("makeMove - failure", error);
-                }
+                }.bind(this)
             );
         }
     }
 
     nextMove(sprite, cell) {
-        var next = new GameState(gameLayoutVariables.myGame.currentState);
+        let next = new GameState(gameLayoutVariables.myGame.currentState);
         console.log("Click Acknowledged");
         next.board[sprite.frameIndex] = globalVariableInstance.get("playerMark");
         sprite.frame = globalVariableInstance.get("playerMark");
         console.log("Player's move logged");
         next.nextTurn();
         gameLayoutVariables.myGame.moveTo(next);
-        for (let i = 0; i < CELL_COLS * CELL_ROWS; i++) {
+        for (let i = 0; i < layoutConst.CELL_COLS * layoutConst.CELL_ROWS; i++) {
             cell[i].frame = gameLayoutVariables.myGame.currentState.board[i];
         }
         if (globalVariableInstance.get("win") === 0 && gameLayoutVariables.myGame.gameStatus !== 3) {
@@ -248,7 +241,7 @@ export class Play extends Phaser.State {
         gameLayoutVariables.playerProfilePic = this.game.add.image(372, 78, 'profilePic');
         gameLayoutVariables.playerProfilePic.scale.set(108 / gameLayoutVariables.playerProfilePic.width, 108 / gameLayoutVariables.playerProfilePic.height);
 
-        var mask = this.game.add.graphics(0, 0);
+        let mask = this.game.add.graphics(0, 0);
         mask.beginFill(0xffffff);
         mask.drawCircle(426, 132, 108);
         gameLayoutVariables.playerProfilePic.mask = mask;
@@ -269,7 +262,7 @@ export class Play extends Phaser.State {
         gameLayoutVariables.opponentProfilePic = this.add.image(600, 78, globalVariableInstance.get("gameType") === 'solo' ? 'botPic' : "opponentPic");
         gameLayoutVariables.opponentProfilePic.scale.set(108 / gameLayoutVariables.opponentProfilePic.width);
         // console.log("Pointer");
-        var mask = this.game.add.graphics(0, 0);
+        let mask = this.game.add.graphics(0, 0);
         mask.beginFill(0xffffff);
         mask.drawCircle(654, 132, 108);
         gameLayoutVariables.opponentProfilePic.mask = mask;
@@ -333,7 +326,7 @@ export class Play extends Phaser.State {
     }
 
     createBoards() {
-        var gameBoard = this.game.add.sprite(57, 477, 'board');
+        this.game.add.sprite(57, 477, 'board');
 
         gameLayoutVariables.resultBoard = this.game.add.sprite(315, 240, 'winBackground');
         gameLayoutVariables.resultBoard.frame = 0;
@@ -370,18 +363,18 @@ export class Play extends Phaser.State {
     }
 
     prepareGameBoard() {
-        var count = 0;
+        let count = 0;
         this.cells = this.add.group();
         this.player = 1;
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
-        for (var i = 0; i < CELL_COLS; i++) {
-            for (var j = 0; j < CELL_ROWS; j++) {
-                var cell = this.cells.create(i * (CELL_WIDTH + CELL_WIDTH_PAD) + CELL_RELATIVE_LEFT, j * (CELL_HEIGHT + CELL_HEIGHT_PAD) + CELL_RELATIVE_TOP, 'cell');
+        for (let i = 0; i < layoutConst.CELL_COLS; i++) {
+            for (let j = 0; j < layoutConst.CELL_ROWS; j++) {
+                let cell = this.cells.create(i * (layoutConst.CELL_WIDTH + layoutConst.CELL_WIDTH_PAD) + layoutConst.CELL_RELATIVE_LEFT, j * (layoutConst.CELL_HEIGHT + layoutConst.CELL_HEIGHT_PAD) + layoutConst.CELL_RELATIVE_TOP, 'cell');
                 if (globalVariableInstance.get("gameResume") === true) {
                     cell.frame = globalVariableInstance.get("boardStatus").cells[count];
                     if (globalVariableInstance.get("boardStatus").cells[count] === 0 || globalVariableInstance.get("boardStatus").cells[count] === undefined || globalVariableInstance.get("boardStatus").cells[count] === null) {
                         cell.frame = 0;
-                        cell.inputEnabled = globalVariableInstance.get("gameOver") === true ? false : true;
+                        cell.inputEnabled = !globalVariableInstance.get("gameOver");
                         cell.events.onInputDown.add(globalVariableInstance.get("gameType") === 'solo' ? this.clickHandlerSolo : this.clickHandlerMulti, this);
                     }
                     else {
@@ -401,7 +394,7 @@ export class Play extends Phaser.State {
     }
 
     initialiseBot() {
-        var myBot = new Bot(1);
+        let myBot = new Bot();
         gameLayoutVariables.myGame = new Game(this.game, myBot);
         if (globalVariableInstance.get("playerMark") === 2 && globalVariableInstance.get("gameResume") === false) {
             this.cells.children[gameLayoutVariables.initialMark].frame = 1;
@@ -410,7 +403,7 @@ export class Play extends Phaser.State {
         if (globalVariableInstance.get("gameOver") === false) {
             saveGameData(this.game, false);// To store the initial state of the Game. Even if the user or bot haven't made any move.
         }
-        myBot.plays(gameLayoutVariables.myGame);
+        myBot.gameAssigned(gameLayoutVariables.myGame);
         gameLayoutVariables.myGame.start();
         if (globalVariableInstance.get("gameOver") === true && globalVariableInstance.get("win") === 0) {
             gameEndHandler(this.game, 1);

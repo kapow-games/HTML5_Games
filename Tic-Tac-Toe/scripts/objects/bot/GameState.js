@@ -1,29 +1,34 @@
 'use strict';
+
+import gameLayoutVariables from "../store/gameLayoutVariables";
+import layoutConst from "../../gameParam/gameConst";
+
 export default class GameState {
     constructor(oldGameState) { // TODO : rename it to just state ?
-        this.turn = 0; // 0 : No One's Move // 1 : Player 1(x)'s Move // 2 : Player 2(o)'s Move' // TODO : @mayank : Can be a boolean ?
-        this.oMovesCount = 0;
-        this.boardResult; // 0 : Board Result Draw // 1 : Board Result Player 1(x) wins // 2 : Board Result Player 2(o) wins // undefined : game state not decided
+        this.turnOfPlayer = null;
+        // null : No One's Move // true : Player's Move // false : Opponent's Move' // TODO : @mayank : Can be a boolean ?
+        this.movesCount = 0; // Number of moves of Bot
+        this.boardResult =  undefined; // 0 : Board Result Draw // 1 : Board Result Player 1(x) wins // 2 : Board Result Player 2(o) wins // undefined : game state not decided
         this.board = []; //board[i] = 0 : Empty //board[i] = 1 : 'X' //board[i] = 2 : 'O'
-        if (typeof(oldGameState) !== "undefined") { // TODO : can do if(oldGameState ) {} // undefined is falsy
-            var len = oldGameState.board.length;
-            this.board = new Array(len); // TODO : initialize array with [] https://stackoverflow.com/a/1273936
-            for (var i = 0; i < len; i++) {
-                this.board[i] = oldGameState.board[i];
+        if (oldGameState) { // TODO : can do if(oldGameState ) {} // undefined is falsy
+            let len = oldGameState.board.length;
+            this.board = []; // TODO : initialize array with [] https://stackoverflow.com/a/1273936
+            for (let i = 0; i < len; i++) {
+                this.board.push(oldGameState.board[i]);
             }
-            this.turn = oldGameState.turn;
-            this.oMovesCount = oldGameState.oMovesCount;
+            this.turnOfPlayer = oldGameState.turnOfPlayer;
+            this.movesCount = oldGameState.movesCount;
             this.boardResult = oldGameState.boardResult;
         }
     }
 
     nextTurn() {
-        this.turn = ( this.turn === 1 ) ? 2 : 1;
+        this.turnOfPlayer = !this.turnOfPlayer;
     }
 
     emptyCells() {
-        var indices = [];
-        var len = this.board.length;
+        let indices = [];
+        let len = this.board.length;
         for (let i = 0; i < len; i++) {
             if (this.board[i] === 0) {
                 indices.push(i);
@@ -34,7 +39,7 @@ export default class GameState {
 
     isTerminal() {
         let cell = this.board;
-        for (let i = 0, j = 3; i < 3; i++) {
+        for (let i = 0, j = layoutConst.CELL_ROWS; i < layoutConst.CELL_COLS; i++) {
             if (cell[i] !== 0 && cell[i] === cell[i + j] && cell[i + j] === cell[i + (2 * j)]) {
                 gameLayoutVariables.winningMarkLine = i;
                 this.boardResult = cell[i];
@@ -42,9 +47,9 @@ export default class GameState {
             }
         }
         //Checking Columns
-        for (let i = 0, j = 1; i < 9; i += 3) {
+        for (let i = 0, j = 1; i < layoutConst.CELL_ROWS * layoutConst.CELL_COLS; i += layoutConst.CELL_COLS) {
             if (cell[i] !== 0 && cell[i] === cell[i + j] && cell[i + j] === cell[i + (2 * j)]) {
-                gameLayoutVariables.winningMarkLine = (i / 3) + 3;
+                gameLayoutVariables.winningMarkLine = (i / layoutConst.CELL_COLS) + layoutConst.CELL_ROWS;
                 this.boardResult = cell[i];
                 return true;
             }
@@ -65,8 +70,6 @@ export default class GameState {
             this.boardResult = 0;
             return true;
         }
-        else {
-            return false;
-        }
+        return false;
     }
 }
