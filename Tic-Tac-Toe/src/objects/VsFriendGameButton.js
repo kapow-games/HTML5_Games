@@ -14,7 +14,7 @@ export default class VsFriendGameButton extends Phaser.Button {
         let _upFrame = obj.upFrame;
         let _inputEnabled = obj.inputEnabled;
 
-        super(_phaserGameObj, _posX, _posY, _label, vsFriendGameStart, this, _overFrame, _outFrame, _downFrame, _upFrame);
+        super(_phaserGameObj, _posX, _posY, _label, vsFriendGameStart, null, _overFrame, _outFrame, _downFrame, _upFrame);
 
         this.anchor.setTo(_anchorX, _anchorY);
         this.inputEnabled = _inputEnabled;
