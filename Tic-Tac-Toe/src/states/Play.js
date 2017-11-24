@@ -41,7 +41,6 @@ export class Play extends Phaser.State {
 
         this.prepareGameBoard();
 
-
         if (globalVariableInstance.get("gameType") === 'solo') {
             this.initialiseBot();
         }
@@ -66,6 +65,16 @@ export class Play extends Phaser.State {
         this.game.stage.removeChild(this.musicButton);
         this.game.stage.removeChild(gameLayoutVariables.resultBoard);
         this.game.stage.removeChild(gameLayoutVariables.help);
+        this.game.stage.removeChild(this.playerProfilePicMark);
+        this.game.stage.removeChild(this.playerProfilePicMarkBackground);
+        this.game.stage.removeChild(this.playerProfilePicBackground);
+        this.game.stage.removeChild(gameLayoutVariables.playerProfilePic);
+        this.game.stage.removeChild(gameLayoutVariables.playerProfilePic.mask);
+        this.game.stage.removeChild(this.opponentProfilePicMark);
+        this.game.stage.removeChild(this.opponentProfilePicMarkBackground);
+        this.game.stage.removeChild(this.opponentProfilePicBackground);
+        this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic);
+        this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic.mask);
     }
 
     clickHandlerSolo(sprite, pointer) {

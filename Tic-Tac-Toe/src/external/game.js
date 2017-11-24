@@ -4,7 +4,7 @@ import GameStoreQuery from "../objects/store/GameStoreQuery";
 import globalVariableInstance from "../objects/store/gameGlobalVariables";
 import phaserGame from "../main";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
-import drawWinningLine from "../util/gameEnd";
+import {drawWinningLine} from "../util/gameEnd";
 import gameEndHandler from "../util/gameEnd";
 import gameLayoutVariables from "../objects/store/gameLayoutVariables";
 

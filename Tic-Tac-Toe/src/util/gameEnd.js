@@ -2,6 +2,7 @@ import gameLayoutVariables from "../objects/store/gameLayoutVariables";
 import SocialShare from "./SocialShare";
 import GameStoreQuery from "../objects/store/GameStoreQuery";
 import globalVariableInstance from "../objects/store/gameGlobalVariables";
+import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
 
 export default function gameEndHandler(phaserGame, value) {
     console.log("Game End Being Handled.");
@@ -14,6 +15,21 @@ export default function gameEndHandler(phaserGame, value) {
     gameLayoutVariables.resign.destroy();
     gameLayoutVariables.help.destroy();
     gameLayoutVariables.turnText.text = (value === 1) ? "YOU LOST!" : (value === 2 ? "YOU WON!" : "GAME DRAW!");
+
+    if(value === 2) {
+        if(globalVariableInstance.get("playerMark") === 1) {
+            gameLayoutVariables.resultBoard.frame = 0;
+            gameLayoutVariables.turnText.backgroundColor = "#48d1dc";
+        }
+        else {
+            gameLayoutVariables.resultBoard.frame = 1;
+            gameLayoutVariables.turnText.backgroundColor = "#b9dc70";
+        }
+    }
+    else if(value === 1) {
+        gameLayoutVariables.resultBoard.frame = 2;
+        gameLayoutVariables.turnText.backgroundColor = "#f45842";
+    }
 
     let shareBackground = phaserGame.add.sprite(72, 1584, 'shareBackground');
     phaserGame.stage.addChild(shareBackground)
@@ -150,6 +166,7 @@ export default function gameEndHandler(phaserGame, value) {
 export function drawWinningLine(phaserGame) {
     let gameFinalLayout = globalVariableInstance.get("boardStatus").cells;
     let matchPosition;
+    console.log("draw winning line called",gameFinalLayout);
     if (gameFinalLayout[0] !== null && gameFinalLayout[0] !== undefined && gameFinalLayout[0] === gameFinalLayout[1] && gameFinalLayout[0] === gameFinalLayout[2]) {
         matchPosition = phaserGame.add.sprite(222, 948, 'rectangle');
         matchPosition.anchor.setTo(0.5);
@@ -191,7 +208,9 @@ export function drawWinningLine(phaserGame) {
         console.log("CLient doesn't confirm result.")
     }
     console.log("Adding winning line");
-    phaserGame.stage.addChild(matchPosition);
+    if(matchPosition !== undefined) {
+        phaserGame.stage.addChild(matchPosition);
+    }
 }
 
 function rematchButtonHandler(item) {
