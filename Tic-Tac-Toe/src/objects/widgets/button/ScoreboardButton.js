@@ -1,15 +1,13 @@
 "use strict";
 
 export default class ScoreboardButton extends Phaser.Button {  // TODO : its a scoreboard not leaderboard :P
-    constructor(obj) {
-        super(obj.game, obj.posX, obj.posY, obj.label, () => this.clickHandler, () => this, obj.overFrame, obj.outFrame, obj.downFrame, obj.upFrame);
-        this.anchor.setTo(obj.anchorX, obj.nchorY);
-        this.inputEnabled = obj.inputEnabled;
+    constructor(arg) {
+        let scoreboardClickHandler = function() {
+            console.log('Leaderboard Button Clicked');
+            kapow.boards.displayScoreboard({'metric': 'points', 'interval': 'alltime'});
+        };
+        super(arg.game, arg.posX, arg.posY, arg.label, scoreboardClickHandler, null, arg.overFrame, arg.outFrame, arg.downFrame, arg.upFrame);
+        this.anchor.setTo(arg.anchorX, arg.nchorY);
+        this.inputEnabled = arg.inputEnabled;
     }
-
-    clickHandler() {
-        console.log('Leaderboard Button Clicked');
-        kapow.boards.displayScoreboard({'metric': 'points', 'interval': 'alltime'});
-    }
-
-}
+};

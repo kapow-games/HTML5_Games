@@ -1,5 +1,8 @@
+import globalVariableInstance from "../objects/store/gameGlobalVariables";
+import phaserGame from "../main";
+
 var parseRoomAndRedirectToGame = function() {
-    if (globalVariableInstance.get("room") == null) {
+    if (globalVariableInstance.get("room") === null) {
         console.log("Room is null, hence not redirecting to game");
     }
     else {
@@ -88,10 +91,10 @@ var parseRoomAndRedirectToGame = function() {
             }
             console.log("Redirecting to game...",globalVariableInstance.get("opponentData"));
             globalVariableInstance.set("gameType", 'friend');
-            if(globalVariableInstance.get("opponentData") !== undefined && globalVariableInstance.get("opponentData").affiliation === "accepted") {
+            if(globalVariableInstance.get("opponentData") !== null && globalVariableInstance.get("opponentData").affiliation === "accepted") {
                 phaserGame.state.start('playLoad');
             }
-            else if(globalVariableInstance.get("opponentData") != undefined && (globalVariableInstance.get("opponentData").affiliation === "left" || globalVariableInstance.get("playerData").affiliation === "left")) {
+            else if(globalVariableInstance.get("opponentData") !== null && (globalVariableInstance.get("opponentData").affiliation === "left" || globalVariableInstance.get("playerData").affiliation === "left")) {
                 globalVariableInstance.set("gameOver", true);
                 phaserGame.state.start('playLoad');
             }

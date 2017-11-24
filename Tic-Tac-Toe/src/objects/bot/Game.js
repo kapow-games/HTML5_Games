@@ -53,27 +53,28 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
                 gameEndHandler(this.phaserGame, 0);
             }
             if (globalVariableInstance.get("win") !== 0) {
+                let matchPosition ;
                 switch (gameLayoutVariables.winningMarkLine) {
                     case 0 : {
-                        let matchPosition = this.phaserGame.add.sprite(552, 633, 'rectangle');
+                        matchPosition = this.phaserGame.add.sprite(552, 633, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         matchPosition.angle = 90;
                         break;
                     }
                     case 1 : {
-                        let matchPosition = this.phaserGame.add.sprite(552, 948, 'rectangle');
+                        matchPosition = this.phaserGame.add.sprite(552, 948, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         matchPosition.angle = 90;
                         break;
                     }
                     case 2 : {
-                        let matchPosition = this.phaserGame.add.sprite(552, 1263, 'rectangle');
+                        matchPosition = this.phaserGame.add.sprite(552, 1263, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         matchPosition.angle = 90;
                         break;
                     }
                     case 3 : {
-                        let matchPosition = this.phaserGame.add.sprite(222, 948, 'rectangle');
+                        matchPosition = this.phaserGame.add.sprite(222, 948, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         break;
                     }
@@ -83,18 +84,18 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
                         break;
                     }
                     case 5 : {
-                        let matchPosition = this.phaserGame.add.sprite(882, 948, 'rectangle');
+                        matchPosition = this.phaserGame.add.sprite(882, 948, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         break;
                     }
                     case 6 : {
-                        let matchPosition = this.phaserGame.add.sprite(552, 948, 'rectangle');
+                        matchPosition = this.phaserGame.add.sprite(552, 948, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         matchPosition.angle = -45;
                         break;
                     }
                     case 7 : {
-                        let matchPosition = this.phaserGame.add.sprite(552, 948, 'rectangle');
+                        matchPosition = this.phaserGame.add.sprite(552, 948, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         matchPosition.angle = 45;
                         break;
@@ -103,6 +104,7 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
                         console.log("Game Result inconsistent");
                     }
                 }
+                this.phaserGame.stage.addChild(matchPosition);
             }
         }
         else {

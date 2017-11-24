@@ -8,7 +8,7 @@ import drawWinningLine from "../util/gameEnd";
 import gameEndHandler from "../util/gameEnd";
 import gameLayoutVariables from "../objects/store/gameLayoutVariables";
 
-var game = {
+window.game = {
     onLoad: function (roomObj) {
         this.syncStats();
         console.log("Client onLoad - " + JSON.stringify(roomObj));
@@ -169,7 +169,7 @@ var game = {
             }
             console.log("room : ", globalVariableInstance.get("room"));
             phaserGame.state.start('boot');
-        }, function () {
+        }.bind(this), function () {
             console.log("Client getUserInfo failure");
         });
     },

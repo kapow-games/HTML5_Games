@@ -1,5 +1,5 @@
 'use strict';
-
+import {game} from "../external/game";
 export class Boot extends Phaser.State {
     preload() {
         this.load.image("loading", "assets/images/loading.png");

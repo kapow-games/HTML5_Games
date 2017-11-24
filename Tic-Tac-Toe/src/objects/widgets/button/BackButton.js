@@ -1,13 +1,13 @@
 "use strict";
 
 export default class BackButton extends Phaser.Button { // TODO : @mayank : 'use-strict' . Move Phaser classes to widgets package
-    constructor(obj) { // TODO : formattting
-        super(obj.game, obj.posX, obj.posY, obj.label, obj.callback);
-        this.anchor.setTo(obj.anchorX, obj.anchorY);
+    constructor(arg) { // TODO : formattting
+        super(arg.game, arg.posX, arg.posY, arg.label, arg.callback);
+        this.anchor.setTo(arg.anchorX, arg.anchorY);
     }
 
     enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
-        this.inputEnabled = val;
+        this.inputEnabled = isEnabled;
     }
 
     setInputPriority(priorityID) { // TODO : same

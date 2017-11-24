@@ -58,6 +58,16 @@ export class Play extends Phaser.State {
     update() {
     }
 
+    shutdown() {
+        this.game.stage.removeChild(gameLayoutVariables.backgroundImage);
+        this.game.stage.removeChild(gameLayoutVariables.turnText);
+        this.game.stage.removeChild(gameLayoutVariables.turnTextBackground);
+        this.game.stage.removeChild(gameLayoutVariables.backButton);
+        this.game.stage.removeChild(this.musicButton);
+        this.game.stage.removeChild(gameLayoutVariables.resultBoard);
+        this.game.stage.removeChild(gameLayoutVariables.help);
+    }
+
     clickHandlerSolo(sprite, pointer) {
         let cell = this.cells.children;
         if (sprite.frame === 0) {
@@ -66,7 +76,7 @@ export class Play extends Phaser.State {
             gameLayoutVariables.backButton.setInputPriority(2);
             this.musicButton.setInputPriority(2);
             gameLayoutVariables.resign.setInputPriority(2);
-
+            console.log("Player Mark", globalVariableInstance.get("playerMark"));
             sprite.frame = globalVariableInstance.get("playerMark");
             console.log("Player's Sprite Set");
 
@@ -76,7 +86,7 @@ export class Play extends Phaser.State {
 
 
             setTimeout(function () {
-                this.nextMove(sprite, pointer, cell);
+                this.nextMove(sprite, cell);
             }.bind(this), 1000);
         }
         else {
@@ -191,7 +201,7 @@ export class Play extends Phaser.State {
 
     loadOpponentImage() {
         if (globalVariableInstance.get("gameType") === 'friend') {
-            if (globalVariableInstance.get("opponentData") !== undefined) {
+            if (globalVariableInstance.get("opponentData") !== null) {
                 this.game.load.image('opponentPic', globalVariableInstance.get("opponentData").profileImage);
             }
             else {
@@ -210,6 +220,7 @@ export class Play extends Phaser.State {
             anchorX: 0,
             anchorY: 0
         });
+        this.game.stage.addChild(gameLayoutVariables.backgroundImage);
     }
 
     backButtonHandler() {
@@ -225,8 +236,8 @@ export class Play extends Phaser.State {
         globalVariableInstance.set("gameType", null);
         globalVariableInstance.set("botLevel", -1);
         globalVariableInstance.set("boardStatus", {cells: new Array(9)});
-        globalVariableInstance.set("opponentData", undefined);
-        globalVariableInstance.set("turnOfPlayer", undefined);
+        globalVariableInstance.set("opponentData", null);
+        globalVariableInstance.set("turnOfPlayer", null);
         globalVariableInstance.set("gameOver", false);
         globalVariableInstance.set("win", 0);
         globalVariableInstance.set("gameLayoutLoaded", false);
@@ -236,43 +247,55 @@ export class Play extends Phaser.State {
     createPlayerProfileImage() {
         this.playerProfilePicBackground = this.game.add.image(366, 72, 'circle');
         this.playerProfilePicBackground.scale.set(120 / this.playerProfilePicBackground.width, 120 / this.playerProfilePicBackground.height);
+        this.game.stage.addChild(this.playerProfilePicBackground);
 
 
         gameLayoutVariables.playerProfilePic = this.game.add.image(372, 78, 'profilePic');
         gameLayoutVariables.playerProfilePic.scale.set(108 / gameLayoutVariables.playerProfilePic.width, 108 / gameLayoutVariables.playerProfilePic.height);
+        this.game.stage.addChild(gameLayoutVariables.playerProfilePic);
 
         let mask = this.game.add.graphics(0, 0);
         mask.beginFill(0xffffff);
         mask.drawCircle(426, 132, 108);
         gameLayoutVariables.playerProfilePic.mask = mask;
+        this.game.stage.addChild(gameLayoutVariables.playerProfilePic.mask);
 
         this.playerProfilePicMarkBackground = this.game.add.image(438, 144, 'circle');
         this.playerProfilePicMarkBackground.scale.set(48 / this.playerProfilePicMarkBackground.width, 48 / this.playerProfilePicMarkBackground.height);
+        this.game.stage.addChild(this.playerProfilePicMarkBackground);
 
         this.playerProfilePicMark = this.game.add.sprite(438, 144, 'cell');
         console.log("playerMark at time of showing on screen", globalVariableInstance.get("playerMark"));
         this.playerProfilePicMark.frame = globalVariableInstance.get("playerMark");
         this.playerProfilePicMark.scale.set(48 / this.playerProfilePicMark.width, 48 / this.playerProfilePicMark.height);
+        this.game.stage.addChild(this.playerProfilePicMark);
     }
 
     createOpponentProfileImage() {
         this.opponentProfilePicBackground = this.game.add.image(594, 72, 'circle');
         this.opponentProfilePicBackground.scale.set(120 / this.opponentProfilePicBackground.width, 120 / this.opponentProfilePicBackground.height);
+        this.game.stage.addChild(this.opponentProfilePicBackground);
 
+        console.log(this.game.cache.checkImageKey('opponentPic'), this.load);
         gameLayoutVariables.opponentProfilePic = this.add.image(600, 78, globalVariableInstance.get("gameType") === 'solo' ? 'botPic' : "opponentPic");
         gameLayoutVariables.opponentProfilePic.scale.set(108 / gameLayoutVariables.opponentProfilePic.width);
+        this.game.stage.addChild(gameLayoutVariables.opponentProfilePic);
+
         // console.log("Pointer");
         let mask = this.game.add.graphics(0, 0);
         mask.beginFill(0xffffff);
         mask.drawCircle(654, 132, 108);
         gameLayoutVariables.opponentProfilePic.mask = mask;
+        this.game.stage.addChild(gameLayoutVariables.opponentProfilePic.mask);
 
         this.opponentProfilePicMarkBackground = this.game.add.image(594, 144, 'circle');
         this.opponentProfilePicMarkBackground.scale.set(48 / this.opponentProfilePicMarkBackground.width, 48 / this.opponentProfilePicMarkBackground.height);
+        this.game.stage.addChild(this.opponentProfilePicMarkBackground);
 
         this.opponentProfilePicMark = this.game.add.sprite(594, 144, 'cell');
         this.opponentProfilePicMark.frame = ( (globalVariableInstance.get("playerMark") === 2) ? 1 : 2);
         this.opponentProfilePicMark.scale.set(48 / this.opponentProfilePicMark.width, 48 / this.opponentProfilePicMark.height);
+        this.game.stage.addChild(this.opponentProfilePicMark);
     }
 
     createMusicButton() {
@@ -284,6 +307,7 @@ export class Play extends Phaser.State {
             anchorX: 0,
             anchorY: 0,
         });
+        this.game.stage.addChild(this.musicButton);
     }
 
     createBackButton() {
@@ -296,6 +320,7 @@ export class Play extends Phaser.State {
             anchorY: 0,
             callback: this.backButtonHandler.bind(this)
         });
+        this.game.stage.addChild(gameLayoutVariables.backButton);
     }
 
     createHelpButton() {
@@ -308,6 +333,7 @@ export class Play extends Phaser.State {
             anchorY: 0
             //0,0,1,0
         });
+        this.game.stage.addChild(gameLayoutVariables.help);
     }
 
     createResignButton() {
@@ -323,15 +349,19 @@ export class Play extends Phaser.State {
             downFrame: 1,
             upFrame: 0
         });
+        this.game.stage.addChild(gameLayoutVariables.resign);
     }
 
     createBoards() {
-        this.game.add.sprite(57, 477, 'board');
+        let boardLayout = this.game.add.sprite(57, 477, 'board');
+        this.game.stage.addChild(boardLayout);
 
         gameLayoutVariables.resultBoard = this.game.add.sprite(315, 240, 'winBackground');
         gameLayoutVariables.resultBoard.frame = 0;
+        this.game.stage.addChild(gameLayoutVariables.resultBoard);
 
         gameLayoutVariables.turnTextBackground = this.add.sprite(315, 240, 'turnTextBackground');
+        this.game.stage.addChild(gameLayoutVariables.turnTextBackground);
 
         gameLayoutVariables.turnText = phaserManager.createText(this.game, {
             positionX: this.game.world.centerX,
@@ -347,6 +377,7 @@ export class Play extends Phaser.State {
             anchorX: 0.5,
             anchorY: 0
         });
+        this.game.stage.addChild(gameLayoutVariables.turnText);
 
         gameLayoutVariables.vs = phaserManager.createText(this.game, {
             positionX: 511,
@@ -360,11 +391,13 @@ export class Play extends Phaser.State {
             fontWeight: 800,
             wordWrapWidth: 58
         });
+        this.game.stage.addChild(gameLayoutVariables.vs);
     }
 
     prepareGameBoard() {
         let count = 0;
-        this.cells = this.add.group();
+        this.cells = this.game.add.group();
+        this.game.stage.addChild(this.cells);
         this.player = 1;
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
         for (let i = 0; i < layoutConst.CELL_COLS; i++) {
@@ -411,10 +444,10 @@ export class Play extends Phaser.State {
     }
 
     verifyOpponentAffiliationStatus() {
-        if (globalVariableInstance.get("opponentData") !== undefined && globalVariableInstance.get("opponentData").affiliation === "accepted") {
+        if (globalVariableInstance.get("opponentData") !== null && globalVariableInstance.get("opponentData").affiliation === "accepted") {
             console.log("Opponent Accepted.");
         }
-        else if (globalVariableInstance.get("opponentData").affiliation === undefined) {
+        else if (globalVariableInstance.get("opponentData").affiliation === null) {
             console.log("No Opponent Found.");
         }
         else if (globalVariableInstance.get("opponentData").affiliation === "invited") {

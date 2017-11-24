@@ -8,7 +8,7 @@ export class PlayLoad extends Phaser.State {
         if (globalVariableInstance.get("gameType") === "friend") {
             kapow.invokeRPC("playerMark", globalVariableInstance.get("playerData"),
                 function (playerMarkAssignedByServer) {
-                    console.log("playerMark fetch from server - Sxuccess : obj:", playerMarkAssignedByServer);
+                    console.log("playerMark fetch from server - Success : obj:", playerMarkAssignedByServer);
                     console.log("Turn of player during playload :", globalVariableInstance.get("turnOfPlayer"));
 
                     globalVariableInstance.set("playerMark", playerMarkAssignedByServer);
@@ -40,8 +40,10 @@ export class PlayLoad extends Phaser.State {
             anchorX: 0,
             anchorY: 0
         });
+        this.game.stage.addChild(this.bg);
 
         this.loaderSpinner = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderSpinner');
+        this.game.stage.addChild(this.loaderSpinner);
 
         this.loaderSpinner.anchor.setTo(0.5, 0.5);
         this.spriteTween = this.game.add.tween(this.loaderSpinner).to({angle: 359}, 400, null, true, 0, Infinity);

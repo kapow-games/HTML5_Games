@@ -1,20 +1,20 @@
 "use strict";
 
 export default class MusicButton extends Phaser.Button {
-    constructor(obj) {
-        super(obj.game, obj.posX, obj.posY, obj.label, () => this.musicToggle, () => this);
-        this.anchor.setTo(obj.anchorX, obj.anchorY);
+    constructor(arg) {
+        let musicToggle   =   function() {
+            console.log("clickRegistered");
+            this.frame = (1 + this.frame) % 2;
+        };
+        super(arg.game, arg.posX, arg.posY, arg.label, musicToggle, null);
+        this.anchor.setTo(arg.anchorX, arg.anchorY);
     }
 
-    musicToggle() {
-        this.soundToggle.frame = (1 + this.soundToggle.frame) % 2;
-    }
-
-    senableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
-        this.inputEnabled = val;
+    enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
+        this.inputEnabled = isEnabled;
     }
 
     setInputPriority(priorityID) { // TODO : same
         this.input.priorityID = priorityID;
     }
-}
+};

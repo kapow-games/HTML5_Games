@@ -4,6 +4,6 @@ import PhaserGame from './util/PhaserGame';
 
 var phaserGame = new PhaserGame(1080, 1920, 'tic-tac-toe');
 
-phaserGame.state.start("boot");
+// phaserGame.state.start("boot");
 
 export default phaserGame;

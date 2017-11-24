@@ -29,13 +29,13 @@ export default class Bot {
             else if (nextScore < stateScore) {
                 stateScore = nextScore;
             }
-        });
+        }.bind(this));
         return stateScore;
     }
 
     botMove(turnOfPlayer) {// TODO : rename turn to something else @sukhmeet medium referred to medium difficulty level.
         // But since the easy bot move and hard bot move idea was dropped, removing the redundant function and renaming to botMove
-        this.sortPossibleBotMoves(turnOfPlayer);
+        let availableActions = this.sortPossibleBotMoves(turnOfPlayer);
         let chosenAction;
         if (Math.random() * 100 <= 80) {
             chosenAction = availableActions[0];
@@ -67,15 +67,16 @@ export default class Bot {
         let availableActions = available.map(function (pos) {
             let action = new BotBehaviour(pos);
             let next = action.plays(this.gameDetail.currentState);
-            action.miniMaxValue = getMiniMaxValue(next);
+            action.miniMaxValue = this.getMiniMaxValue(this.gameDetail, next);
             return action;
-        });
+        }.bind(this));
         if (turnOfPlayer === false) {// TODO : @mayank :
             availableActions.sort(this._ascending);
         }
         else {
             availableActions.sort(this._descending);
         }
+        return availableActions;
     }
 
     _ascending(firstAction, secondAction) {

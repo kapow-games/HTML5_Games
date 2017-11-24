@@ -3,7 +3,6 @@ import SocialShare from "./SocialShare";
 import GameStoreQuery from "../objects/store/GameStoreQuery";
 import globalVariableInstance from "../objects/store/gameGlobalVariables";
 
-
 export default function gameEndHandler(phaserGame, value) {
     console.log("Game End Being Handled.");
 
@@ -16,39 +15,46 @@ export default function gameEndHandler(phaserGame, value) {
     gameLayoutVariables.help.destroy();
     gameLayoutVariables.turnText.text = (value === 1) ? "YOU LOST!" : (value === 2 ? "YOU WON!" : "GAME DRAW!");
 
-    var shareText = (value === 1 || value === 0) ? "I just played a game of Tic Tac Toe on Kapow. Join Kapow now to play with me!" : "I just won a game of Tic Tac Toe on Kapow. Join Kapow now to beat me!";
+    let shareBackground = phaserGame.add.sprite(72, 1584, 'shareBackground');
+    phaserGame.stage.addChild(shareBackground)
 
-    var shareBackground = phaserGame.add.sprite(72, 1584, 'shareBackground');
-
-    var shareLoad = phaserGame.add.sprite(phaserGame.world.centerX, phaserGame.world.centerY, 'loaderSpinner');
+    let shareLoad = phaserGame.add.sprite(phaserGame.world.centerX, phaserGame.world.centerY, 'loaderSpinner');
     shareLoad.anchor.setTo(0.5);
-    var shareLoadTween = phaserGame.add.tween(shareLoad).to({angle: 359}, 400, null, true, 0, Infinity);
+    phaserGame.stage.addChild(shareLoad);
+
+    let shareLoadTween = phaserGame.add.tween(shareLoad).to({angle: 359}, 400, null, true, 0, Infinity);
     shareLoad.kill();
     shareLoadTween.start();
 
-    var socialShareModal = new SocialShare(value === 1 ? "loss" : value === 0 ? "draw" : "won");
+    let socialShareModal = new SocialShare(phaserGame, value === 1 ? "loss" : value === 0 ? "draw" : "won");
 
-    var shareFbButton = socialShareModal.shareButton(294, 1614, shareLoad, 'facebook', 'fbShare');
+    let shareFbButton = socialShareModal.shareButton(294, 1614, shareLoad, 'facebook', 'fbShare');
     shareFbButton.input.priorityID = 3;
-    var shareTwitterButton = socialShareModal.shareButton(408, 1614, shareLoad, 'twitter', 'twitterShare');
+    phaserGame.stage.addChild(shareFbButton);
+
+    let shareTwitterButton = socialShareModal.shareButton(408, 1614, shareLoad, 'twitter', 'twitterShare');
     shareTwitterButton.input.priorityID = 3;
-    var shareOtherButton = socialShareModal.shareButton(522, 1614, shareLoad, 'twitter', 'twitterShare');
+    phaserGame.stage.addChild(shareTwitterButton);
+
+    let shareOtherButton = socialShareModal.shareButton(522, 1614, shareLoad, null, 'otherShare');
     shareOtherButton.input.priorityID = 3;
+    phaserGame.stage.addChild(shareOtherButton);
 
-
-    var rematchButton = phaserGame.add.button(657, 1584, 'rematch', rematchButtonHandler, 0, 0, 1, 0);
+    let rematchButton = phaserGame.add.button(657, 1584, 'rematch', rematchButtonHandler, 0, 0, 1, 0);
     rematchButton.input.priorityID = 3;
+    rematchButton.game = phaserGame;
+    phaserGame.stage.addChild(rematchButton);
 
     if (globalVariableInstance.get("gameOver") === false) {
-        var gameStoreContainer = new GameStoreQuery();
+        let gameStoreContainer = new GameStoreQuery();
         gameStoreContainer.get("stats", function (statsValue, self) {
             if (statsValue) {
                 console.log("Value fetched from gameStore was : ", statsValue);
                 let valueJSON = JSON.parse(statsValue);
                 console.log(valueJSON);
-                soloStats = valueJSON.soloStats;
-                randomStats = valueJSON.randomStats;
-                friendsStats = valueJSON.friendsStats;
+                let soloStats = valueJSON.soloStats;
+                let randomStats = valueJSON.randomStats;
+                let friendsStats = valueJSON.friendsStats;
                 if (globalVariableInstance.get("gameType") === "solo") {
                     if (value === 1) {
                         soloStats.lost += 1;
@@ -84,12 +90,12 @@ export default function gameEndHandler(phaserGame, value) {
                         }
                     }
                 }
-                newStats = {"soloStats": soloStats, "friendsStats": friendsStats, "randomStats": randomStats};
+                let newStats = {"soloStats": soloStats, "friendsStats": friendsStats, "randomStats": randomStats};
                 self.set("stats", newStats);
             }
             else {
                 console.log('stats Variables Not Set');
-                newStats = {
+                let newStats = {
                     "soloStats": {
                         "won": 0,
                         "lost": 0,
@@ -142,7 +148,7 @@ export default function gameEndHandler(phaserGame, value) {
 }
 
 export function drawWinningLine(phaserGame) {
-    var gameFinalLayout = globalVariableInstance.get("boardStatus").cells;
+    let gameFinalLayout = globalVariableInstance.get("boardStatus").cells;
     let matchPosition;
     if (gameFinalLayout[0] !== null && gameFinalLayout[0] !== undefined && gameFinalLayout[0] === gameFinalLayout[1] && gameFinalLayout[0] === gameFinalLayout[2]) {
         matchPosition = phaserGame.add.sprite(222, 948, 'rectangle');
@@ -184,9 +190,11 @@ export function drawWinningLine(phaserGame) {
     else {
         console.log("CLient doesn't confirm result.")
     }
+    console.log("Adding winning line");
+    phaserGame.stage.addChild(matchPosition);
 }
 
-function rematchButtonHandler() {
+function rematchButtonHandler(item) {
     console.log('rematchButtonHandler Clicked');
     globalVariableInstance.set("boardStatus", {cells: new Array(9)});
     globalVariableInstance.set("win", 0);
@@ -198,7 +206,7 @@ function rematchButtonHandler() {
     if (globalVariableInstance.get("gameType") === "solo") {
         globalVariableInstance.set("botLevel", -1); //TODO : Remove This. Redundant
         globalVariableInstance.set("gameLayoutLoaded", false);
-        phaserGame.state.start('select');//TODO : Mention correct Phaser.Game object
+        item.game.state.start('select');//TODO : Mention correct Phaser.Game object
     }
     else if (globalVariableInstance.get("gameType") === "friend") {
         kapow.rematch(function (roomObj) {
