@@ -11,6 +11,6 @@ export class Boot extends Phaser.State {
         this.scale.pageAlignVertically = true;
         this.scale.forceOrientation(false, true);
         this.input.maxPointers = 1;
-        this.state.start('preload');
+        this.state.start('Preload');
     }
 }

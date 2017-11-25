@@ -1,18 +1,20 @@
-import globalVariableInstance from '../../store/gameGlobalVariables';
+import gameInfo from '../../store/GameGlobalVariables';
 import parseRoomAndRedirectToGame from "../../../util/parseRoomAndRedirectToGame";
+import gameConst from "../../../gameParam/gameConst";
+
 
 export default class VsRandomGameButton extends Phaser.Button {
     constructor(arg) {
         let vsRandomGameStart = function () {
             this.inputEnabled = false;
-            globalVariableInstance.set("gameType", 'random');
-            globalVariableInstance.set("randomRoom", true);
+            gameInfo.set("gameType", 'random');
+            gameInfo.set("randomRoom", true);
             console.log("Creating room for Random Game.");
             kapow.startGameWithRandomPlayers({'difficulty': 'medium'}, function (roomDetail) {
                 console.log("Random Room Creation - Success.");
-                globalVariableInstance.set("room", roomDetail);
-                globalVariableInstance.set("playerMark", 1);
-                globalVariableInstance.set("opponentMark", 2);
+                gameInfo.set("room", roomDetail);
+                gameInfo.set("playerMark", gameConst.X);
+                gameInfo.set("opponentMark", gameConst.O);
                 parseRoomAndRedirectToGame();
             }, function (error) {
                 this.inputEnabled = true;

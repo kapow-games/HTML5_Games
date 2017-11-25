@@ -1,22 +1,22 @@
-import globalVariableInstance from "../objects/store/gameGlobalVariables";
+import gameInfo from "../objects/store/GameGlobalVariables";
 import phaserGame from "../main";
 
 var parseRoomAndRedirectToGame = function () {
-    if (globalVariableInstance.get("room") === null) {
+    if (gameInfo.get("room") === null) {
         console.log("Room is null, hence not redirecting to game");
     }
     else {
         console.log('Parsing Room.');
-        let players = globalVariableInstance.get("room").players;
+        let players = gameInfo.get("room").players;
         if (players.length >= 1) {
             if (players.length === 2) {
-                if (players[0].id === globalVariableInstance.get("playerData").id) {
-                    globalVariableInstance.set("opponentData", players[1]);
-                    globalVariableInstance.set("playerData", players[0]);
+                if (players[0].id === gameInfo.get("playerData").id) {
+                    gameInfo.set("opponentData", players[1]);
+                    gameInfo.set("playerData", players[0]);
                 }
                 else {
-                    globalVariableInstance.set("opponentData", players[0]);
-                    globalVariableInstance.set("playerData", players[1]);
+                    gameInfo.set("opponentData", players[0]);
+                    gameInfo.set("playerData", players[1]);
                 }
                 kapow.fetchHistorySince(null, 25,
                     function (messagesHistory) {
@@ -27,33 +27,33 @@ var parseRoomAndRedirectToGame = function () {
                                 history.push(messagesHistory[i]);
                             }
                             if (messagesHistory[i].type === "outcome") {
-                                globalVariableInstance.set("gameOver", true);
+                                gameInfo.set("gameOver", true);
                                 if (messagesHistory[i].data.type === "result") {
-                                    if (messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id] === messagesHistory[i].data.ranks[globalVariableInstance.get("opponentData").id]) {
-                                        globalVariableInstance.set("turnOfPlayer", 0);
+                                    if (messagesHistory[i].data.ranks[gameInfo.get("playerData").id] === messagesHistory[i].data.ranks[gameInfo.get("opponentData").id]) {
+                                        gameInfo.set("turnOfPlayer", 0);
                                     }
-                                    else if (messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id] === 1) {
-                                        globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("opponentData"));
+                                    else if (messagesHistory[i].data.ranks[gameInfo.get("playerData").id] === 1) {
+                                        gameInfo.set("turnOfPlayer", gameInfo.get("opponentData"));
                                     }
-                                    else if (messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id] === 2) {
-                                        globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("playerData"));
+                                    else if (messagesHistory[i].data.ranks[gameInfo.get("playerData").id] === 2) {
+                                        gameInfo.set("turnOfPlayer", gameInfo.get("playerData"));
                                     }
                                     else {
                                         console.log("Player Turn couldn't be detrminded");
                                     }
                                 }
                                 else if (messagesHistory[i].data.type === "resignation" || messagesHistory[i].data.type === "timeout") {
-                                    console.log("Outcome  data :", messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id]);
-                                    if (messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id] === messagesHistory[i].data.ranks[globalVariableInstance.get("opponentData").id]) {
-                                        globalVariableInstance.set("turnOfPlayer", 0);
+                                    console.log("Outcome  data :", messagesHistory[i].data.ranks[gameInfo.get("playerData").id]);
+                                    if (messagesHistory[i].data.ranks[gameInfo.get("playerData").id] === messagesHistory[i].data.ranks[gameInfo.get("opponentData").id]) {
+                                        gameInfo.set("turnOfPlayer", 0);
                                     }
-                                    else if (messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id] === 1) {
-                                        globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("opponentData"));
-                                        console.log("Turn of player set to : ", globalVariableInstance.get("opponentData").id);
+                                    else if (messagesHistory[i].data.ranks[gameInfo.get("playerData").id] === 1) {
+                                        gameInfo.set("turnOfPlayer", gameInfo.get("opponentData"));
+                                        console.log("Turn of player set to : ", gameInfo.get("opponentData").id);
                                     }
-                                    else if (messagesHistory[i].data.ranks[globalVariableInstance.get("playerData").id] === 2) {
-                                        globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("playerData"));
-                                        console.log("Turn of player set to : ", globalVariableInstance.get("playerData").id);
+                                    else if (messagesHistory[i].data.ranks[gameInfo.get("playerData").id] === 2) {
+                                        gameInfo.set("turnOfPlayer", gameInfo.get("playerData"));
+                                        console.log("Turn of player set to : ", gameInfo.get("playerData").id);
                                     }
                                     else {
                                         console.log("Player Turn couldn't be determined");
@@ -63,43 +63,43 @@ var parseRoomAndRedirectToGame = function () {
                         }
                         console.log("Move History sorted according to sequence number", history);
                         if (history.length > 0) {
-                            globalVariableInstance.set("boardStatus", {cells: history[0].data.moveData.board});
-                            if (history[0].senderId === globalVariableInstance.get("playerData").id) {
-                                if (globalVariableInstance.get("gameOver") === false) {
-                                    globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("opponentData"));
+                            gameInfo.set("boardStatus", {cells: history[0].data.moveData.board});
+                            if (history[0].senderId === gameInfo.get("playerData").id) {
+                                if (gameInfo.get("gameOver") === false) {
+                                    gameInfo.set("turnOfPlayer", gameInfo.get("opponentData"));
                                 }
                             }
-                            else if (history[0].senderId === globalVariableInstance.get("opponentData").id) {
-                                if (globalVariableInstance.get("gameOver") === false) {
-                                    globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("playerData"));
+                            else if (history[0].senderId === gameInfo.get("opponentData").id) {
+                                if (gameInfo.get("gameOver") === false) {
+                                    gameInfo.set("turnOfPlayer", gameInfo.get("playerData"));
                                 }
                             }
                             else {
-                                if (globalVariableInstance.get("gameOver") === false) {
+                                if (gameInfo.get("gameOver") === false) {
                                     console.log("Current Turn can't be determined");
                                 }
                             }
                         }
-                        else if (globalVariableInstance.get("gameOver") !== true) {
-                            globalVariableInstance.set("turnOfPlayer", undefined);
+                        else if (gameInfo.get("gameOver") !== true) {
+                            gameInfo.set("turnOfPlayer", undefined);
                         }
                     },
                     function () {
                         console.log('fetchHistory Failed')
                     });
             }
-            console.log("Redirecting to game...", globalVariableInstance.get("opponentData"));
-            globalVariableInstance.set("gameType", 'friend');
-            if (globalVariableInstance.get("opponentData") !== null && globalVariableInstance.get("opponentData").affiliation === "accepted") {
-                phaserGame.state.start('playLoad');
+            console.log("Redirecting to game...", gameInfo.get("opponentData"));
+            gameInfo.set("gameType", 'friend');
+            if (gameInfo.get("opponentData") !== null && gameInfo.get("opponentData").affiliation === "accepted") {
+                phaserGame.state.start('PlayLoad');
             }
-            else if (globalVariableInstance.get("opponentData") !== null && (globalVariableInstance.get("opponentData").affiliation === "left" || globalVariableInstance.get("playerData").affiliation === "left")) {
-                globalVariableInstance.set("gameOver", true);
-                phaserGame.state.start('playLoad');
+            else if (gameInfo.get("opponentData") !== null && (gameInfo.get("opponentData").affiliation === "left" || gameInfo.get("playerData").affiliation === "left")) {
+                gameInfo.set("gameOver", true);
+                phaserGame.state.start('PlayLoad');
             }
             else {
                 console.log("Invitation not accepted by opponent");
-                phaserGame.state.start('waiting');
+                phaserGame.state.start('Waiting');
             }
         }
         else {

@@ -1,15 +1,16 @@
 'use strict'
-import globalVariableInstance from '../objects/store/gameGlobalVariables';
+import gameInfo from '../objects/store/GameGlobalVariables';
 import BackButton from '../objects/widgets/button/BackButton';
 import MusicButton from '../objects/widgets/button/MusicButton';
 import Background from "../objects/widgets/icons/Background";
+import gameConst from "../gameParam/gameConst";
 
 export class Select extends Phaser.State {
     preload() {
         console.log("Select state starting.");
         this.mark = 0;
         this.startButtonFlag = true;
-        globalVariableInstance.set("screenState", 0);
+        gameInfo.set("screenState", 0);
     }
 
     create() {
@@ -19,7 +20,7 @@ export class Select extends Phaser.State {
         this.createBackButton();
         this.createMusicButton();
         console.log(this.game);
-        globalVariableInstance.set("screenState", 0);
+        gameInfo.set("screenState", 0);
     }
 
     update() {
@@ -30,7 +31,7 @@ export class Select extends Phaser.State {
                 this.startButton.inputEnabled = true;
                 this.startButtonFlag = false;
             }
-            globalVariableInstance.set("playerMark", this.mark);
+            gameInfo.set("playerMark", this.mark);
         }
     }
 
@@ -49,9 +50,9 @@ export class Select extends Phaser.State {
     startGame() {
         this.startButton.inputEnabled = false;
         kapow.startSoloGame(function (roomDetail) {
-            globalVariableInstance.set("room", roomDetail);
-            globalVariableInstance.set("gameType", "solo");
-            this.game.state.start('playLoad');
+            gameInfo.set("room", roomDetail);
+            gameInfo.set("gameType", "solo");
+            this.game.state.start('PlayLoad');
         }.bind(this), function (error) {
             console.log("startSoloGame Failed : ", error);
         });
@@ -99,14 +100,14 @@ export class Select extends Phaser.State {
         console.log('X');
         this.markSelectedX.alpha = 1;
         this.markSelectedO.alpha = 0;
-        this.mark = 1;
+        this.mark = gameConst.X;
     }
 
     selectMarkO() {
         console.log('O');
         this.markSelectedO.alpha = 1;
         this.markSelectedX.alpha = 0;
-        this.mark = 2;
+        this.mark = gameConst.O;
     }
 
     createStartGameButton() {
@@ -135,7 +136,7 @@ export class Select extends Phaser.State {
 
     backButtonHandler() {
         console.log('back Button Pressed.');
-        this.game.state.start('menu');
+        this.game.state.start('Menu');
     }
 
     createMusicButton() {

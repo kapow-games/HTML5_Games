@@ -1,7 +1,7 @@
 'use strict';
 
 import phaserManager from "../util/phaserManager";
-import globalVariableInstance from "../objects/store/gameGlobalVariables";
+import gameInfo from "../objects/store/GameGlobalVariables";
 import gameEndHandler from '../util/gameEnd';
 import {drawWinningLine} from '../util/gameEnd';
 import gameLayoutVariables from "../objects/store/gameLayoutVariables";
@@ -18,14 +18,14 @@ import layoutConst from "../gameParam/gameConst";
 
 export class Play extends Phaser.State {
     preload() {
-        globalVariableInstance.set("screenState", 1);
+        gameInfo.set("screenState", 1);
         this.loadOpponentImage();
         gameLayoutVariables.clickBlocked = false;
     }
 
     create() {
 
-        globalVariableInstance.set("screenState", 1);
+        gameInfo.set("screenState", 1);
         console.log("Loading Game Layout.");
 
         this.createBackground();
@@ -37,19 +37,19 @@ export class Play extends Phaser.State {
         this.createBackButton();
         this.createMusicButton();
 
-        globalVariableInstance.set("win", 0);
+        gameInfo.set("win", 0);
 
         this.prepareGameBoard();
 
-        if (globalVariableInstance.get("gameType") === 'solo') {
+        if (gameInfo.get("gameType") === 'solo') {
             this.initialiseBot();
         }
-        else if (globalVariableInstance.get("gameType") === 'friend') {
+        else if (gameInfo.get("gameType") === 'friend') {
             this.verifyOpponentAffiliationStatus();
             this.recreateResultForEndedGame();
         }
 
-        globalVariableInstance.set("gameLayoutLoaded", true);
+        gameInfo.set("gameLayoutLoaded", true);
 
         this.physics.startSystem(Phaser.Physics.ARCADE);
     }
@@ -92,8 +92,8 @@ export class Play extends Phaser.State {
             gameLayoutVariables.backButton.setInputPriority(2);
             this.musicButton.setInputPriority(2);
             gameLayoutVariables.resign.setInputPriority(2);
-            console.log("Player Mark", globalVariableInstance.get("playerMark"));
-            sprite.frame = globalVariableInstance.get("playerMark");
+            console.log("Player Mark", gameInfo.get("playerMark"));
+            sprite.frame = gameInfo.get("playerMark");
             console.log("Player's Sprite Set");
 
             gameLayoutVariables.turnText.text = "BOT'S TURN";
@@ -112,9 +112,9 @@ export class Play extends Phaser.State {
     }
 
     clickHandlerMulti(sprite) {
-        console.log(globalVariableInstance.get("turnOfPlayer"), globalVariableInstance.get("playerData"), sprite.frame);
+        console.log(gameInfo.get("turnOfPlayer"), gameInfo.get("playerData"), sprite.frame);
 
-        if (globalVariableInstance.get("turnOfPlayer") !== undefined && globalVariableInstance.get("turnOfPlayer").id === globalVariableInstance.get("playerData").id && sprite.frame === 0) {
+        if (gameInfo.get("turnOfPlayer") !== undefined && gameInfo.get("turnOfPlayer").id === gameInfo.get("playerData").id && sprite.frame === 0) {
             gameLayoutVariables.backgroundImage.enableInput(true);
             gameLayoutVariables.backgroundImage.setInputPriority(2);
             gameLayoutVariables.backButton.setInputPriority(2);
@@ -122,30 +122,30 @@ export class Play extends Phaser.State {
             gameLayoutVariables.resign.setInputPriority(2);
             console.log("Player's Sprite Set");
 
-            gameLayoutVariables.turnText.text = globalVariableInstance.get("gameType") === "solo" ? "BOT'S TURN" : "WAITING";
+            gameLayoutVariables.turnText.text = gameInfo.get("gameType") === "solo" ? "BOT'S TURN" : "WAITING";
             gameLayoutVariables.opponentProfilePic.alpha = 1;
             gameLayoutVariables.playerProfilePic.alpha = 0.3;
 
-            globalVariableInstance.set("turnOfPlayer", undefined);
+            gameInfo.set("turnOfPlayer", undefined);
 
-            let tempCells = globalVariableInstance.get("boardStatus").cells;
-            tempCells[sprite.frameIndex] = globalVariableInstance.get("playerMark");
-            globalVariableInstance.set("boardStatus", {cells: tempCells});
+            let tempCells = gameInfo.get("boardStatus").cells;
+            tempCells[sprite.frameIndex] = gameInfo.get("playerMark");
+            gameInfo.set("boardStatus", {cells: tempCells});
 
-            sprite.frame = globalVariableInstance.get("playerMark");
+            sprite.frame = gameInfo.get("playerMark");
             sprite.alpha = 0.3;
 
             let sentData = {
-                board: globalVariableInstance.get("boardStatus").cells,
-                playerTurn: globalVariableInstance.get("playerData").id,
-                opponentTurn: globalVariableInstance.get("opponentData").id,
-                roomID: globalVariableInstance.get("room").roomId
+                board: gameInfo.get("boardStatus").cells,
+                playerTurn: gameInfo.get("playerData").id,
+                opponentTurn: gameInfo.get("opponentData").id,
+                roomID: gameInfo.get("room").roomId
             };
             console.log("Client - invokeRPC makeMove", sentData);
             kapow.invokeRPC("makeMove", sentData,
                 function (obj) {
                     console.log("makeMove - success : obj: \n", obj);
-                    sprite.frame = globalVariableInstance.get("playerMark");
+                    sprite.frame = gameInfo.get("playerMark");
                     sprite.alpha = 1;
                     if (obj.result === "lost") {
                         gameLayoutVariables.turnText.text = " YOU WON!";
@@ -168,10 +168,10 @@ export class Play extends Phaser.State {
                 }.bind(this),
                 function (error) {
                     sprite.frame = 0;
-                    let tempCells = globalVariableInstance.get("boardStatus").cells;
+                    let tempCells = gameInfo.get("boardStatus").cells;
                     tempCells[sprite.frameIndex] = 0;
-                    globalVariableInstance.set("boardStatus", {cells: tempCells});
-                    globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("playerData"));
+                    gameInfo.set("boardStatus", {cells: tempCells});
+                    gameInfo.set("turnOfPlayer", gameInfo.get("playerData"));
                     gameLayoutVariables.backgroundImage.setInputPriority(1);
                     gameLayoutVariables.backgroundImage.enableInput(false);
                     gameLayoutVariables.backButton.setInputPriority(1);
@@ -191,15 +191,15 @@ export class Play extends Phaser.State {
     nextMove(sprite, cell) {
         let next = new GameState(gameLayoutVariables.game.currentState);
         console.log("Click Acknowledged");
-        next.board[sprite.frameIndex] = globalVariableInstance.get("playerMark");
-        sprite.frame = globalVariableInstance.get("playerMark");
+        next.board[sprite.frameIndex] = gameInfo.get("playerMark");
+        sprite.frame = gameInfo.get("playerMark");
         console.log("Player's move logged");
         next.nextTurn();
         gameLayoutVariables.game.moveTo(next);
         for (let i = 0; i < layoutConst.CELL_COLS * layoutConst.CELL_ROWS; i++) {
             cell[i].frame = gameLayoutVariables.game.currentState.board[i];
         }
-        if (globalVariableInstance.get("win") === 0 && gameLayoutVariables.game.gameStatus !== 3) {
+        if (gameInfo.get("win") === 0 && gameLayoutVariables.game.gameStatus !== 3) {
             saveGameData(this.game, false);
             gameLayoutVariables.turnText.text = "YOUR TURN";
             gameLayoutVariables.opponentProfilePic.alpha = 0.3;
@@ -216,9 +216,9 @@ export class Play extends Phaser.State {
     }
 
     loadOpponentImage() {
-        if (globalVariableInstance.get("gameType") === 'friend') {
-            if (globalVariableInstance.get("opponentData") !== null) {
-                this.game.load.image('opponentPic', globalVariableInstance.get("opponentData").profileImage);
+        if (gameInfo.get("gameType") === 'friend') {
+            if (gameInfo.get("opponentData") !== null) {
+                this.game.load.image('opponentPic', gameInfo.get("opponentData").profileImage);
             }
             else {
                 console.log("opponentData was not set.");
@@ -246,18 +246,18 @@ export class Play extends Phaser.State {
         }, function () {
             console.log('Room Unloading Failed');
         });
-        globalVariableInstance.set("gameResume", false);
-        globalVariableInstance.set("room", null);
-        globalVariableInstance.set("playerMark", 0);
-        globalVariableInstance.set("gameType", null);
-        globalVariableInstance.set("botLevel", -1);
-        globalVariableInstance.set("boardStatus", {cells: new Array(9)});
-        globalVariableInstance.set("opponentData", null);
-        globalVariableInstance.set("turnOfPlayer", null);
-        globalVariableInstance.set("gameOver", false);
-        globalVariableInstance.set("win", 0);
-        globalVariableInstance.set("gameLayoutLoaded", false);
-        this.game.state.start('menu');
+        gameInfo.set("gameResume", false);
+        gameInfo.set("room", null);
+        gameInfo.set("playerMark", 0);
+        gameInfo.set("gameType", null);
+        gameInfo.set("botLevel", -1);
+        gameInfo.set("boardStatus", {cells: new Array(9)});
+        gameInfo.set("opponentData", null);
+        gameInfo.set("turnOfPlayer", null);
+        gameInfo.set("gameOver", false);
+        gameInfo.set("win", 0);
+        gameInfo.set("gameLayoutLoaded", false);
+        this.game.state.start('Menu');
     }
 
     createPlayerProfileImage() {
@@ -281,8 +281,8 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(this.playerProfilePicMarkBackground);
 
         this.playerProfilePicMark = this.game.add.sprite(438, 144, 'cell');
-        console.log("playerMark at time of showing on screen", globalVariableInstance.get("playerMark"));
-        this.playerProfilePicMark.frame = globalVariableInstance.get("playerMark");
+        console.log("playerMark at time of showing on screen", gameInfo.get("playerMark"));
+        this.playerProfilePicMark.frame = gameInfo.get("playerMark");
         this.playerProfilePicMark.scale.set(48 / this.playerProfilePicMark.width, 48 / this.playerProfilePicMark.height);
         this.game.stage.addChild(this.playerProfilePicMark);
     }
@@ -293,7 +293,7 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(this.opponentProfilePicBackground);
 
         console.log(this.game.cache.checkImageKey('opponentPic'), this.load);
-        gameLayoutVariables.opponentProfilePic = this.add.image(600, 78, globalVariableInstance.get("gameType") === 'solo' ? 'botPic' : "opponentPic");
+        gameLayoutVariables.opponentProfilePic = this.add.image(600, 78, gameInfo.get("gameType") === 'solo' ? 'botPic' : "opponentPic");
         gameLayoutVariables.opponentProfilePic.scale.set(108 / gameLayoutVariables.opponentProfilePic.width);
         this.game.stage.addChild(gameLayoutVariables.opponentProfilePic);
 
@@ -309,7 +309,7 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(this.opponentProfilePicMarkBackground);
 
         this.opponentProfilePicMark = this.game.add.sprite(594, 144, 'cell');
-        this.opponentProfilePicMark.frame = ( (globalVariableInstance.get("playerMark") === 2) ? 1 : 2);
+        this.opponentProfilePicMark.frame = ( (gameInfo.get("playerMark") === 2) ? 1 : 2);
         this.opponentProfilePicMark.scale.set(48 / this.opponentProfilePicMark.width, 48 / this.opponentProfilePicMark.height);
         this.game.stage.addChild(this.opponentProfilePicMark);
     }
@@ -382,7 +382,7 @@ export class Play extends Phaser.State {
         gameLayoutVariables.turnText = phaserManager.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 276,
-            messageToDisplay: (globalVariableInstance.get("gameOver") === true) ? globalVariableInstance.get("win") === globalVariableInstance.get("playerMark") ? "YOU WIN!" : "YOU LOSE!" : globalVariableInstance.get("gameType") === "solo" ? globalVariableInstance.get("playerMark") === 1 ? "YOUR TURN" : "BOT'S TURN" : globalVariableInstance.get("turnOfPlayer") === globalVariableInstance.get("playerData") ? "YOUR TURN" : "WAITING",
+            messageToDisplay: (gameInfo.get("gameOver") === true) ? gameInfo.get("win") === gameInfo.get("playerMark") ? "YOU WIN!" : "YOU LOSE!" : gameInfo.get("gameType") === "solo" ? gameInfo.get("playerMark") === 1 ? "YOUR TURN" : "BOT'S TURN" : gameInfo.get("turnOfPlayer") === gameInfo.get("playerData") ? "YOUR TURN" : "WAITING",
             align: "center",
             backgroundColor: "#5684fb",
             fill: "#fefefe",
@@ -419,22 +419,22 @@ export class Play extends Phaser.State {
         for (let i = 0; i < layoutConst.CELL_COLS; i++) {
             for (let j = 0; j < layoutConst.CELL_ROWS; j++) {
                 let cell = this.cells.create(i * (layoutConst.CELL_WIDTH + layoutConst.CELL_WIDTH_PAD) + layoutConst.CELL_RELATIVE_LEFT, j * (layoutConst.CELL_HEIGHT + layoutConst.CELL_HEIGHT_PAD) + layoutConst.CELL_RELATIVE_TOP, 'cell');
-                if (globalVariableInstance.get("gameResume") === true) {
-                    cell.frame = globalVariableInstance.get("boardStatus").cells[count];
-                    if (globalVariableInstance.get("boardStatus").cells[count] === 0 || globalVariableInstance.get("boardStatus").cells[count] === undefined || globalVariableInstance.get("boardStatus").cells[count] === null) {
+                if (gameInfo.get("gameResume") === true) {
+                    cell.frame = gameInfo.get("boardStatus").cells[count];
+                    if (gameInfo.get("boardStatus").cells[count] === 0 || gameInfo.get("boardStatus").cells[count] === undefined || gameInfo.get("boardStatus").cells[count] === null) {
                         cell.frame = 0;
-                        cell.inputEnabled = !globalVariableInstance.get("gameOver");
-                        cell.events.onInputDown.add(globalVariableInstance.get("gameType") === 'solo' ? this.clickHandlerSolo : this.clickHandlerMulti, this);
+                        cell.inputEnabled = !gameInfo.get("gameOver");
+                        cell.events.onInputDown.add(gameInfo.get("gameType") === 'solo' ? this.clickHandlerSolo : this.clickHandlerMulti, this);
                     }
                     else {
-                        cell.frame = globalVariableInstance.get("boardStatus").cells[count];
+                        cell.frame = gameInfo.get("boardStatus").cells[count];
                         cell.inputEnabled = false;
                     }
                 }
                 else {
                     cell.frame = 0;
                     cell.inputEnabled = true;
-                    cell.events.onInputDown.add(globalVariableInstance.get("gameType") === 'solo' ? this.clickHandlerSolo : this.clickHandlerMulti, this);
+                    cell.events.onInputDown.add(gameInfo.get("gameType") === 'solo' ? this.clickHandlerSolo : this.clickHandlerMulti, this);
                 }
                 cell.frameIndex = count++;
                 this.physics.arcade.enable(cell);
@@ -445,34 +445,34 @@ export class Play extends Phaser.State {
     initialiseBot() {
         let myBot = new Bot();
         gameLayoutVariables.game = new Game(this.game, myBot);
-        if (globalVariableInstance.get("playerMark") === 2 && globalVariableInstance.get("gameResume") === false) {
+        if (gameInfo.get("playerMark") === 2 && gameInfo.get("gameResume") === false) {
             this.cells.children[gameLayoutVariables.initialMark].frame = 1;
             this.cells.children[gameLayoutVariables.initialMark].inputEnabled = false;
         }
-        if (globalVariableInstance.get("gameOver") === false) {
+        if (gameInfo.get("gameOver") === false) {
             saveGameData(this.game, false);// To store the initial state of the Game. Even if the user or bot haven't made any move.
         }
         myBot.gameAssigned(gameLayoutVariables.game);
         gameLayoutVariables.game.start();
-        if (globalVariableInstance.get("gameOver") === true && globalVariableInstance.get("win") === 0) {
+        if (gameInfo.get("gameOver") === true && gameInfo.get("win") === 0) {
             gameEndHandler(this.game, 1);
         }
     }
 
     verifyOpponentAffiliationStatus() {
-        if (globalVariableInstance.get("opponentData") !== null && globalVariableInstance.get("opponentData").affiliation === "accepted") {
+        if (gameInfo.get("opponentData") !== null && gameInfo.get("opponentData").affiliation === "accepted") {
             console.log("Opponent Accepted.");
         }
-        else if (globalVariableInstance.get("opponentData").affiliation === null) {
+        else if (gameInfo.get("opponentData").affiliation === null) {
             console.log("No Opponent Found.");
         }
-        else if (globalVariableInstance.get("opponentData").affiliation === "invited") {
+        else if (gameInfo.get("opponentData").affiliation === "invited") {
             console.log("Friend hasn't responded to invitation");
         }
-        else if (globalVariableInstance.get("opponentData").affiliation === "rejected") {
+        else if (gameInfo.get("opponentData").affiliation === "rejected") {
             console.log("Friend rejected the invitation");
         }
-        else if (globalVariableInstance.get("opponentData").affiliation === "left") {
+        else if (gameInfo.get("opponentData").affiliation === "left") {
             console.log("Friend left the room.");
         }
         else {
@@ -481,15 +481,15 @@ export class Play extends Phaser.State {
     }
 
     recreateResultForEndedGame() {
-        if (globalVariableInstance.get("gameOver") === true) {
-            if (globalVariableInstance.get("turnOfPlayer") === 0) {
+        if (gameInfo.get("gameOver") === true) {
+            if (gameInfo.get("turnOfPlayer") === 0) {
                 gameEndHandler(this.game, 0);
             }
-            else if (globalVariableInstance.get("turnOfPlayer").id === globalVariableInstance.get("opponentData").id) {
+            else if (gameInfo.get("turnOfPlayer").id === gameInfo.get("opponentData").id) {
                 drawWinningLine(this.game);
                 gameEndHandler(this.game, 2);
             }
-            else if (globalVariableInstance.get("turnOfPlayer").id === globalVariableInstance.get("playerData").id) {
+            else if (gameInfo.get("turnOfPlayer").id === gameInfo.get("playerData").id) {
                 drawWinningLine(this.game);
                 gameEndHandler(this.game, 1);
             }

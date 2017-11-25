@@ -16,7 +16,7 @@ export default class SocialShare {
                 },
                 function (error) {
                     shareLoad.kill();
-                    console.log(buttonID, " Share Failed", error);
+                    console.log(buttonID, "Share Failed", error);
                 });
         }.bind(this));
     }

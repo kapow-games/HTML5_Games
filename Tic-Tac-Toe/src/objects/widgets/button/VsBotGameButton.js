@@ -1,10 +1,10 @@
-import globalVariableInstance from '../../store/gameGlobalVariables';
+import gameInfo from '../../store/GameGlobalVariables';
 
 export default class VsBotGameButton extends Phaser.Button {
     constructor(arg) {
         let vsBotGameStart = function () {
-            globalVariableInstance.set("gameType", 'solo');
-            this.game.state.start('select');
+            gameInfo.set("gameType", 'solo');
+            this.game.state.start('Select');
         };
         super(arg.game, arg.posX, arg.posY, arg.label, vsBotGameStart, null, arg.overFrame, arg.outFrame, arg.downFrame, arg.upFrame);
         this.game = arg.game;
@@ -13,7 +13,6 @@ export default class VsBotGameButton extends Phaser.Button {
     }
 
     enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
-        console.log("Enable input set to", this.inputEnabled);
         this.inputEnabled = isEnabled;
     }
 

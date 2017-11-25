@@ -1,25 +1,26 @@
 'use strict';
-import globalVariableInstance from "../objects/store/gameGlobalVariables";
+import gameInfo from "../objects/store/GameGlobalVariables";
 import Background from "../objects/widgets/icons/Background";
+import gameConst from "../gameParam/gameConst";
 
 export class PlayLoad extends Phaser.State {
     preload() {
-        globalVariableInstance.set("screenState", 1);
-        if (globalVariableInstance.get("gameType") === "friend") {
-            kapow.invokeRPC("playerMark", globalVariableInstance.get("playerData"),
+        gameInfo.set("screenState", 1);
+        if (gameInfo.get("gameType") === "friend") {
+            kapow.invokeRPC("playerMark", gameInfo.get("playerData"),
                 function (playerMarkAssignedByServer) {
                     console.log("playerMark fetch from server - Success : obj:", playerMarkAssignedByServer);
-                    console.log("Turn of player during playload :", globalVariableInstance.get("turnOfPlayer"));
+                    console.log("Turn of player during playload :", gameInfo.get("turnOfPlayer"));
 
-                    globalVariableInstance.set("playerMark", playerMarkAssignedByServer);
+                    gameInfo.set("playerMark", playerMarkAssignedByServer);
 
-                    if (globalVariableInstance.get("turnOfPlayer") === undefined) {
-                        globalVariableInstance.set("turnOfPlayer", globalVariableInstance.get("playerMark") === 1 ? globalVariableInstance.get("playerData") : globalVariableInstance.get("opponentData"));
+                    if (gameInfo.get("turnOfPlayer") === undefined) {
+                        gameInfo.set("turnOfPlayer", gameInfo.get("playerMark") === gameConst.X ? gameInfo.get("playerData") : gameInfo.get("opponentData"));
                     }
                     else {
-                        console.log("playerMark set already as : ", globalVariableInstance.get("playerData"));
+                        console.log("playerMark set already as : ", gameInfo.get("playerData"));
                     }
-                    this.game.state.start('play');
+                    this.game.state.start('Play');
                 }.bind(this),
                 function (error) {
                     console.log("playerMark fetch from server - Failure", error);
@@ -27,7 +28,7 @@ export class PlayLoad extends Phaser.State {
             );
         }
         else {
-            this.game.state.start('play');
+            this.game.state.start('Play');
         }
     }
 

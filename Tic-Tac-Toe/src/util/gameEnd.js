@@ -1,9 +1,12 @@
+'use strict';
+
 import gameLayoutVariables from "../objects/store/gameLayoutVariables";
 import SocialShare from "./SocialShare";
 import GameStoreQuery from "../objects/store/GameStoreQuery";
-import globalVariableInstance from "../objects/store/gameGlobalVariables";
+import gameInfo from "../objects/store/GameGlobalVariables";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
 import phaserGame from "../main";
+import gameConst from "../gameParam/gameConst";
 
 export default function gameEndHandler(game, value) {
     console.log("Game End Being Handled.");
@@ -16,7 +19,7 @@ export default function gameEndHandler(game, value) {
     gameLayoutVariables.help.destroy();
     gameLayoutVariables.turnText.text = (value === 1) ? "YOU LOST!" : (value === 2 ? "YOU WON!" : "GAME DRAW!");
     if (value === 2) {
-        if (globalVariableInstance.get("playerMark") === 1) {
+        if (gameInfo.get("playerMark") === gameConst.X) {
             gameLayoutVariables.resultBoard.frame = 0;
             gameLayoutVariables.turnText.backgroundColor = "#48d1dc";
         }
@@ -60,7 +63,7 @@ export default function gameEndHandler(game, value) {
     rematchButton.game = game;
     game.stage.addChild(rematchButton);
 
-    if (globalVariableInstance.get("gameOver") === false) {
+    if (gameInfo.get("gameOver") === false) {
         let gameStoreContainer = new GameStoreQuery();
         gameStoreContainer.get("stats", function (statsValue, self) {
             if (statsValue) {
@@ -70,7 +73,7 @@ export default function gameEndHandler(game, value) {
                 let soloStats = valueJSON.soloStats;
                 let randomStats = valueJSON.randomStats;
                 let friendsStats = valueJSON.friendsStats;
-                if (globalVariableInstance.get("gameType") === "solo") {
+                if (gameInfo.get("gameType") === "solo") {
                     if (value === 1) {
                         soloStats.lost += 1;
                     }
@@ -81,8 +84,8 @@ export default function gameEndHandler(game, value) {
                         soloStats.draw += 1;
                     }
                 }
-                else if (globalVariableInstance.get("gameType") === "friend") {
-                    if (globalVariableInstance.get("randomRoom") === false) {
+                else if (gameInfo.get("gameType") === "friend") {
+                    if (gameInfo.get("randomRoom") === false) {
                         if (value === 1) {
                             friendsStats.lost += 1;
                         }
@@ -131,14 +134,14 @@ export default function gameEndHandler(game, value) {
             }
         });
     }
-    if (globalVariableInstance.get("gameLocked") === false)// To ensure that game doesn't close multiple times in Kapow
+    if (gameInfo.get("gameLocked") === false)// To ensure that game doesn't close multiple times in Kapow
     {
-        if (globalVariableInstance.get("gameType") === "solo") {
+        if (gameInfo.get("gameType") === "solo") {
             kapow.endSoloGame(function () {
                 if (value === 2) {
                     kapow.rpc.invoke({
                             "functionName": 'soloPostScore',
-                            "parameters": {'points': 5, 'playerID': globalVariableInstance.get("playerData").id},
+                            "parameters": {'points': 5, 'playerID': gameInfo.get("playerData").id},
                             "invokeLazily": true
                         }, function (successResponse) {
                             console.log("successResponse  for lazy invocation", successResponse);
@@ -147,13 +150,13 @@ export default function gameEndHandler(game, value) {
                         }
                     );
                 }
-                globalVariableInstance.set("boardStatus", {cells: new Array(9)});
-                globalVariableInstance.set("botLevel", -1); //TODO : Remove This. Redundant
-                globalVariableInstance.set("win", 0);
-                globalVariableInstance.set("gameOver", false);
-                globalVariableInstance.set("room", null);
-                globalVariableInstance.set("playerMark", 0);
-                globalVariableInstance.set("gameResume", false);
+                gameInfo.set("boardStatus", {cells: new Array(9)});
+                // gameInfo.set("botLevel", -1); //TODO : Remove This. Redundant
+                gameInfo.set("win", 0);
+                gameInfo.set("gameOver", false);
+                gameInfo.set("room", null);
+                gameInfo.set("playerMark", gameConst.NONE);
+                gameInfo.set("gameResume", false);
                 console.log("Game Succesfully Closed.");
             }, function (error) {
                 console.log("endSoloGame Failed : ", error);
@@ -163,7 +166,7 @@ export default function gameEndHandler(game, value) {
 }
 
 export function drawWinningLine(phaserGame) {
-    let gameFinalLayout = globalVariableInstance.get("boardStatus").cells;
+    let gameFinalLayout = gameInfo.get("boardStatus").cells;
     let matchPosition;
     console.log("draw winning line called", gameFinalLayout);
     if (gameFinalLayout[0] !== null && gameFinalLayout[0] !== undefined && gameFinalLayout[0] === gameFinalLayout[1] && gameFinalLayout[0] === gameFinalLayout[2]) {
@@ -214,24 +217,24 @@ export function drawWinningLine(phaserGame) {
 
 function rematchButtonHandler() {
     console.log('rematchButtonHandler Clicked');
-    globalVariableInstance.set("boardStatus", {cells: new Array(9)});
-    globalVariableInstance.set("win", 0);
-    globalVariableInstance.set("gameOver", false);
-    globalVariableInstance.set("room", null);
-    globalVariableInstance.set("playerMark", 0);
-    globalVariableInstance.set("gameResume", false);
-    globalVariableInstance.set("gameLocked", false);
-    if (globalVariableInstance.get("gameType") === "solo") {
-        globalVariableInstance.set("botLevel", -1); //TODO : Remove This. Redundant
-        globalVariableInstance.set("gameLayoutLoaded", false);
-        phaserGame.state.start('select');//TODO : Mention correct Phaser.Game object
+    gameInfo.set("boardStatus", {cells: new Array(9)});
+    gameInfo.set("win", 0);
+    gameInfo.set("gameOver", false);
+    gameInfo.set("room", null);
+    gameInfo.set("playerMark", gameConst.NONE);
+    gameInfo.set("gameResume", false);
+    gameInfo.set("gameLocked", false);
+    if (gameInfo.get("gameType") === "solo") {
+        //gameInfo.set("botLevel", -1); //TODO : Remove This. Redundant
+        gameInfo.set("gameLayoutLoaded", false);
+        phaserGame.state.start('Select');//TODO : Mention correct Phaser.Game object
     }
-    else if (globalVariableInstance.get("gameType") === "friend") {
+    else if (gameInfo.get("gameType") === "friend") {
         kapow.rematch(function (roomObj) {
-                globalVariableInstance.set("room", roomObj);
-                globalVariableInstance.set("playerMark", 1);
-                globalVariableInstance.set("opponentMark", 2);
-                globalVariableInstance.set("gameLayoutLoaded", false);
+                gameInfo.set("room", roomObj);
+                gameInfo.set("playerMark", gameConst.X);
+                gameInfo.set("opponentMark", gameConst.O);
+                gameInfo.set("gameLayoutLoaded", false);
                 parseRoomAndRedirectToGame();
                 console.log("Rematch Room Created");
             },

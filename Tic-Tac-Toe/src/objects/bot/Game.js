@@ -4,7 +4,8 @@ import GameState from "./GameState";
 import gameLayoutVariables from "../store/gameLayoutVariables";
 import gameEndHandler from "../../util/gameEnd";
 import layoutConst from "../../../src/gameParam/gameConst";
-import globalVariableInstance from "../store/gameGlobalVariables";
+import gameInfo from "../store/GameGlobalVariables";
+import gameConst from "../../gameParam/gameConst";
 
 export default class Game { // TODO : formatting , extra line . Only one extra line before class and import
     constructor(ticTacToeGame, bot) { // TODO : just game ? @sukhmeet don't want to use game. also used as an object in game.js.
@@ -13,33 +14,34 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
         this.currentState = new GameState();
         this.currentState.board = []; // TODO : is it a CONSTANT ? extract such CONSTANTS
         for (let i = 0; i < layoutConst.CELL_ROWS * layoutConst.CELL_COLS; i++) { // TODO : move to new line after 120 chars
-            this.currentState.board.push(globalVariableInstance.get("boardStatus").cells[i] !== undefined ?
-                globalVariableInstance.get("boardStatus").cells[i] : 0);
+            this.currentState.board.push(gameInfo.get("boardStatus").cells[i] !== undefined ?
+                gameInfo.get("boardStatus").cells[i] : 0);
         }
         this.currentState.turnOfPlayer = true; //playerMark === 1 ? 2 : 1 ;
-        if (globalVariableInstance.get("playerMark") === 2 && globalVariableInstance.get("gameResume") === false) {
+        if (gameInfo.get("playerMark") === gameConst.O && gameInfo.get("gameResume") === false) {
             let randomCell = Math.floor(Math.random() * layoutConst.CELL_ROWS * layoutConst.CELL_COLS);
             this.currentState.board[randomCell] = 1;
             gameLayoutVariables.initialMark = randomCell;
         }
         this.gameStatus = -1;// To indicate game beginning
     }
+
     // Advances game to next state
     moveTo(state) {
         this.currentState = state;
         if (state.isTerminal()) { // TODO : logic can be simplified
             this.gameStatus = 3; // Indicating game Over
             if (this.currentState.boardResult === 1) {
-                globalVariableInstance.set("win", 1);
+                gameInfo.set("win", 1);
             }
             else if (this.currentState.boardResult === 2) {
-                globalVariableInstance.set("win", 2);
+                gameInfo.set("win", 2);
             }
             else {
-                globalVariableInstance.set("win", 0);
+                gameInfo.set("win", 0);
             }
-            if (globalVariableInstance.get("win") !== 0) {
-                if (globalVariableInstance.get("win") === globalVariableInstance.get("playerMark")) {
+            if (gameInfo.get("win") !== 0) {
+                if (gameInfo.get("win") === gameInfo.get("playerMark")) {
                     gameLayoutVariables.turnText.text = "  YOU WIN!";
                     gameEndHandler(this.phaserGame, 2);
                 }
@@ -52,8 +54,8 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
                 gameLayoutVariables.turnText.text = "GAME DRAW!";
                 gameEndHandler(this.phaserGame, 0);
             }
-            if (globalVariableInstance.get("win") !== 0) {
-                let matchPosition ;
+            if (gameInfo.get("win") !== 0) {
+                let matchPosition;
                 switch (gameLayoutVariables.winningMarkLine) {
                     case 0 : {
                         matchPosition = this.phaserGame.add.sprite(552, 633, 'rectangle');

@@ -1,14 +1,15 @@
-import globalVariableInstance from '../../store/gameGlobalVariables'
+import gameInfo from '../../store/GameGlobalVariables';
 import parseRoomAndRedirectToGame from "../../../util/parseRoomAndRedirectToGame";
+import gameConst from "../../../gameParam/gameConst";
 
 export default class VsFriendGameButton extends Phaser.Button {
     constructor(arg) {
         let vsFriendGameStart = function () {
-            globalVariableInstance.set("gameType", 'friend');
+            gameInfo.set("gameType", 'friend');
             kapow.startGameWithFriends(2, 2, function (roomDetail) {
-                globalVariableInstance.set("room", roomDetail);
-                globalVariableInstance.set("playerMark", 1);
-                globalVariableInstance.set("opponentMark", 2);
+                gameInfo.set("room", roomDetail);
+                gameInfo.set("playerMark", gameConst.X);
+                gameInfo.set("opponentMark", gameConst.O);
                 parseRoomAndRedirectToGame();
             }, function (error) {
                 console.log("startvsFriendGame Failed : ", error);

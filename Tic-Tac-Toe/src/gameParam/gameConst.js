@@ -14,5 +14,4 @@ const gameConst = {
     CELL_RELATIVE_LEFT: 90
 };
 
-
 export default gameConst;

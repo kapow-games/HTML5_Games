@@ -1,6 +1,6 @@
 'use strict';
 
-import globalVariableInstance from "../objects/store/gameGlobalVariables";
+import gameInfo from "../objects/store/GameGlobalVariables";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
 
 var WebFontConfig = {
@@ -11,7 +11,7 @@ var WebFontConfig = {
 
 export class Preload extends Phaser.State {
     preload() {
-        console.log(globalVariableInstance);
+        console.log(gameInfo);
         this.asset = null;
         this.ready = false;
         console.log("Preloading Assets");
@@ -21,7 +21,7 @@ export class Preload extends Phaser.State {
         this.asset.anchor.setTo(0.5, 0.5);
         this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
         this.load.setPreloadSprite(this.asset);
-        this.load.image('profilePic', globalVariableInstance.get("playerData").profileImage + "?height=276&width=276");
+        this.load.image('profilePic', gameInfo.get("playerData").profileImage + "?height=276&width=276");
         this.load.image('modeBackground', 'assets/images/statsModeHeader.png');
         this.load.image('statsBackground', 'assets/images/statsBackground.png');
         this.load.image('statsTotalBackground', 'assets/images/statsTotalBackground.png');
@@ -73,16 +73,16 @@ export class Preload extends Phaser.State {
 
     update() {
         if (this.ready) {
-            if (globalVariableInstance.get("gameResume") === true) {
-                if (globalVariableInstance.get("gameType") === "solo") {
-                    this.state.start('play');
+            if (gameInfo.get("gameResume") === true) {
+                if (gameInfo.get("gameType") === "solo") {
+                    this.state.start('Play');
                 }
-                else if (globalVariableInstance.get("gameType") === "friend") {
+                else if (gameInfo.get("gameType") === "friend") {
                     parseRoomAndRedirectToGame();
                 }
             }
             else {
-                this.state.start('menu');
+                this.state.start('Menu');
             }
         }
     }

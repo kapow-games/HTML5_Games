@@ -1,6 +1,6 @@
 'use strict';
 
-import globalVariableInstance from '../objects/store/gameGlobalVariables'
+import gameInfo from '../objects/store/GameGlobalVariables'
 import Background from '../objects/widgets/icons/Background';
 import Logo from '../objects/widgets/icons/Logo';
 import OnGoingGameButton from '../objects/widgets/button/OnGoingGameButton';
@@ -18,7 +18,7 @@ import MusicButton from "../objects/widgets/button/MusicButton";
 export class Menu extends Phaser.State { // TODO : formatting ?
     create() {
         console.log("Loading Menu.");
-        globalVariableInstance.set("screenState", 0);
+        gameInfo.set("screenState", 0);
         this.bg = new Background({
             game: this.game, // TODO : rename key to just game ?
             posX: 0,

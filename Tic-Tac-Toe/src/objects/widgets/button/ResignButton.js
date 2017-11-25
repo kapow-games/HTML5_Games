@@ -2,7 +2,8 @@ import gameLayoutVariables from "../../store/gameLayoutVariables";
 import DarkOverlay from "./DarkOverLay";
 import saveGameData from "../../../util/saveGameData";
 import gameEndHandler from "../../../util/gameEnd";
-import globalVariableInstance from "../../store/gameGlobalVariables"
+import gameInfo from "../../store/GameGlobalVariables"
+import gameConst from "../../../gameParam/gameConst";
 
 export default class ResignButton extends Phaser.Button {
     constructor(arg) {
@@ -28,8 +29,8 @@ export default class ResignButton extends Phaser.Button {
     }
 
     quitGame() {
-        globalVariableInstance.set("win", globalVariableInstance.get("playerMark") === 1 ? 2 : 1);
-        if (globalVariableInstance.get("gameType") === "solo") {
+        gameInfo.set("win", gameInfo.get("playerMark") === gameConst.X ? 2 : 1);
+        if (gameInfo.get("gameType") === "solo") {
             saveGameData(this.game, true);
             gameLayoutVariables.backgroundImage.enableInput(true);
             gameLayoutVariables.backgroundImage.setInputPriority(1);
@@ -38,12 +39,12 @@ export default class ResignButton extends Phaser.Button {
             gameLayoutVariables.turnText.text = " YOU LOSE!";
             gameEndHandler(this.game, 1);
         }
-        else if (globalVariableInstance.get("gameType") === "friend") {
+        else if (gameInfo.get("gameType") === "friend") {
             kapow.invokeRPC("resignationRequest", {
-                    board: globalVariableInstance.get("boardStatus").cells,
-                    playerTurn: globalVariableInstance.get("playerData").id,
-                    opponentTurn: globalVariableInstance.get("opponentData").id,
-                    roomID: globalVariableInstance.get("room").roomId
+                    board: gameInfo.get("boardStatus").cells,
+                    playerTurn: gameInfo.get("playerData").id,
+                    opponentTurn: gameInfo.get("opponentData").id,
+                    roomID: gameInfo.get("room").roomId
                 },
                 function (obj) {
                     console.log("resignation - success : obj: \n", obj);

@@ -1,17 +1,17 @@
 'use strict';
 import phaserManager from "../util/phaserManager";
-import globalVariableInstance from "../objects/store/gameGlobalVariables";
+import gameInfo from "../objects/store/GameGlobalVariables";
 import Background from "../objects/widgets/icons/Background";
 import OnGoingGameButton from "../objects/widgets/button/OnGoingGameButton";
 import BackButton from "../objects/widgets/button/BackButton";
 import MusicButton from "../objects/widgets/button/MusicButton";
 import HelpButton from "../objects/widgets/button/HelpButton";
-
+import gameConst from "../gameParam/gameConst";
 
 export class Waiting extends Phaser.State {
     preload() {
-        globalVariableInstance.set("screenState", 1);
-        console.log(globalVariableInstance.get("opponentData"));
+        gameInfo.set("screenState", 1);
+        console.log(gameInfo.get("opponentData"));
         this.loadOpponentProfileImage();
     }
 
@@ -115,8 +115,8 @@ export class Waiting extends Phaser.State {
     }
 
     loadOpponentProfileImage() {
-        if (globalVariableInstance.get("opponentData") !== null) {
-            this.game.load.image('opponentPic', globalVariableInstance.get("opponentData").profileImage + "?height=276&width=276");
+        if (gameInfo.get("opponentData") !== null) {
+            this.game.load.image('opponentPic', gameInfo.get("opponentData").profileImage + "?height=276&width=276");
         }
     }
 
@@ -127,18 +127,18 @@ export class Waiting extends Phaser.State {
         }, function () {
             console.log('Room Unloading Failed');
         });
-        globalVariableInstance.set("gameResume", false);
-        globalVariableInstance.set("room", null);
-        globalVariableInstance.set("playerMark", 0);
-        globalVariableInstance.set("gameType", null);
-        globalVariableInstance.set("botLevel", -1);
-        globalVariableInstance.set("boardStatus", {cells: new Array(9)});
-        globalVariableInstance.set("opponentData", undefined);
-        globalVariableInstance.set("turnOfPlayer", undefined);
-        globalVariableInstance.set("gameOver", false);
-        globalVariableInstance.set("win", 0);
-        globalVariableInstance.set("gameLayoutLoaded", false);
-        this.game.state.start('menu');
+        gameInfo.set("gameResume", false);
+        gameInfo.set("room", null);
+        gameInfo.set("playerMark", gameConst.NONE);
+        gameInfo.set("gameType", null);
+        gameInfo.set("botLevel", -1);
+        gameInfo.set("boardStatus", {cells: new Array(9)});
+        gameInfo.set("opponentData", undefined);
+        gameInfo.set("turnOfPlayer", undefined);
+        gameInfo.set("gameOver", false);
+        gameInfo.set("win", 0);
+        gameInfo.set("gameLayoutLoaded", false);
+        this.game.state.start('Menu');
     }
 
     createPlayerProfileImage() {
@@ -155,7 +155,7 @@ export class Waiting extends Phaser.State {
     }
 
     createOpponentProfileImage() {
-        if (globalVariableInstance.get("opponentData") !== null) {
+        if (gameInfo.get("opponentData") !== null) {
             this.opponentProfilePic = this.game.add.image(582, 444, "opponentPic");
             this.opponentProfilePic.scale.set(276 / this.opponentProfilePic.width);
             this.game.stage.addChild(this.opponentProfilePic);
@@ -167,8 +167,8 @@ export class Waiting extends Phaser.State {
             this.opponentProfilePic.mask = this.opponentMask;
             this.game.stage.addChild(this.opponentMask);
 
-            console.log('opponentData at waiting state : ', globalVariableInstance.get("opponentData"));
-            this.waitingText.text = "WAITING FOR " + globalVariableInstance.get("opponentData").name.split(" ")[0].toUpperCase() + " TO JOIN";
+            console.log('opponentData at waiting state : ', gameInfo.get("opponentData"));
+            this.waitingText.text = "WAITING FOR " + gameInfo.get("opponentData").name.split(" ")[0].toUpperCase() + " TO JOIN";
         }
         else {
             //placeHolder opponentImage {for Random Room}

@@ -1,6 +1,6 @@
 'use strict';
 
-import gameLayoutVariables from "../store/gameLayoutVariables";
+import gameInfo from "../store/gameLayoutVariables";
 import layoutConst from "../../../src/gameParam/gameConst";
 
 export default class GameState {
@@ -41,7 +41,7 @@ export default class GameState {
         let cell = this.board;
         for (let i = 0, j = layoutConst.CELL_ROWS; i < layoutConst.CELL_COLS; i++) {
             if (cell[i] !== 0 && cell[i] === cell[i + j] && cell[i + j] === cell[i + (2 * j)]) {
-                gameLayoutVariables.winningMarkLine = i;
+                gameInfo.winningMarkLine = i;
                 this.boardResult = cell[i];
                 return true;
             }
@@ -49,20 +49,20 @@ export default class GameState {
         //Checking Columns
         for (let i = 0, j = 1; i < layoutConst.CELL_ROWS * layoutConst.CELL_COLS; i += layoutConst.CELL_COLS) {
             if (cell[i] !== 0 && cell[i] === cell[i + j] && cell[i + j] === cell[i + (2 * j)]) {
-                gameLayoutVariables.winningMarkLine = (i / layoutConst.CELL_COLS) + layoutConst.CELL_ROWS;
+                gameInfo.winningMarkLine = (i / layoutConst.CELL_COLS) + layoutConst.CELL_ROWS;
                 this.boardResult = cell[i];
                 return true;
             }
         }
         //Checking Leading Diagonals '\'
         if (cell[0] !== 0 && cell[0] === cell[4] && cell[4] === cell[8]) {
-            gameLayoutVariables.winningMarkLine = 6;
+            gameInfo.winningMarkLine = 6;
             this.boardResult = cell[4];
             return true;
         }
         //Checing other Diagonal '/'
         if (cell[2] !== 0 && cell[2] === cell[4] && cell[4] === cell[6]) {
-            gameLayoutVariables.winningMarkLine = 7;
+            gameInfo.winningMarkLine = 7;
             this.boardResult = cell[4];
             return true;
         }

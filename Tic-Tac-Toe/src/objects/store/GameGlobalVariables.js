@@ -1,7 +1,7 @@
 'use strict';
 import gameConst from "../../gameParam/gameConst";
 // TODO : Check if we can move  vars to different primitives or enums or booleans .
-var gameGlobalVariables = function () { // TODO : Use Pascal  case , Rename it to Store
+var GameInfoStore = function () { // TODO : Use Pascal  case , Rename it to Store
     this.room = null; // TODO : room = null and playerData = undefined  any reason for using different falsy values ?
     this.screenState = 0;
     this.playerData = null;
@@ -33,6 +33,6 @@ var gameGlobalVariables = function () { // TODO : Use Pascal  case , Rename it t
         this[key] = val;
     };
 };
-var globalVariableInstance = new gameGlobalVariables();
-globalVariableInstance._init();
-export default globalVariableInstance;
+var gameInfo = new GameInfoStore();
+gameInfo._init();
+export default gameInfo;
