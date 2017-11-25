@@ -3,9 +3,9 @@ import globalVariableInstance from "../objects/store/gameGlobalVariables";
 var saveGameData = function (phaserGame, value) {
     let currentGameState = phaserGame.state.states.play.cells.children;
     let len = currentGameState.length;
-    var tempCells = new Array(9);
+    let tempCells = [];
     for (let i = 0; i < len; i++) {
-        tempCells[i] = currentGameState[i].frame;
+        tempCells.push(currentGameState[i].frame);
     }
     globalVariableInstance.set("boardStatus", {cells: tempCells});
     console.log("Board Status recorded on pause : ", globalVariableInstance.get("boardStatus"));

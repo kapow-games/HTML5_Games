@@ -4,21 +4,21 @@ import gameLayoutVariables from "../store/gameLayoutVariables";
 import layoutConst from "../../../src/gameParam/gameConst";
 
 export default class GameState {
-    constructor(oldGameState) { // TODO : rename it to just state ?
+    constructor(state) { // TODO : rename it to just state ?
         this.turnOfPlayer = null;
         // null : No One's Move // true : Player's Move // false : Opponent's Move' // TODO : @mayank : Can be a boolean ?
         this.movesCount = 0; // Number of moves of Bot
-        this.boardResult =  undefined; // 0 : Board Result Draw // 1 : Board Result Player 1(x) wins // 2 : Board Result Player 2(o) wins // undefined : game state not decided
+        this.boardResult = undefined; // 0 : Board Result Draw // 1 : Board Result Player 1(x) wins // 2 : Board Result Player 2(o) wins // undefined : game state not decided
         this.board = []; //board[i] = 0 : Empty //board[i] = 1 : 'X' //board[i] = 2 : 'O'
-        if (oldGameState) { // TODO : can do if(oldGameState ) {} // undefined is falsy
-            let len = oldGameState.board.length;
+        if (state) { // TODO : can do if(oldGameState ) {} // undefined is falsy
+            let len = state.board.length;
             this.board = []; // TODO : initialize array with [] https://stackoverflow.com/a/1273936
             for (let i = 0; i < len; i++) {
-                this.board.push(oldGameState.board[i]);
+                this.board.push(state.board[i]);
             }
-            this.turnOfPlayer = oldGameState.turnOfPlayer;
-            this.movesCount = oldGameState.movesCount;
-            this.boardResult = oldGameState.boardResult;
+            this.turnOfPlayer = state.turnOfPlayer;
+            this.movesCount = state.movesCount;
+            this.boardResult = state.boardResult;
         }
     }
 

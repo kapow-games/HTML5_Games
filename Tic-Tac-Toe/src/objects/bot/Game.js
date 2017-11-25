@@ -7,8 +7,8 @@ import layoutConst from "../../../src/gameParam/gameConst";
 import globalVariableInstance from "../store/gameGlobalVariables";
 
 export default class Game { // TODO : formatting , extra line . Only one extra line before class and import
-    constructor(phaserGameObj, bot) { // TODO : just game ? @sukhmeet don't want to use game. also used as an object in game.js.
-        this.phaserGame = phaserGameObj;
+    constructor(ticTacToeGame, bot) { // TODO : just game ? @sukhmeet don't want to use game. also used as an object in game.js.
+        this.phaserGame = ticTacToeGame;
         this.bot = bot;
         this.currentState = new GameState();
         this.currentState.board = []; // TODO : is it a CONSTANT ? extract such CONSTANTS

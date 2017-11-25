@@ -18,7 +18,7 @@ var phaserManager = {
         _anchorX = (obj.anchorX === undefined ) ? 0 : obj.anchorX;
         _anchorY = (obj.anchorY === undefined ) ? 0 : obj.anchorY;
 
-        var text = phaserGameObj.add.text(_positionX, _positionY, _displayMessage, textStyle);
+        let text = phaserGameObj.add.text(_positionX, _positionY, _displayMessage, textStyle);
         text.anchor.setTo(_anchorX, _anchorY);
         return text;
     },
@@ -35,7 +35,7 @@ var phaserManager = {
         let _label = obj.label;
         let _anchorX = obj.anchorX;
         let _anchorY = obj.anchorY;
-        var image = phaserGameObj.add.image(_posX, _posY, _label);
+        let image = phaserGameObj.add.image(_posX, _posY, _label);
         image.anchor.setTo(_anchorX, _anchorY);
         return image;
     }

@@ -52,4 +52,10 @@ export class PlayLoad extends Phaser.State {
 
     update() {
     }
+
+    shutdown() {
+        for (let i = this.game.stage.children.length - 1; i >= 0; i--) {
+            this.game.stage.removeChild(this.game.stage.children[i]);
+        }
+    }
 }

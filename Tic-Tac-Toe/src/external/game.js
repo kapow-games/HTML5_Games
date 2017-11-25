@@ -42,7 +42,6 @@ window.game = {
     },
     onPlayerJoined: function (playerObj) {
         console.log("CLIENT onPlayerJoined - " + JSON.stringify(playerObj));
-        //onAffiliationChange();
     },
     onInviteRejected: function (playerObj) {
         console.log("Client onInviteRejected - " + JSON.stringify(playerObj));

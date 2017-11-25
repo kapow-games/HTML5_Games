@@ -3,7 +3,7 @@ import parseRoomAndRedirectToGame from "../../../util/parseRoomAndRedirectToGame
 
 export default class VsFriendGameButton extends Phaser.Button {
     constructor(arg) {
-        let vsFriendGameStart = function() {
+        let vsFriendGameStart = function () {
             globalVariableInstance.set("gameType", 'friend');
             kapow.startGameWithFriends(2, 2, function (roomDetail) {
                 globalVariableInstance.set("room", roomDetail);

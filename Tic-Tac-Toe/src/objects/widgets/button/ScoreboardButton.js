@@ -2,7 +2,7 @@
 
 export default class ScoreboardButton extends Phaser.Button {  // TODO : its a scoreboard not leaderboard :P
     constructor(arg) {
-        let scoreboardClickHandler = function() {
+        let scoreboardClickHandler = function () {
             console.log('Leaderboard Button Clicked');
             kapow.boards.displayScoreboard({'metric': 'points', 'interval': 'alltime'});
         };

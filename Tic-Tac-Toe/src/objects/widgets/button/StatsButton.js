@@ -4,7 +4,7 @@ import GameStoreQuery from "../../store/GameStoreQuery";
 
 export default class StatsButton extends Phaser.Button {
     constructor(arg) {
-        let statButtonClickHandler = function() {
+        let statButtonClickHandler = function () {
             console.log('Stat Button Clicked.');
             this.darkOverlay = new DarkOverlay({
                 game: this.game,

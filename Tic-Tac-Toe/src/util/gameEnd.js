@@ -3,10 +3,10 @@ import SocialShare from "./SocialShare";
 import GameStoreQuery from "../objects/store/GameStoreQuery";
 import globalVariableInstance from "../objects/store/gameGlobalVariables";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
+import phaserGame from "../main";
 
-export default function gameEndHandler(phaserGame, value) {
+export default function gameEndHandler(game, value) {
     console.log("Game End Being Handled.");
-
     gameLayoutVariables.backgroundImage.inputEnabled = true;
     gameLayoutVariables.backgroundImage.input.priorityID = 2;
     gameLayoutVariables.backButton.input.priorityID = 3;
@@ -15,9 +15,8 @@ export default function gameEndHandler(phaserGame, value) {
     gameLayoutVariables.resign.destroy();
     gameLayoutVariables.help.destroy();
     gameLayoutVariables.turnText.text = (value === 1) ? "YOU LOST!" : (value === 2 ? "YOU WON!" : "GAME DRAW!");
-
-    if(value === 2) {
-        if(globalVariableInstance.get("playerMark") === 1) {
+    if (value === 2) {
+        if (globalVariableInstance.get("playerMark") === 1) {
             gameLayoutVariables.resultBoard.frame = 0;
             gameLayoutVariables.turnText.backgroundColor = "#48d1dc";
         }
@@ -26,40 +25,40 @@ export default function gameEndHandler(phaserGame, value) {
             gameLayoutVariables.turnText.backgroundColor = "#b9dc70";
         }
     }
-    else if(value === 1) {
+    else if (value === 1) {
         gameLayoutVariables.resultBoard.frame = 2;
         gameLayoutVariables.turnText.backgroundColor = "#f45842";
     }
 
-    let shareBackground = phaserGame.add.sprite(72, 1584, 'shareBackground');
-    phaserGame.stage.addChild(shareBackground)
+    let shareBackground = game.add.sprite(72, 1584, 'shareBackground');
+    game.stage.addChild(shareBackground);
 
-    let shareLoad = phaserGame.add.sprite(phaserGame.world.centerX, phaserGame.world.centerY, 'loaderSpinner');
+    let shareLoad = game.add.sprite(game.world.centerX, game.world.centerY, 'loaderSpinner');
     shareLoad.anchor.setTo(0.5);
-    phaserGame.stage.addChild(shareLoad);
+    game.stage.addChild(shareLoad);
 
-    let shareLoadTween = phaserGame.add.tween(shareLoad).to({angle: 359}, 400, null, true, 0, Infinity);
+    let shareLoadTween = game.add.tween(shareLoad).to({angle: 359}, 400, null, true, 0, Infinity);
     shareLoad.kill();
     shareLoadTween.start();
 
-    let socialShareModal = new SocialShare(phaserGame, value === 1 ? "loss" : value === 0 ? "draw" : "won");
+    let socialShareModal = new SocialShare(game, value === 1 ? "loss" : value === 0 ? "draw" : "won");
 
     let shareFbButton = socialShareModal.shareButton(294, 1614, shareLoad, 'facebook', 'fbShare');
     shareFbButton.input.priorityID = 3;
-    phaserGame.stage.addChild(shareFbButton);
+    game.stage.addChild(shareFbButton);
 
     let shareTwitterButton = socialShareModal.shareButton(408, 1614, shareLoad, 'twitter', 'twitterShare');
     shareTwitterButton.input.priorityID = 3;
-    phaserGame.stage.addChild(shareTwitterButton);
+    game.stage.addChild(shareTwitterButton);
 
     let shareOtherButton = socialShareModal.shareButton(522, 1614, shareLoad, null, 'otherShare');
     shareOtherButton.input.priorityID = 3;
-    phaserGame.stage.addChild(shareOtherButton);
+    game.stage.addChild(shareOtherButton);
 
-    let rematchButton = phaserGame.add.button(657, 1584, 'rematch', rematchButtonHandler, 0, 0, 1, 0);
+    let rematchButton = game.add.button(657, 1584, 'rematch', rematchButtonHandler, 0, 0, 1, 0);
     rematchButton.input.priorityID = 3;
-    rematchButton.game = phaserGame;
-    phaserGame.stage.addChild(rematchButton);
+    rematchButton.game = game;
+    game.stage.addChild(rematchButton);
 
     if (globalVariableInstance.get("gameOver") === false) {
         let gameStoreContainer = new GameStoreQuery();
@@ -166,7 +165,7 @@ export default function gameEndHandler(phaserGame, value) {
 export function drawWinningLine(phaserGame) {
     let gameFinalLayout = globalVariableInstance.get("boardStatus").cells;
     let matchPosition;
-    console.log("draw winning line called",gameFinalLayout);
+    console.log("draw winning line called", gameFinalLayout);
     if (gameFinalLayout[0] !== null && gameFinalLayout[0] !== undefined && gameFinalLayout[0] === gameFinalLayout[1] && gameFinalLayout[0] === gameFinalLayout[2]) {
         matchPosition = phaserGame.add.sprite(222, 948, 'rectangle');
         matchPosition.anchor.setTo(0.5);
@@ -208,12 +207,12 @@ export function drawWinningLine(phaserGame) {
         console.log("CLient doesn't confirm result.")
     }
     console.log("Adding winning line");
-    if(matchPosition !== undefined) {
+    if (matchPosition !== undefined) {
         phaserGame.stage.addChild(matchPosition);
     }
 }
 
-function rematchButtonHandler(item) {
+function rematchButtonHandler() {
     console.log('rematchButtonHandler Clicked');
     globalVariableInstance.set("boardStatus", {cells: new Array(9)});
     globalVariableInstance.set("win", 0);
@@ -225,7 +224,7 @@ function rematchButtonHandler(item) {
     if (globalVariableInstance.get("gameType") === "solo") {
         globalVariableInstance.set("botLevel", -1); //TODO : Remove This. Redundant
         globalVariableInstance.set("gameLayoutLoaded", false);
-        item.game.state.start('select');//TODO : Mention correct Phaser.Game object
+        phaserGame.state.start('select');//TODO : Mention correct Phaser.Game object
     }
     else if (globalVariableInstance.get("gameType") === "friend") {
         kapow.rematch(function (roomObj) {

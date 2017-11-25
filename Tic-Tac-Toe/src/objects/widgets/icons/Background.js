@@ -7,7 +7,7 @@ export default class Background extends Phaser.Image {
     }
 
     enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
-        console.log("Background inputEnabled changed to : ",isEnabled);
+        console.log("Background inputEnabled changed to : ", isEnabled);
         this.inputEnabled = isEnabled;
     }
 

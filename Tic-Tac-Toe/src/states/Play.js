@@ -75,6 +75,13 @@ export class Play extends Phaser.State {
         this.game.stage.removeChild(this.opponentProfilePicBackground);
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic);
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic.mask);
+        // this.game.stage.removeChild(this.cells);
+
+        // for (let i = this.game.stage.children.length - 1; i >= 0; i--)
+        // {
+        //     this.game.stage.removeChild(this.game.stage.children[i]);
+        // }
+        // while(this.game.stage.children.length > 0){   var child = this.game.stage.getChildAt(0);  this.game.stage.removeChild(child);}
     }
 
     clickHandlerSolo(sprite, pointer) {
@@ -182,17 +189,17 @@ export class Play extends Phaser.State {
     }
 
     nextMove(sprite, cell) {
-        let next = new GameState(gameLayoutVariables.myGame.currentState);
+        let next = new GameState(gameLayoutVariables.game.currentState);
         console.log("Click Acknowledged");
         next.board[sprite.frameIndex] = globalVariableInstance.get("playerMark");
         sprite.frame = globalVariableInstance.get("playerMark");
         console.log("Player's move logged");
         next.nextTurn();
-        gameLayoutVariables.myGame.moveTo(next);
+        gameLayoutVariables.game.moveTo(next);
         for (let i = 0; i < layoutConst.CELL_COLS * layoutConst.CELL_ROWS; i++) {
-            cell[i].frame = gameLayoutVariables.myGame.currentState.board[i];
+            cell[i].frame = gameLayoutVariables.game.currentState.board[i];
         }
-        if (globalVariableInstance.get("win") === 0 && gameLayoutVariables.myGame.gameStatus !== 3) {
+        if (globalVariableInstance.get("win") === 0 && gameLayoutVariables.game.gameStatus !== 3) {
             saveGameData(this.game, false);
             gameLayoutVariables.turnText.text = "YOUR TURN";
             gameLayoutVariables.opponentProfilePic.alpha = 0.3;
@@ -437,7 +444,7 @@ export class Play extends Phaser.State {
 
     initialiseBot() {
         let myBot = new Bot();
-        gameLayoutVariables.myGame = new Game(this.game, myBot);
+        gameLayoutVariables.game = new Game(this.game, myBot);
         if (globalVariableInstance.get("playerMark") === 2 && globalVariableInstance.get("gameResume") === false) {
             this.cells.children[gameLayoutVariables.initialMark].frame = 1;
             this.cells.children[gameLayoutVariables.initialMark].inputEnabled = false;
@@ -445,8 +452,8 @@ export class Play extends Phaser.State {
         if (globalVariableInstance.get("gameOver") === false) {
             saveGameData(this.game, false);// To store the initial state of the Game. Even if the user or bot haven't made any move.
         }
-        myBot.gameAssigned(gameLayoutVariables.myGame);
-        gameLayoutVariables.myGame.start();
+        myBot.gameAssigned(gameLayoutVariables.game);
+        gameLayoutVariables.game.start();
         if (globalVariableInstance.get("gameOver") === true && globalVariableInstance.get("win") === 0) {
             gameEndHandler(this.game, 1);
         }

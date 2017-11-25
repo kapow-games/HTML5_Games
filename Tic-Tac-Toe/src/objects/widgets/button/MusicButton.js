@@ -2,7 +2,7 @@
 
 export default class MusicButton extends Phaser.Button {
     constructor(arg) {
-        let musicToggle   =   function() {
+        let musicToggle = function () {
             console.log("clickRegistered");
             this.frame = (1 + this.frame) % 2;
         };

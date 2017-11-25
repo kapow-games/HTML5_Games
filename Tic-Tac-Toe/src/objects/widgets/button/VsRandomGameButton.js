@@ -3,7 +3,7 @@ import parseRoomAndRedirectToGame from "../../../util/parseRoomAndRedirectToGame
 
 export default class VsRandomGameButton extends Phaser.Button {
     constructor(arg) {
-        let vsRandomGameStart = function() {
+        let vsRandomGameStart = function () {
             this.inputEnabled = false;
             globalVariableInstance.set("gameType", 'random');
             globalVariableInstance.set("randomRoom", true);

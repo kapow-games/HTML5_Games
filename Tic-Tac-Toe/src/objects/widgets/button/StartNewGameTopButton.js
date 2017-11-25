@@ -2,7 +2,7 @@
 
 export default class StartNewGameTopButton extends Phaser.Button {
     constructor(arg) {
-        let startNewGameTopButtonHandler = function() {
+        let startNewGameTopButtonHandler = function () {
             if (this.slideDirection === 0) {
                 this.arrowRotateRightToDown.start();
                 this.slideNewGameBottomDown.start();

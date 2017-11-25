@@ -5,7 +5,7 @@ import DarkOverlay from './DarkOverLay';
 
 export default class HelpButton extends Phaser.Button {
     constructor(arg) {
-        let helpButtonClickHandler = function() {
+        let helpButtonClickHandler = function () {
             this.darkOverlay = new DarkOverlay({
                 game: this.game,
                 posX: 0,
