@@ -152,13 +152,13 @@ export class Play extends Phaser.State {
                     sprite.frame = gameInfo.get("playerMark");
                     sprite.alpha = 1;
                     if (obj.result === "lost") {
-                        gameLayoutVariables.turnText.text = " YOU WON!";
+                        // gameLayoutVariables.turnText.text = " YOU WON!";
                         drawWinningLine(this.game);
                         gameEndHandler(this.game, 2);
                         console.log("You won");
                     }
                     else if (obj.result === "draw") {
-                        gameLayoutVariables.turnText.text = " GAME DRAW!";
+                        // gameLayoutVariables.turnText.text = " GAME DRAW!";
                         console.log("Draw");
                         gameEndHandler(this.game, 0);
                     }

@@ -71,10 +71,10 @@ export default class Bot {
             return action;
         }.bind(this));
         if (turnOfPlayer === false) {// TODO : @mayank :
-            availableActions.sort(this._ascending);
+            availableActions.sort(this._descending);
         }
         else {
-            availableActions.sort(this._descending);
+            availableActions.sort(this._ascending);
         }
         return availableActions;
     }

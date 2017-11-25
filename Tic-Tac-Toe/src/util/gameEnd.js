@@ -7,32 +7,51 @@ import gameInfo from "../objects/store/GameGlobalVariables";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
 import phaserGame from "../main";
 import gameConst from "../gameParam/gameConst";
+import phaserManager from "./phaserManager";
 
 export default function gameEndHandler(game, value) {
     console.log("Game End Being Handled.");
     gameLayoutVariables.backgroundImage.inputEnabled = true;
     gameLayoutVariables.backgroundImage.input.priorityID = 2;
     gameLayoutVariables.backButton.input.priorityID = 3;
-    gameLayoutVariables.resultBoard.frame = value === 1 ? 2 : value === 0 ? 1 : 0;
-    gameLayoutVariables.turnTextBackground.destroy();
-    gameLayoutVariables.resign.destroy();
-    gameLayoutVariables.help.destroy();
-    gameLayoutVariables.turnText.text = (value === 1) ? "YOU LOST!" : (value === 2 ? "YOU WON!" : "GAME DRAW!");
+    // gameLayoutVariables.turnTextBackground.destroy();
+    game.stage.removeChild(gameLayoutVariables.turnTextBackground);
+    game.stage.removeChild(gameLayoutVariables.help);
+    game.stage.removeChild(gameLayoutVariables.resign);
+    game.stage.removeChild(gameLayoutVariables.turnText);
+    // gameLayoutVariables.resign.destroy();
+    // gameLayoutVariables.help.destroy();
+    let resulText = (value === 1) ? "YOU LOST!" : (value === 2 ? "YOU WON!" : "GAME DRAW!");
+    let resultTextBackgroundColor;
     if (value === 2) {
         if (gameInfo.get("playerMark") === gameConst.X) {
             gameLayoutVariables.resultBoard.frame = 0;
-            gameLayoutVariables.turnText.backgroundColor = "#48d1dc";
+            resultTextBackgroundColor = "#48d1dc";
         }
         else {
             gameLayoutVariables.resultBoard.frame = 1;
-            gameLayoutVariables.turnText.backgroundColor = "#b9dc70";
+            resultTextBackgroundColor = "#b9dc70";
         }
     }
     else if (value === 1) {
         gameLayoutVariables.resultBoard.frame = 2;
-        gameLayoutVariables.turnText.backgroundColor = "#f45842";
+        resultTextBackgroundColor = "#f45842";
     }
-
+    gameLayoutVariables.turnText = phaserManager.createText(game, {
+        positionX: game.world.centerX,
+        positionY: 276,
+        messageToDisplay: resulText,
+        align: "center",
+        backgroundColor: resultTextBackgroundColor,
+        fill: "#fefefe",
+        font: 'nunito-regular',
+        fontSize: "60px",
+        fontWeight: 800,
+        wordWrapWidth: 355,
+        anchorX: 0.5,
+        anchorY: 0
+    });
+    game.stage.addChild(gameLayoutVariables.turnText);
     let shareBackground = game.add.sprite(72, 1584, 'shareBackground');
     game.stage.addChild(shareBackground);
 
