@@ -14,7 +14,7 @@ import MusicButton from "../objects/widgets/button/MusicButton";
 import GameState from "../objects/bot/GameState";
 import BackButton from "../objects/widgets/button/BackButton";
 import HelpButton from "../objects/widgets/button/HelpButton";
-import layoutConst from "../gameParam/gameConst";
+import gameConst from "../gameParam/gameConst";
 
 export class Play extends Phaser.State {
     preload() {
@@ -75,6 +75,10 @@ export class Play extends Phaser.State {
         this.game.stage.removeChild(this.opponentProfilePicBackground);
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic);
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic.mask);
+        for(let i = 0 ; i < gameConst.CELL_COLS * gameConst.CELL_ROWS ; i++) {
+            this.cells.children[i].inputEnabled = false;
+        }
+        this.game.stage.removeChild(this.cells);
         // this.game.stage.removeChild(this.cells);
 
         // for (let i = this.game.stage.children.length - 1; i >= 0; i--)
@@ -196,7 +200,7 @@ export class Play extends Phaser.State {
         console.log("Player's move logged");
         next.nextTurn();
         gameLayoutVariables.game.moveTo(next);
-        for (let i = 0; i < layoutConst.CELL_COLS * layoutConst.CELL_ROWS; i++) {
+        for (let i = 0; i < gameConst.CELL_COLS * gameConst.CELL_ROWS; i++) {
             cell[i].frame = gameLayoutVariables.game.currentState.board[i];
         }
         if (gameInfo.get("win") === 0 && gameLayoutVariables.game.gameStatus !== 3) {
@@ -416,9 +420,9 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(this.cells);
         this.player = 1;
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
-        for (let i = 0; i < layoutConst.CELL_COLS; i++) {
-            for (let j = 0; j < layoutConst.CELL_ROWS; j++) {
-                let cell = this.cells.create(i * (layoutConst.CELL_WIDTH + layoutConst.CELL_WIDTH_PAD) + layoutConst.CELL_RELATIVE_LEFT, j * (layoutConst.CELL_HEIGHT + layoutConst.CELL_HEIGHT_PAD) + layoutConst.CELL_RELATIVE_TOP, 'cell');
+        for (let i = 0; i < gameConst.CELL_COLS; i++) {
+            for (let j = 0; j < gameConst.CELL_ROWS; j++) {
+                let cell = this.cells.create(i * (gameConst.CELL_WIDTH + gameConst.CELL_WIDTH_PAD) + gameConst.CELL_RELATIVE_LEFT, j * (gameConst.CELL_HEIGHT + gameConst.CELL_HEIGHT_PAD) + gameConst.CELL_RELATIVE_TOP, 'cell');
                 if (gameInfo.get("gameResume") === true) {
                     cell.frame = gameInfo.get("boardStatus").cells[count];
                     if (gameInfo.get("boardStatus").cells[count] === 0 || gameInfo.get("boardStatus").cells[count] === undefined || gameInfo.get("boardStatus").cells[count] === null) {

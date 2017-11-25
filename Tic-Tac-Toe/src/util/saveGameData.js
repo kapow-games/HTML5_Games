@@ -1,7 +1,7 @@
 import gameInfo from "../objects/store/GameGlobalVariables";
 
 var saveGameData = function (phaserGame, value) {
-    let currentGameState = phaserGame.state.states.play.cells.children;
+    let currentGameState = phaserGame.state.states.Play.cells.children;
     let len = currentGameState.length;
     let tempCells = [];
     for (let i = 0; i < len; i++) {

@@ -74,7 +74,7 @@ window.game = {
         console.log('CLIENT : Message Received - ', message);
         if (gameInfo.get("gameLayoutLoaded") === true && message.type === "move" && message.senderId === gameInfo.get("opponentData").id) {
             for (let i = 0; i < 9; i++) {
-                phaserGame.state.states.play.cells.children[i].frame = message.data.moveData.board[i];
+                phaserGame.state.states.Play.cells.children[i].frame = message.data.moveData.board[i];
             }
             gameLayoutVariables.opponentProfilePic.alpha = 0.3;
             gameLayoutVariables.playerProfilePic.alpha = 1;

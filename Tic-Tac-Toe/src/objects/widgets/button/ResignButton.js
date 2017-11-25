@@ -35,7 +35,7 @@ export default class ResignButton extends Phaser.Button {
             gameLayoutVariables.backgroundImage.enableInput(true);
             gameLayoutVariables.backgroundImage.setInputPriority(1);
             this.cancelResign();
-            let tempCells = this.game.state.states.play.cells.children; // TODO : accidental global
+            // let tempCells = this.game.state.states.Play.cells.children; // TODO : accidental global
             gameLayoutVariables.turnText.text = " YOU LOSE!";
             gameEndHandler(this.game, 1);
         }
