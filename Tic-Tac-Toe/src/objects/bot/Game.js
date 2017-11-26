@@ -9,7 +9,7 @@ import gameConst from "../../gameParam/gameConst";
 
 export default class Game { // TODO : formatting , extra line . Only one extra line before class and import
     constructor(ticTacToeGame, bot) { // TODO : just game ? @sukhmeet don't want to use game. also used as an object in game.js.
-        this.phaserGame = ticTacToeGame;
+        this.game = ticTacToeGame;
         this.bot = bot;
         this.currentState = new GameState();
         this.currentState.board = []; // TODO : is it a CONSTANT ? extract such CONSTANTS
@@ -29,7 +29,7 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
     // Advances game to next state
     moveTo(state) {
         this.currentState = state;
-        if (state.isTerminal()) { // TODO : logic can be simplified
+        if (this.currentState.isTerminal()) { // TODO : logic can be simplified
             this.gameStatus = 3; // Indicating game Over
             if (this.currentState.boardResult === 1) {
                 gameInfo.set("win", 1);
@@ -43,61 +43,61 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
             if (gameInfo.get("win") !== 0) {
                 if (gameInfo.get("win") === gameInfo.get("playerMark")) {
                     gameLayoutVariables.turnText.text = "  YOU WIN!";
-                    gameEndHandler(this.phaserGame, 2);
+                    gameEndHandler(this.game, 2);
                 }
                 else {
                     gameLayoutVariables.turnText.text = "  YOU LOSE!";
-                    gameEndHandler(this.phaserGame, 1);
+                    gameEndHandler(this.game, 1);
                 }
             }
             else {
                 gameLayoutVariables.turnText.text = "GAME DRAW!";
-                gameEndHandler(this.phaserGame, 0);
+                gameEndHandler(this.game, 0);
             }
             if (gameInfo.get("win") !== 0) {
                 let matchPosition;
                 switch (gameLayoutVariables.winningMarkLine) {
                     case 0 : {
-                        matchPosition = this.phaserGame.add.sprite(552, 633, 'rectangle');
+                        matchPosition = this.game.add.sprite(552, 633, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         matchPosition.angle = 90;
                         break;
                     }
                     case 1 : {
-                        matchPosition = this.phaserGame.add.sprite(552, 948, 'rectangle');
+                        matchPosition = this.game.add.sprite(552, 948, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         matchPosition.angle = 90;
                         break;
                     }
                     case 2 : {
-                        matchPosition = this.phaserGame.add.sprite(552, 1263, 'rectangle');
+                        matchPosition = this.game.add.sprite(552, 1263, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         matchPosition.angle = 90;
                         break;
                     }
                     case 3 : {
-                        matchPosition = this.phaserGame.add.sprite(222, 948, 'rectangle');
+                        matchPosition = this.game.add.sprite(222, 948, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         break;
                     }
                     case 4 : {
-                        let matchPosition = this.phaserGame.add.sprite(552, 948, 'rectangle');
+                        let matchPosition = this.game.add.sprite(552, 948, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         break;
                     }
                     case 5 : {
-                        matchPosition = this.phaserGame.add.sprite(882, 948, 'rectangle');
+                        matchPosition = this.game.add.sprite(882, 948, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         break;
                     }
                     case 6 : {
-                        matchPosition = this.phaserGame.add.sprite(552, 948, 'rectangle');
+                        matchPosition = this.game.add.sprite(552, 948, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         matchPosition.angle = -45;
                         break;
                     }
                     case 7 : {
-                        matchPosition = this.phaserGame.add.sprite(552, 948, 'rectangle');
+                        matchPosition = this.game.add.sprite(552, 948, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
                         matchPosition.angle = 45;
                         break;
@@ -106,7 +106,7 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
                         console.log("Game Result inconsistent");
                     }
                 }
-                this.phaserGame.stage.addChild(matchPosition);
+                this.game.stage.addChild(matchPosition);
             }
         }
         else {

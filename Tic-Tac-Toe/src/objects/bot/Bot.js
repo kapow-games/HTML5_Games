@@ -4,7 +4,6 @@ import BotBehaviour from "./BotBehaviour"; // TODO : @mayank use strict
 
 export default class Bot {
     constructor() {
-        this.botLevel = 1;
         this.gameDetail = {};
     }
 
@@ -13,7 +12,7 @@ export default class Bot {
         if (state.isTerminal()) {
             return ticTacToeGame.score(state);
         }
-        let stateScore = state.turnOfPlayer ? -1000 : 1000;
+        var stateScore = state.turnOfPlayer ? -1000 : 1000;
 
         let availablePositions = state.emptyCells();
         let availableNextStates = availablePositions.map(function (pos) {
@@ -23,10 +22,10 @@ export default class Bot {
         // console.log(availableNextStates);
         availableNextStates.forEach(function (nextState) {
             let nextScore = this.getMiniMaxValue(ticTacToeGame, nextState);
-            if (state.turnOfPlayer === 1 && nextScore > stateScore) { // TODO :  can do (state.turn === 1 && nextScore > stateScore) {}
+            if (state.turnOfPlayer === true && nextScore > stateScore) { // TODO :  can do (state.turn === 1 && nextScore > stateScore) {}
                 stateScore = nextScore;
             }
-            else if (nextScore < stateScore) {
+            else if (state.turnOfPlayer === false && nextScore < stateScore) {
                 stateScore = nextScore;
             }
         }.bind(this));
@@ -37,17 +36,18 @@ export default class Bot {
         // But since the easy bot move and hard bot move idea was dropped, removing the redundant function and renaming to botMove
         let availableActions = this.sortPossibleBotMoves(turnOfPlayer);
         let chosenAction;
-        if (Math.random() * 100 <= 80) {
-            chosenAction = availableActions[0];
-        }
-        else {
-            if (availableActions.length >= 2) {
-                chosenAction = availableActions[1];
-            }
-            else {
-                chosenAction = availableActions[0];
-            }
-        }
+        // if (Math.random() * 100 <= 80) {
+        //     chosenAction = availableActions[0];
+        // }
+        // else {
+        // if (availableActions.length >= 2) {
+        //     chosenAction = availableActions[1];
+        // }
+        // else {
+        //     chosenAction = availableActions[0];
+        // }
+        // }
+        chosenAction = availableActions[0];
         let next = chosenAction.plays(this.gameDetail.currentState);
         this.gameDetail.moveTo(next);
     }
@@ -71,10 +71,10 @@ export default class Bot {
             return action;
         }.bind(this));
         if (turnOfPlayer === false) {// TODO : @mayank :
-            availableActions.sort(this._descending);
+            availableActions.sort(this._ascending);
         }
         else {
-            availableActions.sort(this._ascending);
+            availableActions.sort(this._descending);
         }
         return availableActions;
     }

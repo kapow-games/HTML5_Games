@@ -75,6 +75,7 @@ export class Play extends Phaser.State {
         this.game.stage.removeChild(this.opponentProfilePicBackground);
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic);
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic.mask);
+        this.game.stage.removeChild(this.boardLayout);
         for(let i = 0 ; i < gameConst.CELL_COLS * gameConst.CELL_ROWS ; i++) {
             this.cells.children[i].inputEnabled = false;
         }
@@ -89,7 +90,7 @@ export class Play extends Phaser.State {
     }
 
     clickHandlerSolo(sprite, pointer) {
-        let cell = this.cells.children;
+        var cell = this.cells.children;
         if (sprite.frame === 0) {
             gameLayoutVariables.backgroundImage.enableInput(true);
             gameLayoutVariables.backgroundImage.setInputPriority(2);
@@ -98,6 +99,9 @@ export class Play extends Phaser.State {
             gameLayoutVariables.resign.setInputPriority(2);
             console.log("Player Mark", gameInfo.get("playerMark"));
             sprite.frame = gameInfo.get("playerMark");
+            sprite.scale.setTo(0);
+            let popUpMark = this.game.add.tween(sprite.scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
+            popUpMark.start();
             console.log("Player's Sprite Set");
 
             gameLayoutVariables.turnText.text = "BOT'S TURN";
@@ -200,9 +204,16 @@ export class Play extends Phaser.State {
         console.log("Player's move logged");
         next.nextTurn();
         gameLayoutVariables.game.moveTo(next);
+        let changePos;
         for (let i = 0; i < gameConst.CELL_COLS * gameConst.CELL_ROWS; i++) {
-            cell[i].frame = gameLayoutVariables.game.currentState.board[i];
+            if(cell[i].frame !== gameLayoutVariables.game.currentState.board[i]) {
+                changePos = i ;
+                cell[i].frame = gameLayoutVariables.game.currentState.board[i];
+            }
         }
+        cell[changePos].scale.setTo(0);
+        let popUpMark = this.game.add.tween(cell[changePos].scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
+        popUpMark.start();
         if (gameInfo.get("win") === 0 && gameLayoutVariables.game.gameStatus !== 3) {
             saveGameData(this.game, false);
             gameLayoutVariables.turnText.text = "YOUR TURN";
@@ -373,8 +384,8 @@ export class Play extends Phaser.State {
     }
 
     createBoards() {
-        let boardLayout = this.game.add.sprite(57, 477, 'board');
-        this.game.stage.addChild(boardLayout);
+        this.boardLayout= this.game.add.sprite(57, 477, 'board');
+        this.game.stage.addChild(this.boardLayout);
 
         gameLayoutVariables.resultBoard = this.game.add.sprite(315, 240, 'winBackground');
         gameLayoutVariables.resultBoard.frame = 0;
@@ -422,7 +433,8 @@ export class Play extends Phaser.State {
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
         for (let i = 0; i < gameConst.CELL_COLS; i++) {
             for (let j = 0; j < gameConst.CELL_ROWS; j++) {
-                let cell = this.cells.create(i * (gameConst.CELL_WIDTH + gameConst.CELL_WIDTH_PAD) + gameConst.CELL_RELATIVE_LEFT, j * (gameConst.CELL_HEIGHT + gameConst.CELL_HEIGHT_PAD) + gameConst.CELL_RELATIVE_TOP, 'cell');
+                let cell = this.cells.create(i * (gameConst.CELL_WIDTH + gameConst.CELL_WIDTH_PAD) + gameConst.CELL_RELATIVE_LEFT + (gameConst.CELL_WIDTH)*0.5, j * (gameConst.CELL_HEIGHT + gameConst.CELL_HEIGHT_PAD) + gameConst.CELL_RELATIVE_TOP + (gameConst.CELL_HEIGHT)*0.5, 'cell');
+                cell.anchor.setTo(0.5);
                 if (gameInfo.get("gameResume") === true) {
                     cell.frame = gameInfo.get("boardStatus").cells[count];
                     if (gameInfo.get("boardStatus").cells[count] === 0 || gameInfo.get("boardStatus").cells[count] === undefined || gameInfo.get("boardStatus").cells[count] === null) {

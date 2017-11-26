@@ -32,6 +32,7 @@ export class Preload extends Phaser.State {
         this.load.spritesheet('onGoing', 'assets/images/onGoing.png', 984, 180);
         this.load.image('arena', 'assets/images/backGround.png');
         this.load.image('back', 'assets/images/back.png');
+        this.load.image('kapowClose', 'assets/images/kapowClose.png');
         this.load.spritesheet('newGameTop', 'assets/images/newgame-top.png', 984, 108);
         this.load.spritesheet('newGameBottom', 'assets/images/newgame-bottom.png', 984, 114);
         this.load.spritesheet('music', 'assets/images/volume.png', 72, 72);
@@ -52,6 +53,7 @@ export class Preload extends Phaser.State {
         this.load.image('twitterShare', 'assets/images/twitter.png');
         this.load.image('otherShare', 'assets/images/other.png');
         this.load.image('darkOverlay', 'assets/images/dark-overlay.png');
+        this.load.image('shareLoadBackground', 'assets/images/shareLoadBackground.png');
         this.load.image('arrowRight', 'assets/images/arrowRight.png');
         this.load.image('waitingPlayer', 'assets/images/waitingPlayer.png');
         this.load.image('anonymousOpponentPic', 'assets/images/waitingOpponent.png');

@@ -14,14 +14,11 @@ export default function gameEndHandler(game, value) {
     gameLayoutVariables.backgroundImage.inputEnabled = true;
     gameLayoutVariables.backgroundImage.input.priorityID = 2;
     gameLayoutVariables.backButton.input.priorityID = 3;
-    // gameLayoutVariables.turnTextBackground.destroy();
     game.stage.removeChild(gameLayoutVariables.turnTextBackground);
     game.stage.removeChild(gameLayoutVariables.help);
     game.stage.removeChild(gameLayoutVariables.resign);
     game.stage.removeChild(gameLayoutVariables.turnText);
-    // gameLayoutVariables.resign.destroy();
-    // gameLayoutVariables.help.destroy();
-    let resulText = (value === 1) ? "YOU LOST!" : (value === 2 ? "YOU WON!" : "GAME DRAW!");
+    let resultText = (value === 1) ? "YOU LOST!" : (value === 2 ? "YOU WON!" : "GAME DRAW!");
     let resultTextBackgroundColor;
     if (value === 2) {
         if (gameInfo.get("playerMark") === gameConst.X) {
@@ -40,7 +37,7 @@ export default function gameEndHandler(game, value) {
     gameLayoutVariables.turnText = phaserManager.createText(game, {
         positionX: game.world.centerX,
         positionY: 276,
-        messageToDisplay: resulText,
+        messageToDisplay: resultText,
         align: "center",
         backgroundColor: resultTextBackgroundColor,
         fill: "#fefefe",
@@ -55,25 +52,25 @@ export default function gameEndHandler(game, value) {
     let shareBackground = game.add.sprite(72, 1584, 'shareBackground');
     game.stage.addChild(shareBackground);
 
-    let shareLoad = game.add.sprite(game.world.centerX, game.world.centerY, 'loaderSpinner');
-    shareLoad.anchor.setTo(0.5);
-    game.stage.addChild(shareLoad);
-
-    let shareLoadTween = game.add.tween(shareLoad).to({angle: 359}, 400, null, true, 0, Infinity);
-    shareLoad.kill();
-    shareLoadTween.start();
+    // let shareLoad = game.add.sprite(game.world.centerX, game.world.centerY, 'loaderSpinner');
+    // shareLoad.anchor.setTo(0.5);
+    // game.stage.addChild(shareLoad);
+    //
+    // let shareLoadTween = game.add.tween(shareLoad).to({angle: 359}, 400, null, true, 0, Infinity);
+    // shareLoad.kill();
+    // shareLoadTween.start();
 
     let socialShareModal = new SocialShare(game, value === 1 ? "loss" : value === 0 ? "draw" : "won");
 
-    let shareFbButton = socialShareModal.shareButton(294, 1614, shareLoad, 'facebook', 'fbShare');
+    let shareFbButton = socialShareModal.shareButton(294, 1614, 'facebook', 'fbShare');
     shareFbButton.input.priorityID = 3;
     game.stage.addChild(shareFbButton);
 
-    let shareTwitterButton = socialShareModal.shareButton(408, 1614, shareLoad, 'twitter', 'twitterShare');
+    let shareTwitterButton = socialShareModal.shareButton(408, 1614, 'twitter', 'twitterShare');
     shareTwitterButton.input.priorityID = 3;
     game.stage.addChild(shareTwitterButton);
 
-    let shareOtherButton = socialShareModal.shareButton(522, 1614, shareLoad, null, 'otherShare');
+    let shareOtherButton = socialShareModal.shareButton(522, 1614, null, 'otherShare');
     shareOtherButton.input.priorityID = 3;
     game.stage.addChild(shareOtherButton);
 

@@ -156,7 +156,7 @@ export class Menu extends Phaser.State { // TODO : formatting ?
             game: this.game,
             posX: 48,
             posY: 96,
-            label: 'back',
+            label: 'kapowClose',
             anchorX: 0,
             anchorY: 0,
             callback: this.backButtonHandler.bind(this)

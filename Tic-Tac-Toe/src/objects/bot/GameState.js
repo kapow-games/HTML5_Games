@@ -23,7 +23,7 @@ export default class GameState {
     }
 
     nextTurn() {
-        this.turnOfPlayer = !this.turnOfPlayer;
+        this.turnOfPlayer = this.turnOfPlayer===true ? false : true;
     }
 
     emptyCells() {
@@ -34,6 +34,7 @@ export default class GameState {
                 indices.push(i);
             }
         }
+        // console.log(indices);
         return indices;
     }
 
