@@ -10,7 +10,7 @@ import GAME_CONST from "../gameParam/gameConst";
 import phaserManager from "./phaserManager";
 import MESSAGE from "../gameParam/message";
 
-export default function gameEndHandler(game, value) {
+export default function gameEndHandler(game, value) { // TODO : too big responsiblitly function. Seperate into smaller units
     console.log("Game End Being Handled.");
     gameLayoutVariables.backgroundImage.inputEnabled = true;
     gameLayoutVariables.backgroundImage.input.priorityID = 2;

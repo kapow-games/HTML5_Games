@@ -1,6 +1,6 @@
 'use strict';
 
-import {game} from "../external/game";
+import {game} from "../external/game"; // TODO : @mayank . can be imported in main.js
 
 export class Boot extends Phaser.State {
     preload() {

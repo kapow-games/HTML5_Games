@@ -17,7 +17,7 @@ import HelpButton from "../objects/widgets/button/HelpButton";
 import GAME_CONST from "../gameParam/gameConst";
 import MESSAGE from "../gameParam/message";
 
-export class Play extends Phaser.State {
+export class Play extends Phaser.State { // TODO : fix laer. this screen has too much logic. Create a new controller class and move logic there
     preload() {
         gameInfo.set("screenState", 1);
         this.loadOpponentImage();
@@ -25,7 +25,7 @@ export class Play extends Phaser.State {
     }
 
     create() {
-        gameInfo.set("screenState", 1);
+        gameInfo.set("screenState", 1); // TODO : create is called once preload has completed .  Is it Redundant ?
         console.log("Loading Game Layout.");
 
         this.createBackground();
@@ -54,7 +54,7 @@ export class Play extends Phaser.State {
         this.physics.startSystem(Phaser.Physics.ARCADE);
     }
 
-    update() {
+    update() { // TODO : unnecessary
     }
 
     shutdown() {
@@ -90,7 +90,7 @@ export class Play extends Phaser.State {
     }
 
     clickHandlerSolo(sprite, pointer) {
-        var cell = this.cells.children;
+        var cell = this.cells.children; // TODO : cell is an array . plural ?
         if (sprite.frame === 0) {
             gameLayoutVariables.backgroundImage.enableInput(true);
             gameLayoutVariables.backgroundImage.setInputPriority(2);
@@ -252,7 +252,7 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(gameLayoutVariables.backgroundImage);
     }
 
-    backButtonHandler() {
+    backButtonHandler() { // TODO : too many objects to set on store. pass object
         console.log("WebView BACK presed.");
         kapow.unloadRoom(function () {
             console.log('Room Succesfully Unloaded');
@@ -434,7 +434,7 @@ export class Play extends Phaser.State {
         let count = 0;
         this.cells = this.game.add.group();
         this.game.stage.addChild(this.cells);
-        this.player = 1;
+        this.player = 1; // TODO : why is player a local object. Shoudn't it be in global store
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
         for (let i = 0; i < GAME_CONST.CELL_COLS; i++) {
             for (let j = 0; j < GAME_CONST.CELL_ROWS; j++) {
@@ -442,6 +442,7 @@ export class Play extends Phaser.State {
                 cell.anchor.setTo(0.5);
                 if (gameInfo.get("gameResume") === true) {
                     cell.frame = gameInfo.get("boardStatus").cells[count];
+                    // TODO : too complex falsy value check can be simplified
                     if (gameInfo.get("boardStatus").cells[count] === 0 || gameInfo.get("boardStatus").cells[count] === undefined || gameInfo.get("boardStatus").cells[count] === null) {
                         cell.frame = 0;
                         cell.inputEnabled = !gameInfo.get("gameOver");
@@ -463,25 +464,25 @@ export class Play extends Phaser.State {
         }
     }
 
-    initialiseBot() {
-        let myBot = new Bot();
-        gameLayoutVariables.game = new Game(this.game, myBot);
+    initialiseBot() { // TODO : fix later , this does more then initBot . Seperate it
+        let myBot = new Bot(); // TODO : rename to gameBot ?
+        gameLayoutVariables.game = new Game(this.game, myBot); // TODO :  LayoutStore storing game ??
         if (gameInfo.get("playerMark") === 2 && gameInfo.get("gameResume") === false) {
             this.cells.children[gameLayoutVariables.initialMark].frame = 1;
             this.cells.children[gameLayoutVariables.initialMark].inputEnabled = false;
         }
-        if (gameInfo.get("gameOver") === false) {
+        if (gameInfo.get("gameOver") === false) { //
             saveGameData(this.game, false);// To store the initial state of the Game. Even if the user or bot haven't made any move.
-        }
-        myBot.gameAssigned(gameLayoutVariables.game);
-        gameLayoutVariables.game.start();
+        }// TODO fix later: is the save needed ?
+        myBot.gameAssigned(gameLayoutVariables.game); // TODO : fix later.. use names like assignName as an action which stores data . gameAssigned is a boolean check function name.
+        gameLayoutVariables.game.start(); // TODO : starting game from layout store ? Should change this flow .
         if (gameInfo.get("gameOver") === true && gameInfo.get("win") === 0) {
-            gameEndHandler(this.game, 1);
+            gameEndHandler(this.game, 1); // TODO : better name . HandleGameEnd ?
         }
     }
 
-    verifyOpponentAffiliationStatus() {
-        if (gameInfo.get("opponentData") !== null && gameInfo.get("opponentData").affiliation === "accepted") {
+    verifyOpponentAffiliationStatus() { // TODO : no verification is done . only console log :D
+        if (gameInfo.get("opponentData") !== null && gameInfo.get("opponentData").affiliation === "accepted") { // TODO : fix later . extract enum Affiliation . String comparision are more prone to errors
             console.log("Opponent Accepted.");
         }
         else if (gameInfo.get("opponentData").affiliation === null) {

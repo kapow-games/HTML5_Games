@@ -7,9 +7,10 @@ import gameInfo from "../store/GameInfoStore";
 import GAME_CONST from "../../gameParam/gameConst";
 import GAME_RESULT from "../../gameParam/gameResult";
 
-export default class Game { // TODO : formatting , extra line . Only one extra line before class and import
-    constructor(game, bot) { // TODO : just game ? @sukhmeet don't want to use game. also used as an object in game.js.
-        this.game = game;
+export default class Game {
+    constructor(ticTacToeGame, bot) {
+        this.game = ticTacToeGame;
+
         this.bot = bot;
         this.currentState = new GameState();
         this.currentState.board = []; // TODO : is it a CONSTANT ? extract such CONSTANTS

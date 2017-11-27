@@ -218,4 +218,5 @@ window.game = {
         });
     }
 };
-export default game;
+
+export default game; // TODO : exportd as game . There is no game var here
