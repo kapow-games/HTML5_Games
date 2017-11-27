@@ -1,4 +1,4 @@
-import gameInfo from '../../store/GameGlobalVariables';
+import gameInfo from '../../store/GameInfoStore';
 import parseRoomAndRedirectToGame from "../../../util/parseRoomAndRedirectToGame";
 import gameConst from "../../../gameParam/gameConst";
 
@@ -20,11 +20,11 @@ export default class VsFriendGameButton extends Phaser.Button {
         this.inputEnabled = arg.inputEnabled;
     }
 
-    enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
+    enableInput(isEnabled) {
         this.inputEnabled = isEnabled;
     }
 
-    setInputPriority(priorityID) { // TODO : same
+    setInputPriority(priorityID) {
         this.input.priorityID = priorityID;
     }
 

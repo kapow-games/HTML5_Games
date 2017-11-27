@@ -2,12 +2,11 @@ import gameLayoutVariables from "../../store/gameLayoutVariables";
 import DarkOverlay from "./DarkOverLay";
 import saveGameData from "../../../util/saveGameData";
 import gameEndHandler from "../../../util/gameEnd";
-import gameInfo from "../../store/GameGlobalVariables"
+import gameInfo from "../../store/GameInfoStore"
 import gameConst from "../../../gameParam/gameConst";
 
 export default class ResignButton extends Phaser.Button {
     constructor(arg) {
-
         let resignClickHandler = function () {
             this.createDarkOverlay();
             this.createResignModal();
@@ -19,7 +18,6 @@ export default class ResignButton extends Phaser.Button {
         this.game = arg.game;
         this.anchor.setTo(arg.anchorX, arg.anchorY);
     }
-
 
     cancelResign() {
         this.game.stage.removeChild(this.yesResignButton);
@@ -99,11 +97,11 @@ export default class ResignButton extends Phaser.Button {
         this.game.stage.addChild(this.yesResignButton);
     }
 
-    enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
+    enableInput(isEnabled) {
         this.inputEnabled = isEnabled;
     }
 
-    setInputPriority(priorityID) { // TODO : same
+    setInputPriority(priorityID) {
         this.input.priorityID = priorityID;
     }
 };

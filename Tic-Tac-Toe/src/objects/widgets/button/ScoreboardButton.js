@@ -1,6 +1,6 @@
 "use strict";
 
-export default class ScoreboardButton extends Phaser.Button {  // TODO : its a scoreboard not leaderboard :P
+export default class ScoreboardButton extends Phaser.Button {
     constructor(arg) {
         let scoreboardClickHandler = function () {
             console.log('Leaderboard Button Clicked');

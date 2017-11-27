@@ -1,7 +1,7 @@
 "use strict";
 
-import GameStoreQuery from "../objects/store/GameStoreQuery";
-import gameInfo from "../objects/store/GameGlobalVariables";
+import GameStoreQuery from "../objects/store/KapowGameStore";
+import gameInfo from "../objects/store/GameInfoStore";
 import phaserGame from "../main";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
 import {drawWinningLine} from "../util/gameEnd";

@@ -1,4 +1,4 @@
-import gameInfo from '../../store/GameGlobalVariables';
+import gameInfo from '../../store/GameInfoStore';
 
 export default class VsBotGameButton extends Phaser.Button {
     constructor(arg) {
@@ -12,11 +12,11 @@ export default class VsBotGameButton extends Phaser.Button {
         this.inputEnabled = arg.inputEnabled;
     }
 
-    enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
+    enableInput(isEnabled) {
         this.inputEnabled = isEnabled;
     }
 
-    setInputPriority(priorityID) { // TODO : same
+    setInputPriority(priorityID) {
         this.input.priorityID = priorityID;
     }
 

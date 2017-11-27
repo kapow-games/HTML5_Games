@@ -1,6 +1,6 @@
 'use strict';
 import phaserManager from "../util/phaserManager";
-import gameInfo from "../objects/store/GameGlobalVariables";
+import gameInfo from "../objects/store/GameInfoStore";
 import Background from "../objects/widgets/icons/Background";
 import OnGoingGameButton from "../objects/widgets/button/OnGoingGameButton";
 import BackButton from "../objects/widgets/button/BackButton";

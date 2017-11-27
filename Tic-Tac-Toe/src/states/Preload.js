@@ -1,6 +1,6 @@
 'use strict';
 
-import gameInfo from "../objects/store/GameGlobalVariables";
+import gameInfo from "../objects/store/GameInfoStore";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
 
 var WebFontConfig = {

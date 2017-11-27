@@ -1,4 +1,4 @@
-import gameInfo from '../../store/GameGlobalVariables';
+import gameInfo from '../../store/GameInfoStore';
 import parseRoomAndRedirectToGame from "../../../util/parseRoomAndRedirectToGame";
 import gameConst from "../../../gameParam/gameConst";
 
@@ -6,7 +6,7 @@ import gameConst from "../../../gameParam/gameConst";
 export default class VsRandomGameButton extends Phaser.Button {
     constructor(arg) {
         let vsRandomGameStart = function () {
-            this.inputEnabled = false;
+            this.inputEnabled = false; // TODO : no this before super
             gameInfo.set("gameType", 'random');
             gameInfo.set("randomRoom", true);
             console.log("Creating room for Random Game.");
@@ -28,11 +28,11 @@ export default class VsRandomGameButton extends Phaser.Button {
         this.inputEnabled = arg.inputEnabled;
     }
 
-    enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
+    enableInput(isEnabled) {
         this.inputEnabled = isEnabled;
     }
 
-    setInputPriority(priorityID) { // TODO : same
+    setInputPriority(priorityID) {
         this.input.priorityID = priorityID;
     }
 };

@@ -1,6 +1,6 @@
 'use strict';
 import GameState from "./GameState";
-import gameInfo from "../store/GameGlobalVariables";
+import gameInfo from "../store/GameInfoStore";
 import gameConst from "../../gameParam/gameConst";
 
 export default class BotBehaviour { // TODO : why is bot and bot behavior different ?
@@ -9,7 +9,7 @@ export default class BotBehaviour { // TODO : why is bot and bot behavior differ
         this.miniMaxValue = 0;
     }
 
-    plays(state) {// TODO : rename function to play and args to state
+    play(state) {// TODO : plural ?
         let nextGameState = new GameState(state);
         nextGameState.board[this.movePosition] = (state.turnOfPlayer ? gameInfo.get("playerMark") : ((gameInfo.get("playerMark") === gameConst.X) ? 2 : 1));
         if (!state.turnOfPlayer) {

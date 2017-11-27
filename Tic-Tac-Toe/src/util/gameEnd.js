@@ -2,8 +2,8 @@
 
 import gameLayoutVariables from "../objects/store/gameLayoutVariables";
 import SocialShare from "./SocialShare";
-import GameStoreQuery from "../objects/store/GameStoreQuery";
-import gameInfo from "../objects/store/GameGlobalVariables";
+import GameStoreQuery from "../objects/store/KapowGameStore";
+import gameInfo from "../objects/store/GameInfoStore";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
 import phaserGame from "../main";
 import gameConst from "../gameParam/gameConst";
@@ -227,7 +227,7 @@ export function drawWinningLine(phaserGame) {
         phaserGame.stage.addChild(matchPosition);
     }
 }
-
+// TODO : this is not exported ?
 function rematchButtonHandler() {
     console.log('rematchButtonHandler Clicked');
     let tempCells = [];
@@ -242,7 +242,6 @@ function rematchButtonHandler() {
     gameInfo.set("gameResume", false);
     gameInfo.set("gameLocked", false);
     if (gameInfo.get("gameType") === "solo") {
-        //gameInfo.set("botLevel", -1); //TODO : Remove This. Redundant
         gameInfo.set("gameLayoutLoaded", false);
         phaserGame.state.start('Select');//TODO : Mention correct Phaser.Game object
     }

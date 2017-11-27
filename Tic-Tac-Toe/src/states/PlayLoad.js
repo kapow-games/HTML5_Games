@@ -1,5 +1,5 @@
 'use strict';
-import gameInfo from "../objects/store/GameGlobalVariables";
+import gameInfo from "../objects/store/GameInfoStore";
 import Background from "../objects/widgets/icons/Background";
 import gameConst from "../gameParam/gameConst";
 

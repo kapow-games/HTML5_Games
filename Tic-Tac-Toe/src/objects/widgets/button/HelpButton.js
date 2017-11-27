@@ -38,7 +38,7 @@ export default class HelpButton extends Phaser.Button {
                 this.howToPlayText = phaserManager.createText(this.game, {
                     positionX: 319.5,
                     positionY: 465,
-                    messageToDisplay: 'HOW TO PLAY',
+                    messageToDisplay: 'HOW TO PLAY', // TODO : Fix later : Move all the messages to a new Strings file constants
                     align: "center",
                     backgroundColor: "#fefefe",
                     fill: "#6d616d",
@@ -101,16 +101,15 @@ export default class HelpButton extends Phaser.Button {
         this.anchor.setTo(arg.anchorX, arg.anchorY);
     }
 
-    enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
+    enableInput(isEnabled) {
         this.inputEnabled = isEnabled;
     }
 
-    setInputPriority(priorityID) { // TODO : same
+    setInputPriority(priorityID) {
         this.input.priorityID = priorityID;
     }
 
-    cancelHelp() {// TODO : formatting
-        console.log(this);
+    cancelHelp() {
         this.game.stage.removeChild(this.howToPlayText);
         this.game.stage.removeChild(this.vsFriendText);
         this.game.stage.removeChild(this.vsRandomText);

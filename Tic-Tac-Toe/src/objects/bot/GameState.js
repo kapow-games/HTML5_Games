@@ -4,15 +4,15 @@ import gameInfo from "../store/gameLayoutVariables";
 import gameConst from "../../../src/gameParam/gameConst";
 
 export default class GameState {
-    constructor(state) { // TODO : rename it to just state ?
+    constructor(state) {
         this.turnOfPlayer = null;
-        // null : No One's Move // true : Player's Move // false : Opponent's Move' // TODO : @mayank : Can be a boolean ?
+        // null : No One's Move // true : Player's Move // false : Opponent's Move' // TODO : @mayank : Can be a boolean ? // It is a boolean. Initialised with null
         this.movesCount = 0; // Number of moves of Bot
         this.boardResult = undefined; // 0 : Board Result Draw // 1 : Board Result Player 1(x) wins // 2 : Board Result Player 2(o) wins // undefined : game state not decided
         this.board = []; //board[i] = 0 : Empty //board[i] = 1 : 'X' //board[i] = 2 : 'O'
-        if (state) { // TODO : can do if(oldGameState ) {} // undefined is falsy
+        if (state) {
             let len = state.board.length;
-            this.board = []; // TODO : initialize array with [] https://stackoverflow.com/a/1273936
+            this.board = [];
             for (let i = 0; i < len; i++) {
                 this.board.push(state.board[i]);
             }
@@ -23,7 +23,7 @@ export default class GameState {
     }
 
     nextTurn() {
-        this.turnOfPlayer = this.turnOfPlayer===true ? false : true;
+        this.turnOfPlayer = this.turnOfPlayer !==true; // TODO : can be simplified to  - this.turnOfPlayer = this.turnOfPlayer !== true;
     }
 
     emptyCells() {
