@@ -3,7 +3,7 @@
 import gameInfo from "../objects/store/GameInfoStore"; // TODO : use strict ?
 import phaserGame from "../main";
 
-export default function parseRoomAndRedirectToGame(){
+export default function parseRoomAndRedirectToGame() {
     if (gameInfo.get("room") === null) {
         console.log("Room is null, hence not redirecting to game");
     }

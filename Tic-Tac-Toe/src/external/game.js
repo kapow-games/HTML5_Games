@@ -108,7 +108,7 @@ window.game = {
             gameInfo.set("gameType", null);
             gameInfo.set("botLevel", -1);
             let tempCells = [];
-            for(let i = 0 ; i < gameConst.CELL_COUNT ; i++) {
+            for (let i = 0; i < gameConst.CELL_COUNT; i++) {
                 tempCells.push(undefined);
             }
             gameInfo.set("boardStatus", {cells: tempCells});

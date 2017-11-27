@@ -64,7 +64,7 @@ export class Waiting extends Phaser.State {
         this.waitingText = phaserManager.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 780,
-            messageToDisplay: '',
+            message: '',
             align: "center",
             backgroundColor: "#ffffff",
             fill: "#6d616d",
@@ -133,7 +133,7 @@ export class Waiting extends Phaser.State {
         gameInfo.set("gameType", null);
         gameInfo.set("botLevel", -1);
         let tempCells = [];
-        for(let i = 0 ; i < gameConst.CELL_COUNT ; i++) {
+        for (let i = 0; i < gameConst.CELL_COUNT; i++) {
             tempCells.push(undefined);
         }
         gameInfo.set("boardStatus", {cells: tempCells});

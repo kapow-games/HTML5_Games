@@ -13,7 +13,7 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
         this.bot = bot;
         this.currentState = new GameState();
         this.currentState.board = []; // TODO : is it a CONSTANT ? extract such CONSTANTS
-        for (let i = 0; i < gameConst.CELL_COUNT ; i++) { // TODO : move to new line after 120 chars
+        for (let i = 0; i < gameConst.CELL_COUNT; i++) { // TODO : move to new line after 120 chars
             this.currentState.board.push(gameInfo.get("boardStatus").cells[i] !== undefined ?
                 gameInfo.get("boardStatus").cells[i] : 0);
         }

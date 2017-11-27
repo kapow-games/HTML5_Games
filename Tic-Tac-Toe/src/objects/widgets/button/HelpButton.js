@@ -38,7 +38,7 @@ export default class HelpButton extends Phaser.Button {
                 this.howToPlayText = phaserManager.createText(this.game, {
                     positionX: 319.5,
                     positionY: 465,
-                    messageToDisplay: 'HOW TO PLAY', // TODO : Fix later : Move all the messages to a new Strings file constants
+                    message: 'HOW TO PLAY', // TODO : Fix later : Move all the messages to a new Strings file constants
                     align: "center",
                     backgroundColor: "#fefefe",
                     fill: "#6d616d",
@@ -52,7 +52,7 @@ export default class HelpButton extends Phaser.Button {
                 this.vsFriendText = phaserManager.createText(this.game, {
                     positionX: 468,
                     positionY: 729,
-                    messageToDisplay: 'VS FRIEND',
+                    message: 'VS FRIEND',
                     align: "center",
                     backgroundColor: "#fefefe",
                     fill: "#d8d8d8",
@@ -66,7 +66,7 @@ export default class HelpButton extends Phaser.Button {
                 this.vsRandomText = phaserManager.createText(this.game, {
                     positionX: 189,
                     positionY: 909,
-                    messageToDisplay: 'RANDOM OPPONENT',
+                    message: 'RANDOM OPPONENT',
                     align: "center",
                     backgroundColor: "#fefefe",
                     fill: "#d8d8d8",
@@ -80,7 +80,7 @@ export default class HelpButton extends Phaser.Button {
                 this.helpTabView1Text = phaserManager.createText(this.game, {
                     positionX: 222,
                     positionY: 1284,
-                    messageToDisplay: 'Play with a friend, a random\nopponent or practice vs AI',
+                    message: 'Play with a friend, a random\nopponent or practice vs AI',
                     align: "center",
                     backgroundColor: "#fefefe",
                     fill: "#7a797a",

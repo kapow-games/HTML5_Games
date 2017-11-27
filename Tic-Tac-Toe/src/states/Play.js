@@ -75,7 +75,7 @@ export class Play extends Phaser.State {
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic);
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic.mask);
         this.game.stage.removeChild(this.boardLayout);
-        for(let i = 0 ; i < gameConst.CELL_COUNT ; i++) {
+        for (let i = 0; i < gameConst.CELL_COUNT; i++) {
             this.cells.children[i].inputEnabled = false;
         }
         this.game.stage.removeChild(this.cells);
@@ -205,8 +205,8 @@ export class Play extends Phaser.State {
         gameLayoutVariables.game.moveTo(next);
         let changePos;
         for (let i = 0; i < gameConst.CELL_COUNT; i++) {
-            if(cell[i].frame !== gameLayoutVariables.game.currentState.board[i]) {
-                changePos = i ;
+            if (cell[i].frame !== gameLayoutVariables.game.currentState.board[i]) {
+                changePos = i;
                 cell[i].frame = gameLayoutVariables.game.currentState.board[i];
             }
         }
@@ -266,7 +266,7 @@ export class Play extends Phaser.State {
         gameInfo.set("gameType", null);
         gameInfo.set("botLevel", -1);
         let tempCells = [];
-        for(let i = 0 ; i < gameConst.CELL_COUNT ; i++) {
+        for (let i = 0; i < gameConst.CELL_COUNT; i++) {
             tempCells.push(undefined);
         }
         gameInfo.set("boardStatus", {cells: tempCells});
@@ -386,7 +386,7 @@ export class Play extends Phaser.State {
     }
 
     createBoards() {
-        this.boardLayout= this.game.add.sprite(57, 477, 'board');
+        this.boardLayout = this.game.add.sprite(57, 477, 'board');
         this.game.stage.addChild(this.boardLayout);
 
         gameLayoutVariables.confetti = this.game.add.image(111, 201, 'confetti');
@@ -403,7 +403,7 @@ export class Play extends Phaser.State {
         gameLayoutVariables.turnText = phaserManager.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 276,
-            messageToDisplay: (gameInfo.get("gameOver") === true) ? gameInfo.get("win") === gameInfo.get("playerMark") ? "YOU WIN!" : "YOU LOSE" : gameInfo.get("gameType") === "solo" ? gameInfo.get("playerMark") === 1 ? "YOUR TURN" : "BOT'S TURN" : gameInfo.get("turnOfPlayer") === gameInfo.get("playerData") ? "YOUR TURN" : "WAITING",
+            message: (gameInfo.get("gameOver") === true) ? gameInfo.get("win") === gameInfo.get("playerMark") ? "YOU WIN!" : "YOU LOSE" : gameInfo.get("gameType") === "solo" ? gameInfo.get("playerMark") === 1 ? "YOUR TURN" : "BOT'S TURN" : gameInfo.get("turnOfPlayer") === gameInfo.get("playerData") ? "YOUR TURN" : "WAITING",
             align: "center",
             backgroundColor: "#5684fb",
             fill: "#fefefe",
@@ -419,7 +419,7 @@ export class Play extends Phaser.State {
         gameLayoutVariables.vs = phaserManager.createText(this.game, {
             positionX: 511,
             positionY: 105,
-            messageToDisplay: "VS",
+            message: "VS",
             align: "center",
             backgroundColor: "#5684fb",
             fill: "#fefefe",
@@ -439,7 +439,7 @@ export class Play extends Phaser.State {
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
         for (let i = 0; i < gameConst.CELL_COLS; i++) {
             for (let j = 0; j < gameConst.CELL_ROWS; j++) {
-                let cell = this.cells.create(i * (gameConst.CELL_WIDTH + gameConst.CELL_WIDTH_PAD) + gameConst.CELL_RELATIVE_LEFT + (gameConst.CELL_WIDTH)*0.5, j * (gameConst.CELL_HEIGHT + gameConst.CELL_HEIGHT_PAD) + gameConst.CELL_RELATIVE_TOP + (gameConst.CELL_HEIGHT)*0.5, 'cell');
+                let cell = this.cells.create(i * (gameConst.CELL_WIDTH + gameConst.CELL_WIDTH_PAD) + gameConst.CELL_RELATIVE_LEFT + (gameConst.CELL_WIDTH) * 0.5, j * (gameConst.CELL_HEIGHT + gameConst.CELL_HEIGHT_PAD) + gameConst.CELL_RELATIVE_TOP + (gameConst.CELL_HEIGHT) * 0.5, 'cell');
                 cell.anchor.setTo(0.5);
                 if (gameInfo.get("gameResume") === true) {
                     cell.frame = gameInfo.get("boardStatus").cells[count];

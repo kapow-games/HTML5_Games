@@ -38,7 +38,7 @@ export default function gameEndHandler(game, value) {
     gameLayoutVariables.turnText = phaserManager.createText(game, {
         positionX: game.world.centerX,
         positionY: 276,
-        messageToDisplay: resultText,
+        message: resultText,
         align: "center",
         backgroundColor: resultTextBackgroundColor,
         fill: "#fefefe",
@@ -160,7 +160,7 @@ export default function gameEndHandler(game, value) {
                     );
                 }
                 let tempCells = [];
-                for(let i = 0 ; i < gameConst.CELL_COUNT ; i++) {
+                for (let i = 0; i < gameConst.CELL_COUNT; i++) {
                     tempCells.push(undefined);
                 }
                 gameInfo.set("boardStatus", {cells: tempCells});
@@ -227,11 +227,12 @@ export function drawWinningLine(phaserGame) {
         phaserGame.stage.addChild(matchPosition);
     }
 }
+
 // TODO : this is not exported ?
 function rematchButtonHandler() {
     console.log('rematchButtonHandler Clicked');
     let tempCells = [];
-    for(let i = 0 ; i < gameConst.CELL_COUNT ; i++) {
+    for (let i = 0; i < gameConst.CELL_COUNT; i++) {
         tempCells.push(undefined);
     }
     gameInfo.set("boardStatus", {cells: tempCells});

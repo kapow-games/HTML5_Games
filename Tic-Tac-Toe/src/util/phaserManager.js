@@ -14,7 +14,7 @@ var phaserManager = {
         let _anchorX = (obj.anchorX === undefined ) ? 0 : obj.anchorX;
         let _anchorY = (obj.anchorY === undefined ) ? 0 : obj.anchorY;
 
-        let text = game.add.text(obj.positionX, obj.positionY, obj.messageToDisplay, textStyle);
+        let text = game.add.text(obj.positionX, obj.positionY, obj.message, textStyle);
         text.anchor.setTo(_anchorX, _anchorY);
 
         return text;

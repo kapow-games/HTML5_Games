@@ -17,10 +17,8 @@ export default class SocialShare {
             this.game.stage.addChild(shareLoad);
 
             let shareLoadTween = this.game.add.tween(shareLoad).to({angle: 359}, 400, null, true, 0, Infinity);
-            // shareLoad.kill();
             shareLoadTween.start();
             console.log(buttonID + " share clicked");
-            // shareLoad.reset(this.game.world.centerX, this.game.world.centerY);
             kapow.social.share(this.shareText, medium, function () { // TODO : either use this.shareText here or keep shareTxt in closure http://speakingjs.com/es5/ch17.html#private_data_for_objects
                     shareLoad.kill();
                     shareDarkOverlay.kill();
