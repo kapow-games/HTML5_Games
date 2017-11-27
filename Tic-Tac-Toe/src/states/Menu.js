@@ -20,6 +20,7 @@ export class Menu extends Phaser.State {
         // this.sound = this.game.add.audio('gameSound');
         // this.sound.play();
     }
+
     create() {
         console.log("Loading Menu.");
         gameInfo.set("screenState", 0);

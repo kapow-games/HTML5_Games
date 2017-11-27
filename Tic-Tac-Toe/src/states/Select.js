@@ -1,9 +1,10 @@
 'use strict'
+
 import gameInfo from '../objects/store/GameInfoStore';
 import BackButton from '../objects/widgets/button/BackButton';
 import MusicButton from '../objects/widgets/button/MusicButton';
 import Background from "../objects/widgets/icons/Background";
-import gameConst from "../gameParam/gameConst";
+import GAME_CONST from "../gameParam/gameConst";
 
 export class Select extends Phaser.State {
     preload() {
@@ -100,14 +101,14 @@ export class Select extends Phaser.State {
         console.log('X');
         this.markSelectedX.alpha = 1;
         this.markSelectedO.alpha = 0;
-        this.mark = gameConst.X;
+        this.mark = GAME_CONST.X;
     }
 
     selectMarkO() {
         console.log('O');
         this.markSelectedO.alpha = 1;
         this.markSelectedX.alpha = 0;
-        this.mark = gameConst.O;
+        this.mark = GAME_CONST.O;
     }
 
     createStartGameButton() {

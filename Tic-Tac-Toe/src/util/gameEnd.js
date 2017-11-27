@@ -6,8 +6,9 @@ import GameStoreQuery from "../objects/store/KapowGameStore";
 import gameInfo from "../objects/store/GameInfoStore";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
 import phaserGame from "../main";
-import gameConst from "../gameParam/gameConst";
+import GAME_CONST from "../gameParam/gameConst";
 import phaserManager from "./phaserManager";
+import MESSAGE from "../gameParam/message";
 
 export default function gameEndHandler(game, value) {
     console.log("Game End Being Handled.");
@@ -18,11 +19,11 @@ export default function gameEndHandler(game, value) {
     game.stage.removeChild(gameLayoutVariables.help);
     game.stage.removeChild(gameLayoutVariables.resign);
     game.stage.removeChild(gameLayoutVariables.turnText);
-    let resultText = (value === 1) ? "YOU LOSE" : (value === 2 ? "YOU WIN!" : "GAME DRAW");
+    let resultText = (value === 1) ? MESSAGE.LOSE : (value === 2 ? MESSAGE.WIN : MESSAGE.DRAW);
     let resultTextBackgroundColor;
     if (value === 2) {
         gameLayoutVariables.confetti.reset(111, 201);
-        if (gameInfo.get("playerMark") === gameConst.X) {
+        if (gameInfo.get("playerMark") === GAME_CONST.X) {
             gameLayoutVariables.resultBoard.frame = 0;
             resultTextBackgroundColor = "#48d1dc";
         }
@@ -160,7 +161,7 @@ export default function gameEndHandler(game, value) {
                     );
                 }
                 let tempCells = [];
-                for (let i = 0; i < gameConst.CELL_COUNT; i++) {
+                for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
                     tempCells.push(undefined);
                 }
                 gameInfo.set("boardStatus", {cells: tempCells});
@@ -168,7 +169,7 @@ export default function gameEndHandler(game, value) {
                 gameInfo.set("win", 0);
                 gameInfo.set("gameOver", false);
                 gameInfo.set("room", null);
-                gameInfo.set("playerMark", gameConst.NONE);
+                gameInfo.set("playerMark", GAME_CONST.NONE);
                 gameInfo.set("gameResume", false);
                 console.log("Game Succesfully Closed.");
             }, function (error) {
@@ -232,14 +233,14 @@ export function drawWinningLine(phaserGame) {
 function rematchButtonHandler() {
     console.log('rematchButtonHandler Clicked');
     let tempCells = [];
-    for (let i = 0; i < gameConst.CELL_COUNT; i++) {
+    for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
         tempCells.push(undefined);
     }
     gameInfo.set("boardStatus", {cells: tempCells});
     gameInfo.set("win", 0);
     gameInfo.set("gameOver", false);
     gameInfo.set("room", null);
-    gameInfo.set("playerMark", gameConst.NONE);
+    gameInfo.set("playerMark", GAME_CONST.NONE);
     gameInfo.set("gameResume", false);
     gameInfo.set("gameLocked", false);
     if (gameInfo.get("gameType") === "solo") {
@@ -249,8 +250,8 @@ function rematchButtonHandler() {
     else if (gameInfo.get("gameType") === "friend") {
         kapow.rematch(function (roomObj) {
                 gameInfo.set("room", roomObj);
-                gameInfo.set("playerMark", gameConst.X);
-                gameInfo.set("opponentMark", gameConst.O);
+                gameInfo.set("playerMark", GAME_CONST.X);
+                gameInfo.set("opponentMark", GAME_CONST.O);
                 gameInfo.set("gameLayoutLoaded", false);
                 parseRoomAndRedirectToGame();
                 console.log("Rematch Room Created");

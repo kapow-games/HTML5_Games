@@ -1,3 +1,5 @@
+"use strict";
+
 import DarkOverlay from './DarkOverLay';
 import phaserManager from '../../../util/phaserManager';
 import GameStoreQuery from "../../store/KapowGameStore";

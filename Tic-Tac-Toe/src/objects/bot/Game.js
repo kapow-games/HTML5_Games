@@ -4,7 +4,7 @@ import GameState from "./GameState";
 import gameLayoutVariables from "../store/gameLayoutVariables";
 import gameEndHandler from "../../util/gameEnd";
 import gameInfo from "../store/GameInfoStore";
-import gameConst from "../../gameParam/gameConst";
+import GAME_CONST from "../../gameParam/gameConst";
 import GAME_RESULT from "../../gameParam/gameResult";
 
 export default class Game { // TODO : formatting , extra line . Only one extra line before class and import
@@ -13,13 +13,13 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
         this.bot = bot;
         this.currentState = new GameState();
         this.currentState.board = []; // TODO : is it a CONSTANT ? extract such CONSTANTS
-        for (let i = 0; i < gameConst.CELL_COUNT; i++) { // TODO : move to new line after 120 chars
+        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) { // TODO : move to new line after 120 chars
             this.currentState.board.push(gameInfo.get("boardStatus").cells[i] !== undefined ?
                 gameInfo.get("boardStatus").cells[i] : 0);
         }
         this.currentState.turnOfPlayer = true;
-        if (gameInfo.get("playerMark") === gameConst.O && gameInfo.get("gameResume") === false) {
-            let randomCell = Math.floor(Math.random() * gameConst.CELL_COUNT);
+        if (gameInfo.get("playerMark") === GAME_CONST.O && gameInfo.get("gameResume") === false) {
+            let randomCell = Math.floor(Math.random() * GAME_CONST.CELL_COUNT);
             this.currentState.board[randomCell] = 1;
             gameLayoutVariables.initialMark = randomCell;
         }

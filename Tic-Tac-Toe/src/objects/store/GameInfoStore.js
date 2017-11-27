@@ -1,5 +1,7 @@
 'use strict';
-import gameConst from "../../gameParam/gameConst";
+
+import GAME_CONST from "../../gameParam/gameConst";
+
 // TODO : Check if we can move  vars to different primitives or enums or booleans .
 var GameInfoStore = function () {
     this.room = null; // TODO : any reason why its a function and not an object ? File name and object name are different
@@ -10,8 +12,8 @@ var GameInfoStore = function () {
     };
     this.gameResume = false;
     this.win = 0;
-    this.playerMark = gameConst.NONE;
-    this.opponentMark = gameConst.NONE;//@sukhmeet WIP for bringing similar changes at other occurrences.
+    this.playerMark = GAME_CONST.NONE;
+    this.opponentMark = GAME_CONST.NONE;//@sukhmeet WIP for bringing similar changes at other occurrences.
     this.gameOver = false;
     this.gameType = null;
     this.opponentData = null;
@@ -20,7 +22,7 @@ var GameInfoStore = function () {
     this.gameLayoutLoaded = false;
     this.randomRoom = false;
     this._init = function () {
-        for (let i = 0; i < gameConst.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
             this.boardStatus.cells.push(undefined);
         }
     };

@@ -1,4 +1,5 @@
 'use strict';
+
 var phaserManager = {
     createText: function (game, obj) {
         let textStyle = {

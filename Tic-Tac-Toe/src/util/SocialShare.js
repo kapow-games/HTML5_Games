@@ -1,9 +1,11 @@
 'use strict';
 
+import MESSAGE from "../gameParam/message";
+
 export default class SocialShare {
     constructor(ticTacToeGame, val) {
         this.game = ticTacToeGame;
-        this.shareText = (val === "draw" || val === "loss") ? "I just played a game of Tic Tac Toe on Kapow. Join Kapow now to play with me!" : "I just won a game of Tic Tac Toe on Kapow. Join Kapow now to beat me!"
+        this.shareText = (val === "draw" || val === "loss") ? MESSAGE.SHARE_OTHER : MESSAGE.SHARE_WIN;
     }
 
     shareButton(x, y, medium, buttonID) {
@@ -22,11 +24,11 @@ export default class SocialShare {
             kapow.social.share(this.shareText, medium, function () { // TODO : either use this.shareText here or keep shareTxt in closure http://speakingjs.com/es5/ch17.html#private_data_for_objects
                     shareLoad.kill();
                     shareDarkOverlay.kill();
-                    console.log(buttonID + "Fb share Successfull");
+                    console.log(buttonID + "Fb share successful.");
                 },
                 function (error) {
                     shareLoad.kill();
-                    shareDarkOverlay.kill()
+                    shareDarkOverlay.kill();
                     console.log(buttonID, "Share Failed", error);
                 });
         }.bind(this));

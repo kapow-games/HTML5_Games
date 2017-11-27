@@ -1,4 +1,5 @@
 'use strict';
+
 import phaserManager from "../util/phaserManager";
 import gameInfo from "../objects/store/GameInfoStore";
 import Background from "../objects/widgets/icons/Background";
@@ -6,7 +7,7 @@ import OnGoingGameButton from "../objects/widgets/button/OnGoingGameButton";
 import BackButton from "../objects/widgets/button/BackButton";
 import MusicButton from "../objects/widgets/button/MusicButton";
 import HelpButton from "../objects/widgets/button/HelpButton";
-import gameConst from "../gameParam/gameConst";
+import GAME_CONST from "../gameParam/gameConst";
 
 export class Waiting extends Phaser.State {
     preload() {
@@ -129,11 +130,11 @@ export class Waiting extends Phaser.State {
         });
         gameInfo.set("gameResume", false);
         gameInfo.set("room", null);
-        gameInfo.set("playerMark", gameConst.NONE);
+        gameInfo.set("playerMark", GAME_CONST.NONE);
         gameInfo.set("gameType", null);
         gameInfo.set("botLevel", -1);
         let tempCells = [];
-        for (let i = 0; i < gameConst.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
             tempCells.push(undefined);
         }
         gameInfo.set("boardStatus", {cells: tempCells});

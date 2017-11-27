@@ -41,7 +41,7 @@ export default function parseRoomAndRedirectToGame() {
                                         gameInfo.set("turnOfPlayer", gameInfo.get("playerData"));
                                     }
                                     else {
-                                        console.log("Player Turn couldn't be detrminded");
+                                        console.log("Player Turn couldn't be determined");
                                     }
                                 }
                                 else if (messagesHistory[i].data.type === "resignation" || messagesHistory[i].data.type === "timeout") {

@@ -14,7 +14,8 @@ import MusicButton from "../objects/widgets/button/MusicButton";
 import GameState from "../objects/bot/GameState";
 import BackButton from "../objects/widgets/button/BackButton";
 import HelpButton from "../objects/widgets/button/HelpButton";
-import gameConst from "../gameParam/gameConst";
+import GAME_CONST from "../gameParam/gameConst";
+import MESSAGE from "../gameParam/message";
 
 export class Play extends Phaser.State {
     preload() {
@@ -75,7 +76,7 @@ export class Play extends Phaser.State {
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic);
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic.mask);
         this.game.stage.removeChild(this.boardLayout);
-        for (let i = 0; i < gameConst.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
             this.cells.children[i].inputEnabled = false;
         }
         this.game.stage.removeChild(this.cells);
@@ -103,7 +104,7 @@ export class Play extends Phaser.State {
             popUpMark.start();
             console.log("Player's Sprite Set");
 
-            gameLayoutVariables.turnText.text = "BOT'S TURN";
+            gameLayoutVariables.turnText.text = MESSAGE.BOT_TURN;
             gameLayoutVariables.opponentProfilePic.alpha = 1;
             gameLayoutVariables.playerProfilePic.alpha = 0.3;
 
@@ -129,7 +130,7 @@ export class Play extends Phaser.State {
             gameLayoutVariables.resign.setInputPriority(2);
             console.log("Player's Sprite Set");
 
-            gameLayoutVariables.turnText.text = gameInfo.get("gameType") === "solo" ? "BOT'S TURN" : "WAITING";
+            gameLayoutVariables.turnText.text = gameInfo.get("gameType") === "solo" ? MESSAGE.BOT_TURN : MESSAGE.WAITING;
             gameLayoutVariables.opponentProfilePic.alpha = 1;
             gameLayoutVariables.playerProfilePic.alpha = 0.3;
 
@@ -155,13 +156,11 @@ export class Play extends Phaser.State {
                     sprite.frame = gameInfo.get("playerMark");
                     sprite.alpha = 1;
                     if (obj.result === "lost") {
-                        // gameLayoutVariables.turnText.text = " YOU WON!";
                         drawWinningLine(this.game);
                         gameEndHandler(this.game, 2);
                         console.log("You won");
                     }
                     else if (obj.result === "draw") {
-                        // gameLayoutVariables.turnText.text = " GAME DRAW!";
                         console.log("Draw");
                         gameEndHandler(this.game, 0);
                     }
@@ -185,7 +184,7 @@ export class Play extends Phaser.State {
                     this.musicButton.setInputPriority(1);
                     gameLayoutVariables.resign.setInputPriority(1);
 
-                    gameLayoutVariables.turnText.text = "YOUR TURN";
+                    gameLayoutVariables.turnText.text = MESSAGE.YOUR_TURN;
                     gameLayoutVariables.opponentProfilePic.alpha = 0.3;
                     gameLayoutVariables.playerProfilePic.alpha = 1;
 
@@ -204,7 +203,7 @@ export class Play extends Phaser.State {
         next.nextTurn();
         gameLayoutVariables.game.moveTo(next);
         let changePos;
-        for (let i = 0; i < gameConst.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
             if (cell[i].frame !== gameLayoutVariables.game.currentState.board[i]) {
                 changePos = i;
                 cell[i].frame = gameLayoutVariables.game.currentState.board[i];
@@ -215,7 +214,7 @@ export class Play extends Phaser.State {
         popUpMark.start();
         if (gameInfo.get("win") === 0 && gameLayoutVariables.game.gameStatus !== 3) {
             saveGameData(this.game, false);
-            gameLayoutVariables.turnText.text = "YOUR TURN";
+            gameLayoutVariables.turnText.text = MESSAGE.YOUR_TURN;
             gameLayoutVariables.opponentProfilePic.alpha = 0.3;
             gameLayoutVariables.playerProfilePic.alpha = 1;
             gameLayoutVariables.backgroundImage.setInputPriority(1);
@@ -266,7 +265,7 @@ export class Play extends Phaser.State {
         gameInfo.set("gameType", null);
         gameInfo.set("botLevel", -1);
         let tempCells = [];
-        for (let i = 0; i < gameConst.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
             tempCells.push(undefined);
         }
         gameInfo.set("boardStatus", {cells: tempCells});
@@ -403,7 +402,7 @@ export class Play extends Phaser.State {
         gameLayoutVariables.turnText = phaserManager.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 276,
-            message: (gameInfo.get("gameOver") === true) ? gameInfo.get("win") === gameInfo.get("playerMark") ? "YOU WIN!" : "YOU LOSE" : gameInfo.get("gameType") === "solo" ? gameInfo.get("playerMark") === 1 ? "YOUR TURN" : "BOT'S TURN" : gameInfo.get("turnOfPlayer") === gameInfo.get("playerData") ? "YOUR TURN" : "WAITING",
+            message: (gameInfo.get("gameOver") === true) ? gameInfo.get("win") === gameInfo.get("playerMark") ? MESSAGE.WIN : MESSAGE.LOSE : gameInfo.get("gameType") === "solo" ? gameInfo.get("playerMark") === 1 ? MESSAGE.YOUR_TURN : MESSAGE.BOT_TURN : gameInfo.get("turnOfPlayer") === gameInfo.get("playerData") ? MESSAGE.YOUR_TURN : MESSAGE.WAITING,
             align: "center",
             backgroundColor: "#5684fb",
             fill: "#fefefe",
@@ -419,7 +418,7 @@ export class Play extends Phaser.State {
         gameLayoutVariables.vs = phaserManager.createText(this.game, {
             positionX: 511,
             positionY: 105,
-            message: "VS",
+            message: MESSAGE.VS,
             align: "center",
             backgroundColor: "#5684fb",
             fill: "#fefefe",
@@ -437,9 +436,9 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(this.cells);
         this.player = 1;
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
-        for (let i = 0; i < gameConst.CELL_COLS; i++) {
-            for (let j = 0; j < gameConst.CELL_ROWS; j++) {
-                let cell = this.cells.create(i * (gameConst.CELL_WIDTH + gameConst.CELL_WIDTH_PAD) + gameConst.CELL_RELATIVE_LEFT + (gameConst.CELL_WIDTH) * 0.5, j * (gameConst.CELL_HEIGHT + gameConst.CELL_HEIGHT_PAD) + gameConst.CELL_RELATIVE_TOP + (gameConst.CELL_HEIGHT) * 0.5, 'cell');
+        for (let i = 0; i < GAME_CONST.CELL_COLS; i++) {
+            for (let j = 0; j < GAME_CONST.CELL_ROWS; j++) {
+                let cell = this.cells.create(i * (GAME_CONST.CELL_WIDTH + GAME_CONST.CELL_WIDTH_PAD) + GAME_CONST.CELL_RELATIVE_LEFT + (GAME_CONST.CELL_WIDTH) * 0.5, j * (GAME_CONST.CELL_HEIGHT + GAME_CONST.CELL_HEIGHT_PAD) + GAME_CONST.CELL_RELATIVE_TOP + (GAME_CONST.CELL_HEIGHT) * 0.5, 'cell');
                 cell.anchor.setTo(0.5);
                 if (gameInfo.get("gameResume") === true) {
                     cell.frame = gameInfo.get("boardStatus").cells[count];

@@ -1,6 +1,6 @@
 "use strict";
 
-const GAMECONST = {
+const GAME_CONST = {
     NONE: 0,
     X: 1,
     O: 2,
@@ -15,4 +15,4 @@ const GAMECONST = {
     CELL_COUNT: 9
 };
 
-export default GAMECONST;
+export default GAME_CONST;

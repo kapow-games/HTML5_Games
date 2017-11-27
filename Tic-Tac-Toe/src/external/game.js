@@ -7,7 +7,8 @@ import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
 import {drawWinningLine} from "../util/gameEnd";
 import gameEndHandler from "../util/gameEnd";
 import gameLayoutVariables from "../objects/store/gameLayoutVariables";
-import gameConst from "../gameParam/gameConst";
+import GAME_CONST from "../gameParam/gameConst";
+import MESSAGE from "../gameParam/message";
 
 window.game = {
     onLoad: function (roomObj) {
@@ -70,15 +71,15 @@ window.game = {
     onMessageReceived: function (message) {
         console.log('CLIENT : Message Received - ', message);
         if (gameInfo.get("gameLayoutLoaded") === true && message.type === "move" && message.senderId === gameInfo.get("opponentData").id) {
-            for (let i = 0; i < gameConst.CELL_COUNT; i++) {
+            for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
                 phaserGame.state.states.Play.cells.children[i].frame = message.data.moveData.board[i];
             }
             gameLayoutVariables.opponentProfilePic.alpha = 0.3;
             gameLayoutVariables.playerProfilePic.alpha = 1;
-            gameLayoutVariables.turnText.text = "YOUR TURN";
+            gameLayoutVariables.turnText.text = MESSAGE.YOUR_TURN;
             gameInfo.set("boardStatus", {cells: message.data.moveData.board});
-            if (gameInfo.get("playerMark") === gameConst.NONE) {
-                gameInfo.set("playerMark", gameConst.O);
+            if (gameInfo.get("playerMark") === GAME_CONST.NONE) {
+                gameInfo.set("playerMark", GAME_CONST.O);
             }
             if (message.data.result === "lost") {
                 console.log("Lost");
@@ -104,11 +105,11 @@ window.game = {
             });
             gameInfo.set("gameResume", false);
             gameInfo.set("room", null);
-            gameInfo.set("playerMark", gameConst.NONE);
+            gameInfo.set("playerMark", GAME_CONST.NONE);
             gameInfo.set("gameType", null);
             gameInfo.set("botLevel", -1);
             let tempCells = [];
-            for (let i = 0; i < gameConst.CELL_COUNT; i++) {
+            for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
                 tempCells.push(undefined);
             }
             gameInfo.set("boardStatus", {cells: tempCells});
@@ -209,8 +210,8 @@ window.game = {
         kapow.getRoomInfo(function (roomObj) {
             console.log("Client getRoomInfo - Room: " + JSON.stringify(roomObj));
             gameInfo.set("room", roomObj);
-            gameInfo.set("playerMark", gameConst.O);
-            gameInfo.set("opponentMark", gameConst.X);
+            gameInfo.set("playerMark", GAME_CONST.O);
+            gameInfo.set("opponentMark", GAME_CONST.X);
             parseRoomAndRedirectToGame();
         }, function () {
             console.log("Client - onAffiliationChange failure");
