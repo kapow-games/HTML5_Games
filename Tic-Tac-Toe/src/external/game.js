@@ -12,11 +12,8 @@ import gameConst from "../gameParam/gameConst";
 window.game = {
     onLoad: function (roomObj) {
         this.syncStats();
-        console.log("Client onLoad - " + JSON.stringify(roomObj));
-
+        console.log("Room returned by kapow onLoad - " + JSON.stringify(roomObj));
         gameInfo.set("room", roomObj);
-        console.log("roomObj loaded onLoad : ", gameInfo.get("room"));
-
         this.loadScreen();
     },
     onGameEnd: function (outcome) {
@@ -133,7 +130,6 @@ window.game = {
         let gameStoreContainer = new GameStoreQuery();
         gameStoreContainer.get("stats", function (statsValue, self) {
             if (statsValue) {
-                console.log("Value fetched from gameStore was : ", statsValue);
                 let valueJSON = JSON.parse(statsValue);
                 //TODO : syncStats onLoading game.
             }

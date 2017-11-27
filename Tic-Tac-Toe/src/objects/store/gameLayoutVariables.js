@@ -7,6 +7,7 @@ var gameLayoutVariables = { // TODO : formatting :( . @sukhmeet already had done
     turnText: null,
     resign: null,
     backgroundImage: null,
+    confetti: null,
     backButton: null,
     turnTextBackground: null,
     help: null,

@@ -391,6 +391,10 @@ export class Play extends Phaser.State {
         this.boardLayout= this.game.add.sprite(57, 477, 'board');
         this.game.stage.addChild(this.boardLayout);
 
+        gameLayoutVariables.confetti = this.game.add.image(111, 201, 'confetti');
+        gameLayoutVariables.confetti.kill();
+        this.game.stage.addChild(gameLayoutVariables.confetti);
+
         gameLayoutVariables.resultBoard = this.game.add.sprite(315, 240, 'winBackground');
         gameLayoutVariables.resultBoard.frame = 0;
         this.game.stage.addChild(gameLayoutVariables.resultBoard);

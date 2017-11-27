@@ -21,6 +21,7 @@ export default function gameEndHandler(game, value) {
     let resultText = (value === 1) ? "YOU LOSE" : (value === 2 ? "YOU WIN!" : "GAME DRAW");
     let resultTextBackgroundColor;
     if (value === 2) {
+        gameLayoutVariables.confetti.reset(111, 201);
         if (gameInfo.get("playerMark") === gameConst.X) {
             gameLayoutVariables.resultBoard.frame = 0;
             resultTextBackgroundColor = "#48d1dc";
@@ -51,14 +52,6 @@ export default function gameEndHandler(game, value) {
     game.stage.addChild(gameLayoutVariables.turnText);
     let shareBackground = game.add.sprite(72, 1584, 'shareBackground');
     game.stage.addChild(shareBackground);
-
-    // let shareLoad = game.add.sprite(game.world.centerX, game.world.centerY, 'loaderSpinner');
-    // shareLoad.anchor.setTo(0.5);
-    // game.stage.addChild(shareLoad);
-    //
-    // let shareLoadTween = game.add.tween(shareLoad).to({angle: 359}, 400, null, true, 0, Infinity);
-    // shareLoad.kill();
-    // shareLoadTween.start();
 
     let socialShareModal = new SocialShare(game, value === 1 ? "loss" : value === 0 ? "draw" : "won");
 
