@@ -16,6 +16,10 @@ import BackButton from "../objects/widgets/button/BackButton";
 import MusicButton from "../objects/widgets/button/MusicButton";
 
 export class Menu extends Phaser.State {
+    preload() {
+        // this.sound = this.game.add.audio('gameSound');
+        // this.sound.play();
+    }
     create() {
         console.log("Loading Menu.");
         gameInfo.set("screenState", 0);

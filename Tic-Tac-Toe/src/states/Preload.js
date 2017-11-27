@@ -68,6 +68,9 @@ export class Preload extends Phaser.State {
         this.load.spritesheet('resign', 'assets/images/resignbutton.png', 303, 120);
         this.load.image('choose_bg_mark', 'assets/images/mark-choose.png');
         this.load.spritesheet('cell', 'assets/images/xo-sprite.png', 264, 264);
+        // this.load.audio('gameSound', 'assets/audio/Robobozo.mp3');
+        // this.load.audio('winSound', 'assets/audio/Tada.mp3');
+        // this.load.audio('tapSound', 'assets/audio/Tap.mp3');
     }
 
     create() {
