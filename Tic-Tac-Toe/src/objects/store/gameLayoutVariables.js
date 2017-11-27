@@ -1,8 +1,8 @@
 'use strict';
 
-var gameLayoutVariables = { // TODO : formatting :( . @sukhmeet already had done the CMD+ALT+L for formatting.
+var gameLayoutVariables = {
     initialMark: null,
-    game: null, // TODO : avoid using vars as myGame
+    game: null,
     winningMarkLine: null,
     turnText: null,
     resign: null,
@@ -14,6 +14,6 @@ var gameLayoutVariables = { // TODO : formatting :( . @sukhmeet already had done
     playerProfilePic: null,
     opponentProfilePic: null,
     resultBoard: null
-}; // TODO missing ;
+};
 
 export default gameLayoutVariables;

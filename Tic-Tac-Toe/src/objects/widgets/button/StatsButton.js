@@ -33,7 +33,6 @@ export default class StatsButton extends Phaser.Button {
         this.statsModal.input.priorityID = 3;
         this.statsModal.anchor.setTo(0.5);
         this.game.stage.addChild(this.statsModal);
-        //Animate and open modal
         this.statsModal.scale.setTo(0);
         this.popUpStatsModal = this.game.add.tween(this.statsModal.scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
         this.popUpStatsModal.start();
@@ -53,7 +52,7 @@ export default class StatsButton extends Phaser.Button {
             this.myStatsText = phaserManager.createText(this.game, {
                 positionX: 394.5,
                 positionY: 848,
-                messageToDisplay: 'MY STATS',
+                messageToDisplay: 'MY STATS', // TODO : rename to displayMessage or just message/text ?
                 align: "center",
                 backgroundColor: "#fefefe",
                 fill: "#6d616d",

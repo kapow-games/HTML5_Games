@@ -1,6 +1,6 @@
 "use strict";
 
-import BotBehaviour from "./BotBehaviour"; // TODO : @mayank use strict
+import BotBehaviour from "./BotBehaviour";
 
 export default class Bot {
     constructor() {
@@ -8,16 +8,16 @@ export default class Bot {
     }
 
     //TODO : handle Game.score
-    getMiniMaxValue(ticTacToeGame, state) { // TODO: @mayank: Rename to getMiniMaxValue
+    getMiniMaxValue(ticTacToeGame, state) {
         if (state.isTerminal()) {
             return ticTacToeGame.score(state);
         }
-        var stateScore = state.turnOfPlayer ? -1000 : 1000;
+        var stateScore = state.turnOfPlayer ? -1000 : 1000; // TODO : let or var :P
 
         let availablePositions = state.emptyCells();
         let availableNextStates = availablePositions.map(function (pos) {
             let action = new BotBehaviour(pos);
-            return action.plays(state); // TODO : nextState var is redundant
+            return action.plays(state);
         });
         // console.log(availableNextStates);
         availableNextStates.forEach(function (nextState) {
@@ -32,8 +32,7 @@ export default class Bot {
         return stateScore;
     }
 
-    botMove(turnOfPlayer) {// TODO : rename turn to something else @sukhmeet medium referred to medium difficulty level.
-        // But since the easy bot move and hard bot move idea was dropped, removing the redundant function and renaming to botMove
+    botMove(turnOfPlayer) { // TODO : rename to doBotMove
         let availableActions = this.sortPossibleBotMoves(turnOfPlayer);
         let chosenAction;
         // if (Math.random() * 100 <= 80) {
@@ -58,19 +57,19 @@ export default class Bot {
         this.gameDetail = gameDetail;
     }
 
-    notifyTurn(turnOfPlayer) { // TODO : @mayank: it plays the nextMove , can be renamed accordingly
+    notifyTurn(turnOfPlayer) { // TODO : @mayank: it plays the botMove , can be renamed accordingly
         this.botMove(turnOfPlayer);
     }
 
     sortPossibleBotMoves(turnOfPlayer) {
-        let available = this.gameDetail.currentState.emptyCells(); // TODO : redundant var
+        let available = this.gameDetail.currentState.emptyCells();
         let availableActions = available.map(function (pos) {
             let action = new BotBehaviour(pos);
             let next = action.plays(this.gameDetail.currentState);
             action.miniMaxValue = this.getMiniMaxValue(this.gameDetail, next);
             return action;
         }.bind(this));
-        if (turnOfPlayer === false) {// TODO : @mayank :
+        if (turnOfPlayer === false) {
             availableActions.sort(this._ascending);
         }
         else {
@@ -89,7 +88,7 @@ export default class Bot {
         return 0;
     }
 
-    _descending(firstAction, secondAction) {
+    _descending(firstAction, secondAction) { // TODO : repeat of _ascending ?
         if (firstAction.miniMaxValue > secondAction.miniMaxValue) {
             return -1;
         }

@@ -1,8 +1,6 @@
 'use strict';
 var phaserManager = {
-    createText: function (game, obj) { // TODO : @mayank the argument name should be better,  avoid using phaser keyword
-        // TODO @mayank : why creating so many variables ? use inline vars ,
-        // TODO : rename to displayMessage
+    createText: function (game, obj) {
         let textStyle = {
             font: obj.font,
             fontSize: obj.fontSize,
@@ -20,8 +18,7 @@ var phaserManager = {
         text.anchor.setTo(_anchorX, _anchorY);
 
         return text;
-    },
-    // TODO : is this function being used anywhere ?
+    }
 };
 
 export default phaserManager;

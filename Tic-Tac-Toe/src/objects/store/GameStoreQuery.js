@@ -1,16 +1,16 @@
 'use strict';
 
-export default class GameStoreQuery { // TODO : @mayank file name and class name should ideally be same. You can name it as gameQueryStore or gameStore or queryStore
-    get(key, successCallback, failureCallback) { // TODO : @mayank spelling mistake in failiureCallback
+export default class GameStoreQuery { // TODO : Rename to KapowGameStore ?
+    get(key, successCallback, failureCallback) {
         var that = this;
         kapow.gameStore.get(key, function (val) {
             console.log("Fetching gameStore " + key + " data successful", val);
-            if (successCallback !== undefined) {
+            if (successCallback !== undefined) { // TODO : can be written as  - successCallback && successCallback(val, that);
                 successCallback(val, that);
             }
         }, function (error) {
             console.log("Fetching gameStore " + key + " data failed : ", error);
-            if (failureCallback !== undefined) {
+            if (failureCallback !== undefined) { // TODO : same
                 failureCallback();
             }
         });

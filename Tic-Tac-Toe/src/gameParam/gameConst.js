@@ -1,6 +1,6 @@
 "use strict";
 
-const gameConst = {
+const gameConst = { // TODO : const should be UPPERCASE
     NONE: 0,
     X: 1,
     O: 2,

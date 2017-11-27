@@ -29,7 +29,7 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
     moveTo(state) {
         this.currentState = state;
         if (this.currentState.isTerminal()) { // TODO : logic can be simplified
-            this.gameStatus = 3; // Indicating game Over
+            this.gameStatus = 3; // Indicating game Over  // TODO : can use alias enums
             if (this.currentState.boardResult === 1) {
                 gameInfo.set("win", 1);
             }
@@ -41,7 +41,7 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
             }
             if (gameInfo.get("win") !== 0) {
                 if (gameInfo.get("win") === gameInfo.get("playerMark")) {
-                    gameLayoutVariables.turnText.text = "  YOU WIN!";
+                    gameLayoutVariables.turnText.text = "  YOU WIN!"; // TODO : extra space intentional ?
                     gameEndHandler(this.game, 2);
                 }
                 else {
@@ -50,7 +50,7 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
                 }
             }
             else {
-                gameLayoutVariables.turnText.text = "GAME DRAW!";
+                gameLayoutVariables.turnText.text = "GAME DRAW!"; // TODO : no extra space ?
                 gameEndHandler(this.game, 0);
             }
             if (gameInfo.get("win") !== 0) {

@@ -1,4 +1,4 @@
-import gameInfo from "../objects/store/GameGlobalVariables";
+import gameInfo from "../objects/store/GameGlobalVariables"; // TODO : use strict ?
 import phaserGame from "../main";
 
 var parseRoomAndRedirectToGame = function () {
@@ -93,7 +93,8 @@ var parseRoomAndRedirectToGame = function () {
             if (gameInfo.get("opponentData") !== null && gameInfo.get("opponentData").affiliation === "accepted") {
                 phaserGame.state.start('PlayLoad');
             }
-            else if (gameInfo.get("opponentData") !== null && (gameInfo.get("opponentData").affiliation === "left" || gameInfo.get("playerData").affiliation === "left")) {
+            else if (gameInfo.get("opponentData") !== null && (gameInfo.get("opponentData").affiliation === "left" ||
+                    gameInfo.get("playerData").affiliation === "left")) {
                 gameInfo.set("gameOver", true);
                 phaserGame.state.start('PlayLoad');
             }
@@ -107,4 +108,4 @@ var parseRoomAndRedirectToGame = function () {
         }
     }
 };
-export default parseRoomAndRedirectToGame;
+export default parseRoomAndRedirectToGame; // TODO : use consistent pattern to export function . gameEnd uses export function

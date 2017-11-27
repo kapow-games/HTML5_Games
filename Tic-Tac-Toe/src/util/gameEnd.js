@@ -234,7 +234,7 @@ export function drawWinningLine(phaserGame) {
         phaserGame.stage.addChild(matchPosition);
     }
 }
-
+// TODO : this is not exported ?
 function rematchButtonHandler() {
     console.log('rematchButtonHandler Clicked');
     let tempCells = [];

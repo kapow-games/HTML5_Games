@@ -24,7 +24,6 @@ export class Play extends Phaser.State {
     }
 
     create() {
-
         gameInfo.set("screenState", 1);
         console.log("Loading Game Layout.");
 
@@ -283,7 +282,6 @@ export class Play extends Phaser.State {
         this.playerProfilePicBackground = this.game.add.image(366, 72, 'circle');
         this.playerProfilePicBackground.scale.set(120 / this.playerProfilePicBackground.width, 120 / this.playerProfilePicBackground.height);
         this.game.stage.addChild(this.playerProfilePicBackground);
-
 
         gameLayoutVariables.playerProfilePic = this.game.add.image(372, 78, 'profilePic');
         gameLayoutVariables.playerProfilePic.scale.set(108 / gameLayoutVariables.playerProfilePic.width, 108 / gameLayoutVariables.playerProfilePic.height);
