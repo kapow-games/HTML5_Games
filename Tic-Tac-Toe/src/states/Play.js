@@ -76,7 +76,7 @@ export class Play extends Phaser.State {
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic);
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic.mask);
         this.game.stage.removeChild(this.boardLayout);
-        for(let i = 0 ; i < gameConst.CELL_COLS * gameConst.CELL_ROWS ; i++) {
+        for(let i = 0 ; i < gameConst.CELL_COUNT ; i++) {
             this.cells.children[i].inputEnabled = false;
         }
         this.game.stage.removeChild(this.cells);
@@ -205,7 +205,7 @@ export class Play extends Phaser.State {
         next.nextTurn();
         gameLayoutVariables.game.moveTo(next);
         let changePos;
-        for (let i = 0; i < gameConst.CELL_COLS * gameConst.CELL_ROWS; i++) {
+        for (let i = 0; i < gameConst.CELL_COUNT; i++) {
             if(cell[i].frame !== gameLayoutVariables.game.currentState.board[i]) {
                 changePos = i ;
                 cell[i].frame = gameLayoutVariables.game.currentState.board[i];
@@ -266,7 +266,11 @@ export class Play extends Phaser.State {
         gameInfo.set("playerMark", 0);
         gameInfo.set("gameType", null);
         gameInfo.set("botLevel", -1);
-        gameInfo.set("boardStatus", {cells: new Array(9)});
+        let tempCells = [];
+        for(let i = 0 ; i < gameConst.CELL_COUNT ; i++) {
+            tempCells.push(undefined);
+        }
+        gameInfo.set("boardStatus", {cells: tempCells});
         gameInfo.set("opponentData", null);
         gameInfo.set("turnOfPlayer", null);
         gameInfo.set("gameOver", false);
@@ -397,7 +401,7 @@ export class Play extends Phaser.State {
         gameLayoutVariables.turnText = phaserManager.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 276,
-            messageToDisplay: (gameInfo.get("gameOver") === true) ? gameInfo.get("win") === gameInfo.get("playerMark") ? "YOU WIN!" : "YOU LOSE!" : gameInfo.get("gameType") === "solo" ? gameInfo.get("playerMark") === 1 ? "YOUR TURN" : "BOT'S TURN" : gameInfo.get("turnOfPlayer") === gameInfo.get("playerData") ? "YOUR TURN" : "WAITING",
+            messageToDisplay: (gameInfo.get("gameOver") === true) ? gameInfo.get("win") === gameInfo.get("playerMark") ? "YOU WIN!" : "YOU LOSE" : gameInfo.get("gameType") === "solo" ? gameInfo.get("playerMark") === 1 ? "YOUR TURN" : "BOT'S TURN" : gameInfo.get("turnOfPlayer") === gameInfo.get("playerData") ? "YOUR TURN" : "WAITING",
             align: "center",
             backgroundColor: "#5684fb",
             fill: "#fefefe",

@@ -20,7 +20,7 @@ var GameInfoStore = function () { // TODO : Use Pascal  case , Rename it to Stor
     this.gameLayoutLoaded = false;
     this.randomRoom = false;
     this._init = function () {
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < gameConst.CELL_COUNT; i++) {
             this.boardStatus.cells.push(undefined);
         }
     };

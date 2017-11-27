@@ -11,7 +11,8 @@ const gameConst = {
     CELL_HEIGHT_PAD: 54,
     CELL_WIDTH_PAD: 54,
     CELL_RELATIVE_TOP: 501,
-    CELL_RELATIVE_LEFT: 90
+    CELL_RELATIVE_LEFT: 90,
+    CELL_COUNT: 9
 };
 
 export default gameConst;

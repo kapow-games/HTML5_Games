@@ -3,7 +3,6 @@
 import GameState from "./GameState";
 import gameLayoutVariables from "../store/gameLayoutVariables";
 import gameEndHandler from "../../util/gameEnd";
-import layoutConst from "../../../src/gameParam/gameConst";
 import gameInfo from "../store/GameGlobalVariables";
 import gameConst from "../../gameParam/gameConst";
 
@@ -13,13 +12,13 @@ export default class Game { // TODO : formatting , extra line . Only one extra l
         this.bot = bot;
         this.currentState = new GameState();
         this.currentState.board = []; // TODO : is it a CONSTANT ? extract such CONSTANTS
-        for (let i = 0; i < layoutConst.CELL_ROWS * layoutConst.CELL_COLS; i++) { // TODO : move to new line after 120 chars
+        for (let i = 0; i < gameConst.CELL_COUNT ; i++) { // TODO : move to new line after 120 chars
             this.currentState.board.push(gameInfo.get("boardStatus").cells[i] !== undefined ?
                 gameInfo.get("boardStatus").cells[i] : 0);
         }
         this.currentState.turnOfPlayer = true; //playerMark === 1 ? 2 : 1 ;
         if (gameInfo.get("playerMark") === gameConst.O && gameInfo.get("gameResume") === false) {
-            let randomCell = Math.floor(Math.random() * layoutConst.CELL_ROWS * layoutConst.CELL_COLS);
+            let randomCell = Math.floor(Math.random() * gameConst.CELL_COUNT);
             this.currentState.board[randomCell] = 1;
             gameLayoutVariables.initialMark = randomCell;
         }

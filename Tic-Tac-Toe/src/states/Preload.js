@@ -49,6 +49,7 @@ export class Preload extends Phaser.State {
         this.load.image('shareBackground', 'assets/images/share-bg.png');
         this.load.image('fbShare', 'assets/images/fb.png');
         this.load.spritesheet('winBackground', 'assets/images/resultBackground.png', 456, 153);
+        this.load.spritesheet('resignBackground', 'assets/images/resignResultBackground.png', 456, 189);
         this.load.image('confetti', 'assets/images/confetti.png');
         this.load.image('twitterShare', 'assets/images/twitter.png');
         this.load.image('otherShare', 'assets/images/other.png');

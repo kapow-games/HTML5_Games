@@ -132,7 +132,11 @@ export class Waiting extends Phaser.State {
         gameInfo.set("playerMark", gameConst.NONE);
         gameInfo.set("gameType", null);
         gameInfo.set("botLevel", -1);
-        gameInfo.set("boardStatus", {cells: new Array(9)});
+        let tempCells = [];
+        for(let i = 0 ; i < gameConst.CELL_COUNT ; i++) {
+            tempCells.push(undefined);
+        }
+        gameInfo.set("boardStatus", {cells: tempCells});
         gameInfo.set("opponentData", undefined);
         gameInfo.set("turnOfPlayer", undefined);
         gameInfo.set("gameOver", false);

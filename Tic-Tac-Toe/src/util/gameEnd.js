@@ -18,7 +18,7 @@ export default function gameEndHandler(game, value) {
     game.stage.removeChild(gameLayoutVariables.help);
     game.stage.removeChild(gameLayoutVariables.resign);
     game.stage.removeChild(gameLayoutVariables.turnText);
-    let resultText = (value === 1) ? "YOU LOST!" : (value === 2 ? "YOU WON!" : "GAME DRAW!");
+    let resultText = (value === 1) ? "YOU LOSE" : (value === 2 ? "YOU WIN!" : "GAME DRAW");
     let resultTextBackgroundColor;
     if (value === 2) {
         if (gameInfo.get("playerMark") === gameConst.X) {
@@ -166,7 +166,11 @@ export default function gameEndHandler(game, value) {
                         }
                     );
                 }
-                gameInfo.set("boardStatus", {cells: new Array(9)});
+                let tempCells = [];
+                for(let i = 0 ; i < gameConst.CELL_COUNT ; i++) {
+                    tempCells.push(undefined);
+                }
+                gameInfo.set("boardStatus", {cells: tempCells});
                 // gameInfo.set("botLevel", -1); //TODO : Remove This. Redundant
                 gameInfo.set("win", 0);
                 gameInfo.set("gameOver", false);
@@ -233,7 +237,11 @@ export function drawWinningLine(phaserGame) {
 
 function rematchButtonHandler() {
     console.log('rematchButtonHandler Clicked');
-    gameInfo.set("boardStatus", {cells: new Array(9)});
+    let tempCells = [];
+    for(let i = 0 ; i < gameConst.CELL_COUNT ; i++) {
+        tempCells.push(undefined);
+    }
+    gameInfo.set("boardStatus", {cells: tempCells});
     gameInfo.set("win", 0);
     gameInfo.set("gameOver", false);
     gameInfo.set("room", null);

@@ -73,7 +73,7 @@ window.game = {
     onMessageReceived: function (message) {
         console.log('CLIENT : Message Received - ', message);
         if (gameInfo.get("gameLayoutLoaded") === true && message.type === "move" && message.senderId === gameInfo.get("opponentData").id) {
-            for (let i = 0; i < 9; i++) {
+            for (let i = 0; i < gameConst.CELL_COUNT; i++) {
                 phaserGame.state.states.Play.cells.children[i].frame = message.data.moveData.board[i];
             }
             gameLayoutVariables.opponentProfilePic.alpha = 0.3;
@@ -110,9 +110,13 @@ window.game = {
             gameInfo.set("playerMark", gameConst.NONE);
             gameInfo.set("gameType", null);
             gameInfo.set("botLevel", -1);
-            gameInfo.set("boardStatus", {cells: new Array(9)});
-            gameInfo.set("opponentData", undefined);
-            gameInfo.set("turnOfPlayer", undefined);
+            let tempCells = [];
+            for(let i = 0 ; i < gameConst.CELL_COUNT ; i++) {
+                tempCells.push(undefined);
+            }
+            gameInfo.set("boardStatus", {cells: tempCells});
+            gameInfo.set("opponentData", null);
+            gameInfo.set("turnOfPlayer", null);
             gameInfo.set("gameOver", false);
             gameInfo.set("win", 0);
             phaserGame.state.start('Menu');

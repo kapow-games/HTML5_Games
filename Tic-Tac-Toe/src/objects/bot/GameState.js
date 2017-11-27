@@ -1,7 +1,7 @@
 'use strict';
 
 import gameInfo from "../store/gameLayoutVariables";
-import layoutConst from "../../../src/gameParam/gameConst";
+import gameConst from "../../../src/gameParam/gameConst";
 
 export default class GameState {
     constructor(state) { // TODO : rename it to just state ?
@@ -40,7 +40,7 @@ export default class GameState {
 
     isTerminal() {
         let cell = this.board;
-        for (let i = 0, j = layoutConst.CELL_ROWS; i < layoutConst.CELL_COLS; i++) {
+        for (let i = 0, j = gameConst.CELL_ROWS; i < gameConst.CELL_COLS; i++) {
             if (cell[i] !== 0 && cell[i] === cell[i + j] && cell[i + j] === cell[i + (2 * j)]) {
                 gameInfo.winningMarkLine = i;
                 this.boardResult = cell[i];
@@ -48,9 +48,9 @@ export default class GameState {
             }
         }
         //Checking Columns
-        for (let i = 0, j = 1; i < layoutConst.CELL_ROWS * layoutConst.CELL_COLS; i += layoutConst.CELL_COLS) {
+        for (let i = 0, j = 1; i < gameConst.CELL_COUNT; i += gameConst.CELL_COLS) {
             if (cell[i] !== 0 && cell[i] === cell[i + j] && cell[i + j] === cell[i + (2 * j)]) {
-                gameInfo.winningMarkLine = (i / layoutConst.CELL_COLS) + layoutConst.CELL_ROWS;
+                gameInfo.winningMarkLine = (i / gameConst.CELL_COLS) + gameConst.CELL_ROWS;
                 this.boardResult = cell[i];
                 return true;
             }
