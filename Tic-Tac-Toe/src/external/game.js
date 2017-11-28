@@ -5,7 +5,7 @@ import gameInfo from "../objects/store/GameInfoStore";
 import phaserGame from "../main";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
 import {drawWinningLine} from "../util/gameEnd";
-import gameEndHandler from "../util/gameEnd";
+import handleGameEnd from "../util/gameEnd";
 import gameLayoutVariables from "../objects/store/gameLayoutVariables";
 import GAME_CONST from "../gameParam/gameConst";
 import MESSAGE from "../gameParam/message";
@@ -22,11 +22,11 @@ window.game = {
         if (outcome.type === "resignation" || outcome.type === "timeout") {
             if (outcome.ranks[gameInfo.get("playerData").id] === 1) {
                 console.log("Game Won");
-                gameEndHandler(phaserGame, 2);
+                handleGameEnd(phaserGame, 2);
             }
             else {
                 console.log("Game Lost");
-                gameEndHandler(phaserGame, 1);
+                handleGameEnd(phaserGame, 1);
             }
         }
         if (outcome.ranks[gameInfo.get("playerData").id] === 1 && outcome.ranks[gameInfo.get("opponentData").id] === 1) {
@@ -84,11 +84,11 @@ window.game = {
             if (message.data.result === "lost") {
                 console.log("Lost");
                 drawWinningLine(phaserGame);
-                gameEndHandler(phaserGame, 1);
+                handleGameEnd(phaserGame, 1);
             }
             else if (message.data.result === "draw") {
                 console.log("Draw");
-                gameEndHandler(phaserGame, 0);
+                handleGameEnd(phaserGame, 0);
             }
         }
         else if (gameInfo.get("gameLayoutLoaded") === false && message.type === "move" && message.data.type === "markSet") {

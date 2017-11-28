@@ -2,7 +2,7 @@
 
 import GameState from "./GameState";
 import gameLayoutVariables from "../store/gameLayoutVariables";
-import gameEndHandler from "../../util/gameEnd";
+import handleGameEnd from "../../util/gameEnd";
 import gameInfo from "../store/GameInfoStore";
 import GAME_CONST from "../../gameParam/gameConst";
 import GAME_RESULT from "../../gameParam/gameResult";
@@ -44,16 +44,16 @@ export default class Game {
             if (gameInfo.get("win") !== 0) {
                 if (gameInfo.get("win") === gameInfo.get("playerMark")) {
                     gameLayoutVariables.turnText.text = "YOU WIN!"; // TODO : extra space intentional ?
-                    gameEndHandler(this.game, 2);
+                    handleGameEnd(this.game, 2);
                 }
                 else {
                     gameLayoutVariables.turnText.text = "YOU LOSE!";
-                    gameEndHandler(this.game, 1);
+                    handleGameEnd(this.game, 1);
                 }
             }
             else {
                 gameLayoutVariables.turnText.text = "GAME DRAW!"; // TODO : no extra space ?
-                gameEndHandler(this.game, 0);
+                handleGameEnd(this.game, 0);
             }
             if (gameInfo.get("win") !== 0) {
                 let matchPosition;

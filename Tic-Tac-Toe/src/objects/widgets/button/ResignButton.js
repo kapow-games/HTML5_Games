@@ -3,7 +3,7 @@
 import gameLayoutVariables from "../../store/gameLayoutVariables";
 import DarkOverlay from "./DarkOverLay";
 import saveGameData from "../../../util/saveGameData";
-import gameEndHandler from "../../../util/gameEnd";
+import handleGameEnd from "../../../util/gameEnd";
 import gameInfo from "../../store/GameInfoStore"
 import GAME_CONST from "../../../gameParam/gameConst";
 
@@ -37,7 +37,7 @@ export default class ResignButton extends Phaser.Button {
             this.cancelResign();
             // let tempCells = this.game.state.states.Play.cells.children; // TODO : accidental global
             gameLayoutVariables.turnText.text = " YOU LOSE!";
-            gameEndHandler(this.game, 1);
+            handleGameEnd(this.game, 1);
         }
         else if (gameInfo.get("gameType") === "friend") {
             kapow.invokeRPC("resignationRequest", {
@@ -53,7 +53,7 @@ export default class ResignButton extends Phaser.Button {
                     this.cancelResign();
                     gameLayoutVariables.turnText.text = " YOU LOSE!";
                     console.log("Client resigned, hence lost");
-                    gameEndHandler(this.game, 1);
+                    handleGameEnd(this.game, 1);
                 }.bind(this),
                 function (error) {
                     console.log("resignation - Failure due to following error : ", error);

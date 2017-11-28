@@ -2,7 +2,7 @@
 
 import phaserManager from "../util/phaserManager";
 import gameInfo from "../objects/store/GameInfoStore";
-import gameEndHandler from '../util/gameEnd';
+import handleGameEnd from '../util/gameEnd';
 import {drawWinningLine} from '../util/gameEnd';
 import gameLayoutVariables from "../objects/store/gameLayoutVariables";
 import Bot from "../objects/bot/Bot";
@@ -16,6 +16,7 @@ import BackButton from "../objects/widgets/button/BackButton";
 import HelpButton from "../objects/widgets/button/HelpButton";
 import GAME_CONST from "../gameParam/gameConst";
 import MESSAGE from "../gameParam/message";
+import AFFILIATION from "../gameParam/affiliation";
 
 export class Play extends Phaser.State { // TODO : fix laer. this screen has too much logic. Create a new controller class and move logic there
     preload() {
@@ -25,7 +26,6 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
     }
 
     create() {
-        gameInfo.set("screenState", 1); // TODO : create is called once preload has completed .  Is it Redundant ?
         console.log("Loading Game Layout.");
 
         this.createBackground();
@@ -52,9 +52,6 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
         gameInfo.set("gameLayoutLoaded", true);
 
         this.physics.startSystem(Phaser.Physics.ARCADE);
-    }
-
-    update() { // TODO : unnecessary
     }
 
     shutdown() {
@@ -157,12 +154,12 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
                     sprite.alpha = 1;
                     if (obj.result === "lost") {
                         drawWinningLine(this.game);
-                        gameEndHandler(this.game, 2);
+                        handleGameEnd(this.game, 2);
                         console.log("You won");
                     }
                     else if (obj.result === "draw") {
                         console.log("Draw");
-                        gameEndHandler(this.game, 0);
+                        handleGameEnd(this.game, 0);
                     }
                     else {
                         gameLayoutVariables.backgroundImage.setInputPriority(1);
@@ -434,7 +431,7 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
         let count = 0;
         this.cells = this.game.add.group();
         this.game.stage.addChild(this.cells);
-        this.player = 1; // TODO : why is player a local object. Shoudn't it be in global store
+        // this.player = 1; // TODO : why is player a local object. Shoudn't it be in global store
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
         for (let i = 0; i < GAME_CONST.CELL_COLS; i++) {
             for (let j = 0; j < GAME_CONST.CELL_ROWS; j++) {
@@ -443,7 +440,7 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
                 if (gameInfo.get("gameResume") === true) {
                     cell.frame = gameInfo.get("boardStatus").cells[count];
                     // TODO : too complex falsy value check can be simplified
-                    if (gameInfo.get("boardStatus").cells[count] === 0 || gameInfo.get("boardStatus").cells[count] === undefined || gameInfo.get("boardStatus").cells[count] === null) {
+                    if ( !(gameInfo.get("boardStatus").cells[count]) || gameInfo.get("boardStatus").cells[count] || gameInfo.get("boardStatus").cells[count]) {
                         cell.frame = 0;
                         cell.inputEnabled = !gameInfo.get("gameOver");
                         cell.events.onInputDown.add(gameInfo.get("gameType") === 'solo' ? this.clickHandlerSolo : this.clickHandlerMulti, this);
@@ -465,8 +462,8 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
     }
 
     initialiseBot() { // TODO : fix later , this does more then initBot . Seperate it
-        let myBot = new Bot(); // TODO : rename to gameBot ?
-        gameLayoutVariables.game = new Game(this.game, myBot); // TODO :  LayoutStore storing game ??
+        let gameBot = new Bot(); // TODO : rename to gameBot ?
+        gameLayoutVariables.game = new Game(this.game, gameBot); // TODO :  LayoutStore storing game ??
         if (gameInfo.get("playerMark") === 2 && gameInfo.get("gameResume") === false) {
             this.cells.children[gameLayoutVariables.initialMark].frame = 1;
             this.cells.children[gameLayoutVariables.initialMark].inputEnabled = false;
@@ -474,27 +471,27 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
         if (gameInfo.get("gameOver") === false) { //
             saveGameData(this.game, false);// To store the initial state of the Game. Even if the user or bot haven't made any move.
         }// TODO fix later: is the save needed ?
-        myBot.gameAssigned(gameLayoutVariables.game); // TODO : fix later.. use names like assignName as an action which stores data . gameAssigned is a boolean check function name.
+        gameBot.gameAssigned(gameLayoutVariables.game); // TODO : fix later.. use names like assignName as an action which stores data . gameAssigned is a boolean check function name.
         gameLayoutVariables.game.start(); // TODO : starting game from layout store ? Should change this flow .
         if (gameInfo.get("gameOver") === true && gameInfo.get("win") === 0) {
-            gameEndHandler(this.game, 1); // TODO : better name . HandleGameEnd ?
+            handleGameEnd(this.game, 1); // TODO : better name . HandleGameEnd ?
         }
     }
 
     verifyOpponentAffiliationStatus() { // TODO : no verification is done . only console log :D
-        if (gameInfo.get("opponentData") !== null && gameInfo.get("opponentData").affiliation === "accepted") { // TODO : fix later . extract enum Affiliation . String comparision are more prone to errors
+        if (gameInfo.get("opponentData") && gameInfo.get("opponentData").affiliation === AFFILIATION.ACCEPTED) { // TODO : fix later . extract enum Affiliation . String comparision are more prone to errors
             console.log("Opponent Accepted.");
         }
         else if (gameInfo.get("opponentData").affiliation === null) {
             console.log("No Opponent Found.");
         }
-        else if (gameInfo.get("opponentData").affiliation === "invited") {
+        else if (gameInfo.get("opponentData").affiliation === AFFILIATION.INVITED) {
             console.log("Friend hasn't responded to invitation");
         }
-        else if (gameInfo.get("opponentData").affiliation === "rejected") {
+        else if (gameInfo.get("opponentData").affiliation === AFFILIATION.REJECTED) {
             console.log("Friend rejected the invitation");
         }
-        else if (gameInfo.get("opponentData").affiliation === "left") {
+        else if (gameInfo.get("opponentData").affiliation === AFFILIATION.LEFT) {
             console.log("Friend left the room.");
         }
         else {
@@ -505,15 +502,15 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
     recreateResultForEndedGame() {
         if (gameInfo.get("gameOver") === true) {
             if (gameInfo.get("turnOfPlayer") === 0) {
-                gameEndHandler(this.game, 0);
+                handleGameEnd(this.game, 0);
             }
             else if (gameInfo.get("turnOfPlayer").id === gameInfo.get("opponentData").id) {
                 drawWinningLine(this.game);
-                gameEndHandler(this.game, 2);
+                handleGameEnd(this.game, 2);
             }
             else if (gameInfo.get("turnOfPlayer").id === gameInfo.get("playerData").id) {
                 drawWinningLine(this.game);
-                gameEndHandler(this.game, 1);
+                handleGameEnd(this.game, 1);
             }
         }
     }

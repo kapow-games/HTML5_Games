@@ -12,14 +12,14 @@ var WebFontConfig = {
 export class Preload extends Phaser.State {
     preload() {
         console.log(gameInfo);
-        this.asset = null; // TODO : redundant . Declaration happens on line 20
+        // this.asset = null; // TODO : redundant . Declaration happens on line 20
         this.ready = false;
         console.log("Preloading Assets");
         this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
         this.add.text(0, 0, "fontFix", {font: "1px nunito-regular", fill: "#000000"});
         this.asset = this.add.sprite(this.world.centerX, this.world.centerY, "loading");
         this.asset.anchor.setTo(0.5, 0.5);
-        this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
+        this.load.onLoadComplete.addOnce(this._onLoadComplete, this);
         this.load.setPreloadSprite(this.asset);
         this.load.image('profilePic', gameInfo.get("playerData").profileImage + "?height=276&width=276");
         this.load.image('modeBackground', 'assets/images/statsModeHeader.png');
@@ -93,7 +93,7 @@ export class Preload extends Phaser.State {
         }
     }
 
-    onLoadComplete() { // TODO :private ?
+    _onLoadComplete() { // TODO :private ?
         this.ready = true;
     }
 }
