@@ -3,7 +3,7 @@
 import gameInfo from "../objects/store/GameInfoStore"; // TODO : use strict ?
 import phaserGame from "../main";
 
-export default function parseRoomAndRedirectToGame() {
+export default function parseRoomAndRedirectToGame() { // TODO : too complex function. Simplify in smaller components. A lot of if conditions can be simplified
     if (gameInfo.get("room") === null) {
         console.log("Room is null, hence not redirecting to game");
     }
@@ -11,7 +11,7 @@ export default function parseRoomAndRedirectToGame() {
         console.log('Parsing Room.');
         let players = gameInfo.get("room").players;
         if (players.length >= 1) {
-            if (players.length === 2) {
+            if (players.length === 2) {// TODO : >=1 will always be 2 right ?
                 if (players[0].id === gameInfo.get("playerData").id) {
                     gameInfo.set("opponentData", players[1]);
                     gameInfo.set("playerData", players[0]);
@@ -110,4 +110,3 @@ export default function parseRoomAndRedirectToGame() {
         }
     }
 };
-// TODO : use consistent pattern to export function . gameEnd uses export function

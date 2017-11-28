@@ -12,7 +12,7 @@ var WebFontConfig = {
 export class Preload extends Phaser.State {
     preload() {
         console.log(gameInfo);
-        this.asset = null;
+        this.asset = null; // TODO : redundant . Declaration happens on line 20
         this.ready = false;
         console.log("Preloading Assets");
         this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
@@ -78,13 +78,13 @@ export class Preload extends Phaser.State {
     }
 
     update() {
-        if (this.ready) {
+        if (this.ready) { // TODO : fix later  simplify condition
             if (gameInfo.get("gameResume") === true) {
                 if (gameInfo.get("gameType") === "solo") {
                     this.state.start('Play');
                 }
                 else if (gameInfo.get("gameType") === "friend") {
-                    parseRoomAndRedirectToGame();
+                    parseRoomAndRedirectToGame(); // TODO . Can u pass arguments via starting State in phaser. trigger flow viw play.js .
                 }
             }
             else {
@@ -93,7 +93,7 @@ export class Preload extends Phaser.State {
         }
     }
 
-    onLoadComplete() {
+    onLoadComplete() { // TODO :private ?
         this.ready = true;
     }
 }
