@@ -34,18 +34,18 @@ export default class Bot {
     doBotMove(turnOfPlayer) { // TODO : rename to doBotMove
         let availableActions = this.sortPossibleBotMoves(turnOfPlayer);
         let chosenAction;
-        // if (Math.random() * 100 <= 80) {
-        //     chosenAction = availableActions[0];
-        // }
-        // else {
-        // if (availableActions.length >= 2) {
-        //     chosenAction = availableActions[1];
-        // }
-        // else {
-        //     chosenAction = availableActions[0];
-        // }
-        // }
-        chosenAction = availableActions[0];
+        if (Math.random() * 100 <= 80) {
+            chosenAction = availableActions[0];
+        }
+        else {
+            if (availableActions.length >= 2) {
+                chosenAction = availableActions[1];
+            }
+            else {
+                chosenAction = availableActions[0];
+            }
+        }
+        // chosenAction = availableActions[0];// Hard Bot Move
         let next = chosenAction.play(this.gameDetail.currentState);
         this.gameDetail.moveTo(next);
     }

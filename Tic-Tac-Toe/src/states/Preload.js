@@ -12,7 +12,6 @@ var WebFontConfig = {
 export class Preload extends Phaser.State {
     preload() {
         console.log(gameInfo);
-        // this.asset = null; // TODO : redundant . Declaration happens on line 20
         this.ready = false;
         console.log("Preloading Assets");
         this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');

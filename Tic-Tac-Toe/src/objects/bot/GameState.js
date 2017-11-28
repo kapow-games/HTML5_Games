@@ -34,7 +34,6 @@ export default class GameState {
                 indices.push(i);
             }
         }
-        // console.log(indices);
         return indices;
     }
 

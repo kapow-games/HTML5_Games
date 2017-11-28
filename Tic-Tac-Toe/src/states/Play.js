@@ -18,7 +18,7 @@ import GAME_CONST from "../gameParam/gameConst";
 import MESSAGE from "../gameParam/message";
 import AFFILIATION from "../gameParam/affiliation";
 
-export class Play extends Phaser.State { // TODO : fix laer. this screen has too much logic. Create a new controller class and move logic there
+export class Play extends Phaser.State { // TODO : fix later. this screen has too much logic. Create a new controller class and move logic there
     preload() {
         gameInfo.set("screenState", 1);
         this.loadOpponentImage();
@@ -254,7 +254,7 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
         }, function () {
             console.log('Room Unloading Failed');
         });
-        let resetVar ={
+        let resetVar = {
             gameResume: false,
             room: null,
             playerMark: 0,
@@ -429,7 +429,7 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
 
     prepareGameBoard() {
         let count = 0;
-        console.log("BoardStatus on creating play screen:",gameInfo.get("gameResume"));
+        console.log("BoardStatus on creating play screen:", gameInfo.get("gameResume"));
         this.cells = this.game.add.group();
         this.game.stage.addChild(this.cells);
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
@@ -440,7 +440,7 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
                 if (gameInfo.get("gameResume") === true) {
                     cell.frame = gameInfo.get("boardStatus").cells[count];
                     // TODO : too complex falsy value check can be simplified
-                    if ( !gameInfo.get("boardStatus").cells[count] || !gameInfo.get("boardStatus").cells[count] || !gameInfo.get("boardStatus").cells[count]) {
+                    if (!gameInfo.get("boardStatus").cells[count] || !gameInfo.get("boardStatus").cells[count] || !gameInfo.get("boardStatus").cells[count]) {
                         cell.frame = 0;
                         cell.inputEnabled = !gameInfo.get("gameOver");
                         cell.events.onInputDown.add(gameInfo.get("gameType") === 'solo' ? this.clickHandlerSolo : this.clickHandlerMulti, this);

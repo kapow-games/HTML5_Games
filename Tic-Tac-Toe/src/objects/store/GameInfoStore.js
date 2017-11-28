@@ -33,8 +33,8 @@ GameInfoStore.prototype.get = function (key) {
 GameInfoStore.prototype.set = function (key, val) {
     this[key] = val;
 };
-GameInfoStore.prototype.setBulk = function(arg){
-    for(let key in arg) {
+GameInfoStore.prototype.setBulk = function (arg) {
+    for (let key in arg) {
         this[key] = arg[key];
     }
 };
