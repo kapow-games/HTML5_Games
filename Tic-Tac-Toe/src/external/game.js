@@ -218,4 +218,3 @@ window.game = {
         });
     }
 };
-export default game;
