@@ -28,13 +28,17 @@ var GameInfoStore = function () {
     };
 };
 GameInfoStore.prototype.get = function (key) {
-    //console.log("gameGlobalVaribales.get("+key+") invoked.Returning = "+this[key]);
     return this[key];
 }; // TODO : should this be declared on prototype ?
 GameInfoStore.prototype.set = function (key, val) {
-    //console.log("gameGlobalVaribales.set("+key+";"+val+") invoked.");
     this[key] = val;
 };
+GameInfoStore.prototype.setBulk = function(arg){
+    for(let key in arg) {
+        this[key] = arg[key];
+    }
+};
+
 var gameInfo = new GameInfoStore();
 gameInfo._init();
 export default gameInfo;

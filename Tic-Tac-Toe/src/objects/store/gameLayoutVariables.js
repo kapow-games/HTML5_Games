@@ -14,7 +14,11 @@ var gameLayoutVariables = {
     clickBlocked: null,
     playerProfilePic: null,
     opponentProfilePic: null,
-    resultBoard: null
+    resultBoard: null,
+    fbShare: null,
+    twitterShare: null,
+    otherShare: null,
+    rematch: null
 };
 
 export default gameLayoutVariables;

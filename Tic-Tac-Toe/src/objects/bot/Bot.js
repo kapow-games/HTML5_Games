@@ -11,7 +11,7 @@ export default class Bot {
         if (state.isTerminal()) {
             return ticTacToeGame.score(state);
         }
-        var stateScore = state.turnOfPlayer ? -1000 : 1000; // TODO : let or var :P
+        var stateScore = state.turnOfPlayer ? -1000 : 1000; // TODO : let or var :P // this is set to var cz it is needed at line 25
 
         let availablePositions = state.emptyCells();
         let availableNextStates = availablePositions.map(function (pos) {
@@ -50,13 +50,13 @@ export default class Bot {
         this.gameDetail.moveTo(next);
     }
 
-    gameAssigned(gameDetail) { // TODO : @mayank : plays ? what does the function do ?
-        //Renamed to gameAssigned.
+    assignGame(gameDetail) { // TODO : @mayank : plays ? what does the function do ?
+        //Renamed to assignGame.
         //The 'Bot' should be aware of the 'Game' object. This function stores that.
         this.gameDetail = gameDetail;
     }
 
-    notifyTurn(turnOfPlayer) { // TODO : @mayank: it plays the doBotMove , can be renamed accordingly
+    playMove(turnOfPlayer) { // TODO : @mayank: it plays the doBotMove , can be renamed accordingly
         this.doBotMove(turnOfPlayer);
     }
 

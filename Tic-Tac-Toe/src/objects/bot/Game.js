@@ -15,7 +15,7 @@ export default class Game {
         this.currentState = new GameState();
         this.currentState.board = []; // TODO : is it a CONSTANT ? extract such CONSTANTS
         for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) { // TODO : move to new line after 120 chars
-            this.currentState.board.push(gameInfo.get("boardStatus").cells[i] !== undefined ?
+            this.currentState.board.push(gameInfo.get("boardStatus").cells[i] ?
                 gameInfo.get("boardStatus").cells[i] : 0);
         }
         this.currentState.turnOfPlayer = true;
@@ -112,7 +112,7 @@ export default class Game {
         }
         else {
             if (!this.currentState.turnOfPlayer) {
-                this.bot.notifyTurn(false);// TODO : rename to play move ?
+                this.bot.playMove(false);// TODO : rename to play move ?
             }
             // Otherwise, Player's Turn
         }

@@ -1,6 +1,6 @@
 'use strict';
 
-var phaserManager = {// TODO : very basic text util . not a phaser Manager
+var phaserManager = {// TODO : very basic text util . not a phaser Manager // intend to add more functionality in future
     createText: function (game, obj) {
         let textStyle = {
             font: obj.font,

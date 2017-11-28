@@ -11,171 +11,13 @@ import phaserManager from "./phaserManager";
 import MESSAGE from "../gameParam/message";
 
 export default function gameEndHandler(game, value) { // TODO : too big responsiblitly function. Seperate into smaller units
-    console.log("Game End Being Handled.");
-    gameLayoutVariables.backgroundImage.inputEnabled = true;
-    gameLayoutVariables.backgroundImage.input.priorityID = 2;
-    gameLayoutVariables.backButton.input.priorityID = 3;
-    game.stage.removeChild(gameLayoutVariables.turnTextBackground);
-    game.stage.removeChild(gameLayoutVariables.help);
-    game.stage.removeChild(gameLayoutVariables.resign);
-    game.stage.removeChild(gameLayoutVariables.turnText);
-    let resultText = (value === 1) ? MESSAGE.LOSE : (value === 2 ? MESSAGE.WIN : MESSAGE.DRAW);
-    let resultTextBackgroundColor;
-    if (value === 2) {
-        gameLayoutVariables.confetti.reset(111, 201);
-        if (gameInfo.get("playerMark") === GAME_CONST.X) {
-            gameLayoutVariables.resultBoard.frame = 0;
-            resultTextBackgroundColor = "#48d1dc";
-        }
-        else {
-            gameLayoutVariables.resultBoard.frame = 1;
-            resultTextBackgroundColor = "#b9dc70";
-        }
-    }
-    else if (value === 1) {
-        gameLayoutVariables.resultBoard.frame = 2;
-        resultTextBackgroundColor = "#f45842";
-    }
-    gameLayoutVariables.turnText = phaserManager.createText(game, {
-        positionX: game.world.centerX,
-        positionY: 276,
-        message: resultText,
-        align: "center",
-        backgroundColor: resultTextBackgroundColor,
-        fill: "#fefefe",
-        font: 'nunito-regular',
-        fontSize: "60px",
-        fontWeight: 800,
-        wordWrapWidth: 355,
-        anchorX: 0.5,
-        anchorY: 0
-    });
-    game.stage.addChild(gameLayoutVariables.turnText);
-    let shareBackground = game.add.sprite(72, 1584, 'shareBackground');
-    game.stage.addChild(shareBackground);
-
-    let socialShareModal = new SocialShare(game, value === 1 ? "loss" : value === 0 ? "draw" : "won");
-
-    let shareFbButton = socialShareModal.shareButton(294, 1614, 'facebook', 'fbShare');
-    shareFbButton.input.priorityID = 3;
-    game.stage.addChild(shareFbButton);
-
-    let shareTwitterButton = socialShareModal.shareButton(408, 1614, 'twitter', 'twitterShare');
-    shareTwitterButton.input.priorityID = 3;
-    game.stage.addChild(shareTwitterButton);
-
-    let shareOtherButton = socialShareModal.shareButton(522, 1614, null, 'otherShare');
-    shareOtherButton.input.priorityID = 3;
-    game.stage.addChild(shareOtherButton);
-
-    let rematchButton = game.add.button(657, 1584, 'rematch', rematchButtonHandler, 0, 0, 1, 0);
-    rematchButton.input.priorityID = 3;
-    rematchButton.game = game;
-    game.stage.addChild(rematchButton);
-
+    renderGameEndUIChanges(game, value);
     if (gameInfo.get("gameOver") === false) {
-        let gameStoreContainer = new GameStoreQuery();
-        gameStoreContainer.get("stats", function (statsValue, self) {
-            if (statsValue) {
-                console.log("Value fetched from gameStore was : ", statsValue);
-                let valueJSON = JSON.parse(statsValue);
-                console.log(valueJSON);
-                let soloStats = valueJSON.soloStats;
-                let randomStats = valueJSON.randomStats;
-                let friendsStats = valueJSON.friendsStats;
-                if (gameInfo.get("gameType") === "solo") {
-                    if (value === 1) {
-                        soloStats.lost += 1;
-                    }
-                    else if (value === 2) {
-                        soloStats.won += 1;
-                    }
-                    else {
-                        soloStats.draw += 1;
-                    }
-                }
-                else if (gameInfo.get("gameType") === "friend") {
-                    if (gameInfo.get("randomRoom") === false) {
-                        if (value === 1) {
-                            friendsStats.lost += 1;
-                        }
-                        else if (value === 2) {
-                            friendsStats.won += 1;
-                        }
-                        else {
-                            friendsStats.draw += 1;
-                        }
-                    }
-                    else {
-                        if (value === 1) {
-                            randomStats.lost += 1;
-                        }
-                        else if (value === 2) {
-                            randomStats.won += 1;
-                        }
-                        else {
-                            randomStats.draw += 1;
-                        }
-                    }
-                }
-                let newStats = {"soloStats": soloStats, "friendsStats": friendsStats, "randomStats": randomStats};
-                self.set("stats", newStats);
-            }
-            else {
-                console.log('stats Variables Not Set');
-                let newStats = {
-                    "soloStats": {
-                        "won": 0,
-                        "lost": 0,
-                        "draw": 0
-                    },
-                    "friendsStats": {
-                        "won": 0,
-                        "lost": 0,
-                        "draw": 0
-                    },
-                    "randomStats": {
-                        "won": 0,
-                        "lost": 0,
-                        "draw": 0
-                    },
-                };
-                self.set("stats", newStats);
-            }
-        });
+        updateStats(value);
     }
-    if (gameInfo.get("gameLocked") === false)// To ensure that game doesn't close multiple times in Kapow
+    if (!gameInfo.get("gameLocked") && gameInfo.get("gameType") === "solo")// To ensure that game doesn't close multiple times in Kapow
     {
-        if (gameInfo.get("gameType") === "solo") {
-            kapow.endSoloGame(function () {
-                if (value === 2) {
-                    kapow.rpc.invoke({
-                            "functionName": 'soloPostScore',
-                            "parameters": {'points': 5, 'playerID': gameInfo.get("playerData").id},
-                            "invokeLazily": true
-                        }, function (successResponse) {
-                            console.log("successResponse  for lazy invocation", successResponse);
-                        }, function (rpcErrorResponse) {
-                            console.log("rpcErrorResponse  for lazy invocation", rpcErrorResponse);
-                        }
-                    );
-                }
-                let tempCells = [];
-                for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
-                    tempCells.push(undefined);
-                }
-                gameInfo.set("boardStatus", {cells: tempCells});
-                // gameInfo.set("botLevel", -1); //TODO : Remove This. Redundant
-                gameInfo.set("win", 0);
-                gameInfo.set("gameOver", false);
-                gameInfo.set("room", null);
-                gameInfo.set("playerMark", GAME_CONST.NONE);
-                gameInfo.set("gameResume", false);
-                console.log("Game Succesfully Closed.");
-            }, function (error) {
-                console.log("endSoloGame Failed : ", error);
-            });
-        }
+        kapowEndSoloGame(value);
     }
 }
 
@@ -260,4 +102,179 @@ function rematchButtonHandler() {
                 console.log("Rematch Room creation FAILED.", error);
             });
     }
+}
+
+function renderGameEndUIChanges(game, value) {
+    console.log("Game End Being Handled.");
+    gameLayoutVariables.backgroundImage.inputEnabled = true;
+    gameLayoutVariables.backgroundImage.input.priorityID = 2;
+    gameLayoutVariables.backButton.input.priorityID = 3;
+
+    game.stage.removeChild(gameLayoutVariables.turnTextBackground);
+    game.stage.removeChild(gameLayoutVariables.help);
+    game.stage.removeChild(gameLayoutVariables.resign);
+    game.stage.removeChild(gameLayoutVariables.turnText);
+
+    let resultText = (value === 1) ? MESSAGE.LOSE : (value === 2 ? MESSAGE.WIN : MESSAGE.DRAW);
+    let resultTextBackgroundColor;
+    if (value === 2) {
+        gameLayoutVariables.confetti.reset(111, 201);
+        if (gameInfo.get("playerMark") === GAME_CONST.X) {
+            gameLayoutVariables.resultBoard.frame = 0;
+            resultTextBackgroundColor = "#48d1dc";
+        }
+        else {
+            gameLayoutVariables.resultBoard.frame = 1;
+            resultTextBackgroundColor = "#b9dc70";
+        }
+    }
+    else if (value === 1) {
+        gameLayoutVariables.resultBoard.frame = 2;
+        resultTextBackgroundColor = "#f45842";
+    }
+
+    gameLayoutVariables.turnText = phaserManager.createText(game, {
+        positionX: game.world.centerX,
+        positionY: 276,
+        message: resultText,
+        align: "center",
+        backgroundColor: resultTextBackgroundColor,
+        fill: "#fefefe",
+        font: 'nunito-regular',
+        fontSize: "60px",
+        fontWeight: 800,
+        wordWrapWidth: 355,
+        anchorX: 0.5,
+        anchorY: 0
+    });
+
+    game.stage.addChild(gameLayoutVariables.turnText);
+    let shareBackground = game.add.sprite(72, 1584, 'shareBackground');
+    game.stage.addChild(shareBackground);
+
+    let socialShareModal = new SocialShare(game, value === 1 ? "loss" : value === 0 ? "draw" : "won");
+
+    let shareFbButton = socialShareModal.shareButton(294, 1614, 'facebook', 'fbShare');
+    shareFbButton.input.priorityID = 3;
+    gameLayoutVariables.fbShare = shareFbButton;
+    game.stage.addChild(shareFbButton);
+
+    let shareTwitterButton = socialShareModal.shareButton(408, 1614, 'twitter', 'twitterShare');
+    shareTwitterButton.input.priorityID = 3;
+    gameLayoutVariables.twitterShare = shareTwitterButton;
+    game.stage.addChild(shareTwitterButton);
+
+    let shareOtherButton = socialShareModal.shareButton(522, 1614, null, 'otherShare');
+    shareOtherButton.input.priorityID = 3;
+    gameLayoutVariables.otherShare = shareOtherButton;
+    game.stage.addChild(shareOtherButton);
+
+    let rematchButton = game.add.button(657, 1584, 'rematch', rematchButtonHandler, 0, 0, 1, 0);
+    rematchButton.input.priorityID = 3;
+    rematchButton.game = game;
+    gameLayoutVariables.rematch = rematchButton;
+    game.stage.addChild(rematchButton);
+}
+
+function updateStats(value) {
+    let gameStoreContainer = new GameStoreQuery();
+    gameStoreContainer.get("stats", function (statsValue, self) {
+        if (statsValue) {
+            console.log("Value fetched from gameStore was : ", statsValue);
+            let valueJSON = JSON.parse(statsValue);
+            console.log(valueJSON);
+            let soloStats = valueJSON.soloStats;
+            let randomStats = valueJSON.randomStats;
+            let friendsStats = valueJSON.friendsStats;
+            if (gameInfo.get("gameType") === "solo") {
+                if (value === 1) {
+                    soloStats.lost += 1;
+                }
+                else if (value === 2) {
+                    soloStats.won += 1;
+                }
+                else {
+                    soloStats.draw += 1;
+                }
+            }
+            else if (gameInfo.get("gameType") === "friend") {
+                if (gameInfo.get("randomRoom") === false) {
+                    if (value === 1) {
+                        friendsStats.lost += 1;
+                    }
+                    else if (value === 2) {
+                        friendsStats.won += 1;
+                    }
+                    else {
+                        friendsStats.draw += 1;
+                    }
+                }
+                else {
+                    if (value === 1) {
+                        randomStats.lost += 1;
+                    }
+                    else if (value === 2) {
+                        randomStats.won += 1;
+                    }
+                    else {
+                        randomStats.draw += 1;
+                    }
+                }
+            }
+            let newStats = {"soloStats": soloStats, "friendsStats": friendsStats, "randomStats": randomStats};
+            self.set("stats", newStats);
+        }
+        else {
+            console.log('stats Variables Not Set');
+            let newStats = {
+                "soloStats": {
+                    "won": 0,
+                    "lost": 0,
+                    "draw": 0
+                },
+                "friendsStats": {
+                    "won": 0,
+                    "lost": 0,
+                    "draw": 0
+                },
+                "randomStats": {
+                    "won": 0,
+                    "lost": 0,
+                    "draw": 0
+                },
+            };
+            self.set("stats", newStats);
+        }
+    });
+}
+
+function kapowEndSoloGame(value) {
+    kapow.endSoloGame(function () {
+        if (value === 2) {
+            kapow.rpc.invoke({
+                    "functionName": 'soloPostScore',
+                    "parameters": {'points': 5, 'playerID': gameInfo.get("playerData").id},
+                    "invokeLazily": true
+                }, function (successResponse) {
+                    console.log("successResponse  for lazy invocation", successResponse);
+                }, function (rpcErrorResponse) {
+                    console.log("rpcErrorResponse  for lazy invocation", rpcErrorResponse);
+                }
+            );
+        }
+        let tempCells = [];
+        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+            tempCells.push(undefined);
+        }
+        gameInfo.set("boardStatus", {cells: tempCells});
+        // gameInfo.set("botLevel", -1); //TODO : Remove This. Redundant
+        gameInfo.set("win", 0);
+        gameInfo.set("gameOver", false);
+        gameInfo.set("room", null);
+        gameInfo.set("playerMark", GAME_CONST.NONE);
+        gameInfo.set("gameResume", false);
+        console.log("Game Succesfully Closed.");
+    }, function (error) {
+        console.log("endSoloGame Failed : ", error);
+    });
 }

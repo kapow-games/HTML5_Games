@@ -73,17 +73,15 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic);
         this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic.mask);
         this.game.stage.removeChild(this.boardLayout);
+        this.game.stage.removeChild(gameLayoutVariables.vs);
+        this.game.stage.removeChild(gameLayoutVariables.rematch);
+        this.game.stage.removeChild(gameLayoutVariables.otherShare);
+        this.game.stage.removeChild(gameLayoutVariables.twitterShare);
+        this.game.stage.removeChild(gameLayoutVariables.fbShare);
         for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
             this.cells.children[i].inputEnabled = false;
         }
         this.game.stage.removeChild(this.cells);
-        // this.game.stage.removeChild(this.cells);
-
-        // for (let i = this.game.stage.children.length - 1; i >= 0; i--)
-        // {
-        //     this.game.stage.removeChild(this.game.stage.children[i]);
-        // }
-        // while(this.game.stage.children.length > 0){   var child = this.game.stage.getChildAt(0);  this.game.stage.removeChild(child);}
     }
 
     clickHandlerSolo(sprite, pointer) {
@@ -192,24 +190,24 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
     }
 
     nextMove(sprite, cell) {
-        let next = new GameState(gameLayoutVariables.game.currentState);
+        let next = new GameState(this.botGame.currentState);
         console.log("Click Acknowledged");
         next.board[sprite.frameIndex] = gameInfo.get("playerMark");
         sprite.frame = gameInfo.get("playerMark");
         console.log("Player's move logged");
         next.nextTurn();
-        gameLayoutVariables.game.moveTo(next);
+        this.botGame.moveTo(next);
         let changePos;
         for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
-            if (cell[i].frame !== gameLayoutVariables.game.currentState.board[i]) {
+            if (cell[i].frame !== this.botGame.currentState.board[i]) {
                 changePos = i;
-                cell[i].frame = gameLayoutVariables.game.currentState.board[i];
+                cell[i].frame = this.botGame.currentState.board[i];
             }
         }
         cell[changePos].scale.setTo(0);
         let popUpMark = this.game.add.tween(cell[changePos].scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
         popUpMark.start();
-        if (gameInfo.get("win") === 0 && gameLayoutVariables.game.gameStatus !== 3) {
+        if (gameInfo.get("win") === 0 && this.botGame.gameStatus !== 3) {
             saveGameData(this.game, false);
             gameLayoutVariables.turnText.text = MESSAGE.YOUR_TURN;
             gameLayoutVariables.opponentProfilePic.alpha = 0.3;
@@ -256,21 +254,23 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
         }, function () {
             console.log('Room Unloading Failed');
         });
-        gameInfo.set("gameResume", false);
-        gameInfo.set("room", null);
-        gameInfo.set("playerMark", 0);
-        gameInfo.set("gameType", null);
-        gameInfo.set("botLevel", -1);
-        let tempCells = [];
+        let resetVar ={
+            gameResume: false,
+            room: null,
+            playerMark: 0,
+            gameType: null,
+            botLevel: -1,
+            boardStatus: {cells: []},
+            opponentData: null,
+            turnOfPlayer: null,
+            gameOver: false,
+            win: 0,
+            gameLayoutLoaded: false
+        };
         for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
-            tempCells.push(undefined);
+            resetVar.boardStatus.cells.push(undefined);
         }
-        gameInfo.set("boardStatus", {cells: tempCells});
-        gameInfo.set("opponentData", null);
-        gameInfo.set("turnOfPlayer", null);
-        gameInfo.set("gameOver", false);
-        gameInfo.set("win", 0);
-        gameInfo.set("gameLayoutLoaded", false);
+        gameInfo.setBulk(resetVar);
         this.game.state.start('Menu');
     }
 
@@ -429,9 +429,9 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
 
     prepareGameBoard() {
         let count = 0;
+        console.log("BoardStatus on creating play screen:",gameInfo.get("gameResume"));
         this.cells = this.game.add.group();
         this.game.stage.addChild(this.cells);
-        // this.player = 1; // TODO : why is player a local object. Shoudn't it be in global store
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
         for (let i = 0; i < GAME_CONST.CELL_COLS; i++) {
             for (let j = 0; j < GAME_CONST.CELL_ROWS; j++) {
@@ -440,7 +440,7 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
                 if (gameInfo.get("gameResume") === true) {
                     cell.frame = gameInfo.get("boardStatus").cells[count];
                     // TODO : too complex falsy value check can be simplified
-                    if ( !(gameInfo.get("boardStatus").cells[count]) || gameInfo.get("boardStatus").cells[count] || gameInfo.get("boardStatus").cells[count]) {
+                    if ( !gameInfo.get("boardStatus").cells[count] || !gameInfo.get("boardStatus").cells[count] || !gameInfo.get("boardStatus").cells[count]) {
                         cell.frame = 0;
                         cell.inputEnabled = !gameInfo.get("gameOver");
                         cell.events.onInputDown.add(gameInfo.get("gameType") === 'solo' ? this.clickHandlerSolo : this.clickHandlerMulti, this);
@@ -463,7 +463,8 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
 
     initialiseBot() { // TODO : fix later , this does more then initBot . Seperate it
         let gameBot = new Bot(); // TODO : rename to gameBot ?
-        gameLayoutVariables.game = new Game(this.game, gameBot); // TODO :  LayoutStore storing game ??
+        this.botGame = new Game(this.game, gameBot); // TODO :  LayoutStore storing game ??
+
         if (gameInfo.get("playerMark") === 2 && gameInfo.get("gameResume") === false) {
             this.cells.children[gameLayoutVariables.initialMark].frame = 1;
             this.cells.children[gameLayoutVariables.initialMark].inputEnabled = false;
@@ -471,8 +472,8 @@ export class Play extends Phaser.State { // TODO : fix laer. this screen has too
         if (gameInfo.get("gameOver") === false) { //
             saveGameData(this.game, false);// To store the initial state of the Game. Even if the user or bot haven't made any move.
         }// TODO fix later: is the save needed ?
-        gameBot.gameAssigned(gameLayoutVariables.game); // TODO : fix later.. use names like assignName as an action which stores data . gameAssigned is a boolean check function name.
-        gameLayoutVariables.game.start(); // TODO : starting game from layout store ? Should change this flow .
+        gameBot.assignGame(this.botGame); // TODO : fix later.. use names like assignName as an action which stores data . assignGame is a boolean check function name.
+        this.botGame.start(); // TODO : starting game from layout store ? Should change this flow .
         if (gameInfo.get("gameOver") === true && gameInfo.get("win") === 0) {
             handleGameEnd(this.game, 1); // TODO : better name . HandleGameEnd ?
         }
