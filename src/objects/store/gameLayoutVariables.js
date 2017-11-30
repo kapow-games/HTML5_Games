@@ -1,5 +1,5 @@
 'use strict';
-
+//TODO : layoutStore
 var gameLayoutVariables = {
     initialMark: null,
     game: null,

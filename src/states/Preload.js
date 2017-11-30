@@ -2,6 +2,7 @@
 
 import gameInfo from "../objects/store/GameInfoStore";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
+import KapowGameStore from "../objects/store/KapowGameStore";
 
 var WebFontConfig = {
     active: function () {
@@ -67,9 +68,9 @@ export class Preload extends Phaser.State {
         this.load.spritesheet('resign', 'assets/images/resignbutton.png', 303, 120);
         this.load.image('choose_bg_mark', 'assets/images/mark-choose.png');
         this.load.spritesheet('cell', 'assets/images/xo-sprite.png', 264, 264);
-        // this.load.audio('gameSound', 'assets/audio/Robobozo.mp3');
-        // this.load.audio('winSound', 'assets/audio/Tada.mp3');
-        // this.load.audio('tapSound', 'assets/audio/Tap.mp3');
+        this.load.audio('gameSound', 'assets/audio/Robobozo.mp3');
+        this.load.audio('winSound', 'assets/audio/Tada.mp3');
+        this.load.audio('tapSound', 'assets/audio/Tap.mp3');
     }
 
     create() {
@@ -93,6 +94,33 @@ export class Preload extends Phaser.State {
     }
 
     _onLoadComplete() { // TODO :private ?
-        this.ready = true;
+        this.sound = this.game.add.audio('gameSound');
+        this.game.sound.setDecodedCallback([this.sound], this._start, this);
+    }
+
+    _start() {
+        let gameStoreContainer = new KapowGameStore();
+        gameStoreContainer.get("music", function (args, self) {
+            console.log("gameStore fetch - Success.");
+            this.sound.play();
+            this.sound.mute = false;
+            if (args) {
+                console.log("Value fetched from gameStore was : ", args);
+                let valueJSON = JSON.parse(args);
+                // this.sound.mute = valueJSON.volume === 0;
+            }
+            else {
+                this.sound.mute = true;
+                let param = {
+                    volume: 1,
+                };
+                self.set("music", param);
+            }
+            // this.sound.play();
+            this.sound.loop = true;
+            // this.sound.mute = true;
+            this.ready = true;
+            console.log(this);
+        }.bind(this));
     }
 }

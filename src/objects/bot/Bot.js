@@ -11,7 +11,7 @@ export default class Bot {
         if (state.isTerminal()) {
             return ticTacToeGame.score(state);
         }
-        var stateScore = state.turnOfPlayer ? -1000 : 1000; // TODO : let or var :P // this is set to var cz it is needed at line 25
+        let stateScore = state.turnOfPlayer ? -1000 : 1000; // TODO : let or var :P // this is set to var cz it is needed at line 25
 
         let availablePositions = state.emptyCells();
         let availableNextStates = availablePositions.map(function (pos) {

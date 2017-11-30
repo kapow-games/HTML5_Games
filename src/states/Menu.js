@@ -14,9 +14,11 @@ import ScoreboardButton from "../objects/widgets/button/ScoreboardButton";
 import HelpButton from "../objects/widgets/button/HelpButton";
 import BackButton from "../objects/widgets/button/BackButton";
 import MusicButton from "../objects/widgets/button/MusicButton";
+import KapowGameStore from "../objects/store/KapowGameStore";
 
 export class Menu extends Phaser.State {
     preload() {
+        console.log(this);
         // this.sound = this.game.add.audio('gameSound');
         // this.sound.play();
     }
@@ -186,9 +188,6 @@ export class Menu extends Phaser.State {
             bg: this.bg
         });
         this.game.stage.addChild(this.helpButton);
-    }
-
-    update() {
     }
 
     shutdown() {

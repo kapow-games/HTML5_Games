@@ -9,7 +9,7 @@ import handleGameEnd from "../util/gameEnd";
 import gameLayoutVariables from "../objects/store/gameLayoutVariables";
 import GAME_CONST from "../gameParam/gameConst";
 import MESSAGE from "../gameParam/message";
-
+//TODO : private function
 window.game = {
     onLoad: function (roomObj) {
         this.syncStats();
@@ -117,6 +117,9 @@ window.game = {
             gameInfo.set("turnOfPlayer", null);
             gameInfo.set("gameOver", false);
             gameInfo.set("win", 0);
+            phaserGame.state.start('Menu');
+        }
+        else if(gameInfo.get("screenState") === 3) {
             phaserGame.state.start('Menu');
         }
         else {

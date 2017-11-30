@@ -2,7 +2,7 @@
 
 import DarkOverlay from './DarkOverLay';
 import phaserManager from '../../../util/phaserManager';
-import GameStoreQuery from "../../store/KapowGameStore";
+import KapowGameStore from "../../store/KapowGameStore";
 
 export default class StatsButton extends Phaser.Button {
     constructor(arg) {
@@ -70,7 +70,7 @@ export default class StatsButton extends Phaser.Button {
             this.cancelButton.input.priorityID = 4;
             this.game.stage.addChild(this.cancelButton);
 
-            let gameStoreContainer = new GameStoreQuery();
+            let gameStoreContainer = new KapowGameStore();
             gameStoreContainer.get("stats", function (statsValue, self) {
                 console.log("gameStore fetch - Success.");
                 if (statsValue) {

@@ -11,7 +11,7 @@ export class Select extends Phaser.State {
         console.log("Select state starting.");
         this.mark = 0;
         this.startButtonFlag = true;
-        gameInfo.set("screenState", 0);
+        gameInfo.set("screenState", 3);
     }
 
     create() {
