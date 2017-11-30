@@ -15,7 +15,7 @@ export default class DarkOverLay extends Phaser.Button {
         this.inputEnabled = isEnabled;
     }
 
-    setInputPriority(priorityID) { // TODO : same
+    setInputPriority(priorityID) {
         this.input.priorityID = priorityID;
     }
 }

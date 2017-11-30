@@ -7,21 +7,19 @@ export default class Bot {
         this.gameDetail = {};
     }
 
-    getMiniMaxValue(ticTacToeGame, state) {
+    getMiniMaxValue(ticTacToeGame, state) { //TODO : might not be needed at every step
         if (state.isTerminal()) {
             return ticTacToeGame.score(state);
         }
-        let stateScore = state.turnOfPlayer ? -1000 : 1000; // TODO : let or var :P // this is set to var cz it is needed at line 25
-
-        let availablePositions = state.emptyCells();
-        let availableNextStates = availablePositions.map(function (pos) {
+        var stateScore = state.turnOfPlayer ? -1000 : 1000; // TODO : let or var :P // this is set to var cz it is needed at line 25
+        let availableNextStates = state.emptyCells().map(function (pos) {
             let action = new BotBehaviour(pos);
             return action.play(state);
         });
 
         availableNextStates.forEach(function (nextState) {
             let nextScore = this.getMiniMaxValue(ticTacToeGame, nextState);
-            if (state.turnOfPlayer === true && nextScore > stateScore) { // TODO :  can do (state.turn === 1 && nextScore > stateScore) {}
+            if (state.turnOfPlayer === true && nextScore > stateScore) {
                 stateScore = nextScore;
             }
             else if (state.turnOfPlayer === false && nextScore < stateScore) {
@@ -31,10 +29,10 @@ export default class Bot {
         return stateScore;
     }
 
-    doBotMove(turnOfPlayer) { // TODO : rename to doBotMove
+    doBotMove(turnOfPlayer) {
         let availableActions = this.sortPossibleBotMoves(turnOfPlayer);
         let chosenAction;
-        if (Math.random() * 100 <= 80) {
+        if (Math.random() <= 0.8) {
             chosenAction = availableActions[0];
         }
         else {
@@ -50,19 +48,17 @@ export default class Bot {
         this.gameDetail.moveTo(next);
     }
 
-    assignGame(gameDetail) { // TODO : @mayank : plays ? what does the function do ?
-        //Renamed to assignGame.
+    storeGameDetail(gameDetail) {
         //The 'Bot' should be aware of the 'Game' object. This function stores that.
         this.gameDetail = gameDetail;
     }
 
-    playMove(turnOfPlayer) { // TODO : @mayank: it plays the doBotMove , can be renamed accordingly
+    playMove(turnOfPlayer) { // TODO : redundant fn
         this.doBotMove(turnOfPlayer);
     }
 
     sortPossibleBotMoves(turnOfPlayer) {
-        let available = this.gameDetail.currentState.emptyCells();
-        let availableActions = available.map(function (pos) {
+        let availableActions = this.gameDetail.currentState.emptyCells().map(function (pos) {
             let action = new BotBehaviour(pos);
             let next = action.play(this.gameDetail.currentState);
             action.miniMaxValue = this.getMiniMaxValue(this.gameDetail, next);
@@ -87,8 +83,8 @@ export default class Bot {
         return 0;
     }
 
-    _descending(firstAction, secondAction) { // TODO : repeat of _ascending ? //No it isn't
-        if (firstAction.miniMaxValue > secondAction.miniMaxValue) {
+    _descending(firstAction, secondAction) { // TODO : repeat of _ascending ?
+            if (firstAction.miniMaxValue > secondAction.miniMaxValue) {
             return -1;
         }
         else if (firstAction.miniMaxValue < secondAction.miniMaxValue) {

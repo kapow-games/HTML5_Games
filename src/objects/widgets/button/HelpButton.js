@@ -38,7 +38,7 @@ export default class HelpButton extends Phaser.Button {
                 this.howToPlayText = phaserManager.createText(this.game, {
                     positionX: 319.5,
                     positionY: 465,
-                    message: 'HOW TO PLAY', // TODO : Fix later : Move all the messages to a new Strings file constants
+                    message: 'HOW TO PLAY',
                     align: "center",
                     backgroundColor: "#fefefe",
                     fill: "#6d616d",

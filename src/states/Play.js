@@ -439,7 +439,6 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
                 cell.anchor.setTo(0.5);
                 if (gameInfo.get("gameResume") === true) {
                     cell.frame = gameInfo.get("boardStatus").cells[count];
-                    // TODO : too complex falsy value check can be simplified
                     if (!gameInfo.get("boardStatus").cells[count] || !gameInfo.get("boardStatus").cells[count] || !gameInfo.get("boardStatus").cells[count]) {
                         cell.frame = 0;
                         cell.inputEnabled = !gameInfo.get("gameOver");
@@ -462,18 +461,18 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     }
 
     initialiseBot() { // TODO : fix later , this does more then initBot . Seperate it
-        let gameBot = new Bot(); // TODO : rename to gameBot ?
-        this.botGame = new Game(this.game, gameBot); // TODO :  LayoutStore storing game ??
+        let gameBot = new Bot();
+        this.botGame = new Game(this.game, gameBot);
 
         if (gameInfo.get("playerMark") === 2 && gameInfo.get("gameResume") === false) {
             this.cells.children[gameLayoutVariables.initialMark].frame = 1;
             this.cells.children[gameLayoutVariables.initialMark].inputEnabled = false;
         }
-        if (gameInfo.get("gameOver") === false) { //
+        if (gameInfo.get("gameOver") === false) {
             saveGameData(this.game, false);// To store the initial state of the Game. Even if the user or bot haven't made any move.
-        }// TODO fix later: is the save needed ?
-        gameBot.assignGame(this.botGame); // TODO : fix later.. use names like assignName as an action which stores data . assignGame is a boolean check function name.
-        this.botGame.start(); // TODO : starting game from layout store ? Should change this flow .
+        }
+        gameBot.storeGameDetail(this.botGame);
+        this.botGame.start();
         if (gameInfo.get("gameOver") === true && gameInfo.get("win") === 0) {
             handleGameEnd(this.game, 1); // TODO : better name . HandleGameEnd ?
         }

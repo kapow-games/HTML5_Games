@@ -10,7 +10,7 @@ export default class BotBehaviour { // TODO : why is bot and bot behavior differ
         this.miniMaxValue = 0;
     }
 
-    play(state) {// TODO : plural ?
+    play(state) {
         let nextGameState = new GameState(state);
         nextGameState.board[this.movePosition] = (state.turnOfPlayer ? gameInfo.get("playerMark") : ((gameInfo.get("playerMark") === GAME_CONST.X) ? 2 : 1));
         if (!state.turnOfPlayer) {
