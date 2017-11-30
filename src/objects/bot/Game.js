@@ -10,11 +10,10 @@ import GAME_RESULT from "../../gameParam/gameResult";
 export default class Game {
     constructor(ticTacToeGame, bot) {
         this.game = ticTacToeGame;
-
         this.bot = bot;
         this.currentState = new GameState();
-        this.currentState.board = []; // TODO : is it a CONSTANT ? extract such CONSTANTS
-        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) { // TODO : move to new line after 120 chars
+        this.currentState.board = [];
+        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
             this.currentState.board.push(gameInfo.get("boardStatus").cells[i] ?
                 gameInfo.get("boardStatus").cells[i] : 0);
         }
@@ -31,7 +30,7 @@ export default class Game {
     moveTo(state) {
         this.currentState = state;
         if (this.currentState.isTerminal()) { // TODO : logic can be simplified
-            this.gameStatus = GAME_RESULT.FINISHED; // Indicating game Over  // TODO : can use alias enums
+            this.gameStatus = GAME_RESULT.FINISHED;
             if (this.currentState.boardResult === 1) {
                 gameInfo.set("win", 1);
             }
@@ -43,7 +42,7 @@ export default class Game {
             }
             if (gameInfo.get("win") !== 0) {
                 if (gameInfo.get("win") === gameInfo.get("playerMark")) {
-                    gameLayoutVariables.turnText.text = "YOU WIN!"; // TODO : extra space intentional ?
+                    gameLayoutVariables.turnText.text = "YOU WIN!";
                     handleGameEnd(this.game, 2);
                 }
                 else {
@@ -52,7 +51,7 @@ export default class Game {
                 }
             }
             else {
-                gameLayoutVariables.turnText.text = "GAME DRAW!"; // TODO : no extra space ?
+                gameLayoutVariables.turnText.text = "GAME DRAW!";
                 handleGameEnd(this.game, 0);
             }
             if (gameInfo.get("win") !== 0) {

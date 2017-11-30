@@ -35,8 +35,7 @@ export default class ResignButton extends Phaser.Button {
             gameLayoutVariables.backgroundImage.enableInput(true);
             gameLayoutVariables.backgroundImage.setInputPriority(1);
             this.cancelResign();
-            // let tempCells = this.game.state.states.Play.cells.children; // TODO : accidental global
-            gameLayoutVariables.turnText.text = " YOU LOSE!";
+            gameLayoutVariables.turnText.text = "YOU LOSE!";
             handleGameEnd(this.game, 1);
         }
         else if (gameInfo.get("gameType") === "friend") {
@@ -51,7 +50,7 @@ export default class ResignButton extends Phaser.Button {
                     gameLayoutVariables.backgroundImage.enableInput(true);
                     gameLayoutVariables.backgroundImage.setInputPriority(1);
                     this.cancelResign();
-                    gameLayoutVariables.turnText.text = " YOU LOSE!";
+                    gameLayoutVariables.turnText.text = "YOU LOSE!";
                     console.log("Client resigned, hence lost");
                     handleGameEnd(this.game, 1);
                 }.bind(this),

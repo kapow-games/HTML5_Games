@@ -9,12 +9,12 @@ import handleGameEnd from "../util/gameEnd";
 import gameLayoutVariables from "../objects/store/gameLayoutVariables";
 import GAME_CONST from "../gameParam/gameConst";
 import MESSAGE from "../gameParam/message";
-
+// TODO : make function private
 window.game = {
-    onLoad: function (roomObj) {
+    onLoad: function (room) {
         this.syncStats();
-        console.log("Room returned by kapow onLoad - " + JSON.stringify(roomObj));
-        gameInfo.set("room", roomObj);
+        console.log("Room returned by kapow onLoad - " + JSON.stringify(room));
+        gameInfo.set("room", room);
         this.loadScreen();
     },
     onGameEnd: function (outcome) {
@@ -157,11 +157,9 @@ window.game = {
         });
     },
     loadScreen: function () {
-        kapow.getUserInfo(function (userObj) {
-            console.log("Client getUserInfoSuccess - User: " + JSON.stringify(userObj));
-            let user = userObj.player;
-            gameInfo.set("playerData", user);
-
+        kapow.getUserInfo(function (user) {
+            console.log("Client getUserInfoSuccess - User: " + JSON.stringify(user));
+            gameInfo.set("playerData", user.player);
             if (gameInfo.get("room") !== null) { //Game already created sometime earlier
                 this.loadOngoingGameData();
             }

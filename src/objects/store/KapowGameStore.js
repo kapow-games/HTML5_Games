@@ -1,11 +1,11 @@
 'use strict';
 
-export default class KapowGameStore { // TODO : Rename to KapowGameStore ?
+export default class KapowGameStore {
     get(key, successCallback, failureCallback) {
         var that = this;
         kapow.gameStore.get(key, function (val) {
             console.log("Fetching gameStore " + key + " data successful", val);
-            successCallback && successCallback(val, that);
+            successCallback && successCallback(val, that); // TODO : Remove self
         }, function (error) {
             console.log("Fetching gameStore " + key + " data failed : ", error);
             failureCallback && failureCallback();

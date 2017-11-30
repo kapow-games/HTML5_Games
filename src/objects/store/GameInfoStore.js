@@ -3,8 +3,8 @@
 import GAME_CONST from "../../gameParam/gameConst";
 
 // TODO : Check if we can move  vars to different primitives or enums or booleans .
-var GameInfoStore = function () {
-    this.room = null; // TODO : any reason why its a function and not an object ? File name and object name are different
+function GameInfoStore() {
+    this.room = null;
     this.screenState = 0;
     this.playerData = null;
     this.boardStatus = {
@@ -13,7 +13,7 @@ var GameInfoStore = function () {
     this.gameResume = false;
     this.win = 0;
     this.playerMark = GAME_CONST.NONE;
-    this.opponentMark = GAME_CONST.NONE;//@sukhmeet WIP for bringing similar changes at other occurrences.
+    this.opponentMark = GAME_CONST.NONE;
     this.gameOver = false;
     this.gameType = null;
     this.opponentData = null;

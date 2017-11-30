@@ -23,7 +23,7 @@ export default class GameState {
     }
 
     nextTurn() {
-        this.turnOfPlayer = this.turnOfPlayer !== true; // TODO : can be simplified to  - this.turnOfPlayer = this.turnOfPlayer !== true;
+        this.turnOfPlayer = !this.turnOfPlayer;
     }
 
     emptyCells() {
