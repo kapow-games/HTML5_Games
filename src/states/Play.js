@@ -479,7 +479,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     }
 
     verifyOpponentAffiliationStatus() { // TODO : no verification is done . only console log :D
-        if (gameInfo.get("opponentData") && gameInfo.get("opponentData").affiliation === AFFILIATION.ACCEPTED) { // TODO : fix later . extract enum Affiliation . String comparision are more prone to errors
+        if (gameInfo.get("opponentData") && gameInfo.get("opponentData").affiliation === GAME_CONST.AFFILIATION.ACCEPTED) {
             console.log("Opponent Accepted.");
         }
         else if (gameInfo.get("opponentData").affiliation === null) {
