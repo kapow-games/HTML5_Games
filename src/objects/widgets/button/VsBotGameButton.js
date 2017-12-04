@@ -1,6 +1,6 @@
 "use strict";
 
-import gameInfo from '../../store/GameInfoStore';
+import gameInfo from '../../store/GameInfo';
 
 export default class VsBotGameButton extends Phaser.Button {
     constructor(arg) {

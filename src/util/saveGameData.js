@@ -1,4 +1,4 @@
-import gameInfo from "../objects/store/GameInfoStore";
+import gameInfo from "../objects/store/GameInfo";
 
 var saveGameData = function (phaserGame, value) {
     let currentGameState = phaserGame.state.states.Play.cells.children;

@@ -4,7 +4,7 @@ import layoutStore from "../../store/layoutStore";
 import DarkOverlay from "./DarkOverLay";
 import saveGameData from "../../../util/saveGameData";
 import handleGameEnd from "../../../util/gameEnd";
-import gameInfo from "../../store/GameInfoStore"
+import gameInfo from "../../store/GameInfo"
 import GAME_CONST from "../../../const/GAME_CONST";
 
 export default class ResignButton extends Phaser.Button {

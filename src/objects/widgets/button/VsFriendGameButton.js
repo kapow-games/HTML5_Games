@@ -1,6 +1,6 @@
 "use strict";
 
-import gameInfo from '../../store/GameInfoStore';
+import gameInfo from '../../store/GameInfo';
 import parseRoomAndRedirectToGame from "../../../util/parseRoomAndRedirectToGame";
 import GAME_CONST from "../../../const/GAME_CONST";
 

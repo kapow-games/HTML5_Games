@@ -3,7 +3,7 @@
 import GameState from "./GameState";
 import layoutStore from "../store/layoutStore";
 import handleGameEnd from "../../util/gameEnd";
-import gameInfo from "../store/GameInfoStore";
+import gameInfo from "../store/GameInfo";
 import GAME_CONST from "../../const/GAME_CONST";
 
 export default class Game {

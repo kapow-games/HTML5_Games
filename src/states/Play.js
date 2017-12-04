@@ -1,7 +1,7 @@
 'use strict';
 
 import phaserManager from "../util/phaserManager";
-import gameInfo from "../objects/store/GameInfoStore";
+import gameInfo from "../objects/store/GameInfo";
 import handleGameEnd from '../util/gameEnd';
 import {drawWinningLine} from '../util/gameEnd';
 import layoutStore from "../objects/store/layoutStore";

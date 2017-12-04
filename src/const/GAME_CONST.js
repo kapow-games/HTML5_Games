@@ -28,6 +28,10 @@ const GAME_CONST = {
         NOT_STARTED: -1,
         IN_PROGRESS: 0,
         FINISHED: 3
+    },
+    OUTCOME :{
+        RESIGNATION : "resignation",
+        TIMEOUT : "timeout"
     }
 };
 

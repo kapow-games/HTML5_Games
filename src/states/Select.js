@@ -1,6 +1,6 @@
 'use strict'
 
-import gameInfo from '../objects/store/GameInfoStore';
+import gameInfo from '../objects/store/GameInfo';
 import BackButton from '../objects/widgets/button/BackButton';
 import MusicButton from '../objects/widgets/button/MusicButton';
 import Background from "../objects/widgets/icons/Background";

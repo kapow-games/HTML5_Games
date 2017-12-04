@@ -1,6 +1,6 @@
 "use strict";
 
-import gameInfo from "../objects/store/GameInfoStore"; // TODO : use strict ?
+import gameInfo from "../objects/store/GameInfo"; // TODO : use strict ?
 import phaserGame from "../main";
 
 export default function parseRoomAndRedirectToGame() { // TODO : too complex function. Simplify in smaller components. A lot of if conditions can be simplified

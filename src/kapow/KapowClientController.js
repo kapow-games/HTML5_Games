@@ -1,6 +1,8 @@
 "use strict";
 
-import gameInfo from "../objects/store/GameInfoStore";
+import gameInfo from "../objects/store/GameInfo";
+import GameManager from "../controller/GameManager";
+import GAME_CONST from "../const/GAME_CONST";
 
 class KapowClientController {
     handleOnLoad(room) {
@@ -10,20 +12,21 @@ class KapowClientController {
     }
 
     handleGameEnd(outcome) {
-        if (outcome.type === "resignation" || outcome.type === "timeout") {
-            if (outcome.ranks[gameInfo.get("playerData").id] === 1) {
+        let playerId = gameInfo.get("playerData").id,
+            opponentId = gameInfo.get("opponentData").id;
+        if (outcome.type === GAME_CONST.OUTCOME.RESIGNATION || outcome.type === GAME_CONST.OUTCOME.TIMEOUT) {
+            if (outcome.ranks[playerId] === 1) {
                 console.log("Game Won");
-                handleGameEnd(phaserGame, 2);
-            }
-            else {
+                GameManager.endGame(2);
+            } else {
                 console.log("Game Lost");
-                handleGameEnd(phaserGame, 1);
+                GameManager.endGame(1);
             }
         }
-        if (outcome.ranks[gameInfo.get("playerData").id] === 1 && outcome.ranks[gameInfo.get("opponentData").id] === 1) {
+        if (outcome.ranks[playerId] === 1 && outcome.ranks[opponentId] === 1) {
             console.log("Game Draw");
         }
-        else if (outcome.ranks[gameInfo.get("playerData").id] === 1) {
+        else if (outcome.ranks[playerId] === 1) {
             console.log("Game Won");
         }
         else {
@@ -81,7 +84,7 @@ class KapowClientController {
             }
         }
         else if (gameInfo.get("gameLayoutLoaded") === false && message.type === "move" && message.data.type === "markSet") {
-            this.onAffiliationChange();
+            this.handleAffliliationChange();
         }
     }
 
@@ -169,14 +172,12 @@ class KapowClientController {
         kapow.getUserInfo(function (user) {
             console.log("Client getUserInfoSuccess - User: " + JSON.stringify(user));
             gameInfo.set("playerData", user.player);
-            if (gameInfo.get("room") !== null) { //Game already created sometime earlier
+            if (gameInfo.get("room") !== null) {
                 this._loadOngoingGameData();
-            }
-            else {
+            } else {
                 gameInfo.set("gameResume", false);
             }
-            console.log("room : ", gameInfo.get("room"));
-            phaserGame.state.start('Boot');
+            GameManager.startGame();
         }.bind(this), function () {
             console.log("Client getUserInfo failure");
         });
@@ -184,33 +185,28 @@ class KapowClientController {
 
     _loadOngoingGameData() {
         gameInfo.set("gameResume", true);
-
         if (gameInfo.get("room").players.length > 1) {
             gameInfo.set("gameType", "friend");
-        }
-        else if (gameInfo.get("room").lockStatus === "locked") {
+        } else if (gameInfo.get("room").lockStatus === "locked") {
             gameInfo.set("gameType", "solo");
-
             kapow.roomStore.get('game_data', function (value) {
                 if (value) {
                     let valueJSON = JSON.parse(value);
                     console.log(valueJSON);
-                    gameInfo.set("playerMark", valueJSON.colorPlayer);
+                    gameInfo.set("playerMark", valueJSON.colorPlayer); // TODO : @mayank : can we store these like gameData instead of different values ? also gameInfo.playerMark should map value.playerMark
                     gameInfo.set("botLevel", valueJSON.difficulty);
                     gameInfo.set("boardStatus", valueJSON.board);
                     gameInfo.set("playerData", valueJSON.playerData);
                     gameInfo.set("gameOver", valueJSON.gameOver);
                     gameInfo.set("gameLocked", gameInfo.get("gameOver"));
                     gameInfo.set("win", valueJSON.winner);
-                }
-                else {
+                } else {
                     console.log('Game Variables Not set');
                 }
             }, function (error) {
                 console.log("Nothing Found : ", error);
             });
-        }
-        else {
+        } else {
             gameInfo.set("gameType", "friend");
         }
     }
