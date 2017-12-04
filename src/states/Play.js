@@ -4,7 +4,7 @@ import phaserManager from "../util/phaserManager";
 import gameInfo from "../objects/store/GameInfoStore";
 import handleGameEnd from '../util/gameEnd';
 import {drawWinningLine} from '../util/gameEnd';
-import gameLayoutVariables from "../objects/store/gameLayoutVariables";
+import layoutStore from "../objects/store/layoutStore";
 import Bot from "../objects/bot/Bot";
 import Game from "../objects/bot/Game";
 import Background from "../objects/widgets/icons/Background";
@@ -22,7 +22,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     preload() {
         gameInfo.set("screenState", 1);
         this.loadOpponentImage();
-        gameLayoutVariables.clickBlocked = false;
+        layoutStore.clickBlocked = false;
     }
 
     create() {
@@ -55,29 +55,29 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     }
 
     shutdown() {
-        this.game.stage.removeChild(gameLayoutVariables.backgroundImage);
-        this.game.stage.removeChild(gameLayoutVariables.turnText);
-        this.game.stage.removeChild(gameLayoutVariables.turnTextBackground);
-        this.game.stage.removeChild(gameLayoutVariables.backButton);
-        this.game.stage.removeChild(this.musicButton);
-        this.game.stage.removeChild(gameLayoutVariables.resultBoard);
-        this.game.stage.removeChild(gameLayoutVariables.help);
+        this.game.stage.removeChild(layoutStore.backgroundImage);
+        this.game.stage.removeChild(layoutStore.turnText);
+        this.game.stage.removeChild(layoutStore.turnTextBackground);
+        this.game.stage.removeChild(layoutStore.backButton);
+        this.game.stage.removeChild(layoutStore.musicButton);
+        this.game.stage.removeChild(layoutStore.resultBoard);
+        this.game.stage.removeChild(layoutStore.help);
         this.game.stage.removeChild(this.playerProfilePicMark);
         this.game.stage.removeChild(this.playerProfilePicMarkBackground);
         this.game.stage.removeChild(this.playerProfilePicBackground);
-        this.game.stage.removeChild(gameLayoutVariables.playerProfilePic);
-        this.game.stage.removeChild(gameLayoutVariables.playerProfilePic.mask);
+        this.game.stage.removeChild(layoutStore.playerProfilePic);
+        this.game.stage.removeChild(layoutStore.playerProfilePic.mask);
         this.game.stage.removeChild(this.opponentProfilePicMark);
         this.game.stage.removeChild(this.opponentProfilePicMarkBackground);
         this.game.stage.removeChild(this.opponentProfilePicBackground);
-        this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic);
-        this.game.stage.removeChild(gameLayoutVariables.opponentProfilePic.mask);
+        this.game.stage.removeChild(layoutStore.opponentProfilePic);
+        this.game.stage.removeChild(layoutStore.opponentProfilePic.mask);
         this.game.stage.removeChild(this.boardLayout);
-        this.game.stage.removeChild(gameLayoutVariables.vs);
-        this.game.stage.removeChild(gameLayoutVariables.rematch);
-        this.game.stage.removeChild(gameLayoutVariables.otherShare);
-        this.game.stage.removeChild(gameLayoutVariables.twitterShare);
-        this.game.stage.removeChild(gameLayoutVariables.fbShare);
+        this.game.stage.removeChild(layoutStore.vs);
+        this.game.stage.removeChild(layoutStore.rematch);
+        this.game.stage.removeChild(layoutStore.otherShare);
+        this.game.stage.removeChild(layoutStore.twitterShare);
+        this.game.stage.removeChild(layoutStore.fbShare);
         for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
             this.cells.children[i].inputEnabled = false;
         }
@@ -87,11 +87,11 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     clickHandlerSolo(sprite, pointer) {
         var cell = this.cells.children; // TODO : cell is an array . plural ?
         if (sprite.frame === 0) {
-            gameLayoutVariables.backgroundImage.enableInput(true);
-            gameLayoutVariables.backgroundImage.setInputPriority(2);
-            gameLayoutVariables.backButton.setInputPriority(2);
-            this.musicButton.setInputPriority(2);
-            gameLayoutVariables.resign.setInputPriority(2);
+            layoutStore.backgroundImage.enableInput(true);
+            layoutStore.backgroundImage.setInputPriority(2);
+            layoutStore.backButton.setInputPriority(2);
+            layoutStore.musicButton.setInputPriority(2);
+            layoutStore.resign.setInputPriority(2);
             console.log("Player Mark", gameInfo.get("playerMark"));
             sprite.frame = gameInfo.get("playerMark");
             sprite.scale.setTo(0);
@@ -99,9 +99,9 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             popUpMark.start();
             console.log("Player's Sprite Set");
 
-            gameLayoutVariables.turnText.text = MESSAGE.BOT_TURN;
-            gameLayoutVariables.opponentProfilePic.alpha = 1;
-            gameLayoutVariables.playerProfilePic.alpha = 0.3;
+            layoutStore.turnText.text = MESSAGE.BOT_TURN;
+            layoutStore.opponentProfilePic.alpha = 1;
+            layoutStore.playerProfilePic.alpha = 0.3;
 
 
             setTimeout(function () {
@@ -118,16 +118,16 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         console.log(gameInfo.get("turnOfPlayer"), gameInfo.get("playerData"), sprite.frame);
 
         if (gameInfo.get("turnOfPlayer") !== undefined && gameInfo.get("turnOfPlayer").id === gameInfo.get("playerData").id && sprite.frame === 0) {
-            gameLayoutVariables.backgroundImage.enableInput(true);
-            gameLayoutVariables.backgroundImage.setInputPriority(2);
-            gameLayoutVariables.backButton.setInputPriority(2);
-            this.musicButton.setInputPriority(2);
-            gameLayoutVariables.resign.setInputPriority(2);
+            layoutStore.backgroundImage.enableInput(true);
+            layoutStore.backgroundImage.setInputPriority(2);
+            layoutStore.backButton.setInputPriority(2);
+            layoutStore.musicButton.setInputPriority(2);
+            layoutStore.resign.setInputPriority(2);
             console.log("Player's Sprite Set");
 
-            gameLayoutVariables.turnText.text = gameInfo.get("gameType") === "solo" ? MESSAGE.BOT_TURN : MESSAGE.WAITING;
-            gameLayoutVariables.opponentProfilePic.alpha = 1;
-            gameLayoutVariables.playerProfilePic.alpha = 0.3;
+            layoutStore.turnText.text = gameInfo.get("gameType") === "solo" ? MESSAGE.BOT_TURN : MESSAGE.WAITING;
+            layoutStore.opponentProfilePic.alpha = 1;
+            layoutStore.playerProfilePic.alpha = 0.3;
 
             gameInfo.set("turnOfPlayer", undefined);
 
@@ -160,11 +160,11 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
                         handleGameEnd(this.game, 0);
                     }
                     else {
-                        gameLayoutVariables.backgroundImage.setInputPriority(1);
-                        gameLayoutVariables.backgroundImage.enableInput(false);
-                        gameLayoutVariables.backButton.setInputPriority(1);
-                        this.musicButton.setInputPriority(1);
-                        gameLayoutVariables.resign.setInputPriority(1);
+                        layoutStore.backgroundImage.setInputPriority(1);
+                        layoutStore.backgroundImage.enableInput(false);
+                        layoutStore.backButton.setInputPriority(1);
+                        layoutStore.musicButton.setInputPriority(1);
+                        layoutStore.resign.setInputPriority(1);
                     }
                 }.bind(this),
                 function (error) {
@@ -173,15 +173,15 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
                     tempCells[sprite.frameIndex] = 0;
                     gameInfo.set("boardStatus", {cells: tempCells});
                     gameInfo.set("turnOfPlayer", gameInfo.get("playerData"));
-                    gameLayoutVariables.backgroundImage.setInputPriority(1);
-                    gameLayoutVariables.backgroundImage.enableInput(false);
-                    gameLayoutVariables.backButton.setInputPriority(1);
-                    this.musicButton.setInputPriority(1);
-                    gameLayoutVariables.resign.setInputPriority(1);
+                    layoutStore.backgroundImage.setInputPriority(1);
+                    layoutStore.backgroundImage.enableInput(false);
+                    layoutStore.backButton.setInputPriority(1);
+                    layoutStore.musicButton.setInputPriority(1);
+                    layoutStore.resign.setInputPriority(1);
 
-                    gameLayoutVariables.turnText.text = MESSAGE.YOUR_TURN;
-                    gameLayoutVariables.opponentProfilePic.alpha = 0.3;
-                    gameLayoutVariables.playerProfilePic.alpha = 1;
+                    layoutStore.turnText.text = MESSAGE.YOUR_TURN;
+                    layoutStore.opponentProfilePic.alpha = 0.3;
+                    layoutStore.playerProfilePic.alpha = 1;
 
                     console.log("makeMove - failure", error);
                 }.bind(this)
@@ -209,14 +209,14 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         popUpMark.start();
         if (gameInfo.get("win") === 0 && this.botGame.gameStatus !== 3) {
             saveGameData(this.game, false);
-            gameLayoutVariables.turnText.text = MESSAGE.YOUR_TURN;
-            gameLayoutVariables.opponentProfilePic.alpha = 0.3;
-            gameLayoutVariables.playerProfilePic.alpha = 1;
-            gameLayoutVariables.backgroundImage.setInputPriority(1);
-            gameLayoutVariables.backgroundImage.enableInput(false);
-            gameLayoutVariables.backButton.setInputPriority(1);
-            this.musicButton.setInputPriority(1);
-            gameLayoutVariables.resign.setInputPriority(1);
+            layoutStore.turnText.text = MESSAGE.YOUR_TURN;
+            layoutStore.opponentProfilePic.alpha = 0.3;
+            layoutStore.playerProfilePic.alpha = 1;
+            layoutStore.backgroundImage.setInputPriority(1);
+            layoutStore.backgroundImage.enableInput(false);
+            layoutStore.backButton.setInputPriority(1);
+            layoutStore.musicButton.setInputPriority(1);
+            layoutStore.resign.setInputPriority(1);
         }
         else {
             saveGameData(this.game, true);
@@ -236,7 +236,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     }
 
     createBackground() {
-        gameLayoutVariables.backgroundImage = new Background({
+        layoutStore.backgroundImage = new Background({
             game: this.game,
             posX: 0,
             posY: 0,
@@ -244,7 +244,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             anchorX: 0,
             anchorY: 0
         });
-        this.game.stage.addChild(gameLayoutVariables.backgroundImage);
+        this.game.stage.addChild(layoutStore.backgroundImage);
     }
 
     backButtonHandler() { // TODO : too many objects to set on store. pass object
@@ -279,15 +279,15 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.playerProfilePicBackground.scale.set(120 / this.playerProfilePicBackground.width, 120 / this.playerProfilePicBackground.height);
         this.game.stage.addChild(this.playerProfilePicBackground);
 
-        gameLayoutVariables.playerProfilePic = this.game.add.image(372, 78, 'profilePic');
-        gameLayoutVariables.playerProfilePic.scale.set(108 / gameLayoutVariables.playerProfilePic.width, 108 / gameLayoutVariables.playerProfilePic.height);
-        this.game.stage.addChild(gameLayoutVariables.playerProfilePic);
+        layoutStore.playerProfilePic = this.game.add.image(372, 78, 'profilePic');
+        layoutStore.playerProfilePic.scale.set(108 / layoutStore.playerProfilePic.width, 108 / layoutStore.playerProfilePic.height);
+        this.game.stage.addChild(layoutStore.playerProfilePic);
 
         let mask = this.game.add.graphics(0, 0);
         mask.beginFill(0xffffff);
         mask.drawCircle(426, 132, 108);
-        gameLayoutVariables.playerProfilePic.mask = mask;
-        this.game.stage.addChild(gameLayoutVariables.playerProfilePic.mask);
+        layoutStore.playerProfilePic.mask = mask;
+        this.game.stage.addChild(layoutStore.playerProfilePic.mask);
 
         this.playerProfilePicMarkBackground = this.game.add.image(438, 144, 'circle');
         this.playerProfilePicMarkBackground.scale.set(48 / this.playerProfilePicMarkBackground.width, 48 / this.playerProfilePicMarkBackground.height);
@@ -306,16 +306,16 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.game.stage.addChild(this.opponentProfilePicBackground);
 
         console.log(this.game.cache.checkImageKey('opponentPic'), this.load);
-        gameLayoutVariables.opponentProfilePic = this.add.image(600, 78, gameInfo.get("gameType") === 'solo' ? 'botPic' : "opponentPic");
-        gameLayoutVariables.opponentProfilePic.scale.set(108 / gameLayoutVariables.opponentProfilePic.width);
-        this.game.stage.addChild(gameLayoutVariables.opponentProfilePic);
+        layoutStore.opponentProfilePic = this.add.image(600, 78, gameInfo.get("gameType") === 'solo' ? 'botPic' : "opponentPic");
+        layoutStore.opponentProfilePic.scale.set(108 / layoutStore.opponentProfilePic.width);
+        this.game.stage.addChild(layoutStore.opponentProfilePic);
 
         // console.log("Pointer");
         let mask = this.game.add.graphics(0, 0);
         mask.beginFill(0xffffff);
         mask.drawCircle(654, 132, 108);
-        gameLayoutVariables.opponentProfilePic.mask = mask;
-        this.game.stage.addChild(gameLayoutVariables.opponentProfilePic.mask);
+        layoutStore.opponentProfilePic.mask = mask;
+        this.game.stage.addChild(layoutStore.opponentProfilePic.mask);
 
         this.opponentProfilePicMarkBackground = this.game.add.image(594, 144, 'circle');
         this.opponentProfilePicMarkBackground.scale.set(48 / this.opponentProfilePicMarkBackground.width, 48 / this.opponentProfilePicMarkBackground.height);
@@ -328,7 +328,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     }
 
     createMusicButton() {
-        this.musicButton = new MusicButton({
+        layoutStore.musicButton = new MusicButton({
             game: this.game,
             posX: 960,
             posY: 96,
@@ -336,11 +336,11 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             anchorX: 0,
             anchorY: 0,
         });
-        this.game.stage.addChild(this.musicButton);
+        this.game.stage.addChild(layoutStore.musicButton);
     }
 
     createBackButton() {
-        gameLayoutVariables.backButton = new BackButton({
+        layoutStore.backButton = new BackButton({
             game: this.game,
             posX: 48,
             posY: 96,
@@ -349,11 +349,11 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             anchorY: 0,
             callback: this.backButtonHandler.bind(this)
         });
-        this.game.stage.addChild(gameLayoutVariables.backButton);
+        this.game.stage.addChild(layoutStore.backButton);
     }
 
     createHelpButton() {
-        gameLayoutVariables.help = new HelpButton({
+        layoutStore.help = new HelpButton({
             game: this.game,
             posX: 741,
             posY: 1584,
@@ -362,11 +362,11 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             anchorY: 0
             //0,0,1,0
         });
-        this.game.stage.addChild(gameLayoutVariables.help);
+        this.game.stage.addChild(layoutStore.help);
     }
 
     createResignButton() {
-        gameLayoutVariables.resign = new ResignButton({
+        layoutStore.resign = new ResignButton({
             game: this.game,
             posX: 390,
             posY: 1584,
@@ -378,25 +378,26 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             downFrame: 1,
             upFrame: 0
         });
-        this.game.stage.addChild(gameLayoutVariables.resign);
+        this.game.stage.addChild(layoutStore.resign);
     }
 
     createBoards() {
         this.boardLayout = this.game.add.sprite(57, 477, 'board');
         this.game.stage.addChild(this.boardLayout);
 
-        gameLayoutVariables.confetti = this.game.add.image(111, 201, 'confetti');
-        gameLayoutVariables.confetti.kill();
-        this.game.stage.addChild(gameLayoutVariables.confetti);
+        layoutStore.confetti = this.game.add.image(111, 201, 'confetti');
+        layoutStore.confetti.kill();
+        this.game.stage.addChild(layoutStore.confetti);
 
-        gameLayoutVariables.resultBoard = this.game.add.sprite(315, 240, 'winBackground');
-        gameLayoutVariables.resultBoard.frame = 0;
-        this.game.stage.addChild(gameLayoutVariables.resultBoard);
+        layoutStore.resultBoard = this.game.add.sprite(315, 240, 'winBackground');
+        layoutStore.resultBoard.frame = 0;
+        this.game.stage.addChild(layoutStore.resultBoard);
 
-        gameLayoutVariables.turnTextBackground = this.add.sprite(315, 240, 'turnTextBackground');
-        this.game.stage.addChild(gameLayoutVariables.turnTextBackground);
+        layoutStore.turnTextBackground = this.add.sprite(315, 240, 'turnTextBackground');
+        this.game.stage.addChild(layoutStore.turnTextBackground);
 
-        gameLayoutVariables.turnText = phaserManager.createText(this.game, {
+        console.log("Turn data",gameInfo.get("turnOfPlayer"));
+        layoutStore.turnText = phaserManager.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 276,
             message: (gameInfo.get("gameOver") === true) ? gameInfo.get("win") === gameInfo.get("playerMark") ? MESSAGE.WIN : MESSAGE.LOSE : gameInfo.get("gameType") === "solo" ? gameInfo.get("playerMark") === 1 ? MESSAGE.YOUR_TURN : MESSAGE.BOT_TURN : gameInfo.get("turnOfPlayer") === gameInfo.get("playerData") ? MESSAGE.YOUR_TURN : MESSAGE.WAITING,
@@ -410,9 +411,9 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             anchorX: 0.5,
             anchorY: 0
         });
-        this.game.stage.addChild(gameLayoutVariables.turnText);
+        this.game.stage.addChild(layoutStore.turnText);
 
-        gameLayoutVariables.vs = phaserManager.createText(this.game, {
+        layoutStore.vs = phaserManager.createText(this.game, {
             positionX: 511,
             positionY: 105,
             message: MESSAGE.VS,
@@ -424,7 +425,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             fontWeight: 800,
             wordWrapWidth: 58
         });
-        this.game.stage.addChild(gameLayoutVariables.vs);
+        this.game.stage.addChild(layoutStore.vs);
     }
 
     prepareGameBoard() {
@@ -465,8 +466,8 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.botGame = new Game(this.game, gameBot);
 
         if (gameInfo.get("playerMark") === 2 && gameInfo.get("gameResume") === false) {
-            this.cells.children[gameLayoutVariables.initialMark].frame = 1;
-            this.cells.children[gameLayoutVariables.initialMark].inputEnabled = false;
+            this.cells.children[layoutStore.initialMark].frame = 1;
+            this.cells.children[layoutStore.initialMark].inputEnabled = false;
         }
         if (gameInfo.get("gameOver") === false) {
             saveGameData(this.game, false);// To store the initial state of the Game. Even if the user or bot haven't made any move.

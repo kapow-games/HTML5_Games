@@ -1,6 +1,6 @@
 'use strict';
 
-import gameInfo from "../store/gameLayoutVariables";
+import gameInfo from "../store/layoutStore";
 import GAME_CONST from "../../../src/gameParam/gameConst";
 
 export default class GameState {

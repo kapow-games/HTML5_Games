@@ -66,6 +66,9 @@ export class Preload extends Phaser.State {
         this.load.spritesheet('helpEnd', 'assets/images/helpEnd.png', 120, 120);
         this.load.spritesheet('help', 'assets/images/helpStart.png', 72, 72);
         this.load.spritesheet('resign', 'assets/images/resignbutton.png', 303, 120);
+        this.load.image('helpClose', 'assets/images/helpClose.png');
+        this.load.image('howToPlay', 'assets/images/howtoplay.png');
+        this.load.image('bubbleDot', 'assets/images/bubbleDot.png');
         this.load.image('choose_bg_mark', 'assets/images/mark-choose.png');
         this.load.spritesheet('cell', 'assets/images/xo-sprite.png', 264, 264);
         this.load.audio('gameSound', 'assets/audio/Robobozo.mp3');

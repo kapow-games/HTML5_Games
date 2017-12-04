@@ -9,9 +9,9 @@ export default class Bot {
 
     getMiniMaxValue(ticTacToeGame, state) { //TODO : might not be needed at every step
         if (state.isTerminal()) {
-            return ticTacToeGame.score(state);
+            return ticTacToeGame.getScore(state);
         }
-        var stateScore = state.turnOfPlayer ? -1000 : 1000; // TODO : let or var :P // this is set to var cz it is needed at line 25
+        let stateScore = state.turnOfPlayer ? -1000 : 1000; // TODO : let or var :P // this is set to var cz it is needed at line 25
         let availableNextStates = state.emptyCells().map(function (pos) {
             let action = new BotBehaviour(pos);
             return action.play(state);
@@ -84,7 +84,7 @@ export default class Bot {
     }
 
     _descending(firstAction, secondAction) { // TODO : repeat of _ascending ?
-            if (firstAction.miniMaxValue > secondAction.miniMaxValue) {
+        if (firstAction.miniMaxValue > secondAction.miniMaxValue) {
             return -1;
         }
         else if (firstAction.miniMaxValue < secondAction.miniMaxValue) {

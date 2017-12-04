@@ -1,6 +1,6 @@
 'use strict';
 //TODO : layoutStore
-var gameLayoutVariables = {
+var layoutStore = {
     initialMark: null,
     game: null,
     winningMarkLine: null,
@@ -18,7 +18,8 @@ var gameLayoutVariables = {
     fbShare: null,
     twitterShare: null,
     otherShare: null,
-    rematch: null
+    rematch: null,
+    musicButton: null
 };
 
-export default gameLayoutVariables;
+export default layoutStore;

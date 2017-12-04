@@ -1,6 +1,6 @@
 "use strict";
 
-import gameLayoutVariables from "../../store/gameLayoutVariables";
+import layoutStore from "../../store/layoutStore";
 import DarkOverlay from "./DarkOverLay";
 import saveGameData from "../../../util/saveGameData";
 import handleGameEnd from "../../../util/gameEnd";
@@ -32,10 +32,10 @@ export default class ResignButton extends Phaser.Button {
         gameInfo.set("win", gameInfo.get("playerMark") === GAME_CONST.X ? 2 : 1);
         if (gameInfo.get("gameType") === "solo") {
             saveGameData(this.game, true);
-            gameLayoutVariables.backgroundImage.enableInput(true);
-            gameLayoutVariables.backgroundImage.setInputPriority(1);
+            layoutStore.backgroundImage.enableInput(true);
+            layoutStore.backgroundImage.setInputPriority(1);
             this.cancelResign();
-            gameLayoutVariables.turnText.text = "YOU LOSE!";
+            layoutStore.turnText.text = "YOU LOSE!";
             handleGameEnd(this.game, 1);
         }
         else if (gameInfo.get("gameType") === "friend") {
@@ -47,10 +47,10 @@ export default class ResignButton extends Phaser.Button {
                 },
                 function (obj) {
                     console.log("resignation - success : obj: \n", obj);
-                    gameLayoutVariables.backgroundImage.enableInput(true);
-                    gameLayoutVariables.backgroundImage.setInputPriority(1);
+                    layoutStore.backgroundImage.enableInput(true);
+                    layoutStore.backgroundImage.setInputPriority(1);
                     this.cancelResign();
-                    gameLayoutVariables.turnText.text = "YOU LOSE!";
+                    layoutStore.turnText.text = "YOU LOSE!";
                     console.log("Client resigned, hence lost");
                     handleGameEnd(this.game, 1);
                 }.bind(this),

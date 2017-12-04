@@ -1,22 +1,22 @@
 "use strict";
 
-import GameStoreQuery from "../objects/store/KapowGameStore";
+import KapowGameStore from "../objects/store/KapowGameStore";
 import gameInfo from "../objects/store/GameInfoStore";
 import phaserGame from "../main";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
 import {drawWinningLine} from "../util/gameEnd";
 import handleGameEnd from "../util/gameEnd";
-import gameLayoutVariables from "../objects/store/gameLayoutVariables";
+import layoutStore from "../objects/store/layoutStore";
 import GAME_CONST from "../gameParam/gameConst";
 import MESSAGE from "../gameParam/message";
 
 // TODO : make function private
 window.game = {
     onLoad: function (room) {
-        this.syncStats();
+        this._syncStats();
         console.log("Room returned by kapow onLoad - " + JSON.stringify(room));
         gameInfo.set("room", room);
-        this.loadScreen();
+        this._loadScreen();
     },
     onGameEnd: function (outcome) {
         console.log("CLIENT : Game Ended", outcome);
@@ -61,8 +61,16 @@ window.game = {
     },
     onPause: function () {
         console.log('On Pause Triggered.');
+        phaserGame.state.states.Boot.sound.mute = true;
     },
     onResume: function () {
+        let gameStoreContainer = new KapowGameStore();
+        gameStoreContainer.get("music", function (args, self) {
+            console.log("gameStore fetch - Success.");
+            console.log("Value fetched from gameStore was : ", args);
+            let valueJSON = JSON.parse(args);
+            phaserGame.state.states.Boot.sound.mute = valueJSON.volume === 0;
+        });
         if (gameInfo.get("screenState") === 1 && gameInfo.get("gameType") === "friend") {
             gameInfo.set("gameResume", true);
             parseRoomAndRedirectToGame();
@@ -75,9 +83,9 @@ window.game = {
             for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
                 phaserGame.state.states.Play.cells.children[i].frame = message.data.moveData.board[i];
             }
-            gameLayoutVariables.opponentProfilePic.alpha = 0.3;
-            gameLayoutVariables.playerProfilePic.alpha = 1;
-            gameLayoutVariables.turnText.text = MESSAGE.YOUR_TURN;
+            layoutStore.opponentProfilePic.alpha = 0.3;
+            layoutStore.playerProfilePic.alpha = 1;
+            layoutStore.turnText.text = MESSAGE.YOUR_TURN;
             gameInfo.set("boardStatus", {cells: message.data.moveData.board});
             if (gameInfo.get("playerMark") === GAME_CONST.NONE) {
                 gameInfo.set("playerMark", GAME_CONST.O);
@@ -131,8 +139,8 @@ window.game = {
     onRoomLockStatusChange: function (roomObj) {
         console.log("Room Lock status changed for room :", roomObj);
     },
-    syncStats: function () {
-        let gameStoreContainer = new GameStoreQuery();
+    _syncStats: function () {
+        let gameStoreContainer = new KapowGameStore();
         gameStoreContainer.get("stats", function (statsValue, self) {
             if (statsValue) {
                 let valueJSON = JSON.parse(statsValue);
@@ -160,12 +168,12 @@ window.game = {
             }
         });
     },
-    loadScreen: function () {
+    _loadScreen: function () {
         kapow.getUserInfo(function (user) {
             console.log("Client getUserInfoSuccess - User: " + JSON.stringify(user));
             gameInfo.set("playerData", user.player);
             if (gameInfo.get("room") !== null) { //Game already created sometime earlier
-                this.loadOngoingGameData();
+                this._loadOngoingGameData();
             }
             else {
                 gameInfo.set("gameResume", false);
@@ -176,7 +184,7 @@ window.game = {
             console.log("Client getUserInfo failure");
         });
     },
-    loadOngoingGameData: function () {
+    _loadOngoingGameData: function () {
         gameInfo.set("gameResume", true);
 
         if (gameInfo.get("room").players.length > 1) {

@@ -1,7 +1,7 @@
 'use strict';
 
 import GameState from "./GameState";
-import gameLayoutVariables from "../store/gameLayoutVariables";
+import layoutStore from "../store/layoutStore";
 import handleGameEnd from "../../util/gameEnd";
 import gameInfo from "../store/GameInfoStore";
 import GAME_CONST from "../../gameParam/gameConst";
@@ -21,7 +21,7 @@ export default class Game {
         if (gameInfo.get("playerMark") === GAME_CONST.O && gameInfo.get("gameResume") === false) {
             let randomCell = Math.floor(Math.random() * GAME_CONST.CELL_COUNT);
             this.currentState.board[randomCell] = 1;
-            gameLayoutVariables.initialMark = randomCell;
+            layoutStore.initialMark = randomCell;
         }
         this.gameStatus = GAME_RESULT.IN_PROGRESS;// To indicate game beginning
     }
@@ -42,21 +42,21 @@ export default class Game {
             }
             if (gameInfo.get("win") !== 0) {
                 if (gameInfo.get("win") === gameInfo.get("playerMark")) {
-                    gameLayoutVariables.turnText.text = "YOU WIN!";
+                    layoutStore.turnText.text = "YOU WIN!";
                     handleGameEnd(this.game, 2);
                 }
                 else {
-                    gameLayoutVariables.turnText.text = "YOU LOSE!";
+                    layoutStore.turnText.text = "YOU LOSE!";
                     handleGameEnd(this.game, 1);
                 }
             }
             else {
-                gameLayoutVariables.turnText.text = "GAME DRAW!";
+                layoutStore.turnText.text = "GAME DRAW!";
                 handleGameEnd(this.game, 0);
             }
             if (gameInfo.get("win") !== 0) {
                 let matchPosition;
-                switch (gameLayoutVariables.winningMarkLine) {
+                switch (layoutStore.winningMarkLine) {
                     case 0 : {
                         matchPosition = this.game.add.sprite(552, 633, 'rectangle');
                         matchPosition.anchor.setTo(0.5);
@@ -124,11 +124,11 @@ export default class Game {
         }
     }
 
-    score(state) {
+    getScore(state) {
         if (state.result !== 0) { // TODO : should the current state be changed too ?
             /*
                 No this function is to
-                calculate the the score of any state. It can be a state as per future move too, hence not necessarily
+                calculate the the getScore of any state. It can be a state as per future move too, hence not necessarily
                 current state.
             */
             if (state.boardResult === 1) {

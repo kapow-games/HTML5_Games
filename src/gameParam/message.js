@@ -9,7 +9,6 @@ var MESSAGE = {
     WAITING: "WAITING",
     SHARE_OTHER: "I just played a game of Tic Tac Toe on Kapow. Join Kapow now to play with me!",
     SHARE_WIN: "I just won a game of Tic Tac Toe on Kapow. Join Kapow now to beat me!",
-    VS: "VS",
-
+    VS: "VS"
 };
 export default MESSAGE;

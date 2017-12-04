@@ -1,6 +1,6 @@
 'use strict';
 
-import gameLayoutVariables from "../objects/store/gameLayoutVariables";
+import layoutStore from "../objects/store/layoutStore";
 import SocialShare from "./SocialShare";
 import GameStoreQuery from "../objects/store/KapowGameStore";
 import gameInfo from "../objects/store/GameInfoStore";
@@ -106,34 +106,36 @@ function rematchButtonHandler() {
 
 function renderGameEndUIChanges(game, value) {
     console.log("Game End Being Handled.");
-    gameLayoutVariables.backgroundImage.inputEnabled = true;
-    gameLayoutVariables.backgroundImage.input.priorityID = 2;
-    gameLayoutVariables.backButton.input.priorityID = 3;
+    layoutStore.backgroundImage.inputEnabled = true;
+    layoutStore.backgroundImage.input.priorityID = 2;
+    layoutStore.backButton.input.priorityID = 3;
+    layoutStore.musicButton.input.priorityID = 3;
+    layoutStore.help.input.priorityID = 3;
 
-    game.stage.removeChild(gameLayoutVariables.turnTextBackground);
-    game.stage.removeChild(gameLayoutVariables.help);
-    game.stage.removeChild(gameLayoutVariables.resign);
-    game.stage.removeChild(gameLayoutVariables.turnText);
+    game.stage.removeChild(layoutStore.turnTextBackground);
+    game.stage.removeChild(layoutStore.help);
+    game.stage.removeChild(layoutStore.resign);
+    game.stage.removeChild(layoutStore.turnText);
 
     let resultText = (value === 1) ? MESSAGE.LOSE : (value === 2 ? MESSAGE.WIN : MESSAGE.DRAW);
     let resultTextBackgroundColor;
     if (value === 2) {
-        gameLayoutVariables.confetti.reset(111, 201);
+        layoutStore.confetti.reset(111, 201);
         if (gameInfo.get("playerMark") === GAME_CONST.X) {
-            gameLayoutVariables.resultBoard.frame = 0;
+            layoutStore.resultBoard.frame = 0;
             resultTextBackgroundColor = "#48d1dc";
         }
         else {
-            gameLayoutVariables.resultBoard.frame = 1;
+            layoutStore.resultBoard.frame = 1;
             resultTextBackgroundColor = "#b9dc70";
         }
     }
     else if (value === 1) {
-        gameLayoutVariables.resultBoard.frame = 2;
+        layoutStore.resultBoard.frame = 2;
         resultTextBackgroundColor = "#f45842";
     }
 
-    gameLayoutVariables.turnText = phaserManager.createText(game, {
+    layoutStore.turnText = phaserManager.createText(game, {
         positionX: game.world.centerX,
         positionY: 276,
         message: resultText,
@@ -148,7 +150,7 @@ function renderGameEndUIChanges(game, value) {
         anchorY: 0
     });
 
-    game.stage.addChild(gameLayoutVariables.turnText);
+    game.stage.addChild(layoutStore.turnText);
     let shareBackground = game.add.sprite(72, 1584, 'shareBackground');
     game.stage.addChild(shareBackground);
 
@@ -156,23 +158,23 @@ function renderGameEndUIChanges(game, value) {
 
     let shareFbButton = socialShareModal.shareButton(294, 1614, 'facebook', 'fbShare');
     shareFbButton.input.priorityID = 3;
-    gameLayoutVariables.fbShare = shareFbButton;
+    layoutStore.fbShare = shareFbButton;
     game.stage.addChild(shareFbButton);
 
     let shareTwitterButton = socialShareModal.shareButton(408, 1614, 'twitter', 'twitterShare');
     shareTwitterButton.input.priorityID = 3;
-    gameLayoutVariables.twitterShare = shareTwitterButton;
+    layoutStore.twitterShare = shareTwitterButton;
     game.stage.addChild(shareTwitterButton);
 
     let shareOtherButton = socialShareModal.shareButton(522, 1614, null, 'otherShare');
     shareOtherButton.input.priorityID = 3;
-    gameLayoutVariables.otherShare = shareOtherButton;
+    layoutStore.otherShare = shareOtherButton;
     game.stage.addChild(shareOtherButton);
 
     let rematchButton = game.add.button(657, 1584, 'rematch', rematchButtonHandler, 0, 0, 1, 0);
     rematchButton.input.priorityID = 3;
     rematchButton.game = game;
-    gameLayoutVariables.rematch = rematchButton;
+    layoutStore.rematch = rematchButton;
     game.stage.addChild(rematchButton);
 }
 
