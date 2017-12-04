@@ -4,13 +4,12 @@ import KapowGameStore from "../objects/store/KapowGameStore";
 import gameInfo from "../objects/store/GameInfoStore";
 import phaserGame from "../main";
 import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
-import {drawWinningLine} from "../util/gameEnd";
+import GamePlayUtil from "../util/GamePlayUtil";
 import handleGameEnd from "../util/gameEnd";
 import layoutStore from "../objects/store/layoutStore";
-import GAME_CONST from "../gameParam/gameConst";
-import MESSAGE from "../gameParam/message";
+import GAME_CONST from "../const/GAME_CONST";
+import MESSAGE from "../const/MESSAGES";
 
-// TODO : make function private
 window.game = {
     onLoad: function (room) {
         this._syncStats();
@@ -80,19 +79,25 @@ window.game = {
     onMessageReceived: function (message) {
         console.log('CLIENT : Message Received - ', message);
         if (gameInfo.get("gameLayoutLoaded") === true && message.type === "move" && message.senderId === gameInfo.get("opponentData").id) {
-            for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+            for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
                 phaserGame.state.states.Play.cells.children[i].frame = message.data.moveData.board[i];
             }
             layoutStore.opponentProfilePic.alpha = 0.3;
             layoutStore.playerProfilePic.alpha = 1;
             layoutStore.turnText.text = MESSAGE.YOUR_TURN;
             gameInfo.set("boardStatus", {cells: message.data.moveData.board});
-            if (gameInfo.get("playerMark") === GAME_CONST.NONE) {
-                gameInfo.set("playerMark", GAME_CONST.O);
+            if (gameInfo.get("playerMark") === GAME_CONST.TURN.NONE) {
+                gameInfo.set("playerMark", GAME_CONST.TURN.O);
             }
             if (message.data.result === "lost") {
                 console.log("Lost");
-                drawWinningLine(phaserGame);
+                let winningPosition = GamePlayUtil.getWinningPosition(gameInfo.get("boardStatus").cells);
+                if(winningPosition){
+                    let sprite = phaserGame.add.sprite(winningPosition.x, winningPosition.y, winningPosition.key);
+                    sprite.anchor.setTo(winningPosition.anchor);
+                    phaserGame.stage.addChild(sprite);
+                }
+                // TODO : remove like drawWinningLine
                 handleGameEnd(phaserGame, 1);
             }
             else if (message.data.result === "draw") {
@@ -114,11 +119,11 @@ window.game = {
             });
             gameInfo.set("gameResume", false);
             gameInfo.set("room", null);
-            gameInfo.set("playerMark", GAME_CONST.NONE);
+            gameInfo.set("playerMark", GAME_CONST.TURN.NONE);
             gameInfo.set("gameType", null);
             gameInfo.set("botLevel", -1);
             let tempCells = [];
-            for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+            for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
                 tempCells.push(undefined);
             }
             gameInfo.set("boardStatus", {cells: tempCells});
@@ -220,8 +225,8 @@ window.game = {
         kapow.getRoomInfo(function (roomObj) {
             console.log("Client getRoomInfo - Room: " + JSON.stringify(roomObj));
             gameInfo.set("room", roomObj);
-            gameInfo.set("playerMark", GAME_CONST.O);
-            gameInfo.set("opponentMark", GAME_CONST.X);
+            gameInfo.set("playerMark", GAME_CONST.TURN.O);
+            gameInfo.set("opponentMark", GAME_CONST.TURN.X);
             parseRoomAndRedirectToGame();
         }, function () {
             console.log("Client - onAffiliationChange failure");

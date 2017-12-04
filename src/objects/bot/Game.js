@@ -4,8 +4,7 @@ import GameState from "./GameState";
 import layoutStore from "../store/layoutStore";
 import handleGameEnd from "../../util/gameEnd";
 import gameInfo from "../store/GameInfoStore";
-import GAME_CONST from "../../gameParam/gameConst";
-import GAME_RESULT from "../../gameParam/gameResult";
+import GAME_CONST from "../../const/GAME_CONST";
 
 export default class Game {
     constructor(ticTacToeGame, bot) {
@@ -13,17 +12,17 @@ export default class Game {
         this.bot = bot;
         this.currentState = new GameState();
         this.currentState.board = [];
-        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
             this.currentState.board.push(gameInfo.get("boardStatus").cells[i] ?
                 gameInfo.get("boardStatus").cells[i] : 0);
         }
         this.currentState.turnOfPlayer = true;
-        if (gameInfo.get("playerMark") === GAME_CONST.O && gameInfo.get("gameResume") === false) {
-            let randomCell = Math.floor(Math.random() * GAME_CONST.CELL_COUNT);
+        if (gameInfo.get("playerMark") === GAME_CONST.TURN.O && gameInfo.get("gameResume") === false) {
+            let randomCell = Math.floor(Math.random() * GAME_CONST.GRID.CELL_COUNT);
             this.currentState.board[randomCell] = 1;
             layoutStore.initialMark = randomCell;
         }
-        this.gameStatus = GAME_RESULT.IN_PROGRESS;// To indicate game beginning
+        this.gameStatus = GAME_CONST.GAME_RESULT.IN_PROGRESS;// To indicate game beginning
     }
 
     // Advances game to next state

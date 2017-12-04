@@ -1,6 +1,6 @@
 'use strict';
 
-import MESSAGE from "../gameParam/message";
+import MESSAGE from "../const/MESSAGES";
 
 export default class SocialShare {
     constructor(ticTacToeGame, val) {

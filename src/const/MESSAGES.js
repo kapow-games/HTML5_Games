@@ -1,6 +1,6 @@
 "use strict";
 
-var MESSAGE = {
+const MESSAGES = {
     WIN: "YOU WIN!",
     LOSE: "YOU LOSE",
     DRAW: "GAME DRAW",
@@ -11,4 +11,4 @@ var MESSAGE = {
     SHARE_WIN: "I just won a game of Tic Tac Toe on Kapow. Join Kapow now to beat me!",
     VS: "VS"
 };
-export default MESSAGE;
+export default MESSAGES;

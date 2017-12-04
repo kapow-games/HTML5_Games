@@ -1,6 +1,6 @@
 'use strict';
 
-import GAME_CONST from "../../gameParam/gameConst";
+import GAME_CONST from "../../const/GAME_CONST";
 
 // TODO : Check if we can move  vars to different primitives or enums or booleans .
 function GameInfoStore() {
@@ -12,8 +12,8 @@ function GameInfoStore() {
     };
     this.gameResume = false;
     this.win = 0;
-    this.playerMark = GAME_CONST.NONE;
-    this.opponentMark = GAME_CONST.NONE;
+    this.playerMark = GAME_CONST.TURN.NONE;
+    this.opponentMark = GAME_CONST.TURN.NONE;
     this.gameOver = false;
     this.gameType = null;
     this.opponentData = null;
@@ -22,7 +22,7 @@ function GameInfoStore() {
     this.gameLayoutLoaded = false;
     this.randomRoom = false;
     this._init = function () {
-        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
             this.boardStatus.cells.push(undefined);
         }
     };

@@ -5,7 +5,7 @@ import DarkOverlay from "./DarkOverLay";
 import saveGameData from "../../../util/saveGameData";
 import handleGameEnd from "../../../util/gameEnd";
 import gameInfo from "../../store/GameInfoStore"
-import GAME_CONST from "../../../gameParam/gameConst";
+import GAME_CONST from "../../../const/GAME_CONST";
 
 export default class ResignButton extends Phaser.Button {
     constructor(arg) {
@@ -29,7 +29,7 @@ export default class ResignButton extends Phaser.Button {
     }
 
     quitGame() {
-        gameInfo.set("win", gameInfo.get("playerMark") === GAME_CONST.X ? 2 : 1);
+        gameInfo.set("win", gameInfo.get("playerMark") === GAME_CONST.TURN.X ? 2 : 1);
         if (gameInfo.get("gameType") === "solo") {
             saveGameData(this.game, true);
             layoutStore.backgroundImage.enableInput(true);

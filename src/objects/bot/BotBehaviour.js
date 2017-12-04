@@ -2,7 +2,7 @@
 
 import GameState from "./GameState";
 import gameInfo from "../store/GameInfoStore";
-import GAME_CONST from "../../gameParam/gameConst";
+import GAME_CONST from "../../const/GAME_CONST";
 
 export default class BotBehaviour { // TODO : why is bot and bot behavior different ?
     constructor(pos) {
@@ -12,7 +12,7 @@ export default class BotBehaviour { // TODO : why is bot and bot behavior differ
 
     play(state) {
         let nextGameState = new GameState(state);
-        nextGameState.board[this.movePosition] = (state.turnOfPlayer ? gameInfo.get("playerMark") : ((gameInfo.get("playerMark") === GAME_CONST.X) ? 2 : 1));
+        nextGameState.board[this.movePosition] = (state.turnOfPlayer ? gameInfo.get("playerMark") : ((gameInfo.get("playerMark") === GAME_CONST.TURN.X) ? 2 : 1));
         if (!state.turnOfPlayer) {
             nextGameState.movesCount++;
         }

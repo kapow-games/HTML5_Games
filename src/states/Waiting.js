@@ -7,7 +7,7 @@ import OnGoingGameButton from "../objects/widgets/button/OnGoingGameButton";
 import BackButton from "../objects/widgets/button/BackButton";
 import MusicButton from "../objects/widgets/button/MusicButton";
 import HelpButton from "../objects/widgets/button/HelpButton";
-import GAME_CONST from "../gameParam/gameConst";
+import GAME_CONST from "../const/GAME_CONST";
 
 export class Waiting extends Phaser.State {
     preload() {
@@ -130,11 +130,11 @@ export class Waiting extends Phaser.State {
         });
         gameInfo.set("gameResume", false);
         gameInfo.set("room", null);
-        gameInfo.set("playerMark", GAME_CONST.NONE);
+        gameInfo.set("playerMark", GAME_CONST.TURN.NONE);
         gameInfo.set("gameType", null);
         gameInfo.set("botLevel", -1);
         let tempCells = [];
-        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.TURN.CELL_COUNT; i++) {
             tempCells.push(undefined);
         }
         gameInfo.set("boardStatus", {cells: tempCells});
