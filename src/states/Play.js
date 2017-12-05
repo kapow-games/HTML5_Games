@@ -1,7 +1,7 @@
 'use strict';
 
 import phaserManager from "../util/phaserManager";
-import gameInfo from "../objects/store/GameInfoStore";
+import gameInfo from "../objects/store/GameInfo";
 import handleGameEnd from '../util/gameEnd';
 import {drawWinningLine} from '../util/gameEnd';
 import layoutStore from "../objects/store/layoutStore";
@@ -14,9 +14,8 @@ import MusicButton from "../objects/widgets/button/MusicButton";
 import GameState from "../objects/bot/GameState";
 import BackButton from "../objects/widgets/button/BackButton";
 import HelpButton from "../objects/widgets/button/HelpButton";
-import GAME_CONST from "../gameParam/gameConst";
-import MESSAGE from "../gameParam/message";
-import AFFILIATION from "../gameParam/affiliation";
+import GAME_CONST from "../const/GAME_CONST";
+import MESSAGE from "../const/MESSAGES";
 
 export class Play extends Phaser.State { // TODO : fix later. this screen has too much logic. Create a new controller class and move logic there
     preload() {
@@ -78,7 +77,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.game.stage.removeChild(layoutStore.otherShare);
         this.game.stage.removeChild(layoutStore.twitterShare);
         this.game.stage.removeChild(layoutStore.fbShare);
-        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
             this.cells.children[i].inputEnabled = false;
         }
         this.game.stage.removeChild(this.cells);
@@ -198,7 +197,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         next.nextTurn();
         this.botGame.moveTo(next);
         let changePos;
-        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
             if (cell[i].frame !== this.botGame.currentState.board[i]) {
                 changePos = i;
                 cell[i].frame = this.botGame.currentState.board[i];
@@ -267,7 +266,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             win: 0,
             gameLayoutLoaded: false
         };
-        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
             resetVar.boardStatus.cells.push(undefined);
         }
         gameInfo.setBulk(resetVar);
@@ -434,9 +433,9 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.cells = this.game.add.group();
         this.game.stage.addChild(this.cells);
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
-        for (let i = 0; i < GAME_CONST.CELL_COLS; i++) {
-            for (let j = 0; j < GAME_CONST.CELL_ROWS; j++) {
-                let cell = this.cells.create(i * (GAME_CONST.CELL_WIDTH + GAME_CONST.CELL_WIDTH_PAD) + GAME_CONST.CELL_RELATIVE_LEFT + (GAME_CONST.CELL_WIDTH) * 0.5, j * (GAME_CONST.CELL_HEIGHT + GAME_CONST.CELL_HEIGHT_PAD) + GAME_CONST.CELL_RELATIVE_TOP + (GAME_CONST.CELL_HEIGHT) * 0.5, 'cell');
+        for (let i = 0; i < GAME_CONST.GRID.CELL_COLS; i++) {
+            for (let j = 0; j < GAME_CONST.GRID.CELL_ROWS; j++) {
+                let cell = this.cells.create(i * (GAME_CONST.GRID.CELL_WIDTH + GAME_CONST.GRID.CELL_WIDTH_PAD) + GAME_CONST.GRID.CELL_RELATIVE_LEFT + (GAME_CONST.GRID.CELL_WIDTH) * 0.5, j * (GAME_CONST.GRID.CELL_HEIGHT + GAME_CONST.GRID.CELL_HEIGHT_PAD) + GAME_CONST.GRID.CELL_RELATIVE_TOP + (GAME_CONST.GRID.CELL_HEIGHT) * 0.5, 'cell');
                 cell.anchor.setTo(0.5);
                 if (gameInfo.get("gameResume") === true) {
                     cell.frame = gameInfo.get("boardStatus").cells[count];
@@ -480,7 +479,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     }
 
     verifyOpponentAffiliationStatus() { // TODO : no verification is done . only console log :D
-        if (gameInfo.get("opponentData") && gameInfo.get("opponentData").affiliation === AFFILIATION.ACCEPTED) { // TODO : fix later . extract enum Affiliation . String comparision are more prone to errors
+        if (gameInfo.get("opponentData") && gameInfo.get("opponentData").affiliation === GAME_CONST.AFFILIATION.ACCEPTED) {
             console.log("Opponent Accepted.");
         }
         else if (gameInfo.get("opponentData").affiliation === null) {

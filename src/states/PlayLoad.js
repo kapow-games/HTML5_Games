@@ -1,8 +1,8 @@
 'use strict';
 
-import gameInfo from "../objects/store/GameInfoStore";
+import gameInfo from "../objects/store/GameInfo";
 import Background from "../objects/widgets/icons/Background";
-import GAME_CONST from "../gameParam/gameConst";
+import GAME_CONST from "../const/GAME_CONST";
 
 export class PlayLoad extends Phaser.State {
     preload() {
@@ -16,7 +16,7 @@ export class PlayLoad extends Phaser.State {
                     gameInfo.set("playerMark", playerMarkAssignedByServer);
 
                     if (gameInfo.get("turnOfPlayer") === undefined) {
-                        gameInfo.set("turnOfPlayer", gameInfo.get("playerMark") === GAME_CONST.X ? gameInfo.get("playerData") : gameInfo.get("opponentData"));
+                        gameInfo.set("turnOfPlayer", gameInfo.get("playerMark") === GAME_CONST.TURN.X ? gameInfo.get("playerData") : gameInfo.get("opponentData"));
                     }
                     else {
                         console.log("playerMark set already as : ", gameInfo.get("playerData"));

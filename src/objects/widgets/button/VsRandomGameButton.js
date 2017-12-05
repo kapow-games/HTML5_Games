@@ -1,9 +1,8 @@
 "use strict";
 
-import gameInfo from '../../store/GameInfoStore';
-import parseRoomAndRedirectToGame from "../../../util/roomRedirect";
-import GAME_CONST from "../../../gameParam/gameConst";
-
+import gameInfo from '../../store/GameInfo';
+import parseRoomAndRedirectToGame from "../../../util/parseRoomAndRedirectToGame";
+import GAME_CONST from "../../../const/GAME_CONST";
 
 export default class VsRandomGameButton extends Phaser.Button {
     constructor(arg) {
@@ -15,8 +14,8 @@ export default class VsRandomGameButton extends Phaser.Button {
             kapow.startGameWithRandomPlayers({'difficulty': 'medium'}, function (roomDetail) {
                 console.log("Random Room Creation - Success.");
                 gameInfo.set("room", roomDetail);
-                gameInfo.set("playerMark", GAME_CONST.X);
-                gameInfo.set("opponentMark", GAME_CONST.O);
+                gameInfo.set("playerMark", GAME_CONST.TURN.X);
+                gameInfo.set("opponentMark", GAME_CONST.TURN.O);
                 parseRoomAndRedirectToGame();
             }, function (error) {
                 this.inputEnabled = true;

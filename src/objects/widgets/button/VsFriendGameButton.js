@@ -1,8 +1,8 @@
 "use strict";
 
-import gameInfo from '../../store/GameInfoStore';
+import gameInfo from '../../store/GameInfo';
 import parseRoomAndRedirectToGame from "../../../util/roomRedirect";
-import GAME_CONST from "../../../gameParam/gameConst";
+import GAME_CONST from "../../../const/GAME_CONST";
 
 export default class VsFriendGameButton extends Phaser.Button {
     constructor(arg) {
@@ -10,8 +10,8 @@ export default class VsFriendGameButton extends Phaser.Button {
             gameInfo.set("gameType", 'friend');
             kapow.startGameWithFriends(2, 2, function (roomDetail) {
                 gameInfo.set("room", roomDetail);
-                gameInfo.set("playerMark", GAME_CONST.X);
-                gameInfo.set("opponentMark", GAME_CONST.O);
+                gameInfo.set("playerMark", GAME_CONST.TURN.X);
+                gameInfo.set("opponentMark", GAME_CONST.TURN.O);
                 parseRoomAndRedirectToGame();
             }, function (error) {
                 console.log("startvsFriendGame Failed : ", error);

@@ -3,12 +3,12 @@
 import layoutStore from "../objects/store/layoutStore";
 import SocialShare from "./SocialShare";
 import GameStoreQuery from "../objects/store/KapowGameStore";
-import gameInfo from "../objects/store/GameInfoStore";
+import gameInfo from "../objects/store/GameInfo";
 import parseRoomAndRedirectToGame from "./roomRedirect";
 import phaserGame from "../main";
-import GAME_CONST from "../gameParam/gameConst";
+import GAME_CONST from "../const/GAME_CONST";
 import phaserManager from "./phaserManager";
-import MESSAGE from "../gameParam/message";
+import MESSAGE from "../const/MESSAGES";
 
 export default function gameEndHandler(game, value) { // TODO : too big responsiblitly function. Seperate into smaller units
     renderGameEndUIChanges(game, value);
@@ -21,6 +21,9 @@ export default function gameEndHandler(game, value) { // TODO : too big responsi
     }
 }
 
+// TODO : @mayank : This should just return match position.
+// Use GamePlayUtil.getWinningPosition.  call child in the parent file , and pass the layout
+//
 export function drawWinningLine(phaserGame) {
     let gameFinalLayout = gameInfo.get("boardStatus").cells;
     let matchPosition;
@@ -75,14 +78,14 @@ export function drawWinningLine(phaserGame) {
 function rematchButtonHandler() {
     console.log('rematchButtonHandler Clicked');
     let tempCells = [];
-    for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+    for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
         tempCells.push(undefined);
     }
     gameInfo.set("boardStatus", {cells: tempCells});
     gameInfo.set("win", 0);
     gameInfo.set("gameOver", false);
     gameInfo.set("room", null);
-    gameInfo.set("playerMark", GAME_CONST.NONE);
+    gameInfo.set("playerMark", GAME_CONST.TURN.NONE);
     gameInfo.set("gameResume", false);
     gameInfo.set("gameLocked", false);
     if (gameInfo.get("gameType") === "solo") {
@@ -92,8 +95,8 @@ function rematchButtonHandler() {
     else if (gameInfo.get("gameType") === "friend") {
         kapow.rematch(function (roomObj) {
                 gameInfo.set("room", roomObj);
-                gameInfo.set("playerMark", GAME_CONST.X);
-                gameInfo.set("opponentMark", GAME_CONST.O);
+                gameInfo.set("playerMark", GAME_CONST.TURN.X);
+                gameInfo.set("opponentMark", GAME_CONST.TURN.O);
                 gameInfo.set("gameLayoutLoaded", false);
                 parseRoomAndRedirectToGame();
                 console.log("Rematch Room Created");
@@ -121,7 +124,7 @@ function renderGameEndUIChanges(game, value) {
     let resultTextBackgroundColor;
     if (value === 2) {
         layoutStore.confetti.reset(111, 201);
-        if (gameInfo.get("playerMark") === GAME_CONST.X) {
+        if (gameInfo.get("playerMark") === GAME_CONST.TURN.X) {
             layoutStore.resultBoard.frame = 0;
             resultTextBackgroundColor = "#48d1dc";
         }
@@ -265,7 +268,7 @@ function kapowEndSoloGame(value) {
             );
         }
         let tempCells = [];
-        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
             tempCells.push(undefined);
         }
         gameInfo.set("boardStatus", {cells: tempCells});
@@ -273,7 +276,7 @@ function kapowEndSoloGame(value) {
         gameInfo.set("win", 0);
         gameInfo.set("gameOver", false);
         gameInfo.set("room", null);
-        gameInfo.set("playerMark", GAME_CONST.NONE);
+        gameInfo.set("playerMark", GAME_CONST.TURN.NONE);
         gameInfo.set("gameResume", false);
         console.log("Game Succesfully Closed.");
     }, function (error) {
