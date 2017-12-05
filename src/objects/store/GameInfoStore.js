@@ -21,18 +21,22 @@ function GameInfoStore() {
     this.turnOfPlayer = null;
     this.gameLayoutLoaded = false;
     this.randomRoom = false;
-    this._init = function () {
-        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
-            this.boardStatus.cells.push(undefined);
-        }
-    };
+}
+
+GameInfoStore.prototype._init = function () {
+    for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+        this.boardStatus.cells.push(undefined);
+    }
 };
+
 GameInfoStore.prototype.get = function (key) {
     return this[key];
 }; // TODO : should this be declared on prototype ?
+
 GameInfoStore.prototype.set = function (key, val) {
     this[key] = val;
 };
+
 GameInfoStore.prototype.setBulk = function (arg) {
     for (let key in arg) {
         this[key] = arg[key];

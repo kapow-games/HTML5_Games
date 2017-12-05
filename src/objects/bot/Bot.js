@@ -84,13 +84,7 @@ export default class Bot {
     }
 
     _descending(firstAction, secondAction) { // TODO : repeat of _ascending ?
-        if (firstAction.miniMaxValue > secondAction.miniMaxValue) {
-            return -1;
-        }
-        else if (firstAction.miniMaxValue < secondAction.miniMaxValue) {
-            return 1;
-        }
-        return 0;
+        return this._ascending(secondAction,firstAction);
     }
 }
 

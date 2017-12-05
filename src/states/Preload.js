@@ -1,7 +1,7 @@
 'use strict';
 
 import gameInfo from "../objects/store/GameInfoStore";
-import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
+import parseRoomAndRedirectToGame from "../util/roomRedirect";
 import KapowGameStore from "../objects/store/KapowGameStore";
 
 var WebFontConfig = {

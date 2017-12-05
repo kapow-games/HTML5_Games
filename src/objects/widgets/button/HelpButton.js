@@ -129,15 +129,12 @@ export default class HelpButton extends Phaser.Button {
     }
 
     tap() {
-        console.log("tap registered at : ",this.game.input.x);
         this.tapStart = this.game.input.x;
     }
 
     release() {
-        console.log("tap released at : ",this.game.input.x);
         this.tapEnd = this.game.input.x;
         if(this.tapEnd > this.tapStart) {
-            console.log("Right swipe");
             if(this.helpIconIndex === 2) {
                 this.helpIconSwipeToPlaceMark.start();
                 this.expandHelpDotPlaceMark.start();
@@ -148,7 +145,6 @@ export default class HelpButton extends Phaser.Button {
             }
         }
         else if(this.tapEnd < this.tapStart) {
-            console.log("Left Swipe");
             if(this.helpIconIndex === 1) {
                 this.helpIconSwipeToWin.start();
                 this.shrinkHelpDotPlaceMark.start();

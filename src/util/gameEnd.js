@@ -4,7 +4,7 @@ import layoutStore from "../objects/store/layoutStore";
 import SocialShare from "./SocialShare";
 import GameStoreQuery from "../objects/store/KapowGameStore";
 import gameInfo from "../objects/store/GameInfoStore";
-import parseRoomAndRedirectToGame from "../util/parseRoomAndRedirectToGame";
+import parseRoomAndRedirectToGame from "./roomRedirect";
 import phaserGame from "../main";
 import GAME_CONST from "../gameParam/gameConst";
 import phaserManager from "./phaserManager";

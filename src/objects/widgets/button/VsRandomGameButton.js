@@ -1,7 +1,7 @@
 "use strict";
 
 import gameInfo from '../../store/GameInfoStore';
-import parseRoomAndRedirectToGame from "../../../util/parseRoomAndRedirectToGame";
+import parseRoomAndRedirectToGame from "../../../util/roomRedirect";
 import GAME_CONST from "../../../gameParam/gameConst";
 
 
