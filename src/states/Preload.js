@@ -62,6 +62,9 @@ export class Preload extends Phaser.State {
         this.load.spritesheet('startbutton', 'assets/images/startbutton.png', 630, 138);
         this.load.spritesheet('gameModes', 'assets/images/game-modes.png', 328, 84);
         this.load.spritesheet('rematch', 'assets/images/rematchbutton.png', 351, 120);
+        this.load.image('credit', 'assets/images/credit.png');
+        this.load.image('creditsLogo', 'assets/images/creditsLogo.png');
+        this.load.image('creditsModal', 'assets/images/creditsModal.png');
         this.load.image('rectangle', 'assets/images/rectangle.png');
         this.load.spritesheet('helpEnd', 'assets/images/helpEnd.png', 120, 120);
         this.load.spritesheet('help', 'assets/images/helpStart.png', 72, 72);

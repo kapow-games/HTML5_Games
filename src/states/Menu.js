@@ -14,6 +14,7 @@ import ScoreboardButton from "../objects/widgets/button/ScoreboardButton";
 import HelpButton from "../objects/widgets/button/HelpButton";
 import BackButton from "../objects/widgets/button/BackButton";
 import MusicButton from "../objects/widgets/button/MusicButton";
+import CreditsButton from "../objects/widgets/button/CreditsButton";
 
 export class Menu extends Phaser.State {
     preload() {
@@ -166,6 +167,16 @@ export class Menu extends Phaser.State {
             callback: this.backButtonHandler.bind(this)
         });
         this.game.stage.addChild(this.backButton);
+        this.credits = new CreditsButton({
+            game: this.game,
+            posX: 720,
+            posY: 96,
+            label: 'credit',
+            anchorX: 0,
+            anchorY: 0,
+            bg: this.bg
+        });
+        this.game.stage.addChild(this.credits);
         this.musicButton = new MusicButton({
             game: this.game,
             posX: 960,
@@ -201,6 +212,7 @@ export class Menu extends Phaser.State {
         this.game.stage.removeChild(this.gameModeFriend);
         this.game.stage.removeChild(this.gameModeRandom);
         this.game.stage.removeChild(this.onGoingGame);
+        this.game.stage.removeChild(this.credits);
     }
 
     backButtonHandler() {
