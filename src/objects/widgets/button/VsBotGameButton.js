@@ -5,7 +5,7 @@ import GameManager from "../../../controller/GameManager";
 
 export default class VsBotGameButton extends Phaser.Button {
     constructor(arg) {
-        let vsBotGameStart = function () {
+        let vsBotGameStart = function () { // TODO : Same as OnGoingGameButton
             gameInfo.set("gameType", 'solo');
             GameManager.startState('Select');
         };

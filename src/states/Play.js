@@ -3,7 +3,7 @@
 import phaserManager from "../util/phaserManager";
 import gameInfo from "../objects/store/GameInfo";
 import {rematchButtonHandler} from '../util/gameEnd';
-import layoutStore from "../objects/store/layoutStore";
+import layoutStore from "../objects/store/LayoutStore";
 import Bot from "../objects/bot/Bot";
 import Game from "../objects/bot/Game";
 import Background from "../objects/widgets/icons/Background";
@@ -239,7 +239,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
                 console.log("opponentData was not set.");
             }
         }
-        console.log(this.game.cache.checkImageKey('opponentPic'), this.load);
+        console.log(this.game.cache.checkImageKey('opponentPic'), this.load); // TODO : can ask cache first ?
     }
 
     createBackground() {
@@ -487,7 +487,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         }
     }
 
-    verifyOpponentAffiliationStatus() { // TODO : no verification is done . only console log :D
+    verifyOpponentAffiliationStatus() { // TODO : no verification is done . only console log :D ?
         if (gameInfo.get("opponentData") && gameInfo.get("opponentData").affiliation === GAME_CONST.AFFILIATION.ACCEPTED) {
             console.log("Opponent Accepted.");
         }

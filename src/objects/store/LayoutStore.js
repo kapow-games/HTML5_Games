@@ -1,6 +1,6 @@
 'use strict';
 //TODO : layoutStore
-var layoutStore = {
+let LayoutStore = {
     initialMark: null,
     game: null,
     winningMarkLine: null,
@@ -22,4 +22,4 @@ var layoutStore = {
     musicButton: null
 };
 
-export default layoutStore;
+export default LayoutStore;

@@ -2,7 +2,7 @@
 
 import MESSAGE from "../const/MESSAGES";
 
-export default class SocialShare {
+export default class SocialShare { // NOT a Util :(
     constructor(ticTacToeGame, val) {
         this.game = ticTacToeGame;
         this.shareText = (val === "draw" || val === "loss") ? MESSAGE.SHARE_OTHER : MESSAGE.SHARE_WIN;

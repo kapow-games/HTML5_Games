@@ -1,7 +1,7 @@
 'use strict';
 
 import GameState from "./GameState";
-import layoutStore from "../store/layoutStore";
+import layoutStore from "../store/LayoutStore";
 import gameInfo from "../store/GameInfo";
 import GAME_CONST from "../../const/GAME_CONST";
 import GameManager from "../../controller/GameManager";

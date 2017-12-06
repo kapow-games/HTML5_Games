@@ -1,6 +1,6 @@
 "use strict";
 
-import gameInfo from "../objects/store/GameInfo"; // TODO : use strict ?
+import gameInfo from "../objects/store/GameInfo";
 import GameManager from "../controller/GameManager";
 
 export default function parseRoomAndRedirectToGame() { // TODO : too complex function. Simplify in smaller components. A lot of if conditions can be simplified
@@ -107,7 +107,7 @@ function parseHistory() {
 }
 
 function redirectToGame() {
-    if (gameInfo.get("opponentData") !== null && gameInfo.get("opponentData").affiliation === "accepted") {
+    if (gameInfo.get("opponentData") !== null && gameInfo.get("opponentData").affiliation === "accepted") { // TODO : use constants
         GameManager.startState('PlayLoad');
     }
     else if (gameInfo.get("opponentData") !== null && (gameInfo.get("opponentData").affiliation === "left" ||

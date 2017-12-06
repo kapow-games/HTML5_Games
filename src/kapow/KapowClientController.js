@@ -118,7 +118,7 @@ class KapowClientController {
     }
 
     _syncStats() {
-        let kapowGameStore = new KapowGameStore();
+        let kapowGameStore = new KapowGameStore(); // TODO : dont need multiple instances of kapowGame Store use singleton
         kapowGameStore.get("stats", function (statsValue, self) {
             if (statsValue) {
                 let valueJSON = JSON.parse(statsValue);

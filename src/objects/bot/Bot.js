@@ -11,7 +11,7 @@ export default class Bot {
         if (state.isTerminal()) {
             return ticTacToeGame.getScore(state);
         }
-        let stateScore = state.turnOfPlayer ? -1000 : 1000; // TODO : let or var :P
+        let stateScore = state.turnOfPlayer ? -1000 : 1000;
         let availableNextStates = state.emptyCells().map(function (pos) {
             let action = new BotBehaviour(pos);
             return action.play(state);
@@ -32,7 +32,7 @@ export default class Bot {
     doBotMove(turnOfPlayer) {
         let availableActions = this.sortPossibleBotMoves(turnOfPlayer);
         let chosenAction;
-        if (Math.random() <= 0.8) {
+        if (Math.random() <= 0.8) { // TODO : extract const
             chosenAction = availableActions[0];
         }
         else {
@@ -53,7 +53,7 @@ export default class Bot {
         this.gameDetail = gameDetail;
     }
 
-    playMove(turnOfPlayer) { // TODO : redundant fn
+    playMove(turnOfPlayer) { // TODO : redundant fn ?
         this.doBotMove(turnOfPlayer);
     }
 
@@ -83,7 +83,7 @@ export default class Bot {
         return 0;
     }
 
-    _descending(firstAction, secondAction) { // TODO : repeat of _ascending ?
+    _descending(firstAction, secondAction) {
         return this._ascending(secondAction, firstAction);
     }
 }

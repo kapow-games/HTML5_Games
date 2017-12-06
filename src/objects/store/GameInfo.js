@@ -2,8 +2,7 @@
 
 import GAME_CONST from "../../const/GAME_CONST";
 
-// TODO : Check if we can move  vars to different primitives or enums or booleans .
-function GameInfoStore() {
+function GameInfoStore() { // TODO : do we actually need to initialize null values ? if value is not present it will be returned as `undefined`
     this.room = null;
     this.screenState = 0;
     this.playerData = null;
@@ -42,6 +41,6 @@ GameInfoStore.prototype.setBulk = function (arg) {
     }
 };
 
-var gameInfo = new GameInfoStore();
-gameInfo._init();
+var gameInfo = new GameInfoStore();// TODO : let ?
+gameInfo._init(); // TODO can run _init inside constructor only ?
 export default gameInfo;

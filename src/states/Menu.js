@@ -42,7 +42,7 @@ export class Menu extends Phaser.State {
             anchorY: 0
         });
         this.game.stage.addChild(this.logo);
-        this.onGoingGame = new OnGoingGameButton({ // TODO : Should the class be named to Active game Button or viceversa ?
+        this.onGoingGame = new OnGoingGameButton({
             game: this.game,
             posX: 48,
             posY: 768,
@@ -56,7 +56,7 @@ export class Menu extends Phaser.State {
         });
         this.game.stage.addChild(this.onGoingGame);
 
-        this.startNewGameBottom = new StartNewGameBottomSlider({ // TODO : rename it to NewGameButton and this.newGameButton // @sukhmeet there are two copies of newGameButton. (one underlying the other)
+        this.startNewGameBottom = new StartNewGameBottomSlider({
             game: this.game,
             posX: 48,
             posY: 1020,
