@@ -1,6 +1,6 @@
 "use stict";
 
-class KapowServerController{
+class KapowServerController {
 
 }
 

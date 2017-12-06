@@ -2,8 +2,7 @@
 
 import phaserManager from "../util/phaserManager";
 import gameInfo from "../objects/store/GameInfo";
-import handleGameEnd from '../util/gameEnd';
-import {drawWinningLine} from '../util/gameEnd';
+import {rematchButtonHandler} from '../util/gameEnd';
 import layoutStore from "../objects/store/layoutStore";
 import Bot from "../objects/bot/Bot";
 import Game from "../objects/bot/Game";
@@ -16,6 +15,9 @@ import BackButton from "../objects/widgets/button/BackButton";
 import HelpButton from "../objects/widgets/button/HelpButton";
 import GAME_CONST from "../const/GAME_CONST";
 import MESSAGE from "../const/MESSAGES";
+import GamePlayUtil from "../util/GamePlayUtil";
+import SocialShare from "../util/SocialShare";
+import GameManager from "../controller/GameManager";
 
 export class Play extends Phaser.State { // TODO : fix later. this screen has too much logic. Create a new controller class and move logic there
     preload() {
@@ -150,13 +152,19 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
                     sprite.frame = gameInfo.get("playerMark");
                     sprite.alpha = 1;
                     if (obj.result === "lost") {
-                        drawWinningLine(this.game);
-                        handleGameEnd(this.game, 2);
+                        let winningPosition = GamePlayUtil.getWinningPosition(gameInfo.get("boardStatus").cells);
+                        if (winningPosition) {
+                            let sprite = this.game.add.sprite(winningPosition.x, winningPosition.y, winningPosition.key);
+                            sprite.anchor.setTo(winningPosition.anchor);
+                            sprite.angle = winningPosition.angle;
+                            this.game.stage.addChild(sprite);
+                        }
+                        GameManager.endGame(2);
                         console.log("You won");
                     }
                     else if (obj.result === "draw") {
                         console.log("Draw");
-                        handleGameEnd(this.game, 0);
+                        GameManager.endGame(0);
                     }
                     else {
                         layoutStore.backgroundImage.setInputPriority(1);
@@ -430,6 +438,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     prepareGameBoard() {
         let count = 0;
         console.log("BoardStatus on creating play screen:", gameInfo.get("gameResume"));
+        console.log("Board status on game board loading:",gameInfo.get("boardStatus"));
         this.cells = this.game.add.group();
         this.game.stage.addChild(this.cells);
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
@@ -474,7 +483,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         gameBot.storeGameDetail(this.botGame);
         this.botGame.start();
         if (gameInfo.get("gameOver") === true && gameInfo.get("win") === 0) {
-            handleGameEnd(this.game, 1); // TODO : better name . HandleGameEnd ?
+            GameManager.endGame(1); // TODO : better name . HandleGameEnd ?
         }
     }
 
@@ -502,16 +511,129 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     recreateResultForEndedGame() {
         if (gameInfo.get("gameOver") === true) {
             if (gameInfo.get("turnOfPlayer") === 0) {
-                handleGameEnd(this.game, 0);
+                GameManager.endGame(0);
             }
-            else if (gameInfo.get("turnOfPlayer").id === gameInfo.get("opponentData").id) {
-                drawWinningLine(this.game);
-                handleGameEnd(this.game, 2);
-            }
-            else if (gameInfo.get("turnOfPlayer").id === gameInfo.get("playerData").id) {
-                drawWinningLine(this.game);
-                handleGameEnd(this.game, 1);
+            else {
+                let winningPosition = GamePlayUtil.getWinningPosition(gameInfo.get("boardStatus").cells);
+                if (winningPosition) {
+                    let sprite = this.game.add.sprite(winningPosition.x, winningPosition.y, winningPosition.key);
+                    sprite.anchor.setTo(winningPosition.anchor);
+                    sprite.angle = winningPosition.angle;
+                    this.game.stage.addChild(sprite);
+                }
+                if (gameInfo.get("turnOfPlayer").id === gameInfo.get("opponentData").id) {
+                    GameManager.endGame(2);
+                }
+                else if (gameInfo.get("turnOfPlayer").id === gameInfo.get("playerData").id) {
+                    GameManager.endGame(1);
+                }
             }
         }
     }
+
+    receiveMove(message) {
+        for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
+            this.cells.children[i].frame = message.data.moveData.board[i];
+        }
+        layoutStore.opponentProfilePic.alpha = 0.3;
+        layoutStore.playerProfilePic.alpha = 1;
+        layoutStore.turnText.text = MESSAGE.YOUR_TURN;
+        gameInfo.set("boardStatus", {cells: message.data.moveData.board});
+        if (gameInfo.get("playerMark") === GAME_CONST.TURN.NONE) {
+            gameInfo.set("playerMark", GAME_CONST.TURN.O);
+        }
+        if (message.data.result === "lost") {
+            console.log("Lost");
+            let winningPosition = GamePlayUtil.getWinningPosition(gameInfo.get("boardStatus").cells);
+            if (winningPosition) {
+                let sprite = this.game.add.sprite(winningPosition.x, winningPosition.y, winningPosition.key);
+                sprite.anchor.setTo(winningPosition.anchor);
+                sprite.angle = winningPosition.angle;
+                this.game.stage.addChild(sprite);
+            }
+            // TODO : remove like drawWinningLine
+            GameManager.endGame(1);
+        }
+        else if (message.data.result === "draw") {
+            console.log("Draw");
+            GameManager.endGame(0);
+        }
+    }
+
+    loadResultScreen(value) {
+        console.log("Game End Being Handled.");
+        layoutStore.backgroundImage.inputEnabled = true;
+        layoutStore.backgroundImage.input.priorityID = 2;
+        layoutStore.backButton.input.priorityID = 3;
+        layoutStore.musicButton.input.priorityID = 3;
+        layoutStore.help.input.priorityID = 3;
+
+        this.game.stage.removeChild(layoutStore.turnTextBackground);
+        this.game.stage.removeChild(layoutStore.help);
+        this.game.stage.removeChild(layoutStore.resign);
+        this.game.stage.removeChild(layoutStore.turnText);
+
+        let resultText = (value === 1) ? MESSAGE.LOSE : (value === 2 ? MESSAGE.WIN : MESSAGE.DRAW);
+        let resultTextBackgroundColor;
+        if (value === 2) {
+            layoutStore.confetti.reset(111, 201);
+            if (gameInfo.get("playerMark") === GAME_CONST.TURN.X) {
+                layoutStore.resultBoard.frame = 0;
+                resultTextBackgroundColor = "#48d1dc";
+            }
+            else {
+                layoutStore.resultBoard.frame = 1;
+                resultTextBackgroundColor = "#b9dc70";
+            }
+        }
+        else if (value === 1) {
+            layoutStore.resultBoard.frame = 2;
+            resultTextBackgroundColor = "#f45842";
+        }
+
+        layoutStore.turnText = phaserManager.createText(this.game, {
+            positionX: this.game.world.centerX,
+            positionY: 276,
+            message: resultText,
+            align: "center",
+            backgroundColor: resultTextBackgroundColor,
+            fill: "#fefefe",
+            font: 'nunito-regular',
+            fontSize: "60px",
+            fontWeight: 800,
+            wordWrapWidth: 355,
+            anchorX: 0.5,
+            anchorY: 0
+        });
+        this.game.stage.addChild(layoutStore.turnText);
+
+        let shareBackground = this.game.add.sprite(72, 1584, 'shareBackground');
+        this.game.stage.addChild(shareBackground);
+
+        let socialShareModal = new SocialShare(this.game, value === 1 ? "loss" : value === 0 ? "draw" : "won");
+
+        let shareFbButton = socialShareModal.shareButton(294, 1614, 'facebook', 'fbShare');
+        shareFbButton.input.priorityID = 3;
+        layoutStore.fbShare = shareFbButton;
+        this.game.stage.addChild(layoutStore.fbShare);
+
+        let shareTwitterButton = socialShareModal.shareButton(408, 1614, 'twitter', 'twitterShare');
+        shareTwitterButton.input.priorityID = 3;
+        layoutStore.twitterShare = shareTwitterButton;
+        this.game.stage.addChild(layoutStore.twitterShare);
+
+        let shareOtherButton = socialShareModal.shareButton(522, 1614, null, 'otherShare');
+        shareOtherButton.input.priorityID = 3;
+        layoutStore.otherShare = shareOtherButton;
+        this.game.stage.addChild(layoutStore.otherShare);
+
+        let rematchButton = this.game.add.button(657, 1584, 'rematch', rematchButtonHandler, 0, 0, 1, 0);
+        rematchButton.input.priorityID = 3;
+        // rematchButton.game = this.game;
+        layoutStore.rematch = rematchButton;
+        this.game.stage.addChild(layoutStore.rematch);
+
+        console.log("Completed UI changes");
+    }
+
 }

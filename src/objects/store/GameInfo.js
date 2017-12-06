@@ -24,7 +24,7 @@ function GameInfoStore() {
 }
 
 GameInfoStore.prototype._init = function () {
-    for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
+    for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
         this.boardStatus.cells.push(undefined);
     }
 };

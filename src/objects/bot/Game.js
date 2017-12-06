@@ -2,9 +2,9 @@
 
 import GameState from "./GameState";
 import layoutStore from "../store/layoutStore";
-import handleGameEnd from "../../util/gameEnd";
 import gameInfo from "../store/GameInfo";
 import GAME_CONST from "../../const/GAME_CONST";
+import GameManager from "../../controller/GameManager";
 
 export default class Game {
     constructor(ticTacToeGame, bot) {
@@ -29,7 +29,7 @@ export default class Game {
     moveTo(state) {
         this.currentState = state;
         if (this.currentState.isTerminal()) { // TODO : logic can be simplified
-            this.gameStatus = GAME_RESULT.FINISHED;
+            this.gameStatus = GAME_CONST.GAME_RESULT.FINISHED;
             if (this.currentState.boardResult === 1) {
                 gameInfo.set("win", 1);
             }
@@ -42,19 +42,20 @@ export default class Game {
             if (gameInfo.get("win") !== 0) {
                 if (gameInfo.get("win") === gameInfo.get("playerMark")) {
                     layoutStore.turnText.text = "YOU WIN!";
-                    handleGameEnd(this.game, 2);
+                    GameManager.endGame(2);
                 }
                 else {
                     layoutStore.turnText.text = "YOU LOSE!";
-                    handleGameEnd(this.game, 1);
+                    GameManager.endGame(1);
                 }
             }
             else {
                 layoutStore.turnText.text = "GAME DRAW!";
-                handleGameEnd(this.game, 0);
+                GameManager.endGame(0);
             }
             if (gameInfo.get("win") !== 0) {
                 let matchPosition;
+                console.log("Drawing winning line");
                 switch (layoutStore.winningMarkLine) {
                     case 0 : {
                         matchPosition = this.game.add.sprite(552, 633, 'rectangle');
@@ -119,7 +120,7 @@ export default class Game {
     start() {
         if (this.gameStatus === -1) {
             this.moveTo(this.currentState);
-            this.gameStatus = GAME_RESULT.IN_PROGRESS;
+            this.gameStatus = GAME_CONST.GAME_RESULT.IN_PROGRESS;
         }
     }
 

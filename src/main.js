@@ -1,6 +1,6 @@
 'use strict';
 
-import GameManager from "src/controller/GameManager";
-import {game} from "src/kapow/game";
+import GameManager from "controller/GameManager";
+import {game} from "kapow/game";
 
 GameManager.createGame();

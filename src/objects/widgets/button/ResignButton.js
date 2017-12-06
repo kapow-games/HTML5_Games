@@ -3,9 +3,9 @@
 import layoutStore from "../../store/layoutStore";
 import DarkOverlay from "./DarkOverLay";
 import saveGameData from "../../../util/saveGameData";
-import handleGameEnd from "../../../util/gameEnd";
 import gameInfo from "../../store/GameInfo"
 import GAME_CONST from "../../../const/GAME_CONST";
+import GameManager from "../../../controller/GameManager";
 
 export default class ResignButton extends Phaser.Button {
     constructor(arg) {
@@ -36,7 +36,7 @@ export default class ResignButton extends Phaser.Button {
             layoutStore.backgroundImage.setInputPriority(1);
             this.cancelResign();
             layoutStore.turnText.text = "YOU LOSE!";
-            handleGameEnd(this.game, 1);
+            GameManager.endGame(1);
         }
         else if (gameInfo.get("gameType") === "friend") {
             kapow.invokeRPC("resignationRequest", {
@@ -52,7 +52,7 @@ export default class ResignButton extends Phaser.Button {
                     this.cancelResign();
                     layoutStore.turnText.text = "YOU LOSE!";
                     console.log("Client resigned, hence lost");
-                    handleGameEnd(this.game, 1);
+                    GameManager.endGame(1);
                 }.bind(this),
                 function (error) {
                     console.log("resignation - Failure due to following error : ", error);

@@ -4,6 +4,7 @@ import gameInfo from "../objects/store/GameInfo";
 import GameManager from "../controller/GameManager";
 import GAME_CONST from "../const/GAME_CONST";
 import parseRoomAndRedirectToGame from "../util/roomRedirect";
+import KapowGameStore from "../objects/store/KapowGameStore";
 
 class KapowClientController {
     handleOnLoad(room) {
@@ -12,7 +13,7 @@ class KapowClientController {
         this._loadScreen();
     }
 
-    handleGameEnd(outcome) {
+    handleOnGameEnd(outcome) {
         let playerId = gameInfo.get("playerData").id,
             opponentId = gameInfo.get("opponentData").id;
         if (outcome.type === GAME_CONST.OUTCOME.RESIGNATION || outcome.type === GAME_CONST.OUTCOME.TIMEOUT) {
@@ -36,9 +37,9 @@ class KapowClientController {
     }
 
     handleAffliliationChange() {
-        kapow.getRoomInfo(function (roomObj) {
-            console.log("Client getRoomInfo - Room: " + JSON.stringify(roomObj));
-            gameInfo.set("room", roomObj);
+        kapow.getRoomInfo(function (room) {
+            console.log("Client getRoomInfo - Room: " + JSON.stringify(room));
+            gameInfo.set("room", room);
             gameInfo.set("playerMark", GAME_CONST.TURN.O);
             gameInfo.set("opponentMark", GAME_CONST.TURN.X);
             parseRoomAndRedirectToGame();
@@ -58,31 +59,7 @@ class KapowClientController {
 
     handleMessage(message) {
         if (gameInfo.get("gameLayoutLoaded") === true && message.type === "move" && message.senderId === gameInfo.get("opponentData").id) {
-            for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
-                phaserGame.state.states.Play.cells.children[i].frame = message.data.moveData.board[i];
-            }
-            layoutStore.opponentProfilePic.alpha = 0.3;
-            layoutStore.playerProfilePic.alpha = 1;
-            layoutStore.turnText.text = MESSAGE.YOUR_TURN;
-            gameInfo.set("boardStatus", {cells: message.data.moveData.board});
-            if (gameInfo.get("playerMark") === GAME_CONST.TURN.NONE) {
-                gameInfo.set("playerMark", GAME_CONST.TURN.O);
-            }
-            if (message.data.result === "lost") {
-                console.log("Lost");
-                let winningPosition = GamePlayUtil.getWinningPosition(gameInfo.get("boardStatus").cells);
-                if (winningPosition) {
-                    let sprite = phaserGame.add.sprite(winningPosition.x, winningPosition.y, winningPosition.key);
-                    sprite.anchor.setTo(winningPosition.anchor);
-                    phaserGame.stage.addChild(sprite);
-                }
-                // TODO : remove like drawWinningLine
-                handleGameEnd(phaserGame, 1);
-            }
-            else if (message.data.result === "draw") {
-                console.log("Draw");
-                handleGameEnd(phaserGame, 0);
-            }
+            GameManager.reflectMove(message);
         }
         else if (gameInfo.get("gameLayoutLoaded") === false && message.type === "move" && message.data.type === "markSet") {
             this.handleAffliliationChange();
@@ -90,7 +67,7 @@ class KapowClientController {
     }
 
     handleOnPause() {
-        phaserGame.state.states.Boot.sound.mute = true;
+        GameManager.toggleMusic(true);
     }
 
     handleBackButton() {
@@ -125,13 +102,13 @@ class KapowClientController {
         }
     }
 
-    handleGameResume() {
+    handleOnResume() {
         let gameStoreContainer = new KapowGameStore();
         gameStoreContainer.get("music", function (args, self) {
             console.log("gameStore fetch - Success.");
             console.log("Value fetched from gameStore was : ", args);
             let valueJSON = JSON.parse(args);
-            phaserGame.state.states.Boot.sound.mute = valueJSON.volume === 0;
+            GameManager.toggleMusic(valueJSON.volume === 0);
         });
         if (gameInfo.get("screenState") === 1 && gameInfo.get("gameType") === "friend") {
             gameInfo.set("gameResume", true);
@@ -214,4 +191,5 @@ class KapowClientController {
 
 }
 
-export let kapowClientController = new KapowClientController();
+let kapowClientController = new KapowClientController();
+export default kapowClientController;

@@ -1,12 +1,13 @@
 "use strict";
 
 import gameInfo from '../../store/GameInfo';
+import GameManager from "../../../controller/GameManager";
 
 export default class VsBotGameButton extends Phaser.Button {
     constructor(arg) {
         let vsBotGameStart = function () {
             gameInfo.set("gameType", 'solo');
-            this.game.state.start('Select');
+            GameManager.startState('Select');
         };
         super(arg.game, arg.posX, arg.posY, arg.label, vsBotGameStart, null, arg.overFrame, arg.outFrame, arg.downFrame, arg.upFrame);
         this.game = arg.game;

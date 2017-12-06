@@ -9,7 +9,7 @@ window.game = {
     },
     onGameEnd: function (outcome) {
         console.log("CLIENT : Game Ended", outcome);
-        KapowClientController.handleGameEnd(outcome);
+        KapowClientController.handleOnGameEnd(outcome);
     },
     onPlayerJoined: function (playerObj) {
         console.log("CLIENT onPlayerJoined - " + JSON.stringify(playerObj));
@@ -30,7 +30,7 @@ window.game = {
         KapowClientController.handleOnPause();
     },
     onResume: function () {
-        KapowClientController.handleGameResume();
+        KapowClientController.handleOnResume();
     },
     onMessageReceived: function (message) {
         console.log('CLIENT : Message Received - ', message);
@@ -40,7 +40,7 @@ window.game = {
         KapowClientController.handleBackButton();
         return true;
     },
-    onRoomLockStatusChange: function (roomObj) {
-        console.log("Room Lock status changed for room :", roomObj);
+    onRoomLockStatusChange: function (room) {
+        console.log("Room Lock status changed for room :", room);
     }
 };

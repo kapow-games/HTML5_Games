@@ -1,7 +1,7 @@
 "use strict";
 
 import gameInfo from '../../store/GameInfo';
-import parseRoomAndRedirectToGame from "../../../util/parseRoomAndRedirectToGame";
+import parseRoomAndRedirectToGame from "../../../util/roomRedirect";
 import GAME_CONST from "../../../const/GAME_CONST";
 
 export default class VsRandomGameButton extends Phaser.Button {

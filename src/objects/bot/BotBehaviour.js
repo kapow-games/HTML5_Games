@@ -12,7 +12,8 @@ export default class BotBehaviour { // TODO : why is bot and bot behavior differ
 
     play(state) {
         let nextGameState = new GameState(state);
-        nextGameState.board[this.movePosition] = (state.turnOfPlayer ? gameInfo.get("playerMark") : ((gameInfo.get("playerMark") === GAME_CONST.TURN.X) ? 2 : 1));
+        nextGameState.board[this.movePosition] = (state.turnOfPlayer ? gameInfo.get("playerMark") :
+            ((gameInfo.get("playerMark") === GAME_CONST.TURN.X) ? 2 : 1));
         if (!state.turnOfPlayer) {
             nextGameState.movesCount++;
         }
