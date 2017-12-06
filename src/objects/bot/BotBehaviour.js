@@ -4,7 +4,7 @@ import GameState from "./GameState";
 import gameInfo from "../store/GameInfo";
 import GAME_CONST from "../../const/GAME_CONST";
 
-export default class BotBehaviour { // TODO : why is bot and bot behavior different ?
+export default class BotBehaviour {
     constructor(pos) {
         this.movePosition = pos;
         this.miniMaxValue = 0;

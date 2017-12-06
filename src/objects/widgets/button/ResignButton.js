@@ -1,6 +1,6 @@
 "use strict";
 
-import layoutStore from "../../store/layoutStore";
+import layoutStore from "../../store/LayoutStore";
 import DarkOverlay from "./DarkOverLay";
 import saveGameData from "../../../util/saveGameData";
 import gameInfo from "../../store/GameInfo"
@@ -44,7 +44,7 @@ export default class ResignButton extends Phaser.Button {
                     playerTurn: gameInfo.get("playerData").id,
                     opponentTurn: gameInfo.get("opponentData").id,
                     roomID: gameInfo.get("room").roomId
-                },
+                }, // TODO : avoid using kapow here. Pass a success(Yes) and cancel(NO) callback
                 function (obj) {
                     console.log("resignation - success : obj: \n", obj);
                     layoutStore.backgroundImage.enableInput(true);

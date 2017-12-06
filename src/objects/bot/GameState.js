@@ -1,18 +1,18 @@
 'use strict';
 
-import gameInfo from "../store/layoutStore";
+import gameInfo from "../store/LayoutStore";
 import GAME_CONST from "../../const/GAME_CONST";
 
 export default class GameState {
     constructor(state) {
         this.turnOfPlayer = null;
-        // null : No One's Move // true : Player's Move // false : Opponent's Move' // TODO : @mayank : Can be a boolean ? // It is a boolean. Initialised with null
+        // null : No One's Move // true : Player's Move // false : Opponent's Move'
         this.movesCount = 0; // Number of moves of Bot
         this.boardResult = undefined; // 0 : Board Result Draw // 1 : Board Result Player 1(x) wins // 2 : Board Result Player 2(o) wins // undefined : game state not decided
         this.board = []; //board[i] = 0 : Empty //board[i] = 1 : 'X' //board[i] = 2 : 'O'
         if (state) {
             let len = state.board.length;
-            this.board = [];
+            this.board = []; // TODO : Reinitialize ?
             for (let i = 0; i < len; i++) {
                 this.board.push(state.board[i]);
             }

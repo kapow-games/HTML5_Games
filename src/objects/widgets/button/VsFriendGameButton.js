@@ -6,7 +6,7 @@ import GAME_CONST from "../../../const/GAME_CONST";
 
 export default class VsFriendGameButton extends Phaser.Button {
     constructor(arg) {
-        let vsFriendGameStart = function () {
+        let vsFriendGameStart = function () { // TODO : Same as OnGoingGameButton
             gameInfo.set("gameType", 'friend');
             kapow.startGameWithFriends(2, 2, function (roomDetail) {
                 gameInfo.set("room", roomDetail);

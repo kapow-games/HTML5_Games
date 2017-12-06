@@ -6,7 +6,7 @@ import GAME_CONST from "../../../const/GAME_CONST";
 
 export default class VsRandomGameButton extends Phaser.Button {
     constructor(arg) {
-        let vsRandomGameStart = function () {
+        let vsRandomGameStart = function () { // TODO : Same as OnGoingGameButton
             this.inputEnabled = false; // TODO : no this before super
             gameInfo.set("gameType", 'random');
             gameInfo.set("randomRoom", true);
