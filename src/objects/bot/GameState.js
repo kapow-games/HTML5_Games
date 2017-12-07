@@ -12,7 +12,6 @@ export default class GameState {
         this.board = []; //board[i] = 0 : Empty //board[i] = 1 : 'X' //board[i] = 2 : 'O'
         if (state) {
             let len = state.board.length;
-            this.board = []; // TODO : Reinitialize ?
             for (let i = 0; i < len; i++) {
                 this.board.push(state.board[i]);
             }

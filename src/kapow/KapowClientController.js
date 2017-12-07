@@ -4,7 +4,7 @@ import gameInfo from "../objects/store/GameInfo";
 import GameManager from "../controller/GameManager";
 import GAME_CONST from "../const/GAME_CONST";
 import parseRoomAndRedirectToGame from "../util/roomRedirect";
-import KapowGameStore from "../objects/store/KapowGameStore";
+import kapowGameStore from "../objects/store/KapowGameStore";
 
 class KapowClientController {
     handleOnLoad(room) {
@@ -103,8 +103,7 @@ class KapowClientController {
     }
 
     handleOnResume() {
-        let gameStoreContainer = new KapowGameStore();
-        gameStoreContainer.get("music", function (args, self) {
+        kapowGameStore.get("music", function (args, self) {
             console.log("gameStore fetch - Success.");
             console.log("Value fetched from gameStore was : ", args);
             let valueJSON = JSON.parse(args);
@@ -118,7 +117,6 @@ class KapowClientController {
     }
 
     _syncStats() {
-        let kapowGameStore = new KapowGameStore(); // TODO : dont need multiple instances of kapowGame Store use singleton
         kapowGameStore.get("stats", function (statsValue, self) {
             if (statsValue) {
                 let valueJSON = JSON.parse(statsValue);
@@ -189,6 +187,60 @@ class KapowClientController {
         }
     }
 
+    handleDisplayActiveRooms() {
+        kapow.displayActiveRooms();
+    }
+
+    handleInvokeRPC(methodName, parameters, invokeLazily, successCallback, failureCallback) {
+        if (invokeLazily) {
+            kapow.rpc.invoke({
+                    "functionName": methodName,
+                    "parameters": parameters,
+                    "invokeLazily": true
+                },
+                successCallback, failureCallback
+            );
+        }
+        else {
+            kapow.invokeRPC(methodName, parameters, successCallback, failureCallback);
+        }
+    }
+
+    handleDisplayScoreboard(parameters) {
+        kapow.boards.displayScoreboard(parameters);
+    }
+
+    handleStartGameWithFriends(minimumNumberOfPlayers, maximumNumberOfPlayers, successCallback, failureCallback) {
+        kapow.startGameWithFriends(minimumNumberOfPlayers, maximumNumberOfPlayers, successCallback, failureCallback);
+    }
+
+    handleStartGameWithFriends(minimumNumberOfPlayers, maximumNumberOfPlayers, successCallback, failureCallback) {
+        kapow.startGameWithFriends(minimumNumberOfPlayers, maximumNumberOfPlayers, successCallback, failureCallback);
+    }
+
+    handleStartGameWithRandomPlayers(attributes, successCallback, failureCallback) {
+        kapow.startGameWithRandomPlayers(attributes, successCallback, failureCallback);
+    }
+
+    handleRematch(successCallback, failureCallback) {
+        kapow.rematch(successCallback, failureCallback);
+    }
+
+    handleEndSoloGame(successCallback, failureCallback) {
+        kapow.endSoloGame(successCallback, failureCallback);
+    }
+
+    handleFetchHistorySince(messageId, numberOfMessages, successCallback, failureCallback) {
+        kapow.fetchHistorySince(messageId, numberOfMessages, successCallback, failureCallback);
+    }
+
+    handleFetchHistoryBefore(messageId, numberOfMessages, successCallback, failureCallback) {
+        kapow.fetchHistoryBefore(messageId, numberOfMessages, successCallback, failureCallback);
+    }
+
+    handleSocialShare(text, medium, successCallback, failureCallback) {
+        kapow.social.share(text, medium, successCallback, failureCallback);
+    }
 }
 
 let kapowClientController = new KapowClientController();

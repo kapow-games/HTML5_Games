@@ -20,6 +20,7 @@ function GameInfoStore() { // TODO : do we actually need to initialize null valu
     this.turnOfPlayer = null;
     this.gameLayoutLoaded = false;
     this.randomRoom = false;
+    this._init();
 }
 
 GameInfoStore.prototype._init = function () {
@@ -41,6 +42,5 @@ GameInfoStore.prototype.setBulk = function (arg) {
     }
 };
 
-var gameInfo = new GameInfoStore();// TODO : let ?
-gameInfo._init(); // TODO can run _init inside constructor only ?
+let gameInfo = new GameInfoStore();// TODO : let ?
 export default gameInfo;

@@ -6,6 +6,7 @@ import saveGameData from "../../../util/saveGameData";
 import gameInfo from "../../store/GameInfo"
 import GAME_CONST from "../../../const/GAME_CONST";
 import GameManager from "../../../controller/GameManager";
+import kapowClientController from "../../../kapow/KapowClientController";
 
 export default class ResignButton extends Phaser.Button {
     constructor(arg) {
@@ -39,12 +40,12 @@ export default class ResignButton extends Phaser.Button {
             GameManager.endGame(1);
         }
         else if (gameInfo.get("gameType") === "friend") {
-            kapow.invokeRPC("resignationRequest", {
+            kapowClientController.handleInvokeRPC("resignationRequest", {
                     board: gameInfo.get("boardStatus").cells,
                     playerTurn: gameInfo.get("playerData").id,
                     opponentTurn: gameInfo.get("opponentData").id,
                     roomID: gameInfo.get("room").roomId
-                }, // TODO : avoid using kapow here. Pass a success(Yes) and cancel(NO) callback
+                }, false,
                 function (obj) {
                     console.log("resignation - success : obj: \n", obj);
                     layoutStore.backgroundImage.enableInput(true);
@@ -59,6 +60,7 @@ export default class ResignButton extends Phaser.Button {
                     this.cancelResign();
                 }.bind(this)
             );
+            // TODO : avoid using kapow here. Pass a success(Yes) and cancel(NO) callback
         }
     }
 
@@ -71,7 +73,7 @@ export default class ResignButton extends Phaser.Button {
             anchorX: 0,
             anchorY: 0,
             inputEnabled: true,
-            clickHandler: this.cancelResign.bind(this)
+            callback: this.cancelResign.bind(this)
         });
         this.darkOverlay.setInputPriority(2);
         this.game.stage.addChild(this.darkOverlay);

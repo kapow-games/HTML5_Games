@@ -1,10 +1,11 @@
 'use strict';
 
-import GameStoreQuery from "../objects/store/KapowGameStore";
+import kapowGameStore from "../objects/store/KapowGameStore";
 import gameInfo from "../objects/store/GameInfo";
 import parseRoomAndRedirectToGame from "./roomRedirect";
 import GAME_CONST from "../const/GAME_CONST";
 import GameManager from "../controller/GameManager";
+import kapowClientController from "../kapow/KapowClientController";
 
 export default function handleGameEnd(value) { // TODO : too big responsiblitly function. Seperate into smaller units
     GameManager.loadResultUI(value);
@@ -36,8 +37,9 @@ export function rematchButtonHandler() {
         GameManager.startState('Select');//TODO : Mention correct Phaser.Game object
     }
     else if (gameInfo.get("gameType") === "friend") {
-        kapow.rematch(function (roomObj) {
-                gameInfo.set("room", roomObj);
+        kapowClientController.handleRematch(
+            function (room) {
+                gameInfo.set("room", room);
                 gameInfo.set("playerMark", GAME_CONST.TURN.X);
                 gameInfo.set("opponentMark", GAME_CONST.TURN.O);
                 gameInfo.set("gameLayoutLoaded", false);
@@ -46,14 +48,14 @@ export function rematchButtonHandler() {
             },
             function (error) {
                 console.log("Rematch Room creation FAILED.", error);
-            });
+            }
+        );
     }
 }
 
 
 function updateStats(value) {
-    let gameStoreContainer = new GameStoreQuery();
-    gameStoreContainer.get("stats", function (statsValue, self) {
+    kapowGameStore.get("stats", function (statsValue, self) {
         if (statsValue) {
             console.log("Value fetched from gameStore was : ", statsValue);
             let valueJSON = JSON.parse(statsValue);
@@ -124,31 +126,34 @@ function updateStats(value) {
 }
 
 function kapowEndSoloGame(value) {
-    kapow.endSoloGame(function () {
-        if (value === 2) {
-            kapow.rpc.invoke({
-                    "functionName": 'soloPostScore',
-                    "parameters": {'points': 5, 'playerID': gameInfo.get("playerData").id},
-                    "invokeLazily": true
-                }, function (successResponse) {
-                    console.log("successResponse  for lazy invocation", successResponse);
-                }, function (rpcErrorResponse) {
-                    console.log("rpcErrorResponse  for lazy invocation", rpcErrorResponse);
-                }
-            );
-        }
-        let tempCells = [];
-        for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
-            tempCells.push(undefined);
-        }
-        gameInfo.set("boardStatus", {cells: tempCells});
-        gameInfo.set("win", 0);
-        gameInfo.set("gameOver", false);
-        gameInfo.set("room", null);
-        gameInfo.set("playerMark", GAME_CONST.TURN.NONE);
-        gameInfo.set("gameResume", false);
-        console.log("Game Succesfully Closed.");
-    }, function (error) {
-        console.log("endSoloGame Failed : ", error);
-    });
+    kapowClientController.handleEndSoloGame(
+        function () {
+            if (value === 2) {
+                kapowClientController.handleInvokeRPC("soloPostScore", {
+                        'points': 5,
+                        'playerID': gameInfo.get("playerData").id
+                    }, true,
+                    function (successResponse) {
+                        console.log("successResponse  for lazy invocation", successResponse);
+                    },
+                    function (rpcErrorResponse) {
+                        console.log("rpcErrorResponse  for lazy invocation", rpcErrorResponse);
+                    }
+                );
+
+            }
+            let tempCells = [];
+            for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
+                tempCells.push(undefined);
+            }
+            gameInfo.set("boardStatus", {cells: tempCells});
+            gameInfo.set("win", 0);
+            gameInfo.set("gameOver", false);
+            gameInfo.set("room", null);
+            gameInfo.set("playerMark", GAME_CONST.TURN.NONE);
+            gameInfo.set("gameResume", false);
+            console.log("Game Succesfully Closed.");
+        }, function (error) {
+            console.log("endSoloGame Failed : ", error);
+        });
 }

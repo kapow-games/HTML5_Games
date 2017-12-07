@@ -1,6 +1,6 @@
 'use strict';
 
-import phaserManager from "../util/phaserManager";
+import PhaserUtil from "../util/PhaserUtil";
 import gameInfo from "../objects/store/GameInfo";
 import {rematchButtonHandler} from '../util/gameEnd';
 import layoutStore from "../objects/store/LayoutStore";
@@ -403,8 +403,8 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         layoutStore.turnTextBackground = this.add.sprite(315, 240, 'turnTextBackground');
         this.game.stage.addChild(layoutStore.turnTextBackground);
 
-        console.log("Turn data",gameInfo.get("turnOfPlayer"));
-        layoutStore.turnText = phaserManager.createText(this.game, {
+        console.log("Turn data", gameInfo.get("turnOfPlayer"));
+        layoutStore.turnText = PhaserUtil.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 276,
             message: (gameInfo.get("gameOver") === true) ? gameInfo.get("win") === gameInfo.get("playerMark") ? MESSAGE.WIN : MESSAGE.LOSE : gameInfo.get("gameType") === "solo" ? gameInfo.get("playerMark") === 1 ? MESSAGE.YOUR_TURN : MESSAGE.BOT_TURN : gameInfo.get("turnOfPlayer") === gameInfo.get("playerData") ? MESSAGE.YOUR_TURN : MESSAGE.WAITING,
@@ -420,7 +420,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         });
         this.game.stage.addChild(layoutStore.turnText);
 
-        layoutStore.vs = phaserManager.createText(this.game, {
+        layoutStore.vs = PhaserUtil.createText(this.game, {
             positionX: 511,
             positionY: 105,
             message: MESSAGE.VS,
@@ -438,7 +438,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     prepareGameBoard() {
         let count = 0;
         console.log("BoardStatus on creating play screen:", gameInfo.get("gameResume"));
-        console.log("Board status on game board loading:",gameInfo.get("boardStatus"));
+        console.log("Board status on game board loading:", gameInfo.get("boardStatus"));
         this.cells = this.game.add.group();
         this.game.stage.addChild(this.cells);
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
@@ -591,7 +591,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             resultTextBackgroundColor = "#f45842";
         }
 
-        layoutStore.turnText = phaserManager.createText(this.game, {
+        layoutStore.turnText = PhaserUtil.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 276,
             message: resultText,

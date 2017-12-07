@@ -2,9 +2,10 @@
 
 import gameInfo from "../objects/store/GameInfo";
 import GameManager from "../controller/GameManager";
+import kapowClientController from "../kapow/KapowClientController";
 
 export default function parseRoomAndRedirectToGame() { // TODO : too complex function. Simplify in smaller components. A lot of if conditions can be simplified
-    if (gameInfo.get("room") === null) {
+    if (!gameInfo.get("room")) {
         console.log("Room is null, hence not redirecting to game");
     }
     else {
@@ -34,7 +35,7 @@ function setPlayerData(players) {
 }
 
 function parseHistory() {
-    kapow.fetchHistorySince(null, 25,
+    kapowClientController.handleFetchHistorySince(null, 25,
         function (messagesHistory) {
             console.log("History Fetch at CLIENT : ", messagesHistory);
             let history = [];
@@ -107,10 +108,11 @@ function parseHistory() {
 }
 
 function redirectToGame() {
-    if (gameInfo.get("opponentData") !== null && gameInfo.get("opponentData").affiliation === "accepted") { // TODO : use constants
+    console.log(gameInfo);
+    if (gameInfo.get("opponentData") && gameInfo.get("opponentData").affiliation === "accepted") { // TODO : use constants
         GameManager.startState('PlayLoad');
     }
-    else if (gameInfo.get("opponentData") !== null && (gameInfo.get("opponentData").affiliation === "left" ||
+    else if (gameInfo.get("opponentData") && (gameInfo.get("opponentData").affiliation === "left" ||
             gameInfo.get("playerData").affiliation === "left")) {
         gameInfo.set("gameOver", true);
         GameManager.startState('PlayLoad');

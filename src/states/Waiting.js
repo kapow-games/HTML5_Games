@@ -1,6 +1,6 @@
 'use strict';
 
-import phaserManager from "../util/phaserManager";
+import PhaserUtil from "../util/PhaserUtil";
 import gameInfo from "../objects/store/GameInfo";
 import Background from "../objects/widgets/icons/Background";
 import OnGoingGameButton from "../objects/widgets/button/OnGoingGameButton";
@@ -62,7 +62,7 @@ export class Waiting extends Phaser.State {
         });
         this.game.stage.addChild(this.helpButton);
 
-        this.waitingText = phaserManager.createText(this.game, {
+        this.waitingText = PhaserUtil.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 780,
             message: '',
@@ -116,7 +116,7 @@ export class Waiting extends Phaser.State {
     }
 
     loadOpponentProfileImage() {
-        if (gameInfo.get("opponentData") !== null) {
+        if (gameInfo.get("opponentData")) {
             this.game.load.image('opponentPic', gameInfo.get("opponentData").profileImage + "?height=276&width=276");
         }
     }
@@ -160,7 +160,7 @@ export class Waiting extends Phaser.State {
     }
 
     createOpponentProfileImage() {
-        if (gameInfo.get("opponentData") !== null) {
+        if (gameInfo.get("opponentData")) {
             this.opponentProfilePic = this.game.add.image(582, 444, "opponentPic");
             this.opponentProfilePic.scale.set(276 / this.opponentProfilePic.width);
             this.game.stage.addChild(this.opponentProfilePic);

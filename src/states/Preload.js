@@ -2,7 +2,8 @@
 
 import gameInfo from "../objects/store/GameInfo";
 import parseRoomAndRedirectToGame from "../util/roomRedirect";
-import KapowGameStore from "../objects/store/KapowGameStore";
+import kapowGameStore from "../objects/store/KapowGameStore";
+import GameManager from "../controller/GameManager";
 
 var WebFontConfig = {
     active: function () {
@@ -87,7 +88,7 @@ export class Preload extends Phaser.State {
         if (this.ready) { // TODO : fix later  simplify condition
             if (gameInfo.get("gameResume") === true) {
                 if (gameInfo.get("gameType") === "solo") {
-                    this.state.start('Play');
+                    GameManager.startState('Play');
                 }
                 else if (gameInfo.get("gameType") === "friend") {
                     parseRoomAndRedirectToGame(); // TODO . Can u pass arguments via starting State in phaser. trigger flow viw play.js .
@@ -105,11 +106,10 @@ export class Preload extends Phaser.State {
     }
 
     _start() {
-        let gameStoreContainer = new KapowGameStore();
-        gameStoreContainer.get("music", function (args, self) {
+        kapowGameStore.get("music", function (args, self) {
             console.log("gameStore fetch - Success.");
             this.sound.play();
-            this.sound.mute = false;
+            this.sound.mute = true;
             if (args) {
                 console.log("Value fetched from gameStore was : ", args);
                 let valueJSON = JSON.parse(args);

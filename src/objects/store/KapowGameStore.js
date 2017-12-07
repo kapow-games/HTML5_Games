@@ -1,6 +1,6 @@
 'use strict';
 
-export default class KapowGameStore {
+class KapowGameStore {
     get(key, successCallback, failureCallback) {
         kapow.gameStore.get(key, function (val) {
             console.log("Fetching gameStore " + key + " data successful", val);
@@ -21,3 +21,6 @@ export default class KapowGameStore {
         });
     }
 }
+
+let kapowGameStore = new KapowGameStore();
+export default kapowGameStore;

@@ -3,13 +3,14 @@
 import gameInfo from '../../store/GameInfo';
 import parseRoomAndRedirectToGame from "../../../util/roomRedirect";
 import GAME_CONST from "../../../const/GAME_CONST";
+import kapowClientController from "../../../kapow/KapowClientController";
 
 export default class VsFriendGameButton extends Phaser.Button {
     constructor(arg) {
         let vsFriendGameStart = function () { // TODO : Same as OnGoingGameButton
             gameInfo.set("gameType", 'friend');
-            kapow.startGameWithFriends(2, 2, function (roomDetail) {
-                gameInfo.set("room", roomDetail);
+            kapowClientController.handleStartGameWithFriends(2, 2, function (room) {
+                gameInfo.set("room", room);
                 gameInfo.set("playerMark", GAME_CONST.TURN.X);
                 gameInfo.set("opponentMark", GAME_CONST.TURN.O);
                 parseRoomAndRedirectToGame();

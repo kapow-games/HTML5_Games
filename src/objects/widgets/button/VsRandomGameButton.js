@@ -3,6 +3,7 @@
 import gameInfo from '../../store/GameInfo';
 import parseRoomAndRedirectToGame from "../../../util/roomRedirect";
 import GAME_CONST from "../../../const/GAME_CONST";
+import kapowClientController from "../../../kapow/KapowClientController";
 
 export default class VsRandomGameButton extends Phaser.Button {
     constructor(arg) {
@@ -11,9 +12,11 @@ export default class VsRandomGameButton extends Phaser.Button {
             gameInfo.set("gameType", 'random');
             gameInfo.set("randomRoom", true);
             console.log("Creating room for Random Game.");
-            kapow.startGameWithRandomPlayers({'difficulty': 'medium'}, function (roomDetail) {
+            kapowClientController.handleStartGameWithRandomPlayers({
+                'difficulty': 'medium'
+            }, function (room) {
                 console.log("Random Room Creation - Success.");
-                gameInfo.set("room", roomDetail);
+                gameInfo.set("room", room);
                 gameInfo.set("playerMark", GAME_CONST.TURN.X);
                 gameInfo.set("opponentMark", GAME_CONST.TURN.O);
                 parseRoomAndRedirectToGame();

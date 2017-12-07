@@ -1,7 +1,7 @@
 "use strict";
 
 import DarkOverlay from './DarkOverLay';
-import phaserManager from '../../../util/phaserManager';
+import PhaserUtil from '../../../util/PhaserUtil';
 
 export default class CreditsButton extends Phaser.Button {
     constructor(arg) {
@@ -15,7 +15,7 @@ export default class CreditsButton extends Phaser.Button {
                 anchorX: 0,
                 anchorY: 0,
                 inputEnabled: true,
-                clickHandler: this.cancelCredits.bind(this)
+                callback: this.cancelCredits.bind(this)
             });
             this.game.stage.addChild(this.darkOverlay);
             this.bg.enableInput(true);
@@ -50,7 +50,7 @@ export default class CreditsButton extends Phaser.Button {
             this.creditsLogo = this.game.add.sprite(360, 603, 'creditsLogo');
             this.game.stage.addChild(this.creditsLogo);
 
-            this.musicCreditsText = phaserManager.createText(this.game, {
+            this.musicCreditsText = PhaserUtil.createText(this.game, {
                 positionX: 306.5,
                 positionY: 1011,
                 message: 'MUSIC CREDITS', // TODO : rename to displayMessage or just message/text ?
@@ -70,7 +70,7 @@ export default class CreditsButton extends Phaser.Button {
             this.game.stage.addChild(this.cancelButton);
 
 
-            this.creditsText = phaserManager.createText(this.game, {
+            this.creditsText = PhaserUtil.createText(this.game, {
                 positionX: this.game.world.centerX,
                 positionY: 1207.5,
                 anchorX: 0.5,

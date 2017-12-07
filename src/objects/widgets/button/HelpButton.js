@@ -1,6 +1,6 @@
 'use strict';
 
-import phaserManager from "../../../util/phaserManager";
+import PhaserUtil from "../../../util/PhaserUtil";
 import DarkOverlay from './DarkOverLay';
 
 export default class HelpButton extends Phaser.Button {
@@ -35,7 +35,7 @@ export default class HelpButton extends Phaser.Button {
                 this.bg.enableInput(false);
                 this.darkOverlay.setInputPriority(2);
 
-                this.howToPlayText = phaserManager.createText(this.game, {
+                this.howToPlayText = PhaserUtil.createText(this.game, {
                     positionX: 319.5,
                     positionY: 498,
                     message: 'HOW-TO-PLAY',
@@ -49,7 +49,7 @@ export default class HelpButton extends Phaser.Button {
                 });
                 this.game.stage.addChild(this.howToPlayText);
 
-                this.placeMark = phaserManager.createText(this.game, {
+                this.placeMark = PhaserUtil.createText(this.game, {
                     positionX: this.game.world.centerX,
                     positionY: 1362,
                     message: 'Tap on a square to place your mark',
@@ -61,11 +61,11 @@ export default class HelpButton extends Phaser.Button {
                     fontWeight: 600,
                     wordWrapWidth: 792
                 });
-                this.placeMark.anchor.setTo(0.5,0);
+                this.placeMark.anchor.setTo(0.5, 0);
                 this.game.stage.addChild(this.placeMark);
                 // this.placeMark.kill();
 
-                this.winCondition = phaserManager.createText(this.game, {
+                this.winCondition = PhaserUtil.createText(this.game, {
                     positionX: this.game.world.centerX,
                     positionY: 1362,
                     message: '3-in-a-row wins',
@@ -77,7 +77,7 @@ export default class HelpButton extends Phaser.Button {
                     fontWeight: 600,
                     wordWrapWidth: 792
                 });
-                this.winCondition.anchor.setTo(0.5,0);
+                this.winCondition.anchor.setTo(0.5, 0);
                 this.game.stage.addChild(this.winCondition);
                 this.winCondition.kill();
 
@@ -102,15 +102,27 @@ export default class HelpButton extends Phaser.Button {
 
                 this.helpDotWin = this.game.add.sprite(552, 1284, "bubbleDot");
                 this.game.stage.addChild(this.helpDotWin);
-                this.helpDotWin.scale.setTo(2.0/3);
+                this.helpDotWin.scale.setTo(2.0 / 3);
 
 
                 this.helpIconSwipeToPlaceMark = this.game.add.tween(this.helpIcon).to({x: 145.5}, 600, "Quart.easeOut");
                 this.helpIconSwipeToWin = this.game.add.tween(this.helpIcon).to({x: -642.5}, 600, "Quart.easeOut");
-                this.expandHelpDotPlaceMark = this.game.add.tween(this.helpDotPlaceMark.scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
-                this.shrinkHelpDotPlaceMark = this.game.add.tween(this.helpDotPlaceMark.scale).to({x: 2.0/3, y: 2.0/3}, 600, "Quart.easeOut");
-                this.expandHelpDotWin = this.game.add.tween(this.helpDotWin.scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
-                this.shrinkHelpDotWin = this.game.add.tween(this.helpDotWin.scale).to({x: 2.0/3, y: 2.0/3}, 600, "Quart.easeOut");
+                this.expandHelpDotPlaceMark = this.game.add.tween(this.helpDotPlaceMark.scale).to({
+                    x: 1,
+                    y: 1
+                }, 600, "Quart.easeOut");
+                this.shrinkHelpDotPlaceMark = this.game.add.tween(this.helpDotPlaceMark.scale).to({
+                    x: 2.0 / 3,
+                    y: 2.0 / 3
+                }, 600, "Quart.easeOut");
+                this.expandHelpDotWin = this.game.add.tween(this.helpDotWin.scale).to({
+                    x: 1,
+                    y: 1
+                }, 600, "Quart.easeOut");
+                this.shrinkHelpDotWin = this.game.add.tween(this.helpDotWin.scale).to({
+                    x: 2.0 / 3,
+                    y: 2.0 / 3
+                }, 600, "Quart.easeOut");
 
                 this.tapStart = 0;
                 this.tapEnd = 0;
@@ -134,8 +146,8 @@ export default class HelpButton extends Phaser.Button {
 
     release() {
         this.tapEnd = this.game.input.x;
-        if(this.tapEnd > this.tapStart) {
-            if(this.helpIconIndex === 2) {
+        if (this.tapEnd > this.tapStart) {
+            if (this.helpIconIndex === 2) {
                 this.helpIconSwipeToPlaceMark.start();
                 this.expandHelpDotPlaceMark.start();
                 this.shrinkHelpDotWin.start();
@@ -144,8 +156,8 @@ export default class HelpButton extends Phaser.Button {
                 this.placeMark.reset(this.game.world.centerX, 1362);
             }
         }
-        else if(this.tapEnd < this.tapStart) {
-            if(this.helpIconIndex === 1) {
+        else if (this.tapEnd < this.tapStart) {
+            if (this.helpIconIndex === 1) {
                 this.helpIconSwipeToWin.start();
                 this.shrinkHelpDotPlaceMark.start();
                 this.expandHelpDotWin.start();

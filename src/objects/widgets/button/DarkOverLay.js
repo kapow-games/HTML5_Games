@@ -2,10 +2,7 @@
 
 export default class DarkOverLay extends Phaser.Button {
     constructor(arg) {
-        if( !("clickHandler" in arg) ) { // TODO : not needed
-            arg.clickHandler = null;
-        }
-        super(arg.game, arg.posX, arg.posY, arg.label, arg.clickHandler);
+        super(arg.game, arg.posX, arg.posY, arg.label, arg.callback);
         this.anchor.setTo(arg.anchorX, arg.anchorY);
         this.inputEnabled = arg.inputEnabled;
     }

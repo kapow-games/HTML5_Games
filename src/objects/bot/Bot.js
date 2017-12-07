@@ -1,6 +1,7 @@
 "use strict";
 
 import BotBehaviour from "./BotBehaviour";
+import GAME_CONST from "../../const/GAME_CONST";
 
 export default class Bot {
     constructor() {
@@ -32,7 +33,7 @@ export default class Bot {
     doBotMove(turnOfPlayer) {
         let availableActions = this.sortPossibleBotMoves(turnOfPlayer);
         let chosenAction;
-        if (Math.random() <= 0.8) { // TODO : extract const
+        if (Math.random() <= GAME_CONST.DIFFICULTY) { // TODO : extract const
             chosenAction = availableActions[0];
         }
         else {

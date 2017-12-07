@@ -32,7 +32,8 @@ const GAME_CONST = {
     OUTCOME :{
         RESIGNATION : "resignation",
         TIMEOUT : "timeout"
-    }
+    },
+    DIFFICULTY : 0.8
 };
 
 
