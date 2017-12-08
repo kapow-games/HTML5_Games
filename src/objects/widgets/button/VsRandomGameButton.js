@@ -4,11 +4,13 @@ import gameInfo from '../../store/GameInfo';
 import parseRoomAndRedirectToGame from "../../../util/roomRedirect";
 import GAME_CONST from "../../../const/GAME_CONST";
 import kapowClientController from "../../../kapow/KapowClientController";
+import GameManager from "../../../controller/GameManager";
 
 export default class VsRandomGameButton extends Phaser.Button {
     constructor(arg) {
         let vsRandomGameStart = function () { // TODO : Same as OnGoingGameButton
             this.inputEnabled = false; // TODO : no this before super
+            GameManager.playTapSound();
             gameInfo.set("gameType", 'random');
             gameInfo.set("randomRoom", true);
             console.log("Creating room for Random Game.");

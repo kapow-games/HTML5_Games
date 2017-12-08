@@ -2,11 +2,13 @@
 
 import DarkOverlay from './DarkOverLay';
 import PhaserUtil from '../../../util/PhaserUtil';
+import GameManager from "../../../controller/GameManager";
 
 export default class CreditsButton extends Phaser.Button {
     constructor(arg) {
         let creditsButtonClickHandler = function () {
             console.log('Credits Button Clicked.');
+            GameManager.playTapSound();
             this.darkOverlay = new DarkOverlay({
                 game: this.game,
                 posX: 0,

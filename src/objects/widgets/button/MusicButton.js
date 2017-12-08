@@ -1,4 +1,5 @@
 "use strict";
+
 import kapowGameStore from "../../store/KapowGameStore";
 import GameManager from "../../../controller/GameManager";
 
@@ -6,7 +7,7 @@ export default class MusicButton extends Phaser.Button {
     constructor(arg) {
         let musicToggle = function () {
             console.log("clickRegistered");
-
+            GameManager.playTapSound();
             let param = {
                 volume: (this.frame + 1) % 2
             };

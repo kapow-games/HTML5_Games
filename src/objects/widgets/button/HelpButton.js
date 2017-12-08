@@ -2,10 +2,12 @@
 
 import PhaserUtil from "../../../util/PhaserUtil";
 import DarkOverlay from './DarkOverLay';
+import GameManager from "../../../controller/GameManager";
 
 export default class HelpButton extends Phaser.Button {
     constructor(arg) {
         let helpButtonClickHandler = function () {
+            GameManager.playTapSound();
             this.darkOverlay = new DarkOverlay({
                 game: this.game,
                 posX: 0,

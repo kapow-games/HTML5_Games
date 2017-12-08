@@ -11,6 +11,7 @@ import kapowClientController from "../../../kapow/KapowClientController";
 export default class ResignButton extends Phaser.Button {
     constructor(arg) {
         let resignClickHandler = function () {
+            GameManager.playTapSound();
             this.createDarkOverlay();
             this.createResignModal();
             this.createCancelButton();

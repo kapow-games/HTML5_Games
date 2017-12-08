@@ -102,7 +102,9 @@ export class Preload extends Phaser.State {
 
     _onLoadComplete() { // TODO :private ?
         this.sound = this.game.add.audio('gameSound');
-        this.game.sound.setDecodedCallback([this.sound], this._start, this);
+        this.winSound = this.game.add.audio('winSound');
+        this.tapSound = this.game.add.audio('tapSound');
+        this.game.sound.setDecodedCallback([this.sound, this.winSound, this.tapSound], this._start, this);
     }
 
     _start() {

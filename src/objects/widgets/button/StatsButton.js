@@ -3,10 +3,12 @@
 import DarkOverlay from './DarkOverLay';
 import PhaserUtil from '../../../util/PhaserUtil';
 import kapowGameStore from "../../store/KapowGameStore";
+import GameManager from "../../../controller/GameManager";
 
 export default class StatsButton extends Phaser.Button {
     constructor(arg) {
         let statButtonClickHandler = function () {
+            GameManager.playTapSound();
             console.log('Stat Button Clicked.');
             this.darkOverlay = new DarkOverlay({
                 game: this.game,

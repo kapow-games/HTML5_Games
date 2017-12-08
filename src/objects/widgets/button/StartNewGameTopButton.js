@@ -1,8 +1,11 @@
 "use strict";
 
+import GameManager from "../../../controller/GameManager";
+
 export default class StartNewGameTopButton extends Phaser.Button {
     constructor(arg) {
         let startNewGameTopButtonHandler = function () {
+            GameManager.playTapSound();
             if (this.slideDirection === 0) {
                 this.arrowRotateRightToDown.start();
                 this.slideNewGameBottomDown.start();

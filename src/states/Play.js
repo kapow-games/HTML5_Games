@@ -79,6 +79,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.game.stage.removeChild(layoutStore.otherShare);
         this.game.stage.removeChild(layoutStore.twitterShare);
         this.game.stage.removeChild(layoutStore.fbShare);
+        GameManager.stopWinSound();
         for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
             this.cells.children[i].inputEnabled = false;
         }
@@ -94,6 +95,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             layoutStore.musicButton.setInputPriority(2);
             layoutStore.resign.setInputPriority(2);
             console.log("Player Mark", gameInfo.get("playerMark"));
+            GameManager.playTapSound();
             sprite.frame = gameInfo.get("playerMark");
             sprite.scale.setTo(0);
             let popUpMark = this.game.add.tween(sprite.scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
@@ -136,6 +138,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             tempCells[sprite.frameIndex] = gameInfo.get("playerMark");
             gameInfo.set("boardStatus", {cells: tempCells});
 
+            GameManager.playTapSound();
             sprite.frame = gameInfo.get("playerMark");
             sprite.alpha = 0.3;
 
@@ -214,6 +217,9 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         cell[changePos].scale.setTo(0);
         let popUpMark = this.game.add.tween(cell[changePos].scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
         popUpMark.start();
+        popUpMark.onComplete.add(function () {
+            GameManager.playTapSound();
+        });
         if (gameInfo.get("win") === 0 && this.botGame.gameStatus !== 3) {
             saveGameData(this.game, false);
             layoutStore.turnText.text = MESSAGE.YOUR_TURN;
@@ -532,6 +538,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     }
 
     receiveMove(message) {
+        GameManager.playTapSound();
         for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
             this.cells.children[i].frame = message.data.moveData.board[i];
         }
@@ -577,6 +584,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         let resultTextBackgroundColor;
         if (value === 2) {
             layoutStore.confetti.reset(111, 201);
+            GameManager.playWinSound();
             if (gameInfo.get("playerMark") === GAME_CONST.TURN.X) {
                 layoutStore.resultBoard.frame = 0;
                 resultTextBackgroundColor = "#48d1dc";

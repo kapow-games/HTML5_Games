@@ -7,6 +7,7 @@ export default class VsBotGameButton extends Phaser.Button {
     constructor(arg) {
         let vsBotGameStart = function () { // TODO : Same as OnGoingGameButton
             gameInfo.set("gameType", 'solo');
+            GameManager.playTapSound();
             GameManager.startState('Select');
         };
         super(arg.game, arg.posX, arg.posY, arg.label, vsBotGameStart, null, arg.overFrame, arg.outFrame, arg.downFrame, arg.upFrame);

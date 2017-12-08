@@ -21,9 +21,22 @@ let GameManager = {
     },
     toggleMusic(value) {
         this.game.state.states.Preload.sound.mute = value;
+        this.game.state.states.Preload.winSound.mute = value;
+        this.game.state.states.Preload.tapSound.mute = value;
+        this.game.state.states.Preload.winSound.mute = value;
+        this.game.state.states.Preload.sound.volume = 0.2;
     },
     loadResultUI(value) {
         this.game.state.states.Play.loadResultScreen(value);
+    },
+    playTapSound() {
+        this.game.state.states.Preload.tapSound.play();
+    },
+    playWinSound() {
+        this.game.state.states.Preload.winSound.play();
+    },
+    stopWinSound() {
+        this.game.state.states.Preload.winSound.stop();
     }
 };
 

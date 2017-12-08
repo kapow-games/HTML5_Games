@@ -5,6 +5,7 @@ import BackButton from '../objects/widgets/button/BackButton';
 import MusicButton from '../objects/widgets/button/MusicButton';
 import Background from "../objects/widgets/icons/Background";
 import GAME_CONST from "../const/GAME_CONST";
+import GameManager from "../controller/GameManager";
 
 export class Select extends Phaser.State {
     preload() {
@@ -49,6 +50,7 @@ export class Select extends Phaser.State {
     }
 
     startGame() {
+        GameManager.playTapSound();
         this.startButton.inputEnabled = false;
         kapow.startSoloGame(function (roomDetail) {
             gameInfo.set("room", roomDetail);
@@ -99,6 +101,7 @@ export class Select extends Phaser.State {
 
     selectMarkX() {
         console.log('X');
+        GameManager.playTapSound();
         this.markSelectedX.alpha = 1;
         this.markSelectedO.alpha = 0;
         this.mark = GAME_CONST.TURN.X;
@@ -106,6 +109,7 @@ export class Select extends Phaser.State {
 
     selectMarkO() {
         console.log('O');
+        GameManager.playTapSound();
         this.markSelectedO.alpha = 1;
         this.markSelectedX.alpha = 0;
         this.mark = GAME_CONST.TURN.O;
