@@ -37,7 +37,6 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.createBackButton();
         this.createMusicButton();
 
-
         gameInfo.set("win", 0);
 
         this.prepareGameBoard();
@@ -60,7 +59,9 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     update() {
         this.timer.clear();
         this.timer.beginFill(0xFEFEFE);
-        this.timer.arc(831, 317, 36, this.game.math.degToRad(-90.00), this.game.math.degToRad(-90+(this.game.time.elapsedSecondsSince(this.lastMoveTimeStamp)*6)), true, 360);
+        if(-90+(this.game.time.elapsedSecondsSince(this.lastMoveTimeStamp)*6) < 270) {
+            this.timer.arc(831, 317, 36, this.game.math.degToRad(-90.00), this.game.math.degToRad(-90+(this.game.time.elapsedSecondsSince(this.lastMoveTimeStamp)*6)), true, 360);
+        }
     }
 
     shutdown() {
@@ -87,6 +88,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.game.stage.removeChild(layoutStore.otherShare);
         this.game.stage.removeChild(layoutStore.twitterShare);
         this.game.stage.removeChild(layoutStore.fbShare);
+        this.game.stage.removeChild(this.timer);
         for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
             this.cells.children[i].inputEnabled = false;
         }
@@ -527,5 +529,6 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
 
     createTimer() {
         this.timer = this.game.add.graphics(0, 0);
+        this.game.stage.addChild(this.timer);
     }
 }
