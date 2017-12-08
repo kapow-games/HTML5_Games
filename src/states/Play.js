@@ -51,8 +51,18 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         }
 
         gameInfo.set("gameLayoutLoaded", true);
+        this.createTimer();
+        this.lastMoveTimeStamp = Date.now();
 
         this.physics.startSystem(Phaser.Physics.ARCADE);
+    }
+
+    update() {
+        this.timer.clear();
+        this.timer.beginFill(0xFEFEFE);
+        if(-90+(this.game.time.elapsedSecondsSince(this.lastMoveTimeStamp)*6) < 270) {
+            this.timer.arc(831, 317, 36, this.game.math.degToRad(-90.00), this.game.math.degToRad(-90+(this.game.time.elapsedSecondsSince(this.lastMoveTimeStamp)*6)), true, 360);
+        }
     }
 
     shutdown() {
@@ -79,8 +89,9 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.game.stage.removeChild(layoutStore.otherShare);
         this.game.stage.removeChild(layoutStore.twitterShare);
         this.game.stage.removeChild(layoutStore.fbShare);
+        this.game.stage.removeChild(this.timer);
         GameManager.stopWinSound();
-        for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
+        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
             this.cells.children[i].inputEnabled = false;
         }
         this.game.stage.removeChild(this.cells);
@@ -431,7 +442,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             positionY: 105,
             message: MESSAGE.VS,
             align: "center",
-            backgroundColor: "#5684fb",
+            backgroundColor: "#3e81ff",
             fill: "#fefefe",
             font: 'nunito-regular',
             fontSize: "42px",
@@ -567,6 +578,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         }
     }
 
+
     loadResultScreen(value) {
         console.log("Game End Being Handled.");
         layoutStore.backgroundImage.inputEnabled = true;
@@ -644,4 +656,8 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         console.log("Completed UI changes");
     }
 
+    createTimer() {
+        this.timer = this.game.add.graphics(0, 0);
+        this.game.stage.addChild(this.timer);
+    }
 }
