@@ -2,23 +2,11 @@
 
 import kapowGameStore from "../objects/store/KapowGameStore";
 import gameInfo from "../objects/store/GameInfo";
-import parseRoomAndRedirectToGame from "./roomRedirect";
+import GamePlayUtil from "./GamePlayUtil";
 import GAME_CONST from "../const/GAME_CONST";
 import GameManager from "../controller/GameManager";
 import kapowClientController from "../kapow/KapowClientController";
 
-export default function handleGameEnd(value) { // TODO : too big responsiblitly function. Seperate into smaller units
-    GameManager.loadResultUI(value);
-    if (gameInfo.get("gameOver") === false) {
-        updateStats(value);
-    }
-    if (!gameInfo.get("gameLocked") && gameInfo.get("gameType") === "solo") {
-        // To ensure that game doesn't close multiple times in Kapow
-        kapowEndSoloGame(value);
-    }
-}
-
-// TODO : this is not exported ?
 export function rematchButtonHandler() {
     console.log('rematchButtonHandler Clicked');
     let tempCells = [];
@@ -34,7 +22,7 @@ export function rematchButtonHandler() {
     gameInfo.set("gameLocked", false);
     if (gameInfo.get("gameType") === "solo") {
         gameInfo.set("gameLayoutLoaded", false);
-        GameManager.startState('Select');//TODO : Mention correct Phaser.Game object
+        GameManager.startState('Select');
     }
     else if (gameInfo.get("gameType") === "friend") {
         kapowClientController.handleRematch(
@@ -43,7 +31,7 @@ export function rematchButtonHandler() {
                 gameInfo.set("playerMark", GAME_CONST.TURN.X);
                 gameInfo.set("opponentMark", GAME_CONST.TURN.O);
                 gameInfo.set("gameLayoutLoaded", false);
-                parseRoomAndRedirectToGame();
+                GamePlayUtil.parseRoomAndRedirectToGame();
                 console.log("Rematch Room Created");
             },
             function (error) {
@@ -54,15 +42,16 @@ export function rematchButtonHandler() {
 }
 
 
-function updateStats(value) {
+export function getStats(value) {
     kapowGameStore.get("stats", function (statsValue, self) {
+        let stats = {};
         if (statsValue) {
-            console.log("Value fetched from gameStore was : ", statsValue);
             let valueJSON = JSON.parse(statsValue);
-            console.log(valueJSON);
-            let soloStats = valueJSON.soloStats;
-            let randomStats = valueJSON.randomStats;
-            let friendsStats = valueJSON.friendsStats;
+            console.log("Value fetched from gameStore was : ", valueJSON);
+            let soloStats = valueJSON.soloStats,
+                randomStats = valueJSON.randomStats,
+                friendsStats = valueJSON.friendsStats;
+
             if (gameInfo.get("gameType") === "solo") {
                 if (value === 1) {
                     soloStats.lost += 1;
@@ -98,12 +87,12 @@ function updateStats(value) {
                     }
                 }
             }
-            let newStats = {"soloStats": soloStats, "friendsStats": friendsStats, "randomStats": randomStats};
-            self.set("stats", newStats);
+            stats = {"soloStats": soloStats, "friendsStats": friendsStats, "randomStats": randomStats};
+            self.set("stats", stats);
         }
         else {
             console.log('stats Variables Not Set');
-            let newStats = {
+            stats = {
                 "soloStats": {
                     "won": 0,
                     "lost": 0,
@@ -120,33 +109,26 @@ function updateStats(value) {
                     "draw": 0
                 },
             };
-            self.set("stats", newStats);
+            self.set("stats", stats);
         }
     });
 }
 
-function kapowEndSoloGame(value) {
-    kapowClientController.handleEndSoloGame(
-        function () {
+export function kapowEndSoloGame(value) {
+    kapowClientController.handleEndSoloGame(function () {
             if (value === 2) {
                 kapowClientController.handleInvokeRPC("soloPostScore", {
                         'points': 5,
                         'playerID': gameInfo.get("playerData").id
-                    }, true,
-                    function (successResponse) {
+                    }, true, function (successResponse) {
                         console.log("successResponse  for lazy invocation", successResponse);
-                    },
-                    function (rpcErrorResponse) {
+                    }, function (rpcErrorResponse) {
                         console.log("rpcErrorResponse  for lazy invocation", rpcErrorResponse);
                     }
                 );
 
             }
-            let tempCells = [];
-            for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
-                tempCells.push(undefined);
-            }
-            gameInfo.set("boardStatus", {cells: tempCells});
+            gameInfo.set("boardStatus", {cells: Array.from({length:GAME_CONST.GRID.CELL_COUNT}, (v,k)=> undefined)});
             gameInfo.set("win", 0);
             gameInfo.set("gameOver", false);
             gameInfo.set("room", null);

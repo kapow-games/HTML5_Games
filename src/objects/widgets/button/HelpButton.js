@@ -1,6 +1,6 @@
 'use strict';
 
-import PhaserUtil from "../../../util/PhaserUtil";
+import PhaserUtil from "../../../util/TextUtil";
 import DarkOverlay from './DarkOverLay';
 import GameManager from "../../../controller/GameManager";
 

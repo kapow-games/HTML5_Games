@@ -3,7 +3,7 @@
 import gameInfo from "../objects/store/GameInfo";
 import GameManager from "../controller/GameManager";
 import GAME_CONST from "../const/GAME_CONST";
-import parseRoomAndRedirectToGame from "../util/roomRedirect";
+import GamePlayUtil from "../util/GamePlayUtil";
 import kapowGameStore from "../objects/store/KapowGameStore";
 
 class KapowClientController {
@@ -42,7 +42,7 @@ class KapowClientController {
             gameInfo.set("room", room);
             gameInfo.set("playerMark", GAME_CONST.TURN.O);
             gameInfo.set("opponentMark", GAME_CONST.TURN.X);
-            parseRoomAndRedirectToGame();
+            GamePlayUtil.parseRoomAndRedirectToGame();
         }, function () {
             console.log("Client - onAffiliationChange failure");
         });

@@ -1,6 +1,6 @@
 'use strict';
 
-import PhaserUtil from "../util/PhaserUtil";
+import PhaserUtil from "../util/TextUtil";
 import gameInfo from "../objects/store/GameInfo";
 import {rematchButtonHandler} from '../util/gameEnd';
 import layoutStore from "../objects/store/LayoutStore";
@@ -8,7 +8,6 @@ import Bot from "../objects/bot/Bot";
 import Game from "../objects/bot/Game";
 import Background from "../objects/widgets/icons/Background";
 import ResignButton from "../objects/widgets/button/ResignButton";
-import saveGameData from "../util/saveGameData";
 import MusicButton from "../objects/widgets/button/MusicButton";
 import GameState from "../objects/bot/GameState";
 import BackButton from "../objects/widgets/button/BackButton";
@@ -16,7 +15,7 @@ import HelpButton from "../objects/widgets/button/HelpButton";
 import GAME_CONST from "../const/GAME_CONST";
 import MESSAGE from "../const/MESSAGES";
 import GamePlayUtil from "../util/GamePlayUtil";
-import SocialShare from "../util/SocialShare";
+import SocialShare from "../objects/SocialShare";
 import GameManager from "../controller/GameManager";
 
 export class Play extends Phaser.State { // TODO : fix later. this screen has too much logic. Create a new controller class and move logic there
@@ -232,7 +231,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             GameManager.playTapSound();
         });
         if (gameInfo.get("win") === 0 && this.botGame.gameStatus !== 3) {
-            saveGameData(this.game, false);
+            GamePlayUtil.saveGameData(this.cells.children, false);
             layoutStore.turnText.text = MESSAGE.YOUR_TURN;
             layoutStore.opponentProfilePic.alpha = 0.3;
             layoutStore.playerProfilePic.alpha = 1;
@@ -243,7 +242,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             layoutStore.resign.setInputPriority(1);
         }
         else {
-            saveGameData(this.game, true);
+            GamePlayUtil.saveGameData(this.cells.children, true);
         }
     }
 
@@ -495,7 +494,8 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             this.cells.children[layoutStore.initialMark].inputEnabled = false;
         }
         if (gameInfo.get("gameOver") === false) {
-            saveGameData(this.game, false);// To store the initial state of the Game. Even if the user or bot haven't made any move.
+            GamePlayUtil.saveGameData(this.cells.children, false);
+            // To store the initial state of the Game. Even if the user or bot haven't made any move.
         }
         gameBot.storeGameDetail(this.botGame);
         this.botGame.start();

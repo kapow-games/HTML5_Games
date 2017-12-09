@@ -3,7 +3,7 @@
 import MESSAGE from "../const/MESSAGES";
 import kapowClientController from "../kapow/KapowClientController";
 
-export default class SocialShare { // NOT a Util :(
+export default class SocialShare {
     constructor(ticTacToeGame, val) {
         this.game = ticTacToeGame;
         this.shareText = (val === "draw" || val === "loss") ? MESSAGE.SHARE_OTHER : MESSAGE.SHARE_WIN;

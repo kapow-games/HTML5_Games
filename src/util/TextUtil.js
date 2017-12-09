@@ -1,6 +1,6 @@
 'use strict';
 
-var PhaserUtil = {// TODO : very basic text util . not a phaser Manager // intend to add more functionality in future. Rename it to Util/PhaserUtil
+var TextUtil = {
     createText: function (game, obj) {
         let textStyle = {
             font: obj.font,
@@ -22,4 +22,4 @@ var PhaserUtil = {// TODO : very basic text util . not a phaser Manager // inten
     }
 };
 
-export default PhaserUtil;
+export default TextUtil;

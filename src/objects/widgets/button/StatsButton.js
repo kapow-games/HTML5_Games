@@ -1,7 +1,7 @@
 "use strict";
 
 import DarkOverlay from './DarkOverLay';
-import PhaserUtil from '../../../util/PhaserUtil';
+import PhaserUtil from '../../../util/TextUtil';
 import kapowGameStore from "../../store/KapowGameStore";
 import GameManager from "../../../controller/GameManager";
 

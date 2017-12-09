@@ -1,6 +1,6 @@
 'use strict';
 
-import PhaserUtil from "../util/PhaserUtil";
+import PhaserUtil from "../util/TextUtil";
 import gameInfo from "../objects/store/GameInfo";
 import Background from "../objects/widgets/icons/Background";
 import OnGoingGameButton from "../objects/widgets/button/OnGoingGameButton";

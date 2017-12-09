@@ -1,7 +1,8 @@
 "use strict";
 
 import PhaserGame from '../PhaserGame';
-import handleGameEnd from '../util/gameEnd';
+import getStats from '../util/gameEnd';
+import gameInfo from "../objects/store/GameInfo";
 
 let GameManager = {
     createGame() {
@@ -11,7 +12,7 @@ let GameManager = {
         this.game.state.start('Boot');
     },
     endGame(value) {
-        handleGameEnd(value);
+        this._handleGameEnd(value);
     },
     startState(state) {
         this.game.state.start(state);
@@ -37,6 +38,17 @@ let GameManager = {
     },
     stopWinSound() {
         this.game.state.states.Preload.winSound.stop();
+    },
+    ////////////// END OF PUBLIC METHODS /////////
+    _handleGameEnd(value){
+        this.loadResultUI(value);
+        if (gameInfo.get("gameOver") === false) {
+            getStats(value);
+        }
+        if (!gameInfo.get("gameLocked") && gameInfo.get("gameType") === "solo") {
+            // To ensure that game doesn't close multiple times in Kapow
+            kapowEndSoloGame(value);
+        }
     }
 };
 
