@@ -22,7 +22,7 @@ export default class SocialShare {
             let shareLoadTween = this.game.add.tween(shareLoad).to({angle: 359}, 400, null, true, 0, Infinity);
             shareLoadTween.start();
             console.log(buttonID + " share clicked");
-            kapowClientController.handleSocialShare(this.shareText, medium, function () { // TODO : either use this.shareText here or keep shareTxt in closure http://speakingjs.com/es5/ch17.html#private_data_for_objects
+            kapowClientController.handleSocialShare(this.shareText, medium, function () {
                     shareLoad.kill();
                     shareDarkOverlay.kill();
                     console.log(buttonID + "Fb share successful.");

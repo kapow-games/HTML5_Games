@@ -41,7 +41,7 @@ export class Preload extends Phaser.State {
         this.load.spritesheet('stats', 'assets/images/stats.png', 984, 138);
         this.load.image('turnTextBackground', 'assets/images/turnBoard.png');
         this.load.image('circle', 'assets/images/circle.png');
-        this.load.image('board', 'assets/images/board.png'); //Final Arena
+        this.load.image('board', 'assets/images/board.png');
         this.load.image('mark_selected', 'assets/images/mark-selected.png');
         this.load.image('startbutton_disabled', 'assets/images/startbutton-disabled.png');
         this.load.image('resignModal', 'assets/images/resign-modal.png');
@@ -91,7 +91,7 @@ export class Preload extends Phaser.State {
                     GameManager.startState('Play');
                 }
                 else if (gameInfo.get("gameType") === "friend") {
-                    GamePlayUtil.parseRoomAndRedirectToGame(); // TODO . Can u pass arguments via starting State in phaser. trigger flow viw play.js .
+                    GamePlayUtil.parseRoomAndRedirectToGame(); // TODO . Can u pass arguments via starting State in phaser. trigger flow view play.js .
                 }
             }
             else {
@@ -100,7 +100,7 @@ export class Preload extends Phaser.State {
         }
     }
 
-    _onLoadComplete() { // TODO :private ?
+    _onLoadComplete() {
         this.sound = this.game.add.audio('gameSound');
         this.winSound = this.game.add.audio('winSound');
         this.tapSound = this.game.add.audio('tapSound');
@@ -114,8 +114,6 @@ export class Preload extends Phaser.State {
             this.sound.mute = true;
             if (args) {
                 console.log("Value fetched from gameStore was : ", args);
-                let valueJSON = JSON.parse(args);
-                // this.sound.mute = valueJSON.volume === 0;
             }
             else {
                 this.sound.mute = true;
@@ -124,9 +122,7 @@ export class Preload extends Phaser.State {
                 };
                 self.set("music", param);
             }
-            // this.sound.play();
             this.sound.loop = true;
-            // this.sound.mute = true;
             this.ready = true;
             console.log(this);
         }.bind(this));

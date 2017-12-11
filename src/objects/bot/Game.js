@@ -28,7 +28,7 @@ export default class Game {
     // Advances game to next state
     moveTo(state) {
         this.currentState = state;
-        if (this.currentState.isTerminal()) { // TODO : logic can be simplified
+        if (this.currentState.isTerminal()) {
             this.gameStatus = GAME_CONST.GAME_RESULT.FINISHED;
             if (this.currentState.boardResult === 1) {
                 gameInfo.set("win", 1);
@@ -111,7 +111,7 @@ export default class Game {
         }
         else {
             if (!this.currentState.turnOfPlayer) {
-                this.bot.playMove(false);// TODO : rename to play move ?
+                this.bot.doBotMove(false);
             }
             // Otherwise, Player's Turn
         }
@@ -125,12 +125,7 @@ export default class Game {
     }
 
     getScore(state) {
-        if (state.result !== 0) { // TODO : should the current state be changed too ?
-            /*
-                No this function is to
-                calculate the the getScore of any state. It can be a state as per future move too, hence not necessarily
-                current state.
-            */
+        if (state.result !== 0) {
             if (state.boardResult === 1) {
                 //X won
                 return 10 - state.movesCount;

@@ -1,5 +1,5 @@
 'use strict';
-//TODO : layoutStore
+
 let LayoutStore = {
     initialMark: null,
     game: null,

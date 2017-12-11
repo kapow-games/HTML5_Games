@@ -2,15 +2,15 @@
 
 export default class Background extends Phaser.Image {
     constructor(arg) {
-        super(arg.game, arg.posX, arg.posY, arg.label); // TODO @mayank: same (redundant vars)
+        super(arg.game, arg.posX, arg.posY, arg.label);
         this.anchor.setTo(arg.anchorX, arg.anchorY);
     }
 
-    enableInput(isEnabled) { // TODO : rename to enableInput and take args as isEnabled boolean
+    enableInput(isEnabled) {
         this.inputEnabled = isEnabled;
     }
 
-    setInputPriority(priorityID) { // TODO : same
+    setInputPriority(priorityID) {
         this.input.priorityID = priorityID;
     }
 }

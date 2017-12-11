@@ -8,12 +8,7 @@ export default class OnGoingGameButton extends Phaser.Button {
         let onGoingGameHandler = function () {
             console.log('Active games layout requested');
             GameManager.playTapSound();
-            // kapow.getActiveRooms(function(listOfRooms) {
-            //     console.log(listOfRooms);
-            // }, function(error) {
-            //     console.log("getActiveRooms Call Failed");
-            // });
-            kapowClientController.handleDisplayActiveRooms();// TODO : pass callback . Avoid using kapow here
+            kapowClientController.handleDisplayActiveRooms();
         };
         super(arg.game, arg.posX, arg.posY, arg.label, onGoingGameHandler, null, arg.overFrame, arg.outFrame, arg.downFrame, arg.upFrame);
         this.anchor.setTo(arg.anchorX, arg.anchorY);

@@ -55,7 +55,7 @@ export default class CreditsButton extends Phaser.Button {
             this.musicCreditsText = TextUtil.createText(this.game, {
                 positionX: 306.5,
                 positionY: 1011,
-                message: 'MUSIC CREDITS', // TODO : rename to displayMessage or just message/text ?
+                message: 'MUSIC CREDITS',
                 align: "center",
                 backgroundColor: "#fefefe",
                 fill: "#6d616d",

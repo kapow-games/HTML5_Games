@@ -18,7 +18,7 @@ import GamePlayUtil from "../util/GamePlayUtil";
 import SocialShare from "../objects/SocialShare";
 import GameManager from "../controller/GameManager";
 
-export class Play extends Phaser.State { // TODO : fix later. this screen has too much logic. Create a new controller class and move logic there
+export class Play extends Phaser.State {
     preload() {
         gameInfo.set("screenState", 1);
         this.loadOpponentImage();
@@ -45,7 +45,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             this.initialiseBot();
         }
         else if (gameInfo.get("gameType") === 'friend') {
-            this.verifyOpponentAffiliationStatus();
+            this.logOpponentAffiliationStatus();
             this.recreateResultForEndedGame();
         }
 
@@ -97,7 +97,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
     }
 
     clickHandlerSolo(sprite, pointer) {
-        var cell = this.cells.children; // TODO : cell is an array . plural ?
+        let cell = this.cells.children; // TODO : cell is an array . plural ?
         if (sprite.frame === 0) {
             layoutStore.backgroundImage.enableInput(true);
             layoutStore.backgroundImage.setInputPriority(2);
@@ -255,7 +255,6 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
                 console.log("opponentData was not set.");
             }
         }
-        console.log(this.game.cache.checkImageKey('opponentPic'), this.load); // TODO : can ask cache first ?
     }
 
     createBackground() {
@@ -270,7 +269,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.game.stage.addChild(layoutStore.backgroundImage);
     }
 
-    backButtonHandler() { // TODO : too many objects to set on store. pass object
+    backButtonHandler() {
         console.log("WebView BACK presed.");
         kapow.unloadRoom(function () {
             console.log('Room Succesfully Unloaded');
@@ -500,11 +499,11 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         gameBot.storeGameDetail(this.botGame);
         this.botGame.start();
         if (gameInfo.get("gameOver") === true && gameInfo.get("win") === 0) {
-            GameManager.endGame(1); // TODO : better name . HandleGameEnd ?
+            GameManager.endGame(1);
         }
     }
 
-    verifyOpponentAffiliationStatus() { // TODO : no verification is done . only console log :D ?
+    logOpponentAffiliationStatus() {
         if (gameInfo.get("opponentData") && gameInfo.get("opponentData").affiliation === GAME_CONST.AFFILIATION.ACCEPTED) {
             console.log("Opponent Accepted.");
         }

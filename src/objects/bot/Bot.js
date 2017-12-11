@@ -1,6 +1,6 @@
 "use strict";
 
-import BotBehaviour from "./BotBehaviour";
+import NextBotState from "./BotBehaviour";
 import GAME_CONST from "../../const/GAME_CONST";
 
 export default class Bot {
@@ -14,7 +14,7 @@ export default class Bot {
         }
         let stateScore = state.turnOfPlayer ? -1000 : 1000;
         let availableNextStates = state.emptyCells().map(function (pos) {
-            let action = new BotBehaviour(pos);
+            let action = new NextBotState(pos);
             return action.play(state);
         });
 
@@ -33,7 +33,7 @@ export default class Bot {
     doBotMove(turnOfPlayer) {
         let availableActions = this.sortPossibleBotMoves(turnOfPlayer);
         let chosenAction;
-        if (Math.random() <= GAME_CONST.DIFFICULTY) { // TODO : extract const
+        if (Math.random() <= GAME_CONST.DIFFICULTY) {
             chosenAction = availableActions[0];
         }
         else {
@@ -54,13 +54,9 @@ export default class Bot {
         this.gameDetail = gameDetail;
     }
 
-    playMove(turnOfPlayer) { // TODO : redundant fn ?
-        this.doBotMove(turnOfPlayer);
-    }
-
     sortPossibleBotMoves(turnOfPlayer) {
         let availableActions = this.gameDetail.currentState.emptyCells().map(function (pos) {
-            let action = new BotBehaviour(pos);
+            let action = new NextBotState(pos);
             let next = action.play(this.gameDetail.currentState);
             action.miniMaxValue = this.getMiniMaxValue(this.gameDetail, next);
             return action;

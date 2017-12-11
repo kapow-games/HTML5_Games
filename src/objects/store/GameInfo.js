@@ -30,7 +30,7 @@ GameInfoStore.prototype._init = function () {
 };
 GameInfoStore.prototype.get = function (key) {
     return this[key];
-}; // TODO : should this be declared on prototype ?
+};
 
 GameInfoStore.prototype.set = function (key, val) {
     this[key] = val;
@@ -42,5 +42,5 @@ GameInfoStore.prototype.setBulk = function (arg) {
     }
 };
 
-let gameInfo = new GameInfoStore();// TODO : let ?
+let gameInfo = new GameInfoStore();
 export default gameInfo;

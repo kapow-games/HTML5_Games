@@ -8,8 +8,8 @@ import GameManager from "../../../controller/GameManager";
 
 export default class VsRandomGameButton extends Phaser.Button {
     constructor(arg) {
-        let vsRandomGameStart = function () { // TODO : Same as OnGoingGameButton
-            this.inputEnabled = false; // TODO : no this before super
+        let vsRandomGameStart = function () {
+            this.inputEnabled = false;
             GameManager.playTapSound();
             gameInfo.set("gameType", 'random');
             gameInfo.set("randomRoom", true);

@@ -56,7 +56,7 @@ export default class StatsButton extends Phaser.Button {
             this.myStatsText = TextUtil.createText(this.game, {
                 positionX: 394.5,
                 positionY: 848,
-                message: 'MY STATS', // TODO : rename to displayMessage or just message/text ?
+                message: 'MY STATS',
                 align: "center",
                 backgroundColor: "#fefefe",
                 fill: "#6d616d",

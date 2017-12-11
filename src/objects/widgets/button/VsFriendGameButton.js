@@ -8,7 +8,7 @@ import GameManager from "../../../controller/GameManager";
 
 export default class VsFriendGameButton extends Phaser.Button {
     constructor(arg) {
-        let vsFriendGameStart = function () { // TODO : Same as OnGoingGameButton
+        let vsFriendGameStart = function () {
             gameInfo.set("gameType", 'friend');
             GameManager.playTapSound();
             kapowClientController.handleStartGameWithFriends(2, 2, function (room) {

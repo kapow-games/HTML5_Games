@@ -116,11 +116,66 @@ class KapowClientController {
         console.log('On Resume Triggered.');
     }
 
+    handleDisplayActiveRooms() {
+        kapow.displayActiveRooms();
+    }
+
+    handleInvokeRPC(methodName, parameters, invokeLazily, successCallback, failureCallback) {
+        if (invokeLazily) {
+            kapow.rpc.invoke({
+                    "functionName": methodName,
+                    "parameters": parameters,
+                    "invokeLazily": true
+                },
+                successCallback, failureCallback
+            );
+        }
+        else {
+            kapow.invokeRPC(methodName, parameters, successCallback, failureCallback);
+        }
+    }
+
+    handleDisplayScoreboard(parameters) {
+        kapow.boards.displayScoreboard(parameters);
+    }
+
+    handleStartGameWithFriends(minimumNumberOfPlayers, maximumNumberOfPlayers, successCallback, failureCallback) {
+        kapow.startGameWithFriends(minimumNumberOfPlayers, maximumNumberOfPlayers, successCallback, failureCallback);
+    }
+
+    handleStartGameWithFriends(minimumNumberOfPlayers, maximumNumberOfPlayers, successCallback, failureCallback) {
+        kapow.startGameWithFriends(minimumNumberOfPlayers, maximumNumberOfPlayers, successCallback, failureCallback);
+    }
+
+    handleStartGameWithRandomPlayers(attributes, successCallback, failureCallback) {
+        kapow.startGameWithRandomPlayers(attributes, successCallback, failureCallback);
+    }
+
+    handleRematch(successCallback, failureCallback) {
+        kapow.rematch(successCallback, failureCallback);
+    }
+
+    handleEndSoloGame(successCallback, failureCallback) {
+        kapow.endSoloGame(successCallback, failureCallback);
+    }
+
+    handleFetchHistorySince(messageId, numberOfMessages, successCallback, failureCallback) {
+        kapow.fetchHistorySince(messageId, numberOfMessages, successCallback, failureCallback);
+    }
+
+    handleFetchHistoryBefore(messageId, numberOfMessages, successCallback, failureCallback) {
+        kapow.fetchHistoryBefore(messageId, numberOfMessages, successCallback, failureCallback);
+    }
+
+    handleSocialShare(text, medium, successCallback, failureCallback) {
+        kapow.social.share(text, medium, successCallback, failureCallback);
+    }
+
     _syncStats() {
         kapowGameStore.get("stats", function (statsValue, self) {
             if (statsValue) {
                 let valueJSON = JSON.parse(statsValue);
-                //TODO : syncStats onLoading game.
+                // TODO : syncStats onLoading game.
             } else {
                 let newStats = {
                     "soloStats": {
@@ -185,61 +240,6 @@ class KapowClientController {
         } else {
             gameInfo.set("gameType", "friend");
         }
-    }
-
-    handleDisplayActiveRooms() {
-        kapow.displayActiveRooms();
-    }
-
-    handleInvokeRPC(methodName, parameters, invokeLazily, successCallback, failureCallback) {
-        if (invokeLazily) {
-            kapow.rpc.invoke({
-                    "functionName": methodName,
-                    "parameters": parameters,
-                    "invokeLazily": true
-                },
-                successCallback, failureCallback
-            );
-        }
-        else {
-            kapow.invokeRPC(methodName, parameters, successCallback, failureCallback);
-        }
-    }
-
-    handleDisplayScoreboard(parameters) {
-        kapow.boards.displayScoreboard(parameters);
-    }
-
-    handleStartGameWithFriends(minimumNumberOfPlayers, maximumNumberOfPlayers, successCallback, failureCallback) {
-        kapow.startGameWithFriends(minimumNumberOfPlayers, maximumNumberOfPlayers, successCallback, failureCallback);
-    }
-
-    handleStartGameWithFriends(minimumNumberOfPlayers, maximumNumberOfPlayers, successCallback, failureCallback) {
-        kapow.startGameWithFriends(minimumNumberOfPlayers, maximumNumberOfPlayers, successCallback, failureCallback);
-    }
-
-    handleStartGameWithRandomPlayers(attributes, successCallback, failureCallback) {
-        kapow.startGameWithRandomPlayers(attributes, successCallback, failureCallback);
-    }
-
-    handleRematch(successCallback, failureCallback) {
-        kapow.rematch(successCallback, failureCallback);
-    }
-
-    handleEndSoloGame(successCallback, failureCallback) {
-        kapow.endSoloGame(successCallback, failureCallback);
-    }
-
-    handleFetchHistorySince(messageId, numberOfMessages, successCallback, failureCallback) {
-        kapow.fetchHistorySince(messageId, numberOfMessages, successCallback, failureCallback);
-    }
-
-    handleFetchHistoryBefore(messageId, numberOfMessages, successCallback, failureCallback) {
-        kapow.fetchHistoryBefore(messageId, numberOfMessages, successCallback, failureCallback);
-    }
-
-    handleSocialShare(text, medium, successCallback, failureCallback) {
-        kapow.social.share(text, medium, successCallback, failureCallback);
     }
 }
 

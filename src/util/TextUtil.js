@@ -1,6 +1,6 @@
 'use strict';
 
-var TextUtil = {
+let TextUtil = {
     createText: function (game, obj) {
         let textStyle = {
             font: obj.font,

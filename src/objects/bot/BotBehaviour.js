@@ -4,7 +4,7 @@ import GameState from "./GameState";
 import gameInfo from "../store/GameInfo";
 import GAME_CONST from "../../const/GAME_CONST";
 
-export default class BotBehaviour {
+export default class NextBotState {
     constructor(pos) {
         this.movePosition = pos;
         this.miniMaxValue = 0;
