@@ -6,7 +6,7 @@ import GameManager from "../../../controller/GameManager";
 export default class MusicButton extends Phaser.Button {
     constructor(arg) {
         let musicToggle = function () {
-            console.log("clickRegistered");
+            console.log("Music Toggled to volume:",(this.frame+1)%2);
             GameManager.playTapSound();
             let param = {
                 volume: (this.frame + 1) % 2
@@ -19,8 +19,6 @@ export default class MusicButton extends Phaser.Button {
         super(arg.game, arg.posX, arg.posY, arg.label, musicToggle, null);
         this.anchor.setTo(arg.anchorX, arg.anchorY);
         kapowGameStore.get("music", function (args, self) {
-            console.log("gameStore fetch - Success.");
-            console.log("Value fetched from gameStore was : ", args);
             let valueJSON = JSON.parse(args);
             this.frame = valueJSON.volume;
             GameManager.toggleMusic(this.frame === 0);

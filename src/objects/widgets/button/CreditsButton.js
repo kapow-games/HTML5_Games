@@ -3,6 +3,7 @@
 import DarkOverlay from './DarkOverLay';
 import TextUtil from '../../../util/TextUtil';
 import GameManager from "../../../controller/GameManager";
+import MESSAGES from "../../../const/MESSAGES";
 
 export default class CreditsButton extends Phaser.Button {
     constructor(arg) {
@@ -17,12 +18,12 @@ export default class CreditsButton extends Phaser.Button {
                 anchorX: 0,
                 anchorY: 0,
                 inputEnabled: true,
-                callback: this.cancelCredits.bind(this)
+                callback: this._cancelCredits.bind(this)
             });
             this.game.stage.addChild(this.darkOverlay);
             this.bg.enableInput(true);
             this.bg.setInputPriority(2);
-            this.createCreditsModal();
+            this._createCreditsModal();
         };
         super(arg.game, arg.posX, arg.posY, arg.label, creditsButtonClickHandler, null);
         this.bg = arg.bg;
@@ -30,7 +31,7 @@ export default class CreditsButton extends Phaser.Button {
         this.anchor.setTo(arg.anchorX, arg.anchorY);
     }
 
-    createCreditsModal() {
+    _createCreditsModal() {
         this.creditsModal = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'creditsModal');
         this.creditsModal.inputEnabled = true;
         this.creditsModal.input.priorityID = 3;
@@ -40,10 +41,10 @@ export default class CreditsButton extends Phaser.Button {
         this.popUpCreditsModal = this.game.add.tween(this.creditsModal.scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
         this.popUpCreditsModal.start();
 
-        this.fillCredits();
+        this._fillCredits();
     }
 
-    fillCredits() {
+    _fillCredits() {
         this.popUpCreditsModal.onComplete.add(function () {
             this.bg.setInputPriority(1);
             this.bg.enableInput(false);
@@ -55,7 +56,7 @@ export default class CreditsButton extends Phaser.Button {
             this.musicCreditsText = TextUtil.createText(this.game, {
                 positionX: 306.5,
                 positionY: 1011,
-                message: 'MUSIC CREDITS',
+                message: MESSAGES.CREDITS.MUSIC_CREDITS,
                 align: "center",
                 backgroundColor: "#fefefe",
                 fill: "#6d616d",
@@ -66,7 +67,7 @@ export default class CreditsButton extends Phaser.Button {
             });
             this.game.stage.addChild(this.musicCreditsText);
 
-            this.cancelButton = this.game.add.button(864, 603, 'statsClose', this.cancelCredits, this);
+            this.cancelButton = this.game.add.button(864, 603, 'statsClose', this._cancelCredits, this);
             this.cancelButton.inputEnabled = true;
             this.cancelButton.input.priorityID = 4;
             this.game.stage.addChild(this.cancelButton);
@@ -77,7 +78,7 @@ export default class CreditsButton extends Phaser.Button {
                 positionY: 1207.5,
                 anchorX: 0.5,
                 anchorY: 0.5,
-                message: "Robobozo by Kevin MacLeod\nTaDa! by jimhancock\nTap1 by Whatthes",
+                message: MESSAGES.CREDITS.MUSIC,
                 align: "center",
                 backgroundColor: "#fefefe",
                 fill: "#7a797a",
@@ -90,7 +91,7 @@ export default class CreditsButton extends Phaser.Button {
         }.bind(this));
     }
 
-    cancelCredits() {
+    _cancelCredits() {
         this.game.stage.removeChild(this.creditsLogo);
         this.game.stage.removeChild(this.cancelButton);
         this.game.stage.removeChild(this.creditsModal);

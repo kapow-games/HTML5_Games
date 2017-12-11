@@ -18,10 +18,12 @@ export default class VsRandomGameButton extends Phaser.Button {
                 'difficulty': 'medium'
             }, function (room) {
                 console.log("Random Room Creation - Success.");
-                gameInfo.set("room", room);
-                gameInfo.set("playerMark", GAME_CONST.TURN.X);
-                gameInfo.set("opponentMark", GAME_CONST.TURN.O);
-                GamePlayUtil.parseRoomAndRedirectToGame();
+                gameInfo.setBulk({
+                    "room": room,
+                    "playerMark": GAME_CONST.TURN.X,
+                    "opponentMark": GAME_CONST.TURN.O,
+                });
+                GamePlayUtil.redirectToScreen();
             }, function (error) {
                 this.inputEnabled = true;
                 console.log("Random Room Creation - Failure.", error);

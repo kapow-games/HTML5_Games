@@ -12,17 +12,15 @@ export class Select extends Phaser.State {
         console.log("Select state starting.");
         this.mark = 0;
         this.startButtonFlag = true;
-        gameInfo.set("screenState", 3);
+        gameInfo.set("screenState", GAME_CONST.SCREEN.SELECT);
     }
 
     create() {
-        this.createBackground();
-        this.createMarkSelectLayout();
-        this.createStartGameButton();
-        this.createBackButton();
-        this.createMusicButton();
-        console.log(this.game);
-        gameInfo.set("screenState", 0);
+        this._createBackground();
+        this._createMarkSelectLayout();
+        this._createStartGameButton();
+        this._createBackButton();
+        this._createMusicButton();
     }
 
     update() {
@@ -61,7 +59,7 @@ export class Select extends Phaser.State {
         });
     }
 
-    createBackground() {
+    _createBackground() {
         this.bg = new Background({
             game: this.game,
             posX: 0,
@@ -73,7 +71,7 @@ export class Select extends Phaser.State {
         this.game.stage.addChild(this.bg);
     }
 
-    createMarkSelectLayout() {
+    _createMarkSelectLayout() {
         this.markBackground = this.game.add.image(225, 663, 'choose_bg_mark');
         this.markBackground.anchor.setTo(0, 0);
         this.game.stage.addChild(this.markBackground);
@@ -115,7 +113,7 @@ export class Select extends Phaser.State {
         this.mark = GAME_CONST.TURN.O;
     }
 
-    createStartGameButton() {
+    _createStartGameButton() {
         this.startButton = this.game.add.button(225, 1122, 'startbutton', this.startGame, this, 1, 1, 2);
         this.startButton.anchor.setTo(0, 0);
         this.startButton.inputEnabled = false;
@@ -126,7 +124,7 @@ export class Select extends Phaser.State {
         this.game.stage.addChild(this.startButtonDisabled);
     }
 
-    createBackButton() {
+    _createBackButton() {
         this.backButton = new BackButton({
             game: this.game,
             posX: 48,
@@ -134,17 +132,17 @@ export class Select extends Phaser.State {
             label: 'back',
             anchorX: 0,
             anchorY: 0,
-            callback: this.backButtonHandler.bind(this)
+            callback: this._backButtonHandler.bind(this)
         });
         this.game.stage.addChild(this.backButton);
     }
 
-    backButtonHandler() {
+    _backButtonHandler() {
         console.log('back Button Pressed.');
         this.game.state.start('Menu');
     }
 
-    createMusicButton() {
+    _createMusicButton() {
         this.musicButton = new MusicButton({
             game: this.game,
             posX: 960,

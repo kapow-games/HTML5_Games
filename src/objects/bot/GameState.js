@@ -27,12 +27,11 @@ export default class GameState {
 
     emptyCells() {
         let indices = [];
-        let len = this.board.length;
-        for (let i = 0; i < len; i++) {
-            if (this.board[i] === 0) {
-                indices.push(i);
-            }
-        }
+        this.board.forEach(function(currVal, index) {
+           if(currVal===0) {
+                indices.push(index);
+           }
+        });
         return indices;
     }
 

@@ -33,6 +33,17 @@ const GAME_CONST = {
         RESIGNATION : "resignation",
         TIMEOUT : "timeout"
     },
+    SCREEN :{
+        MENU : 0,
+        PLAY: 1,
+        PLAYLOAD: 1,
+        SELECT: 3,
+        WAITING: 1
+    },
+    SCOREBOARD: {
+      METRIC: "points",
+      INTERVAL : "alltime"
+    },
     DIFFICULTY : 0.8
 };
 

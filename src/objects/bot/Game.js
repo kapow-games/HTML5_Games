@@ -118,7 +118,7 @@ export default class Game {
     }
 
     start() {
-        if (this.gameStatus === -1) {
+        if(this.gameStatus === GAME_CONST.GAME_RESULT.NOT_STARTED) {
             this.moveTo(this.currentState);
             this.gameStatus = GAME_CONST.GAME_RESULT.IN_PROGRESS;
         }

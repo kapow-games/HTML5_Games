@@ -15,15 +15,15 @@ import HelpButton from "../objects/widgets/button/HelpButton";
 import BackButton from "../objects/widgets/button/BackButton";
 import MusicButton from "../objects/widgets/button/MusicButton";
 import CreditsButton from "../objects/widgets/button/CreditsButton";
+import GAME_CONST from "../const/GAME_CONST";
 
 export class Menu extends Phaser.State {
     preload() {
-        console.log(this);
     }
 
     create() {
         console.log("Loading Menu.");
-        gameInfo.set("screenState", 0);
+        gameInfo.set("screenState", GAME_CONST.SCREEN.MENU);
         this.bg = new Background({
             game: this.game,
             posX: 0,
@@ -59,7 +59,7 @@ export class Menu extends Phaser.State {
         this.startNewGameBottom = new StartNewGameBottomSlider({
             game: this.game,
             posX: 48,
-            posY: 1020,
+            posY: 978,
             label: 'newGameBottom',
             anchorX: 0,
             anchorY: 0,
@@ -69,7 +69,7 @@ export class Menu extends Phaser.State {
         this.gameModeFriend = new VsFriendGameButton({
             game: this.game,
             posX: 48,
-            posY: 1020,
+            posY: 978,
             label: 'gameModes',
             anchorX: 0,
             anchorY: 0,
@@ -83,7 +83,7 @@ export class Menu extends Phaser.State {
         this.gameModeRandom = new VsRandomGameButton({
             game: this.game,
             posX: 375,
-            posY: 1020,
+            posY: 978,
             label: 'gameModes',
             anchorX: 0,
             anchorY: 0,
@@ -97,7 +97,7 @@ export class Menu extends Phaser.State {
         this.gameModeSolo = new VsBotGameButton({
             game: this.game,
             posX: 702,
-            posY: 1020,
+            posY: 978,
             label: 'gameModes',
             anchorX: 0,
             anchorY: 0,
@@ -111,7 +111,7 @@ export class Menu extends Phaser.State {
         this.stats = new StatsButton({
             game: this.game,
             posX: 48,
-            posY: 1182,
+            posY: 1140,
             label: 'stats',
             anchorX: 0,
             anchorY: 0,
@@ -125,7 +125,7 @@ export class Menu extends Phaser.State {
         this.scoreboard = new ScoreboardButton({
             game: this.game,
             posX: 48,
-            posY: 1368,
+            posY: 1326,
             label: 'leaderBoard',
             anchorX: 0,
             anchorY: 0,
@@ -139,7 +139,7 @@ export class Menu extends Phaser.State {
         this.startNewGameTop = new StartNewGameTopButton({
             game: this.game,
             posX: 48,
-            posY: 996,
+            posY: 954,
             label: 'newGameTop',
             anchorX: 0,
             anchorY: 0,
@@ -164,7 +164,7 @@ export class Menu extends Phaser.State {
             label: 'kapowClose',
             anchorX: 0,
             anchorY: 0,
-            callback: this.backButtonHandler.bind(this)
+            callback: this._backButtonHandler.bind(this)
         });
         this.game.stage.addChild(this.backButton);
         this.credits = new CreditsButton({
@@ -215,7 +215,7 @@ export class Menu extends Phaser.State {
         this.game.stage.removeChild(this.credits);
     }
 
-    backButtonHandler() {
+    _backButtonHandler() {
         kapow.close();
     }
 

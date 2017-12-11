@@ -69,7 +69,7 @@ export default class Bot {
         }
         return availableActions;
     }
-
+    ////////////// END OF PUBLIC METHODS /////////
     _ascending(firstAction, secondAction) {
         if (firstAction.miniMaxValue < secondAction.miniMaxValue) {
             return -1;

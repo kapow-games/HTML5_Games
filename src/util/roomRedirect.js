@@ -3,6 +3,7 @@
 import gameInfo from "../objects/store/GameInfo";
 import GameManager from "../controller/GameManager";
 import kapowClientController from "../kapow/KapowClientController";
+import GAME_CONST from "../const/GAME_CONST";
 
 export default function parseRoomAndRedirectToGame() {
     if (!gameInfo.get("room")) {
@@ -109,11 +110,11 @@ function parseHistory() {
 
 function redirectToGame() {
     console.log(gameInfo);
-    if (gameInfo.get("opponentData") && gameInfo.get("opponentData").affiliation === "accepted") { // TODO : use constants
+    if (gameInfo.get("opponentData") && gameInfo.get("opponentData").affiliation === GAME_CONST.AFFILIATION.ACCEPTED) {
         GameManager.startState('PlayLoad');
     }
-    else if (gameInfo.get("opponentData") && (gameInfo.get("opponentData").affiliation === "left" ||
-            gameInfo.get("playerData").affiliation === "left")) {
+    else if (gameInfo.get("opponentData") && (gameInfo.get("opponentData").affiliation === GAME_CONST.AFFILIATION.LEFT ||
+            gameInfo.get("playerData").affiliation === GAME_CONST.AFFILIATION.LEFT)) {
         gameInfo.set("gameOver", true);
         GameManager.startState('PlayLoad');
     }

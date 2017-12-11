@@ -6,9 +6,7 @@ function GameInfoStore() { // TODO : do we actually need to initialize null valu
     this.room = null;
     this.screenState = 0;
     this.playerData = null;
-    this.boardStatus = {
-        cells: []
-    };
+    this.boardStatus = {cells: Array.from({length: GAME_CONST.GRID.CELL_COUNT}, (v, k) => undefined)},
     this.gameResume = false;
     this.win = 0;
     this.playerMark = GAME_CONST.TURN.NONE;
@@ -20,14 +18,8 @@ function GameInfoStore() { // TODO : do we actually need to initialize null valu
     this.turnOfPlayer = null;
     this.gameLayoutLoaded = false;
     this.randomRoom = false;
-    this._init();
 }
 
-GameInfoStore.prototype._init = function () {
-    for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
-        this.boardStatus.cells.push(undefined);
-    }
-};
 GameInfoStore.prototype.get = function (key) {
     return this[key];
 };

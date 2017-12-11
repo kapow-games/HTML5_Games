@@ -8,12 +8,13 @@ import BackButton from "../objects/widgets/button/BackButton";
 import MusicButton from "../objects/widgets/button/MusicButton";
 import HelpButton from "../objects/widgets/button/HelpButton";
 import GAME_CONST from "../const/GAME_CONST";
+import GameManager from "../controller/GameManager";
 
 export class Waiting extends Phaser.State {
     preload() {
-        gameInfo.set("screenState", 1);
+        gameInfo.set("screenState", GAME_CONST.SCREEN.WAITING);
         console.log(gameInfo.get("opponentData"));
-        this.loadOpponentProfileImage();
+        this._loadOpponentProfileImage();
     }
 
     create() {
@@ -37,7 +38,7 @@ export class Waiting extends Phaser.State {
             label: 'back',
             anchorX: 0,
             anchorY: 0,
-            callback: this.backButtonHandler.bind(this)
+            callback: this._backButtonHandler.bind(this)
         });
         this.game.stage.addChild(this.backButton);
 
@@ -78,8 +79,8 @@ export class Waiting extends Phaser.State {
         });
         this.game.stage.addChild(this.waitingText);
 
-        this.createPlayerProfileImage();
-        this.createOpponentProfileImage();
+        this._createPlayerProfileImage();
+        this._createOpponentProfileImage();
 
         this.onGoingGame = new OnGoingGameButton({
             game: this.game,
@@ -115,38 +116,36 @@ export class Waiting extends Phaser.State {
         this.game.stage.removeChild(this.opponentMask);
     }
 
-    loadOpponentProfileImage() {
+    _loadOpponentProfileImage() {
         if (gameInfo.get("opponentData")) {
             this.game.load.image('opponentPic', gameInfo.get("opponentData").profileImage + "?height=276&width=276");
         }
     }
 
-    backButtonHandler() {
+    _backButtonHandler() {
         console.log("WebView BACK presed.");
         kapow.unloadRoom(function () {
             console.log('Room Succesfully Unloaded');
         }, function () {
             console.log('Room Unloading Failed');
         });
-        gameInfo.set("gameResume", false);
-        gameInfo.set("room", null);
-        gameInfo.set("playerMark", GAME_CONST.TURN.NONE);
-        gameInfo.set("gameType", null);
-        gameInfo.set("botLevel", -1);
-        let tempCells = [];
-        for (let i = 0; i < GAME_CONST.TURN.CELL_COUNT; i++) {
-            tempCells.push(undefined);
-        }
-        gameInfo.set("boardStatus", {cells: tempCells});
-        gameInfo.set("opponentData", undefined);
-        gameInfo.set("turnOfPlayer", undefined);
-        gameInfo.set("gameOver", false);
-        gameInfo.set("win", 0);
-        gameInfo.set("gameLayoutLoaded", false);
-        this.game.state.start('Menu');
+        gameInfo.setBulk({
+            "gameResume": false,
+            "room": null,
+            "playerMark": GAME_CONST.TURN.NONE,
+            "gameType": null,
+            "botLevel": -1,
+            "boardStatus": {cells: Array.from({length: GAME_CONST.GRID.CELL_COUNT}, (v, k) => undefined)},
+            "opponentData": undefined,
+            "turnOfPlayer": undefined,
+            "gameOver": false,
+            "win": 0,
+            "gameLayoutLoaded": false
+        });
+        GameManager.startState('Menu');
     }
 
-    createPlayerProfileImage() {
+    _createPlayerProfileImage() {
         this.playerProfilePic = this.game.add.image(222, 444, 'profilePic');
         this.playerProfilePic.scale.set(276 / this.playerProfilePic.width);
         this.game.stage.addChild(this.playerProfilePic);
@@ -159,7 +158,7 @@ export class Waiting extends Phaser.State {
         this.game.stage.addChild(this.playerMask);
     }
 
-    createOpponentProfileImage() {
+    _createOpponentProfileImage() {
         if (gameInfo.get("opponentData")) {
             this.opponentProfilePic = this.game.add.image(582, 444, "opponentPic");
             this.opponentProfilePic.scale.set(276 / this.opponentProfilePic.width);

@@ -4,6 +4,7 @@ import DarkOverlay from './DarkOverLay';
 import TextUtil from '../../../util/TextUtil';
 import kapowGameStore from "../../store/KapowGameStore";
 import GameManager from "../../../controller/GameManager";
+import MESSAGES from "../../../const/MESSAGES";
 
 export default class StatsButton extends Phaser.Button {
     constructor(arg) {
@@ -18,12 +19,12 @@ export default class StatsButton extends Phaser.Button {
                 anchorX: 0,
                 anchorY: 0,
                 inputEnabled: true,
-                callback: this.cancelStats.bind(this)
+                callback: this._cancelStats.bind(this)
             });
             this.game.stage.addChild(this.darkOverlay);
             this.bg.enableInput(true);
             this.bg.setInputPriority(2);
-            this.createStatsModal();
+            this._createStatsModal();
         };
         super(arg.game, arg.posX, arg.posY, arg.label, statButtonClickHandler, null, arg.overFrame, arg.outFrame, arg.downFrame, arg.upFrame);
         this.bg = arg.bg;
@@ -31,7 +32,7 @@ export default class StatsButton extends Phaser.Button {
         this.anchor.setTo(arg.anchorX, arg.anchorY);
     }
 
-    createStatsModal() {
+    _createStatsModal() {
         this.statsModal = this.game.add.sprite(540, 961.5, 'statsBackground');
         this.statsModal.inputEnabled = true;
         this.statsModal.input.priorityID = 3;
@@ -41,10 +42,10 @@ export default class StatsButton extends Phaser.Button {
         this.popUpStatsModal = this.game.add.tween(this.statsModal.scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
         this.popUpStatsModal.start();
 
-        this.fillStatsValues();
+        this._fillStatsValues();
     }
 
-    fillStatsValues() {
+    _fillStatsValues() {
         this.popUpStatsModal.onComplete.add(function () {
             this.bg.setInputPriority(1);
             this.bg.enableInput(false);
@@ -56,7 +57,7 @@ export default class StatsButton extends Phaser.Button {
             this.myStatsText = TextUtil.createText(this.game, {
                 positionX: 394.5,
                 positionY: 848,
-                message: 'MY STATS',
+                message: MESSAGES.STATS.MY_STATS,
                 align: "center",
                 backgroundColor: "#fefefe",
                 fill: "#6d616d",
@@ -67,15 +68,14 @@ export default class StatsButton extends Phaser.Button {
             });
             this.game.stage.addChild(this.myStatsText);
 
-            this.cancelButton = this.game.add.button(888, 441, 'statsClose', this.cancelStats, this);
+            this.cancelButton = this.game.add.button(888, 441, 'statsClose', this._cancelStats, this);
             this.cancelButton.inputEnabled = true;
             this.cancelButton.input.priorityID = 4;
             this.game.stage.addChild(this.cancelButton);
 
             kapowGameStore.get("stats", function (statsValue, self) {
-                console.log("gameStore fetch - Success.");
                 if (statsValue) {
-                    console.log("Value fetched from gameStore was : ", statsValue);
+                    console.log("stats Value fetched from gameStore was : ", statsValue);
                     let valueJSON = JSON.parse(statsValue);
                     this.statsModeBackground = this.game.add.sprite(120, 978, 'modeBackground');
                     this.game.stage.addChild(this.statsModeBackground);
@@ -84,7 +84,7 @@ export default class StatsButton extends Phaser.Button {
                     this.modeText = TextUtil.createText(this.game, {
                         positionX: 156,
                         positionY: 1002,
-                        message: 'MODE',
+                        message: MESSAGES.STATS.MODE,
                         align: "center",
                         backgroundColor: "#e2e6ff",
                         fill: "#9e7eff",
@@ -97,7 +97,7 @@ export default class StatsButton extends Phaser.Button {
                     this.playedText = TextUtil.createText(this.game, {
                         positionX: 414.5,
                         positionY: 1002,
-                        message: 'PLAYED',
+                        message: MESSAGES.STATS.PLAYED,
                         align: "center",
                         backgroundColor: "#e2e6ff",
                         fill: "#9e7eff",
@@ -110,7 +110,7 @@ export default class StatsButton extends Phaser.Button {
                     this.wonText = TextUtil.createText(this.game, {
                         positionX: 576,
                         positionY: 1002,
-                        message: 'WON',
+                        message: MESSAGES.STATS.WON,
                         align: "center",
                         backgroundColor: "#e2e6ff",
                         fill: "#9e7eff",
@@ -123,7 +123,7 @@ export default class StatsButton extends Phaser.Button {
                     this.lostText = TextUtil.createText(this.game, {
                         positionX: 691,
                         positionY: 1002,
-                        message: 'LOST',
+                        message: MESSAGES.STATS.LOST,
                         align: "center",
                         backgroundColor: "#e2e6ff",
                         fill: "#9e7eff",
@@ -136,7 +136,7 @@ export default class StatsButton extends Phaser.Button {
                     this.drawText = TextUtil.createText(this.game, {
                         positionX: 804.5,
                         positionY: 1002,
-                        message: 'DRAW',
+                        message: MESSAGES.STATS.DRAW,
                         align: "center",
                         backgroundColor: "#e2e6ff",
                         fill: "#9e7eff",
@@ -149,7 +149,7 @@ export default class StatsButton extends Phaser.Button {
                     this.friendsText = TextUtil.createText(this.game, {
                         positionX: 156,
                         positionY: 1110,
-                        message: 'FRIENDS',
+                        message: MESSAGES.STATS.FRIENDS,
                         align: "center",
                         backgroundColor: "#fefefe",
                         fill: "#7a797a",
@@ -162,7 +162,7 @@ export default class StatsButton extends Phaser.Button {
                     this.randomText = TextUtil.createText(this.game, {
                         positionX: 156,
                         positionY: 1194,
-                        message: 'RANDOM',
+                        message: MESSAGES.STATS.RANDOM,
                         align: "center",
                         backgroundColor: "#fefefe",
                         fill: "#7a797a",
@@ -175,7 +175,7 @@ export default class StatsButton extends Phaser.Button {
                     this.practiceText = TextUtil.createText(this.game, {
                         positionX: 156,
                         positionY: 1278,
-                        message: 'PRACTICE',
+                        message: MESSAGES.STATS.PRACTICE,
                         align: "center",
                         backgroundColor: "#fefefe",
                         fill: "#7a797a",
@@ -188,7 +188,7 @@ export default class StatsButton extends Phaser.Button {
                     this.totalText = TextUtil.createText(this.game, {
                         positionX: 156,
                         positionY: 1386,
-                        message: 'TOTAL',
+                        message: MESSAGES.STATS.TOTAL,
                         align: "center",
                         backgroundColor: "#fcf6e4",
                         fill: "#7a797a",
@@ -444,7 +444,7 @@ export default class StatsButton extends Phaser.Button {
 
     }
 
-    cancelStats() {
+    _cancelStats() {
         this.game.stage.removeChild(this.statsLogo);
         this.game.stage.removeChild(this.modeText);
         this.game.stage.removeChild(this.playedText);

@@ -104,7 +104,7 @@ let GamePlayUtil = {
             console.log("Storing room data Failed : ", error);
         });
     },
-    parseRoomAndRedirectToGame: function(){
+    redirectToScreen: function(){
         parseRoomAndRedirectToGame();
     }
 

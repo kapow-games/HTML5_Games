@@ -42,7 +42,7 @@ class KapowClientController {
             gameInfo.set("room", room);
             gameInfo.set("playerMark", GAME_CONST.TURN.O);
             gameInfo.set("opponentMark", GAME_CONST.TURN.X);
-            GamePlayUtil.parseRoomAndRedirectToGame();
+            GamePlayUtil.redirectToScreen();
         }, function () {
             console.log("Client - onAffiliationChange failure");
         });
@@ -72,29 +72,28 @@ class KapowClientController {
 
     handleBackButton() {
         console.log('BackButton Triggered.');
-        if (gameInfo.get("screenState") === 1) {
+        if (gameInfo.get("screenState") === GAME_CONST.SCREEN.PLAY) {
             kapow.unloadRoom(function () {
                 console.log('Room Succesfully Unloaded');
             }, function () {
                 console.log('Room Unloading Failed');
             });
-            gameInfo.set("gameResume", false);
-            gameInfo.set("room", null);
-            gameInfo.set("playerMark", GAME_CONST.TURN.NONE);
-            gameInfo.set("gameType", null);
-            gameInfo.set("botLevel", -1);
-            let tempCells = [];
-            for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
-                tempCells.push(undefined);
-            }
-            gameInfo.set("boardStatus", {cells: tempCells});
-            gameInfo.set("opponentData", null);
-            gameInfo.set("turnOfPlayer", null);
-            gameInfo.set("gameOver", false);
-            gameInfo.set("win", 0);
+            gameInfo.setBulk({
+                "gameResume": false,
+                "room": null,
+                "playerMark": GAME_CONST.TURN.NONE,
+                "gameType": null,
+                "botLevel": -1,
+                "boardStatus": {cells: Array.from({length: GAME_CONST.GRID.CELL_COUNT}, (v, k) => undefined)},
+                "opponentData": undefined,
+                "turnOfPlayer": undefined,
+                "gameOver": false,
+                "win": 0,
+                "gameLayoutLoaded": false
+            });
             GameManager.startState('Menu');
         }
-        else if (gameInfo.get("screenState") === 3) {
+        else if (gameInfo.get("screenState") === GAME_CONST.SCREEN.SELECT) {
             GameManager.startState('Menu');
         }
         else {
@@ -170,12 +169,11 @@ class KapowClientController {
     handleSocialShare(text, medium, successCallback, failureCallback) {
         kapow.social.share(text, medium, successCallback, failureCallback);
     }
-
+    ////////////// END OF PUBLIC METHODS /////////
     _syncStats() {
         kapowGameStore.get("stats", function (statsValue, self) {
             if (statsValue) {
                 let valueJSON = JSON.parse(statsValue);
-                // TODO : syncStats onLoading game.
             } else {
                 let newStats = {
                     "soloStats": {
@@ -209,8 +207,8 @@ class KapowClientController {
                 gameInfo.set("gameResume", false);
             }
             GameManager.startGame();
-        }.bind(this), function () {
-            console.log("Client getUserInfo failure");
+        }.bind(this), function (error) {
+            console.log("Client getUserInfo failure",error);
         });
     }
 
@@ -223,14 +221,16 @@ class KapowClientController {
             kapow.roomStore.get('game_data', function (value) {
                 if (value) {
                     let valueJSON = JSON.parse(value);
-                    console.log(valueJSON);
-                    gameInfo.set("playerMark", valueJSON.colorPlayer); // TODO : @mayank : can we store these like gameData instead of different values ? also gameInfo.playerMark should map value.playerMark
-                    gameInfo.set("botLevel", valueJSON.difficulty);
-                    gameInfo.set("boardStatus", valueJSON.board);
-                    gameInfo.set("playerData", valueJSON.playerData);
-                    gameInfo.set("gameOver", valueJSON.gameOver);
-                    gameInfo.set("gameLocked", gameInfo.get("gameOver"));
-                    gameInfo.set("win", valueJSON.winner);
+                    let gameData = {
+                        "playerMark" : valueJSON.colorPlayer,
+                        "botLevel" : valueJSON.difficulty,
+                        "boardStatus" : valueJSON.board,
+                        "playerData" : valueJSON.playerData,
+                        "gameOver": valueJSON.gameOver,
+                        "gameLocked": gameInfo.get("gameOver"),
+                        "win": valueJSON.winner,
+                    };
+                    gameInfo.setBulk(gameData); // TODO : @mayank : can we store these like gameData instead of different values ? also gameInfo.playerMark should map value.playerMark
                 } else {
                     console.log('Game Variables Not set');
                 }

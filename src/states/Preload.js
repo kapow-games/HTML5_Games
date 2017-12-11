@@ -30,7 +30,7 @@ export class Preload extends Phaser.State {
         this.load.image('statsLogo', 'assets/images/statsLogo.png');
         this.load.image('botPic', 'assets/images/botPic.png');
         this.load.image('logo', 'assets/images/logo.png');
-        this.load.spritesheet('onGoing', 'assets/images/onGoing.png', 984, 180);
+        this.load.spritesheet('onGoing', 'assets/images/onGoing.png', 984, 138);
         this.load.image('arena', 'assets/images/backGround.png');
         this.load.image('back', 'assets/images/back.png');
         this.load.image('kapowClose', 'assets/images/kapowClose.png');
@@ -91,7 +91,7 @@ export class Preload extends Phaser.State {
                     GameManager.startState('Play');
                 }
                 else if (gameInfo.get("gameType") === "friend") {
-                    GamePlayUtil.parseRoomAndRedirectToGame(); // TODO . Can u pass arguments via starting State in phaser. trigger flow view play.js .
+                    GamePlayUtil.redirectToScreen(); // TODO . Can u pass arguments via starting State in phaser. trigger flow view play.js .
                 }
             }
             else {

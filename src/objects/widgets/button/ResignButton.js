@@ -12,10 +12,10 @@ export default class ResignButton extends Phaser.Button {
     constructor(arg) {
         let resignClickHandler = function () {
             GameManager.playTapSound();
-            this.createDarkOverlay();
-            this.createResignModal();
-            this.createCancelButton();
-            this.createYesResignButton();
+            this._createDarkOverlay();
+            this._createResignModal();
+            this._createCancelButton();
+            this._createYesResignButton();
         };
 
         super(arg.game, arg.posX, arg.posY, arg.label, resignClickHandler, null, arg.overFrame, arg.outFrame, arg.downFrame, arg.upFrame);
@@ -23,20 +23,20 @@ export default class ResignButton extends Phaser.Button {
         this.anchor.setTo(arg.anchorX, arg.anchorY);
     }
 
-    cancelResign() {
+    _cancelResign() {
         this.game.stage.removeChild(this.yesResignButton);
         this.game.stage.removeChild(this.cancelButton);
         this.game.stage.removeChild(this.resignModal);
         this.game.stage.removeChild(this.darkOverlay);
     }
 
-    quitGame() {
+    _quitGame() {
         gameInfo.set("win", gameInfo.get("playerMark") === GAME_CONST.TURN.X ? 2 : 1);
         if (gameInfo.get("gameType") === "solo") {
             GamePlayUtil.saveGameData(this.game.state.states.Play.cells.children, true);
             layoutStore.backgroundImage.enableInput(true);
             layoutStore.backgroundImage.setInputPriority(1);
-            this.cancelResign();
+            this._cancelResign();
             layoutStore.turnText.text = "YOU LOSE!";
             GameManager.endGame(1);
         }
@@ -51,21 +51,21 @@ export default class ResignButton extends Phaser.Button {
                     console.log("resignation - success : obj: \n", obj);
                     layoutStore.backgroundImage.enableInput(true);
                     layoutStore.backgroundImage.setInputPriority(1);
-                    this.cancelResign();
+                    this._cancelResign();
                     layoutStore.turnText.text = "YOU LOSE!";
                     console.log("Client resigned, hence lost");
                     GameManager.endGame(1);
                 }.bind(this),
                 function (error) {
                     console.log("resignation - Failure due to following error : ", error);
-                    this.cancelResign();
+                    this._cancelResign();
                 }.bind(this)
             );
             // TODO : avoid using kapow here. Pass a success(Yes) and cancel(NO) callback
         }
     }
 
-    createDarkOverlay() {
+    _createDarkOverlay() {
         this.darkOverlay = new DarkOverlay({
             game: this.game,
             posX: 0,
@@ -74,28 +74,28 @@ export default class ResignButton extends Phaser.Button {
             anchorX: 0,
             anchorY: 0,
             inputEnabled: true,
-            callback: this.cancelResign.bind(this)
+            callback: this._cancelResign.bind(this)
         });
         this.darkOverlay.setInputPriority(2);
         this.game.stage.addChild(this.darkOverlay);
     }
 
-    createResignModal() {
+    _createResignModal() {
         this.resignModal = this.game.add.sprite(72, 540, 'resignModal');
         this.resignModal.inputEnabled = true;
         this.resignModal.input.priorityID = 3;
         this.game.stage.addChild(this.resignModal);
     }
 
-    createCancelButton() {
-        this.cancelButton = this.game.add.button(291, 1191, 'cancel', this.cancelResign, this);
+    _createCancelButton() {
+        this.cancelButton = this.game.add.button(291, 1191, 'cancel', this._cancelResign, this);
         this.cancelButton.inputEnabled = true;
         this.cancelButton.input.priorityID = 4;
         this.game.stage.addChild(this.cancelButton);
     }
 
-    createYesResignButton() {
-        this.yesResignButton = this.game.add.button(522, 1191, 'yesResign', this.quitGame, this);
+    _createYesResignButton() {
+        this.yesResignButton = this.game.add.button(522, 1191, 'yesResign', this._quitGame, this);
         this.yesResignButton.inputEnabled = true;
         this.yesResignButton.input.priorityID = 4;
         this.game.stage.addChild(this.yesResignButton);

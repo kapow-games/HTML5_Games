@@ -10,16 +10,15 @@ import kapowClientController from "../kapow/KapowClientController";
 export function rematchButtonHandler() {
     console.log('rematchButtonHandler Clicked');
     let tempCells = [];
-    for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
-        tempCells.push(undefined);
-    }
-    gameInfo.set("boardStatus", {cells: tempCells});
-    gameInfo.set("win", 0);
-    gameInfo.set("gameOver", false);
-    gameInfo.set("room", null);
-    gameInfo.set("playerMark", GAME_CONST.TURN.NONE);
-    gameInfo.set("gameResume", false);
-    gameInfo.set("gameLocked", false);
+    gameInfo.setBulk({
+        "gameResume": false,
+        "room": null,
+        "playerMark": GAME_CONST.TURN.NONE,
+        "gameLocked": false,
+        "boardStatus": {cells: Array.from({length: GAME_CONST.GRID.CELL_COUNT}, (v, k) => undefined)},
+        "gameOver": false,
+        "win": 0,
+    });
     if (gameInfo.get("gameType") === "solo") {
         gameInfo.set("gameLayoutLoaded", false);
         GameManager.startState('Select');
@@ -27,11 +26,13 @@ export function rematchButtonHandler() {
     else if (gameInfo.get("gameType") === "friend") {
         kapowClientController.handleRematch(
             function (room) {
-                gameInfo.set("room", room);
-                gameInfo.set("playerMark", GAME_CONST.TURN.X);
-                gameInfo.set("opponentMark", GAME_CONST.TURN.O);
-                gameInfo.set("gameLayoutLoaded", false);
-                GamePlayUtil.parseRoomAndRedirectToGame();
+                gameInfo.setBulk({
+                    "room": room,
+                    "playerMark": GAME_CONST.TURN.X,
+                    "opponentMark": GAME_CONST.TURN.O,
+                    "gameLayoutLoaded": false,
+                });
+                GamePlayUtil.redirectToScreen();
                 console.log("Rematch Room Created");
             },
             function (error) {
@@ -116,26 +117,27 @@ export function getStats(value) {
 
 export function kapowEndSoloGame(value) {
     kapowClientController.handleEndSoloGame(function () {
-            if (value === 2) {
-                kapowClientController.handleInvokeRPC("soloPostScore", {
-                        'points': 5,
-                        'playerID': gameInfo.get("playerData").id
-                    }, true, function (successResponse) {
-                        console.log("successResponse  for lazy invocation", successResponse);
-                    }, function (rpcErrorResponse) {
-                        console.log("rpcErrorResponse  for lazy invocation", rpcErrorResponse);
-                    }
-                );
-
-            }
-            gameInfo.set("boardStatus", {cells: Array.from({length:GAME_CONST.GRID.CELL_COUNT}, (v,k)=> undefined)});
-            gameInfo.set("win", 0);
-            gameInfo.set("gameOver", false);
-            gameInfo.set("room", null);
-            gameInfo.set("playerMark", GAME_CONST.TURN.NONE);
-            gameInfo.set("gameResume", false);
-            console.log("Game Succesfully Closed.");
-        }, function (error) {
-            console.log("endSoloGame Failed : ", error);
+        if (value === 2) {
+            kapowClientController.handleInvokeRPC("soloPostScore", {
+                    'points': 5,
+                    'playerID': gameInfo.get("playerData").id
+                }, true, function (successResponse) {
+                    console.log("successResponse  for lazy invocation", successResponse);
+                }, function (rpcErrorResponse) {
+                    console.log("rpcErrorResponse  for lazy invocation", rpcErrorResponse);
+                }
+            );
+        }
+        gameInfo.setBulk({
+            "boardStatus": {cells: Array.from({length: GAME_CONST.GRID.CELL_COUNT}, (v, k) => undefined)},
+            "gameResume": false,
+            "room": null,
+            "playerMark": GAME_CONST.TURN.NONE,
+            "gameOver": false,
+            "win": 0,
         });
+        console.log("Game Successfully Closed.");
+    }, function (error) {
+        console.log("endSoloGame Failed : ", error);
+    });
 }

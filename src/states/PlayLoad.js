@@ -6,7 +6,7 @@ import GAME_CONST from "../const/GAME_CONST";
 
 export class PlayLoad extends Phaser.State {
     preload() {
-        gameInfo.set("screenState", 1);
+        gameInfo.set("screenState", GAME_CONST.SCREEN.PLAYLOAD);
         if (gameInfo.get("gameType") === "friend") {
             kapow.invokeRPC("playerMark", gameInfo.get("playerData"),
                 function (playerMarkAssignedByServer) {

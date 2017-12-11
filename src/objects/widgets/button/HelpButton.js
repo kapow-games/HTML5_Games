@@ -3,6 +3,7 @@
 import TextUtil from "../../../util/TextUtil";
 import DarkOverlay from './DarkOverLay';
 import GameManager from "../../../controller/GameManager";
+import MESSAGES from "../../../const/MESSAGES";
 
 export default class HelpButton extends Phaser.Button {
     constructor(arg) {
@@ -40,7 +41,7 @@ export default class HelpButton extends Phaser.Button {
                 this.howToPlayText = TextUtil.createText(this.game, {
                     positionX: 319.5,
                     positionY: 498,
-                    message: 'HOW-TO-PLAY',
+                    message: MESSAGES.HELP.HOW_TO_PLAY,
                     align: "center",
                     backgroundColor: "#fefefe",
                     fill: "#6d616d",
@@ -54,7 +55,7 @@ export default class HelpButton extends Phaser.Button {
                 this.placeMark = TextUtil.createText(this.game, {
                     positionX: this.game.world.centerX,
                     positionY: 1362,
-                    message: 'Tap on a square to place your mark',
+                    message: MESSAGES.HELP.PLACE_MARK,
                     align: "center",
                     backgroundColor: "#fefefe",
                     fill: "#7a797a",
@@ -70,7 +71,7 @@ export default class HelpButton extends Phaser.Button {
                 this.winCondition = TextUtil.createText(this.game, {
                     positionX: this.game.world.centerX,
                     positionY: 1362,
-                    message: '3-in-a-row wins',
+                    message: MESSAGES.HELP.WIN,
                     align: "center",
                     backgroundColor: "#fefefe",
                     fill: "#7a797a",
@@ -83,7 +84,7 @@ export default class HelpButton extends Phaser.Button {
                 this.game.stage.addChild(this.winCondition);
                 this.winCondition.kill();
 
-                this.helpClose = this.game.add.button(864, 498, "helpClose", this.cancelHelp, this);
+                this.helpClose = this.game.add.button(864, 498, "helpClose", this._cancelHelp, this);
                 this.helpClose.inputEnabled = true;
                 this.helpClose.input.priorityID = 4;
                 this.game.stage.addChild(this.helpClose);
@@ -128,8 +129,8 @@ export default class HelpButton extends Phaser.Button {
 
                 this.tapStart = 0;
                 this.tapEnd = 0;
-                this.game.input.onDown.add(this.tap, this);
-                this.game.input.onUp.add(this.release, this);
+                this.game.input.onDown.add(this._tap, this);
+                this.game.input.onUp.add(this._release, this);
                 // this.game.input.addMoveCallback(this.drag, this);
             }.bind(this));
             console.log('Help Button Clicked');
@@ -142,11 +143,11 @@ export default class HelpButton extends Phaser.Button {
         this.anchor.setTo(arg.anchorX, arg.anchorY);
     }
 
-    tap() {
+    _tap() {
         this.tapStart = this.game.input.x;
     }
 
-    release() {
+    _release() {
         this.tapEnd = this.game.input.x;
         if (this.tapEnd > this.tapStart) {
             if (this.helpIconIndex === 2) {
@@ -178,7 +179,7 @@ export default class HelpButton extends Phaser.Button {
         this.input.priorityID = priorityID;
     }
 
-    cancelHelp() {
+    _cancelHelp() {
         this.game.stage.removeChild(this.howToPlayText);
         this.game.stage.removeChild(this.placeMark);
         this.game.stage.removeChild(this.winCondition);

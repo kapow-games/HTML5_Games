@@ -12,10 +12,12 @@ export default class VsFriendGameButton extends Phaser.Button {
             gameInfo.set("gameType", 'friend');
             GameManager.playTapSound();
             kapowClientController.handleStartGameWithFriends(2, 2, function (room) {
-                gameInfo.set("room", room);
-                gameInfo.set("playerMark", GAME_CONST.TURN.X);
-                gameInfo.set("opponentMark", GAME_CONST.TURN.O);
-                GamePlayUtil.parseRoomAndRedirectToGame();
+                gameInfo.setBulk({
+                    "room": room,
+                    "playerMark": GAME_CONST.TURN.X,
+                    "opponentMark": GAME_CONST.TURN.O,
+                });
+                GamePlayUtil.redirectToScreen();
             }, function (error) {
                 console.log("startvsFriendGame Failed : ", error);
             });

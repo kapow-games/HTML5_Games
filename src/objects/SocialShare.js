@@ -11,11 +11,11 @@ export default class SocialShare {
 
     shareButton(x, y, medium, buttonID) {
         return this.game.add.button(x, y, buttonID, function () {
-            var shareDarkOverlay = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'shareLoadBackground');
+            let shareDarkOverlay = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'shareLoadBackground');
             shareDarkOverlay.anchor.setTo(0.5);
             this.game.stage.addChild(shareDarkOverlay);
 
-            var shareLoad = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderSpinner');
+            let shareLoad = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderSpinner');
             shareLoad.anchor.setTo(0.5);
             this.game.stage.addChild(shareLoad);
 

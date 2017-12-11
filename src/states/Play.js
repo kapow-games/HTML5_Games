@@ -20,7 +20,7 @@ import GameManager from "../controller/GameManager";
 
 export class Play extends Phaser.State {
     preload() {
-        gameInfo.set("screenState", 1);
+        gameInfo.set("screenState", GAME_CONST.SCREEN.PLAY);
         this.loadOpponentImage();
         layoutStore.clickBlocked = false;
     }
@@ -28,29 +28,29 @@ export class Play extends Phaser.State {
     create() {
         console.log("Loading Game Layout.");
 
-        this.createBackground();
-        this.createBoards();
-        this.createResignButton();
-        this.createHelpButton();
-        this.createPlayerProfileImage();
-        this.createOpponentProfileImage();
-        this.createBackButton();
-        this.createMusicButton();
+        this._createBackground();
+        this._createBoards();
+        this._createResignButton();
+        this._createHelpButton();
+        this._createPlayerProfileImage();
+        this._createOpponentProfileImage();
+        this._createBackButton();
+        this._createMusicButton();
 
         gameInfo.set("win", 0);
 
-        this.prepareGameBoard();
+        this._prepareGameBoard();
 
         if (gameInfo.get("gameType") === 'solo') {
             this.initialiseBot();
         }
         else if (gameInfo.get("gameType") === 'friend') {
-            this.logOpponentAffiliationStatus();
-            this.recreateResultForEndedGame();
+            this._logOpponentAffiliationStatus();
+            this._recreateResultForEndedGame();
         }
 
         gameInfo.set("gameLayoutLoaded", true);
-        this.createTimer();
+        this._createTimer();
         this.lastMoveTimeStamp = Date.now();
 
         this.physics.startSystem(Phaser.Physics.ARCADE);
@@ -93,32 +93,29 @@ export class Play extends Phaser.State {
         this.cells.destroy();
         this.game.stage.removeChild(this.cells);
         GameManager.stopWinSound();
-        // this.game.stage.removeChildren();
     }
 
-    clickHandlerSolo(sprite, pointer) {
-        let cell = this.cells.children; // TODO : cell is an array . plural ?
+    _clickHandlerSolo(sprite, pointer) {
+        let cells = this.cells.children; // TODO : cell is an array . plural ?
         if (sprite.frame === 0) {
             layoutStore.backgroundImage.enableInput(true);
             layoutStore.backgroundImage.setInputPriority(2);
             layoutStore.backButton.setInputPriority(2);
             layoutStore.musicButton.setInputPriority(2);
             layoutStore.resign.setInputPriority(2);
-            console.log("Player Mark", gameInfo.get("playerMark"));
             GameManager.playTapSound();
             sprite.frame = gameInfo.get("playerMark");
             sprite.scale.setTo(0);
             let popUpMark = this.game.add.tween(sprite.scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
             popUpMark.start();
             console.log("Player's Sprite Set");
-
             layoutStore.turnText.text = MESSAGE.BOT_TURN;
             layoutStore.opponentProfilePic.alpha = 1;
             layoutStore.playerProfilePic.alpha = 0.3;
 
 
             setTimeout(function () {
-                this.nextMove(sprite, cell);
+                this._nextMove(sprite, cells);
             }.bind(this), 1000);
         }
         else {
@@ -127,9 +124,7 @@ export class Play extends Phaser.State {
 
     }
 
-    clickHandlerMulti(sprite) {
-        console.log(gameInfo.get("turnOfPlayer"), gameInfo.get("playerData"), sprite.frame);
-
+    _clickHandlerMulti(sprite) {
         if (gameInfo.get("turnOfPlayer") !== undefined && gameInfo.get("turnOfPlayer").id === gameInfo.get("playerData").id && sprite.frame === 0) {
             layoutStore.backgroundImage.enableInput(true);
             layoutStore.backgroundImage.setInputPriority(2);
@@ -209,7 +204,7 @@ export class Play extends Phaser.State {
         }
     }
 
-    nextMove(sprite, cell) {
+    _nextMove(sprite, cells) {
         let next = new GameState(this.botGame.currentState);
         console.log("Click Acknowledged");
         next.board[sprite.frameIndex] = gameInfo.get("playerMark");
@@ -219,13 +214,13 @@ export class Play extends Phaser.State {
         this.botGame.moveTo(next);
         let changePos;
         for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
-            if (cell[i].frame !== this.botGame.currentState.board[i]) {
+            if (cells[i].frame !== this.botGame.currentState.board[i]) {
                 changePos = i;
-                cell[i].frame = this.botGame.currentState.board[i];
+                cells[i].frame = this.botGame.currentState.board[i];
             }
         }
-        cell[changePos].scale.setTo(0);
-        let popUpMark = this.game.add.tween(cell[changePos].scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
+        cells[changePos].scale.setTo(0);
+        let popUpMark = this.game.add.tween(cells[changePos].scale).to({x: 1, y: 1}, 600, "Quart.easeOut");
         popUpMark.start();
         popUpMark.onComplete.add(function () {
             GameManager.playTapSound();
@@ -257,7 +252,7 @@ export class Play extends Phaser.State {
         }
     }
 
-    createBackground() {
+    _createBackground() {
         layoutStore.backgroundImage = new Background({
             game: this.game,
             posX: 0,
@@ -269,7 +264,7 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(layoutStore.backgroundImage);
     }
 
-    backButtonHandler() {
+    _backButtonHandler() {
         console.log("WebView BACK presed.");
         kapow.unloadRoom(function () {
             console.log('Room Succesfully Unloaded');
@@ -282,21 +277,18 @@ export class Play extends Phaser.State {
             playerMark: 0,
             gameType: null,
             botLevel: -1,
-            boardStatus: {cells: []},
+            boardStatus: {cells: Array.from({length: GAME_CONST.GRID.CELL_COUNT}, (v, k) => undefined)},
             opponentData: null,
             turnOfPlayer: null,
             gameOver: false,
             win: 0,
             gameLayoutLoaded: false
         };
-        for (let i = 0; i < GAME_CONST.GRID.CELL_COUNT; i++) {
-            resetVar.boardStatus.cells.push(undefined);
-        }
         gameInfo.setBulk(resetVar);
         this.game.state.start('Menu');
     }
 
-    createPlayerProfileImage() {
+    _createPlayerProfileImage() {
         this.playerProfilePicBackground = this.game.add.image(366, 72, 'circle');
         this.playerProfilePicBackground.scale.set(120 / this.playerProfilePicBackground.width, 120 / this.playerProfilePicBackground.height);
         this.game.stage.addChild(this.playerProfilePicBackground);
@@ -322,7 +314,7 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(this.playerProfilePicMark);
     }
 
-    createOpponentProfileImage() {
+    _createOpponentProfileImage() {
         this.opponentProfilePicBackground = this.game.add.image(594, 72, 'circle');
         this.opponentProfilePicBackground.scale.set(120 / this.opponentProfilePicBackground.width, 120 / this.opponentProfilePicBackground.height);
         this.game.stage.addChild(this.opponentProfilePicBackground);
@@ -349,7 +341,7 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(this.opponentProfilePicMark);
     }
 
-    createMusicButton() {
+    _createMusicButton() {
         layoutStore.musicButton = new MusicButton({
             game: this.game,
             posX: 960,
@@ -361,7 +353,7 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(layoutStore.musicButton);
     }
 
-    createBackButton() {
+    _createBackButton() {
         layoutStore.backButton = new BackButton({
             game: this.game,
             posX: 48,
@@ -369,12 +361,12 @@ export class Play extends Phaser.State {
             label: 'back',
             anchorX: 0,
             anchorY: 0,
-            callback: this.backButtonHandler.bind(this)
+            callback: this._backButtonHandler.bind(this)
         });
         this.game.stage.addChild(layoutStore.backButton);
     }
 
-    createHelpButton() {
+    _createHelpButton() {
         layoutStore.help = new HelpButton({
             game: this.game,
             posX: 741,
@@ -387,7 +379,7 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(layoutStore.help);
     }
 
-    createResignButton() {
+    _createResignButton() {
         layoutStore.resign = new ResignButton({
             game: this.game,
             posX: 390,
@@ -403,7 +395,7 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(layoutStore.resign);
     }
 
-    createBoards() {
+    _createBoards() {
         this.boardLayout = this.game.add.sprite(57, 477, 'board');
         this.game.stage.addChild(this.boardLayout);
 
@@ -450,10 +442,8 @@ export class Play extends Phaser.State {
         this.game.stage.addChild(layoutStore.vs);
     }
 
-    prepareGameBoard() {
+    _prepareGameBoard() {
         let count = 0;
-        console.log("BoardStatus on creating play screen:", gameInfo.get("gameResume"));
-        console.log("Board status on game board loading:", gameInfo.get("boardStatus"));
         this.cells = this.game.add.group();
         this.game.stage.addChild(this.cells);
         this.cells.physicsBodyType = Phaser.Physics.ARCADE;
@@ -466,7 +456,7 @@ export class Play extends Phaser.State {
                     if (!gameInfo.get("boardStatus").cells[count] || !gameInfo.get("boardStatus").cells[count] || !gameInfo.get("boardStatus").cells[count]) {
                         cell.frame = 0;
                         cell.inputEnabled = !gameInfo.get("gameOver");
-                        cell.events.onInputDown.add(gameInfo.get("gameType") === 'solo' ? this.clickHandlerSolo : this.clickHandlerMulti, this);
+                        cell.events.onInputDown.add(gameInfo.get("gameType") === 'solo' ? this._clickHandlerSolo : this._clickHandlerMulti, this);
                     }
                     else {
                         cell.frame = gameInfo.get("boardStatus").cells[count];
@@ -476,7 +466,7 @@ export class Play extends Phaser.State {
                 else {
                     cell.frame = 0;
                     cell.inputEnabled = true;
-                    cell.events.onInputDown.add(gameInfo.get("gameType") === 'solo' ? this.clickHandlerSolo : this.clickHandlerMulti, this);
+                    cell.events.onInputDown.add(gameInfo.get("gameType") === 'solo' ? this._clickHandlerSolo : this._clickHandlerMulti, this);
                 }
                 cell.frameIndex = count++;
                 this.physics.arcade.enable(cell);
@@ -503,7 +493,7 @@ export class Play extends Phaser.State {
         }
     }
 
-    logOpponentAffiliationStatus() {
+    _logOpponentAffiliationStatus() {
         if (gameInfo.get("opponentData") && gameInfo.get("opponentData").affiliation === GAME_CONST.AFFILIATION.ACCEPTED) {
             console.log("Opponent Accepted.");
         }
@@ -524,7 +514,7 @@ export class Play extends Phaser.State {
         }
     }
 
-    recreateResultForEndedGame() {
+    _recreateResultForEndedGame() {
         if (gameInfo.get("gameOver") === true) {
             if (gameInfo.get("turnOfPlayer") === 0) {
                 GameManager.endGame(0);
@@ -560,7 +550,6 @@ export class Play extends Phaser.State {
             gameInfo.set("playerMark", GAME_CONST.TURN.O);
         }
         if (message.data.result === "lost") {
-            console.log("Lost");
             let winningPosition = GamePlayUtil.getWinningPosition(gameInfo.get("boardStatus").cells);
             if (winningPosition) {
                 let sprite = this.game.add.sprite(winningPosition.x, winningPosition.y, winningPosition.key);
@@ -568,11 +557,9 @@ export class Play extends Phaser.State {
                 sprite.angle = winningPosition.angle;
                 this.game.stage.addChild(sprite);
             }
-            // TODO : remove like drawWinningLine
             GameManager.endGame(1);
         }
         else if (message.data.result === "draw") {
-            console.log("Draw");
             GameManager.endGame(0);
         }
     }
@@ -654,7 +641,7 @@ export class Play extends Phaser.State {
         console.log("Completed UI changes");
     }
 
-    createTimer() {
+    _createTimer() {
         this.timer = this.game.add.graphics(0, 0);
         this.game.stage.addChild(this.timer);
     }

@@ -3,6 +3,7 @@
 import PhaserGame from '../PhaserGame';
 import {getStats, kapowEndSoloGame} from '../util/gameEnd';
 import gameInfo from "../objects/store/GameInfo";
+import MUSIC_CONST from "../const/MUSIC_CONST";
 
 let GameManager = {
     createGame() {
@@ -25,16 +26,18 @@ let GameManager = {
         this.game.state.states.Preload.winSound.mute = value;
         this.game.state.states.Preload.tapSound.mute = value;
         this.game.state.states.Preload.winSound.mute = value;
-        this.game.state.states.Preload.sound.volume = 0.2;
+        this.game.state.states.Preload.sound.volume = MUSIC_CONST.VOLUME.THEME;
     },
     loadResultUI(value) {
         this.game.state.states.Play.loadResultScreen(value);
     },
     playTapSound() {
         this.game.state.states.Preload.tapSound.play();
+        this.game.state.states.Preload.tapSound.volume = MUSIC_CONST.VOLUME.TAP;
     },
     playWinSound() {
         this.game.state.states.Preload.winSound.play();
+        this.game.state.states.Preload.winSound.volume = MUSIC_CONST.VOLUME.WIN;
     },
     stopWinSound() {
         this.game.state.states.Preload.winSound.stop();
