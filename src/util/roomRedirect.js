@@ -4,7 +4,7 @@ import gameInfo from "../objects/store/GameInfo";
 import GameManager from "../controller/GameManager";
 import kapowClientController from "../kapow/KapowClientController";
 
-export default function parseRoomAndRedirectToGame() { // TODO : too complex function. Simplify in smaller components. A lot of if conditions can be simplified
+export default function parseRoomAndRedirectToGame() {
     if (!gameInfo.get("room")) {
         console.log("Room is null, hence not redirecting to game");
     }

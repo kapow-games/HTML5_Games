@@ -1,7 +1,7 @@
 "use strict";
 
 import gameInfo from '../../store/GameInfo';
-import parseRoomAndRedirectToGame from "../../../util/roomRedirect";
+import GamePlayUtil from "../../../util/GamePlayUtil";
 import GAME_CONST from "../../../const/GAME_CONST";
 import kapowClientController from "../../../kapow/KapowClientController";
 import GameManager from "../../../controller/GameManager";
@@ -21,7 +21,7 @@ export default class VsRandomGameButton extends Phaser.Button {
                 gameInfo.set("room", room);
                 gameInfo.set("playerMark", GAME_CONST.TURN.X);
                 gameInfo.set("opponentMark", GAME_CONST.TURN.O);
-                parseRoomAndRedirectToGame();
+                GamePlayUtil.parseRoomAndRedirectToGame();
             }, function (error) {
                 this.inputEnabled = true;
                 console.log("Random Room Creation - Failure.", error);

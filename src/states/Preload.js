@@ -1,7 +1,7 @@
 'use strict';
 
 import gameInfo from "../objects/store/GameInfo";
-import parseRoomAndRedirectToGame from "../util/roomRedirect";
+import GamePlayUtil from "../util/GamePlayUtil";
 import kapowGameStore from "../objects/store/KapowGameStore";
 import GameManager from "../controller/GameManager";
 
@@ -91,7 +91,7 @@ export class Preload extends Phaser.State {
                     GameManager.startState('Play');
                 }
                 else if (gameInfo.get("gameType") === "friend") {
-                    parseRoomAndRedirectToGame(); // TODO . Can u pass arguments via starting State in phaser. trigger flow viw play.js .
+                    GamePlayUtil.parseRoomAndRedirectToGame(); // TODO . Can u pass arguments via starting State in phaser. trigger flow viw play.js .
                 }
             }
             else {

@@ -1,7 +1,7 @@
 "use strict";
 
 import DarkOverlay from './DarkOverLay';
-import PhaserUtil from '../../../util/PhaserUtil';
+import PhaserUtil from '../../../util/TextUtil';
 import GameManager from "../../../controller/GameManager";
 
 export default class CreditsButton extends Phaser.Button {
