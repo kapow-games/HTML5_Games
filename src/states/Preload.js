@@ -86,17 +86,7 @@ export class Preload extends Phaser.State {
 
     update() {
         if (this.ready) { // TODO : fix later  simplify condition
-            if (gameInfo.get("gameResume") === true) {
-                if (gameInfo.get("gameType") === "solo") {
-                    GameManager.startState('Play');
-                }
-                else if (gameInfo.get("gameType") === "friend") {
-                    GamePlayUtil.redirectToScreen(); // TODO . Can u pass arguments via starting State in phaser. trigger flow view play.js .
-                }
-            }
-            else {
-                this.state.start('Menu');
-            }
+            GameManager.renderScreen();
         }
     }
 

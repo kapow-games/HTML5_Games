@@ -4,6 +4,7 @@ import PhaserGame from '../PhaserGame';
 import {getStats, kapowEndSoloGame} from '../util/gameEnd';
 import gameInfo from "../objects/store/GameInfo";
 import MUSIC_CONST from "../const/MUSIC_CONST";
+import GamePlayUtil from "../util/GamePlayUtil";
 
 let GameManager = {
     createGame() {
@@ -41,6 +42,19 @@ let GameManager = {
     },
     stopWinSound() {
         this.game.state.states.Preload.winSound.stop();
+    },
+    renderScreen() {
+        if (gameInfo.get("gameResume") === true) {
+            if (gameInfo.get("gameType") === "solo") {
+                this.startState('Play');
+            }
+            else if (gameInfo.get("gameType") === "friend") {
+                GamePlayUtil.redirectToScreen();
+            }
+        }
+        else {
+            this.startState('Menu');
+        }
     },
     ////////////// END OF PUBLIC METHODS /////////
     _handleGameEnd(value){
