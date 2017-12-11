@@ -89,12 +89,12 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.game.stage.removeChild(layoutStore.otherShare);
         this.game.stage.removeChild(layoutStore.twitterShare);
         this.game.stage.removeChild(layoutStore.fbShare);
+        this.game.stage.removeChild(layoutStore.resign);;
         this.game.stage.removeChild(this.timer);
-        GameManager.stopWinSound();
-        for (let i = 0; i < GAME_CONST.CELL_COUNT; i++) {
-            this.cells.children[i].inputEnabled = false;
-        }
+        this.cells.destroy();
         this.game.stage.removeChild(this.cells);
+        this.game.stage.removeChildren();
+        GameManager.stopWinSound();
     }
 
     clickHandlerSolo(sprite, pointer) {
@@ -424,7 +424,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         layoutStore.turnText = PhaserUtil.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 276,
-            message: (gameInfo.get("gameOver") === true) ? gameInfo.get("win") === gameInfo.get("playerMark") ? MESSAGE.WIN : MESSAGE.LOSE : gameInfo.get("gameType") === "solo" ? gameInfo.get("playerMark") === 1 ? MESSAGE.YOUR_TURN : MESSAGE.BOT_TURN : gameInfo.get("turnOfPlayer") === gameInfo.get("playerData") ? MESSAGE.YOUR_TURN : MESSAGE.WAITING,
+            message: (gameInfo.get("gameOver") === true) ? gameInfo.get("win") === gameInfo.get("playerMark") ? MESSAGE.WIN : MESSAGE.LOSE : gameInfo.get("gameType") === "solo" ? gameInfo.get("playerMark") === 1 ? MESSAGE.YOUR_TURN : MESSAGE.BOT_TURN : gameInfo.get("turnOfPlayer").id === gameInfo.get("playerData").id ? MESSAGE.YOUR_TURN : MESSAGE.WAITING,
             align: "center",
             backgroundColor: "#5684fb",
             fill: "#fefefe",
