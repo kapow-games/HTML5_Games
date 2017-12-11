@@ -1,6 +1,6 @@
 'use strict';
 
-import PhaserUtil from "../util/TextUtil";
+import TextUtil from "../util/TextUtil";
 import gameInfo from "../objects/store/GameInfo";
 import Background from "../objects/widgets/icons/Background";
 import OnGoingGameButton from "../objects/widgets/button/OnGoingGameButton";
@@ -62,7 +62,7 @@ export class Waiting extends Phaser.State {
         });
         this.game.stage.addChild(this.helpButton);
 
-        this.waitingText = PhaserUtil.createText(this.game, {
+        this.waitingText = TextUtil.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 780,
             message: '',

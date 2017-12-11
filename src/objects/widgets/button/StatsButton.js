@@ -1,7 +1,7 @@
 "use strict";
 
 import DarkOverlay from './DarkOverLay';
-import PhaserUtil from '../../../util/TextUtil';
+import TextUtil from '../../../util/TextUtil';
 import kapowGameStore from "../../store/KapowGameStore";
 import GameManager from "../../../controller/GameManager";
 
@@ -53,7 +53,7 @@ export default class StatsButton extends Phaser.Button {
             this.statsLogo = this.game.add.sprite(360, 465, 'statsLogo');
             this.game.stage.addChild(this.statsLogo);
 
-            this.myStatsText = PhaserUtil.createText(this.game, {
+            this.myStatsText = TextUtil.createText(this.game, {
                 positionX: 394.5,
                 positionY: 848,
                 message: 'MY STATS', // TODO : rename to displayMessage or just message/text ?
@@ -81,7 +81,7 @@ export default class StatsButton extends Phaser.Button {
                     this.game.stage.addChild(this.statsModeBackground);
                     this.statsTotalBackground = this.game.add.sprite(120, 1362, 'statsTotalBackground');
                     this.game.stage.addChild(this.statsTotalBackground);
-                    this.modeText = PhaserUtil.createText(this.game, {
+                    this.modeText = TextUtil.createText(this.game, {
                         positionX: 156,
                         positionY: 1002,
                         message: 'MODE',
@@ -94,7 +94,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 109
                     });
                     this.game.stage.addChild(this.modeText);
-                    this.playedText = PhaserUtil.createText(this.game, {
+                    this.playedText = TextUtil.createText(this.game, {
                         positionX: 414.5,
                         positionY: 1002,
                         message: 'PLAYED',
@@ -107,7 +107,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 143
                     });
                     this.game.stage.addChild(this.playedText);
-                    this.wonText = PhaserUtil.createText(this.game, {
+                    this.wonText = TextUtil.createText(this.game, {
                         positionX: 576,
                         positionY: 1002,
                         message: 'WON',
@@ -120,7 +120,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 96
                     });
                     this.game.stage.addChild(this.wonText);
-                    this.lostText = PhaserUtil.createText(this.game, {
+                    this.lostText = TextUtil.createText(this.game, {
                         positionX: 691,
                         positionY: 1002,
                         message: 'LOST',
@@ -133,7 +133,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 94
                     });
                     this.game.stage.addChild(this.lostText);
-                    this.drawText = PhaserUtil.createText(this.game, {
+                    this.drawText = TextUtil.createText(this.game, {
                         positionX: 804.5,
                         positionY: 1002,
                         message: 'DRAW',
@@ -146,7 +146,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 119
                     });
                     this.game.stage.addChild(this.drawText);
-                    this.friendsText = PhaserUtil.createText(this.game, {
+                    this.friendsText = TextUtil.createText(this.game, {
                         positionX: 156,
                         positionY: 1110,
                         message: 'FRIENDS',
@@ -159,7 +159,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 158
                     });
                     this.game.stage.addChild(this.friendsText);
-                    this.randomText = PhaserUtil.createText(this.game, {
+                    this.randomText = TextUtil.createText(this.game, {
                         positionX: 156,
                         positionY: 1194,
                         message: 'RANDOM',
@@ -172,7 +172,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 167
                     });
                     this.game.stage.addChild(this.randomText);
-                    this.practiceText = PhaserUtil.createText(this.game, {
+                    this.practiceText = TextUtil.createText(this.game, {
                         positionX: 156,
                         positionY: 1278,
                         message: 'PRACTICE',
@@ -185,7 +185,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.practiceText);
-                    this.totalText = PhaserUtil.createText(this.game, {
+                    this.totalText = TextUtil.createText(this.game, {
                         positionX: 156,
                         positionY: 1386,
                         message: 'TOTAL',
@@ -198,7 +198,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 117
                     });
                     this.game.stage.addChild(this.totalText);
-                    this.randomPlayedText = PhaserUtil.createText(this.game, {
+                    this.randomPlayedText = TextUtil.createText(this.game, {
                         positionX: 486,
                         positionY: 1218.5,
                         anchorX: 0.5,
@@ -213,7 +213,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.randomPlayedText);
-                    this.randomWonText = PhaserUtil.createText(this.game, {
+                    this.randomWonText = TextUtil.createText(this.game, {
                         positionX: 624,
                         positionY: 1218.5,
                         anchorX: 0.5,
@@ -228,7 +228,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.randomWonText);
-                    this.randomLostText = PhaserUtil.createText(this.game, {
+                    this.randomLostText = TextUtil.createText(this.game, {
                         positionX: 738,
                         positionY: 1218.5,
                         anchorX: 0.5,
@@ -243,7 +243,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.randomLostText);
-                    this.randomDrawText = PhaserUtil.createText(this.game, {
+                    this.randomDrawText = TextUtil.createText(this.game, {
                         positionX: 864,
                         positionY: 1218.5,
                         anchorX: 0.5,
@@ -258,7 +258,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.randomDrawText);
-                    this.friendsPlayedText = PhaserUtil.createText(this.game, {
+                    this.friendsPlayedText = TextUtil.createText(this.game, {
                         positionX: 486,
                         positionY: 1134.5,
                         anchorX: 0.5,
@@ -273,7 +273,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.friendsPlayedText);
-                    this.friendsWonText = PhaserUtil.createText(this.game, {
+                    this.friendsWonText = TextUtil.createText(this.game, {
                         positionX: 624,
                         positionY: 1134.5,
                         anchorX: 0.5,
@@ -288,7 +288,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.friendsWonText);
-                    this.friendsLostText = PhaserUtil.createText(this.game, {
+                    this.friendsLostText = TextUtil.createText(this.game, {
                         positionX: 738,
                         positionY: 1134.5,
                         anchorX: 0.5,
@@ -303,7 +303,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.friendsLostText);
-                    this.friendsDrawText = PhaserUtil.createText(this.game, {
+                    this.friendsDrawText = TextUtil.createText(this.game, {
                         positionX: 864,
                         positionY: 1134.5,
                         anchorX: 0.5,
@@ -318,7 +318,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.friendsDrawText);
-                    this.soloPlayedText = PhaserUtil.createText(this.game, {
+                    this.soloPlayedText = TextUtil.createText(this.game, {
                         positionX: 486,
                         positionY: 1302.5,
                         anchorX: 0.5,
@@ -333,7 +333,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.soloPlayedText);
-                    this.soloWonText = PhaserUtil.createText(this.game, {
+                    this.soloWonText = TextUtil.createText(this.game, {
                         positionX: 624,
                         positionY: 1302.5,
                         anchorX: 0.5,
@@ -348,7 +348,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.soloWonText);
-                    this.soloLostText = PhaserUtil.createText(this.game, {
+                    this.soloLostText = TextUtil.createText(this.game, {
                         positionX: 738,
                         positionY: 1302.5,
                         anchorX: 0.5,
@@ -363,7 +363,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.soloLostText);
-                    this.soloDrawText = PhaserUtil.createText(this.game, {
+                    this.soloDrawText = TextUtil.createText(this.game, {
                         positionX: 864,
                         positionY: 1302.5,
                         anchorX: 0.5,
@@ -378,7 +378,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.soloDrawText);
-                    this.totalPlayedText = PhaserUtil.createText(this.game, {
+                    this.totalPlayedText = TextUtil.createText(this.game, {
                         positionX: 486,
                         positionY: 1410.5,
                         anchorX: 0.5,
@@ -393,7 +393,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.totalPlayedText);
-                    this.totalWonText = PhaserUtil.createText(this.game, {
+                    this.totalWonText = TextUtil.createText(this.game, {
                         positionX: 624,
                         positionY: 1410.5,
                         anchorX: 0.5,
@@ -408,7 +408,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.totalWonText);
-                    this.totalLostText = PhaserUtil.createText(this.game, {
+                    this.totalLostText = TextUtil.createText(this.game, {
                         positionX: 738,
                         positionY: 1410.5,
                         anchorX: 0.5,
@@ -423,7 +423,7 @@ export default class StatsButton extends Phaser.Button {
                         wordWrapWidth: 181
                     });
                     this.game.stage.addChild(this.totalLostText);
-                    this.totalDrawText = PhaserUtil.createText(this.game, {
+                    this.totalDrawText = TextUtil.createText(this.game, {
                         positionX: 864,
                         positionY: 1410.5,
                         anchorX: 0.5,

@@ -2,7 +2,7 @@
 
 import layoutStore from "../../store/LayoutStore";
 import DarkOverlay from "./DarkOverLay";
-import GamePlayUtil from "../util/GamePlayUtil";
+import GamePlayUtil from "../../../util/GamePlayUtil";
 import gameInfo from "../../store/GameInfo"
 import GAME_CONST from "../../../const/GAME_CONST";
 import GameManager from "../../../controller/GameManager";
@@ -33,7 +33,7 @@ export default class ResignButton extends Phaser.Button {
     quitGame() {
         gameInfo.set("win", gameInfo.get("playerMark") === GAME_CONST.TURN.X ? 2 : 1);
         if (gameInfo.get("gameType") === "solo") {
-            GamePlayUtil.saveGameData(this.cells.children, true); // TODO : @mayank this will break
+            GamePlayUtil.saveGameData(this.game.state.states.Play.cells.children, true); // TODO : @mayank this will break //saveGameData(this.game, true);
             layoutStore.backgroundImage.enableInput(true);
             layoutStore.backgroundImage.setInputPriority(1);
             this.cancelResign();

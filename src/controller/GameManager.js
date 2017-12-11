@@ -1,7 +1,7 @@
 "use strict";
 
 import PhaserGame from '../PhaserGame';
-import getStats from '../util/gameEnd';
+import {getStats, kapowEndSoloGame} from '../util/gameEnd';
 import gameInfo from "../objects/store/GameInfo";
 
 let GameManager = {

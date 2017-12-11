@@ -1,6 +1,6 @@
 'use strict';
 
-import PhaserUtil from "../../../util/TextUtil";
+import TextUtil from "../../../util/TextUtil";
 import DarkOverlay from './DarkOverLay';
 import GameManager from "../../../controller/GameManager";
 
@@ -37,7 +37,7 @@ export default class HelpButton extends Phaser.Button {
                 this.bg.enableInput(false);
                 this.darkOverlay.setInputPriority(2);
 
-                this.howToPlayText = PhaserUtil.createText(this.game, {
+                this.howToPlayText = TextUtil.createText(this.game, {
                     positionX: 319.5,
                     positionY: 498,
                     message: 'HOW-TO-PLAY',
@@ -51,7 +51,7 @@ export default class HelpButton extends Phaser.Button {
                 });
                 this.game.stage.addChild(this.howToPlayText);
 
-                this.placeMark = PhaserUtil.createText(this.game, {
+                this.placeMark = TextUtil.createText(this.game, {
                     positionX: this.game.world.centerX,
                     positionY: 1362,
                     message: 'Tap on a square to place your mark',
@@ -67,7 +67,7 @@ export default class HelpButton extends Phaser.Button {
                 this.game.stage.addChild(this.placeMark);
                 // this.placeMark.kill();
 
-                this.winCondition = PhaserUtil.createText(this.game, {
+                this.winCondition = TextUtil.createText(this.game, {
                     positionX: this.game.world.centerX,
                     positionY: 1362,
                     message: '3-in-a-row wins',

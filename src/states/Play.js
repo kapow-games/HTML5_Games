@@ -1,6 +1,6 @@
 'use strict';
 
-import PhaserUtil from "../util/TextUtil";
+import TextUtil from "../util/TextUtil";
 import gameInfo from "../objects/store/GameInfo";
 import {rematchButtonHandler} from '../util/gameEnd';
 import layoutStore from "../objects/store/LayoutStore";
@@ -92,8 +92,8 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.game.stage.removeChild(this.timer);
         this.cells.destroy();
         this.game.stage.removeChild(this.cells);
-        this.game.stage.removeChildren();
         GameManager.stopWinSound();
+        // this.game.stage.removeChildren();
     }
 
     clickHandlerSolo(sprite, pointer) {
@@ -420,7 +420,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         this.game.stage.addChild(layoutStore.turnTextBackground);
 
         console.log("Turn data", gameInfo.get("turnOfPlayer"));
-        layoutStore.turnText = PhaserUtil.createText(this.game, {
+        layoutStore.turnText = TextUtil.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 276,
             message: (gameInfo.get("gameOver") === true) ? gameInfo.get("win") === gameInfo.get("playerMark") ? MESSAGE.WIN : MESSAGE.LOSE : gameInfo.get("gameType") === "solo" ? gameInfo.get("playerMark") === 1 ? MESSAGE.YOUR_TURN : MESSAGE.BOT_TURN : gameInfo.get("turnOfPlayer").id === gameInfo.get("playerData").id ? MESSAGE.YOUR_TURN : MESSAGE.WAITING,
@@ -436,7 +436,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
         });
         this.game.stage.addChild(layoutStore.turnText);
 
-        layoutStore.vs = PhaserUtil.createText(this.game, {
+        layoutStore.vs = TextUtil.createText(this.game, {
             positionX: 511,
             positionY: 105,
             message: MESSAGE.VS,
@@ -611,7 +611,7 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
             resultTextBackgroundColor = "#f45842";
         }
 
-        layoutStore.turnText = PhaserUtil.createText(this.game, {
+        layoutStore.turnText = TextUtil.createText(this.game, {
             positionX: this.game.world.centerX,
             positionY: 276,
             message: resultText,
@@ -649,7 +649,6 @@ export class Play extends Phaser.State { // TODO : fix later. this screen has to
 
         let rematchButton = this.game.add.button(657, 1584, 'rematch', rematchButtonHandler, 0, 0, 1, 0);
         rematchButton.input.priorityID = 3;
-        // rematchButton.game = this.game;
         layoutStore.rematch = rematchButton;
         this.game.stage.addChild(layoutStore.rematch);
 
